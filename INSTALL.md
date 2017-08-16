@@ -31,7 +31,10 @@ Optional:
     This will install all the dependencies for the frontend of the project.
 
 ### Netbeans specific setup instructions
-  - Install [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
+  - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
+  - Open `Tools > Plugins` and go to `Downloaded` tab
+  - Click on `Add plugins` and select the previously downloaded `.nbm` file
+  - Follow the steps on the screen to finish the installation
   - Open `Tools > Options > HTML/JS`
   - Make sure `Node Path` and `npm Path` are set to correct locations of `node` and `npm` installed in your system
   - Click on `Download` next to `Sources` input if not already downloaded
