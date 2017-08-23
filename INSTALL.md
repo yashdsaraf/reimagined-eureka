@@ -1,17 +1,18 @@
-## Initial setup instructions
+# Initial setup instructions
 
 **Note:**
   - Only windows _7 or greater_ (64 bit) is supported as a development platform.
   - Use 64 bit versions of applications whenever available.
 
-##### Please make sure you have the following installed before proceeding
-**Recommended: [Chocolatey](https://chocolatey.org/) package manager**
+### Please make sure you have the following installed before proceeding
+**[Chocolatey](https://chocolatey.org/) is recommended for package management**
 
 Required:
   - jdk 8 (latest available)
   - oracle glassfish server (4.1.1)
   - ruby (>= 2.4.1)
   - nodejs (>= 8.3.0) & npm
+  - maven (>=3.5.0)
   - oracle 11g XE
 
 Optional:
@@ -19,16 +20,17 @@ Optional:
   - [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
   - SQL Developer
 
-# Installation
-**Note: Do not change the order of installation**
+## Installation
   - Run `cmd.exe` with administrator privileges.
   - Install **angular-cli**
     `npm install -g @angular/cli`
   - Install **sass**
     `gem install sass`
-  - In the project's root directory run
+  - `cd` to project's root directory
+  - Install all frontend dependencies
     `npm install`
-    This will install all the dependencies for the frontend of the project.
+  - Install oracle driver as maven plugin
+    `mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar`
 
 ### Netbeans specific setup instructions
   - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
