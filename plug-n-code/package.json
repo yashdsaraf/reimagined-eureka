@@ -4,8 +4,9 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"npm run sass\" \"npm run serve\"",
+    "start": "concurrently \"npm run sass\" \"npm run serve\" \"npm run gulp\"",
     "sass": "sass --watch src",
+    "gulp": "gulp --gulpfile src/semantic/gulpfile.js --cwd src/semantic",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -25,7 +26,9 @@
     "@angular/router": "^4.2.4",
     "concurrently": "^3.5.0",
     "core-js": "^2.4.1",
+    "ng2-semantic-ui": "^0.9.6",
     "rxjs": "^5.4.2",
+    "semantic-ui": "^2.2.13",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {

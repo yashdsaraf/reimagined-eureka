@@ -23,7 +23,7 @@ Optional:
 ## Installation
   - Run `cmd.exe` with administrator privileges.
   - Install **angular-cli**
-    `npm install -g @angular/cli`
+    `npm install -g @angular/cli gulp`
   - Install **sass**
     `gem install sass`
   - `cd` to project's root directory
