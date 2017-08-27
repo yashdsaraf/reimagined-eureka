@@ -46,6 +46,13 @@ if %errorlevel% NEQ 0 (
     call :showErrorMsg
 )
 
+echo. & echo Gulp
+call :ifExists gulp || (
+    echo Installing gulp
+    npm install -g gulp
+    call :showErrorMsg
+)
+
 echo. & echo SASS
 call :ifExists sass || (
     echo Installing sass
