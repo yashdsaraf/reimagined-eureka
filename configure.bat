@@ -65,6 +65,12 @@ cd plug-n-code
 npm install
 call :showErrorMsg
 
+echo. & echo Building semantic dist files
+cd semantic
+gulp build
+call :showErrorMsg
+cd ..
+
 cd ../server
 rem TODO: install server dependencies
 rem mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
