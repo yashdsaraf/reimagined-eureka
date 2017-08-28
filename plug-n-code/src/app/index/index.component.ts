@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-@import variables
-@import ../bourbon/bourbon
-@import ../../node_modules/sass-flexbox/sass-flexbox
+import {Component} from '@angular/core';
 
-.container
-  +size(100%)
+@Component({
+  selector: 'app-index',
+  templateUrl: './index.component.html',
+  styleUrls: ['./index.component.css']
+})
+export class IndexComponent {
+  title = 'Plug n\' Code';
+}

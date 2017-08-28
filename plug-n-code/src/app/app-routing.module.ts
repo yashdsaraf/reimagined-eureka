@@ -14,9 +14,18 @@
  * limitations under the License.
  */
 
-@import variables
-@import ../bourbon/bourbon
-@import ../../node_modules/sass-flexbox/sass-flexbox
+import {NgModule} from '@angular/core';
+import {RouterModule, Routes} from '@angular/router';
 
-.container
-  +size(100%)
+import {IndexComponent} from './index/index.component';
+
+const routes: Routes = [
+    {path: '', redirectTo: '/index', pathMatch: 'full'},
+    {path: 'index', component: IndexComponent}
+];
+
+@NgModule({
+    imports: [RouterModule.forRoot(routes)],
+    exports: [RouterModule]
+})
+export class AppRoutingModule {}

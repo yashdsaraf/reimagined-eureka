@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -14,9 +14,4 @@
  * limitations under the License.
  */
 
-@import variables
-@import ../bourbon/bourbon
-@import ../../node_modules/sass-flexbox/sass-flexbox
 
-.container
-  +size(100%)

@@ -13,10 +13,3 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-@import variables
-@import ../bourbon/bourbon
-@import ../../node_modules/sass-flexbox/sass-flexbox
-
-.container
-  +size(100%)
