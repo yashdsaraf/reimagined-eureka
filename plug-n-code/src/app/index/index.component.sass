@@ -19,14 +19,42 @@
 @import ../../../node_modules/sass-flexbox/sass-flexbox
 
 .wrapper
+  +display-flex
+  height: 100%
   margin: 0 auto
   padding: 0
 
-.one
+.file-ex
   background-color: green
+  +flex(1)
 
-.two
+.wrapper-2
+  +flex(4)
+  +display-flex
+  +flex-direction-column
+
+.toolbar
+  background-color: yellow
+  +flex-basis(3%)
+
+.wrapper-3
+  +flex-basis(97%)
+  +display-flex
+
+.editor
+  background-color: red
+  +flex(3)
+
+.output
   background-color: teal
+  +flex(1)
 
-.three
-  background-color: lightcoral
+@media only screen and (max-width: 768px)
+  .file-ex
+    display: none
+
+  .wrapper-2
+    +flex-direction-row
+
+  .wrapper-3
+    +flex-direction-column
