@@ -21,7 +21,45 @@
       "styles": [
         "styles.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/ace-builds/src-min/ace.js",
+        "../node_modules/ace-builds/src-min/theme-ambiance.js",
+        "../node_modules/ace-builds/src-min/theme-gruvbox.js",
+        "../node_modules/ace-builds/src-min/theme-solarized_light.js",
+        "../node_modules/ace-builds/src-min/theme-chaos.js",
+        "../node_modules/ace-builds/src-min/theme-idle_fingers.js",
+        "../node_modules/ace-builds/src-min/theme-sqlserver.js",
+        "../node_modules/ace-builds/src-min/theme-chrome.js",
+        "../node_modules/ace-builds/src-min/theme-iplastic.js",
+        "../node_modules/ace-builds/src-min/theme-terminal.js",
+        "../node_modules/ace-builds/src-min/theme-clouds.js",
+        "../node_modules/ace-builds/src-min/theme-katzenmilch.js",
+        "../node_modules/ace-builds/src-min/theme-textmate.js",
+        "../node_modules/ace-builds/src-min/theme-clouds_midnight.js",
+        "../node_modules/ace-builds/src-min/theme-kr_theme.js",
+        "../node_modules/ace-builds/src-min/theme-tomorrow.js",
+        "../node_modules/ace-builds/src-min/theme-cobalt.js",
+        "../node_modules/ace-builds/src-min/theme-kuroir.js",
+        "../node_modules/ace-builds/src-min/theme-tomorrow_night.js",
+        "../node_modules/ace-builds/src-min/theme-crimson_editor.js",
+        "../node_modules/ace-builds/src-min/theme-merbivore.js",
+        "../node_modules/ace-builds/src-min/theme-tomorrow_night_blue.js",
+        "../node_modules/ace-builds/src-min/theme-dawn.js",
+        "../node_modules/ace-builds/src-min/theme-merbivore_soft.js",
+        "../node_modules/ace-builds/src-min/theme-tomorrow_night_bright.js",
+        "../node_modules/ace-builds/src-min/theme-dreamweaver.js",
+        "../node_modules/ace-builds/src-min/theme-mono_industrial.js",
+        "../node_modules/ace-builds/src-min/theme-tomorrow_night_eighties.js",
+        "../node_modules/ace-builds/src-min/theme-eclipse.js",
+        "../node_modules/ace-builds/src-min/theme-monokai.js",
+        "../node_modules/ace-builds/src-min/theme-twilight.js",
+        "../node_modules/ace-builds/src-min/theme-github.js",
+        "../node_modules/ace-builds/src-min/theme-pastel_on_dark.js",
+        "../node_modules/ace-builds/src-min/theme-vibrant_ink.js",
+        "../node_modules/ace-builds/src-min/theme-gob.js",
+        "../node_modules/ace-builds/src-min/theme-solarized_dark.js",
+        "../node_modules/ace-builds/src-min/theme-xcode.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
@@ -54,7 +92,8 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {}
+    "styleExt": "sass",
+    "component": {
+    }
   }
 }

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
+import 'brace/ext/searchbox';
 
 @Component({
   selector: 'app-index',
@@ -23,4 +24,19 @@ import {Component} from '@angular/core';
 })
 export class IndexComponent {
   title = 'Plug n\' Code';
+
+  @ViewChild('editor') editor;
+
+  ngAfterViewInit() {
+    this.editor.setTheme("eclipse");
+    this.editor.getEditor().setOptions({
+        enableBasicAutocompletion: true
+    });
+
+    this.editor.getEditor().commands.addCommand({
+        name: "showOtherCompletions",
+        bindKey: "Ctrl-.",
+        exec: function (editor) { }
+    })
+  }
 }
