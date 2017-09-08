@@ -1,14 +1,93 @@
 <div class="wrapper">
-  <div class="file-ex">
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-    consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-    cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-    proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <div class="file-ex" #sidebar>
+    <i id="close_nav" class="fa fa-close" (click)="closeNav()"></i>
+    <!-- <div id="file_ex_wrapper"> -->
+      <div class="ui list">
+        <div class="item">
+          <!-- <i class="folder icon"></i> -->
+          <i class="fa fa-folder"></i>
+          <div class="content">
+            <div class="header">src</div>
+            <div class="description">Source files for project</div>
+            <div class="list">
+              <div class="item" style="padding-left: 1.5em">
+                <!-- <i class="folder icon"></i> -->
+                <i class="fa fa-folder"></i>
+                <div class="content">
+                  <div class="header">site</div>
+                  <div class="description">Your site's theme</div>
+                </div>
+              </div>
+              <div class="item" style="padding-left: 1.5em">
+                <!-- <i class="folder icon"></i> -->
+                <i class="fa fa-folder"></i>
+                <div class="content">
+                  <div class="header">themes</div>
+                  <div class="description">Packaged theme files</div>
+                  <div class="list">
+                    <div class="item" style="padding-left: 1.5em">
+                      <!-- <i class="folder icon"></i> -->
+                      <i class="fa fa-folder"></i>
+                      <div class="content">
+                        <div class="header">default</div>
+                        <div class="description">Default packaged theme</div>
+                      </div>
+                    </div>
+                    <div class="item" style="padding-left: 1.5em">
+                      <!-- <i class="folder icon"></i> -->
+                      <i class="fa fa-folder"></i>
+                      <div class="content">
+                        <div class="header">my_theme</div>
+                        <div class="description">Packaged themes are also available in this folder</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item" style="padding-left: 1.5em">
+                <!-- <i class="file icon"></i> -->
+                <i class="fa fa-file"></i>
+                <div class="content">
+                  <div class="header">theme.config</div>
+                  <div class="description">Config file for setting packaged themes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item" style="padding-left: 1.5em">
+          <!-- <i class="folder icon"></i> -->
+          <i class="fa fa-folder"></i>
+          <div class="content">
+            <div class="header">dist</div>
+            <div class="description">Compiled CSS and JS files</div>
+            <div class="list">
+              <div class="item" style="padding-left: 1.5em">
+                <!-- <i class="folder icon"></i> -->
+                <i class="fa fa-folder"></i>
+                <div class="content">
+                  <div class="header">components</div>
+                  <div class="description">Individual component CSS and JS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item" style="padding-left: 1.5em">
+          <!-- <i class="file icon"></i> -->
+          <i class="fa fa-file"></i>
+          <div class="content">
+            <div class="header">semantic.json</div>
+            <div class="description">Contains build settings for gulp</div>
+          </div>
+        </div>
+      </div>
+      <div class="placeholder" style="flex-shrink: 0; height: 5em"></div>
+    <!-- </div> -->
   </div>
   <div class="wrapper-2">
     <div class="toolbar">
+      <i id="open_nav" class="fa fa-navicon" (click)="openNav()"></i>
       to
       oo
       ls

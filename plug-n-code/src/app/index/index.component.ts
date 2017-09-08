@@ -15,7 +15,10 @@
  */
 
 import {Component, ViewChild} from '@angular/core';
+import 'brace/theme/eclipse';
+import 'brace/mode/json';
 import 'brace/ext/searchbox';
+import 'brace/ext/language_tools';
 
 @Component({
   selector: 'app-index',
@@ -26,17 +29,27 @@ export class IndexComponent {
   title = 'Plug n\' Code';
 
   @ViewChild('editor') editor;
+  @ViewChild('sidebar') sidebar;
 
   ngAfterViewInit() {
-    this.editor.setTheme("eclipse");
+    this.editor.setTheme('eclipse');
+    this.editor.setMode('json');
     this.editor.getEditor().setOptions({
         enableBasicAutocompletion: true
     });
 
     this.editor.getEditor().commands.addCommand({
-        name: "showOtherCompletions",
-        bindKey: "Ctrl-.",
+        name: 'showOtherCompletions',
+        bindKey: 'Ctrl-.',
         exec: function (editor) { }
     })
+  }
+
+  openNav() : void {
+    this.sidebar.nativeElement.style.display = "flex"
+  }
+
+  closeNav() : void {
+    this.sidebar.nativeElement.style.display = "none"
   }
 }
