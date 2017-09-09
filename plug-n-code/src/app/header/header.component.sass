@@ -20,6 +20,15 @@
 
 .header
   +size(100%)
-  background-color: $header-dark
+  background: #eee
   margin: 0 auto
   padding: .5em
+  height: 100%
+  +display-flex
+  +flex-direction-row
+
+.left-header
+  +flex-basis(50%)
+
+.right-header
+  +flex-basis(50%)
