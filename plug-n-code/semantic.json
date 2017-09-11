@@ -55,7 +55,19 @@
     "api",
     "form",
     "state",
-    "visibility"
+    "visibility",
+    "accordion",
+    "checkbox",
+    "dimmer",
+    "dropdown",
+    "modal",
+    "popup",
+    "progress",
+    "rating",
+    "search",
+    "sidebar",
+    "tab",
+    "transition"
   ],
   "version": "2.2.13"
 }

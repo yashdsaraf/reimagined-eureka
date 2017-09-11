@@ -46,4 +46,4 @@ Thumbs.db
 # CSS
 *.css
 *.css.map
-semantic/dist
+src/semantic/dist
