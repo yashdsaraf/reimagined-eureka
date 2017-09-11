@@ -18,17 +18,62 @@
 @import ../../bourbon/bourbon
 @import ../../../node_modules/sass-flexbox/sass-flexbox
 
-.header
+.container
   +size(100%)
-  background: #eee
+  background: $header-dark
   margin: 0 auto
   padding: .5em
-  height: 100%
   +display-flex
   +flex-direction-row
+  +align-items-center
 
 .left-header
-  +flex-basis(50%)
+  +flex-basis(20%)
+  +display-flex
+  +align-items-center
 
 .right-header
-  +flex-basis(50%)
+  +flex-basis(auto)
+  +size(100%)
+  +display-inline-flex
+  +padding(1.5em .5em 2em 2em)
+
+  .wrapper-1
+    +size(100%)
+    +display-inline-flex
+  .wrapper-2
+    +size(100%)
+    +display-inline-flex
+    +justify-content-flex-end
+
+#header-toggle
+  display: none
+
+@media only screen and (max-width: 768px)
+  #header-toggle
+    display: block
+
+  .container
+    +flex-direction-column
+
+  .left-header
+    +align-items-flex-start
+    +flex(1)
+
+  .right-header
+    padding-top: 1.5em
+    display: none
+    +flex-direction-column
+    .wrapper-1,
+    .wrapper-2
+      +flex-direction-column
+      .button
+        border-top: .2em solid transparent
+        border-bottom: .2em solid transparent
+        +padding(1em null 1.5em null)
+    .wrapper-2
+      .button
+        padding-bottom: 1em
+      .or
+        padding-bottom: 1em
+        padding-top: 2.5em

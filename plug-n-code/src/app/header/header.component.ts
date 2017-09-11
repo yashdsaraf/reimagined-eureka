@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 
 @Component({
   selector: 'app-header',
@@ -22,4 +22,26 @@ import {Component} from '@angular/core';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent {
+
+  @ViewChild('header') header;
+  isHeaderOpen: boolean = false;
+
+  openHeader(): void {
+    this.header.nativeElement.style.display = "flex";
+    this.isHeaderOpen = true;
+  }
+
+  closeHeader(): void {
+    this.header.nativeElement.style.display = "none"
+    this.isHeaderOpen = false;
+  }
+
+  toggleHeader(): void {
+    if (this.isHeaderOpen) {
+      this.closeHeader();
+    } else {
+      this.openHeader();
+    }
+  }
+
 }

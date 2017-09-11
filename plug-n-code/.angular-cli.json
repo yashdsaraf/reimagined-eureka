@@ -20,10 +20,12 @@
       "prefix": "app",
       "styles": [
         "styles.css",
-        "../node_modules/font-awesome/css/font-awesome.min.css"
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../src/semantic/dist/semantic.min.css"
       ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery.min.js"
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../src/semantic/dist/semantic.min.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {

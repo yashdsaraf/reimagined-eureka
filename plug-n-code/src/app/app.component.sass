@@ -24,8 +24,15 @@
   +flex-direction-column
 
 .header
+  +user-select(none)
   +flex-basis(10%)
 
 .body
   +flex-basis(90%)
-  background-color: black
+
+@media only screen and (max-width: 768px)
+  .header
+    +flex-basis(8%)
+
+  .body
+    +flex-basis(92%)
