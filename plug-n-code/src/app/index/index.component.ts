@@ -35,21 +35,21 @@ export class IndexComponent {
     this.editor.setTheme('eclipse');
     this.editor.setMode('json');
     this.editor.getEditor().setOptions({
-        enableBasicAutocompletion: true
+      enableBasicAutocompletion: true
     });
 
     this.editor.getEditor().commands.addCommand({
-        name: 'showOtherCompletions',
-        bindKey: 'Ctrl-.',
-        exec: function (editor) { }
+      name: 'showOtherCompletions',
+      bindKey: 'Ctrl-.',
+      exec: function (editor) {}
     })
   }
 
-  openNav() : void {
+  openNav(): void {
     this.sidebar.nativeElement.style.display = "flex"
   }
 
-  closeNav() : void {
+  closeNav(): void {
     this.sidebar.nativeElement.style.display = "none"
   }
 }
