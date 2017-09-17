@@ -19,12 +19,21 @@ import {Component, ViewChild} from '@angular/core';
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.css']
+  styleUrls: ['./header.component.sass']
 })
 export class HeaderComponent {
 
   @ViewChild('header') header;
   isHeaderOpen: boolean = false;
+
+  ngAfterViewInit() {
+    if (screen.width <= 1024) {
+      document.getElementById('guest-label').classList
+        .add('pointing', 'below');
+      document.getElementById('wrapper-2').firstElementChild
+        .classList.remove('ui');
+    }
+  }
 
   openHeader(): void {
     this.header.nativeElement.style.display = "flex";

@@ -23,7 +23,7 @@ import 'brace/ext/language_tools';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+  styleUrls: ['./index.component.sass']
 })
 export class IndexComponent {
   title = 'Plug n\' Code';

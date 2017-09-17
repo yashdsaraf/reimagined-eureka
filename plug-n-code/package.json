@@ -4,8 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"npm run sass\" \"npm run serve\" \"npm run gulp\"",
-    "sass": "sass --watch src",
+    "start": "concurrently \"npm run serve\" \"npm run gulp\"",
     "gulp": "gulp --gulpfile src/semantic/gulpfile.js --cwd src/semantic",
     "build": "ng build",
     "test": "ng test",
@@ -30,6 +29,7 @@
     "jquery": "^3.2.1",
     "ng2-ace-editor": "^0.2.5",
     "ng2-semantic-ui": "^0.9.6",
+    "node-sass": "^4.5.3",
     "rxjs": "^5.4.2",
     "sass-flexbox": "^2.0.0",
     "semantic-ui": "^2.2.13",

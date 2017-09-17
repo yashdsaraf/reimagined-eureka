@@ -18,33 +18,46 @@
 @import ../../bourbon/bourbon
 @import ../../../node_modules/sass-flexbox/sass-flexbox
 
-.container
-  +size(100%)
+#container
+  +align-items-center
   background: $header-dark
-  margin: 0 auto
-  padding: .5em
   +display-flex
   +flex-direction-row
-  +align-items-center
+  margin: 0 auto
+  padding: .5em
+  +size(100%)
 
-.left-header
-  +flex-basis(20%)
+#left-header
+  +align-items-center
   +display-flex
-  +align-items-center
+  +flex-basis(20%)
 
-.right-header
+#right-header
+  +display-inline-flex
   +flex-basis(auto)
   +size(100%)
-  +display-inline-flex
-  +padding(.5em 0 1em 1em)
 
-  .wrapper-1
-    +size(100%)
+  #wrapper-1
+    +align-items-center
     +display-inline-flex
-  .wrapper-2
+    padding-left: 1em
     +size(100%)
+    .button
+      margin-left: 1em
+  #wrapper-2
+    +align-items-center
     +display-inline-flex
     +justify-content-flex-end
+    margin-right: 2em
+    +size(100%)
+    .hidden
+      +display-inline-flex
+      +justify-content-center
+      +size(100%)
+    #guest-label
+      font-size: 1.3em
+  .button
+    height: 2.7em
 
 #header-toggle
   display: none
@@ -53,27 +66,32 @@
   #header-toggle
     display: block
 
-  .container
+  #container,
+  #right-header,
+  #wrapper-1,
+  #wrapper-2
     +flex-direction-column
 
-  .left-header
+  #left-header
     +align-items-flex-start
     +flex(1)
 
-  .right-header
-    padding-top: 1.5em
+  #right-header
     display: none
-    +flex-direction-column
-    .wrapper-1,
-    .wrapper-2
-      +flex-direction-column
+    margin-top: 2.5em
+    #wrapper-1
+      margin: 0
+      padding: 0
       .button
-        border-top: .2em solid transparent
-        border-bottom: .2em solid transparent
-        +padding(1em null 1.5em null)
-    .wrapper-2
+        +align-items-center
+        +display-inline-flex
+        height: 3.3em
+        +justify-content-center
+        +margin(.4em 0 0 0)
+        width: 100%
+    #wrapper-2
+      +justify-content-center
+      #guest-label
+        width: 100%
       .button
-        padding-bottom: 1em
-      .or
-        padding-bottom: 1em
-        padding-top: 2.5em
+        width: 7.5em
