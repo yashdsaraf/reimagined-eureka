@@ -1,27 +1,31 @@
-<div class="container">
-
-  <div class="left-header" >
+<div id="container">
+  <div id="left-header" >
     <a class="ui logo icon image" href="#">
       <img id="logo" src="../../../assets/images/logo.png">
     </a>
     <button id="header-toggle" class="ui button tiny"><i class="fa fa-navicon" (click)='toggleHeader()'></i></button>
   </div>
 
-  <div class="right-header" #header>
-    <div class="wrapper-1">
+  <div id="right-header" #header>
+    <div id="wrapper-1">
       <a class="ui inverted olive button" href="#">About Us</a>
       <a class="ui inverted olive button" href="#">Docs</a>
       <a class="ui inverted olive button" href="https://www.apache.org/licenses/LICENSE-2.0">License</a>
     </div>
-    <div class="wrapper-2">
-      <button class="ui inverted violet active button">
-        <i class="fa fa-user"></i>
-        Guest
-      </button>
-      <div class="ui floated medium buttons">
-        <button class="blue ui inverted button">Login</button>
-        <div class="or"></div>
-        <button class="green ui inverted button">Sign up</button>
+    <div id="wrapper-2">
+      <div class="ui move up reveal">
+        <div class="visible content">
+          <div id="guest-label" class="ui teal label">
+            Unlock all the features!
+          </div>
+        </div>
+        <div class="hidden content">
+          <div class="ui floated medium buttons">
+            <button class="blue ui inverted button">Login</button>
+            <div class="or"></div>
+            <button class="green ui inverted button">Sign up</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

@@ -18,21 +18,21 @@
 @import ../bourbon/bourbon
 @import ../../node_modules/sass-flexbox/sass-flexbox
 
-.container
-  +size(100%)
+#container
   +display-flex
   +flex-direction-column
+  +size(100%)
 
-.header
-  +user-select(none)
+#header
   +flex-basis(10%)
+  +user-select(none)
 
-.body
+#body
   +flex-basis(90%)
 
 @media only screen and (max-width: 768px)
-  .header
+  #header
     +flex-basis(8%)
 
-  .body
+  #body
     +flex-basis(92%)
