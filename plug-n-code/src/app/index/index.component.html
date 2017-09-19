@@ -1,93 +1,159 @@
 <div id="wrapper">
-  <div id="file-ex" #sidebar>
-    <i id="close-nav" class="caret left icon" (click)="closeNav()"></i>
-    <!-- <div id="file_ex_wrapper"> -->
-    <div class="ui list">
-      <div class="item">
-        <!-- <i class="folder icon"></i> -->
-        <i class="fa fa-folder"></i>
-        <div class="content">
-          <div class="header">src</div>
-          <div class="description">Source files for project</div>
-          <div class="list">
-            <div class="item" style="padding-left: 1.5em">
-              <!-- <i class="folder icon"></i> -->
-              <i class="fa fa-folder"></i>
-              <div class="content">
-                <div class="header">site</div>
-                <div class="description">Your site's theme</div>
+  <div *ngIf="isNavOpen" id="file-ex" [@sidebarAnimation]>
+    <div id="nav-wrapper-1">
+      <button *ngIf="isMobile" id="close-nav" class="basic blue ui button icon" (click)="isNavOpen = false;">
+        <i class="arrow left icon"></i>
+      </button>
+    </div>
+    <div id="nav-wrapper-2">
+      <div id="file-list" class="ui list">
+        <div class="item">
+          <i class="folder icon"></i>
+          <div class="content">
+            <div class="header">src</div>
+            <div class="description">Source files for project</div>
+            <div class="list">
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">site</div>
+                  <div class="description">Your site's theme</div>
+                </div>
               </div>
-            </div>
-            <div class="item" style="padding-left: 1.5em">
-              <!-- <i class="folder icon"></i> -->
-              <i class="fa fa-folder"></i>
-              <div class="content">
-                <div class="header">themes</div>
-                <div class="description">Packaged theme files</div>
-                <div class="list">
-                  <div class="item" style="padding-left: 1.5em">
-                    <!-- <i class="folder icon"></i> -->
-                    <i class="fa fa-folder"></i>
-                    <div class="content">
-                      <div class="header">default</div>
-                      <div class="description">Default packaged theme</div>
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">themes</div>
+                  <div class="description">Packaged theme files</div>
+                  <div class="list">
+                    <div class="item">
+                      <i class="folder icon"></i>
+                      <div class="content">
+                        <div class="header">default</div>
+                        <div class="description">Default packaged theme</div>
+                      </div>
                     </div>
-                  </div>
-                  <div class="item" style="padding-left: 1.5em">
-                    <!-- <i class="folder icon"></i> -->
-                    <i class="fa fa-folder"></i>
-                    <div class="content">
-                      <div class="header">my_theme</div>
-                      <div class="description">Packaged themes are also available in this folder</div>
+                    <div class="item">
+                      <i class="folder icon"></i>
+                      <div class="content">
+                        <div class="header">my_theme</div>
+                        <div class="description">Packaged themes are also available in this folder</div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div class="item" style="padding-left: 1.5em">
-              <!-- <i class="file icon"></i> -->
-              <i class="fa fa-file"></i>
-              <div class="content">
-                <div class="header">theme.config</div>
-                <div class="description">Config file for setting packaged themes</div>
+              <div class="item">
+                <i class="file icon"></i>
+                <div class="content">
+                  <div class="header">theme.config</div>
+                  <div class="description">Config file for setting packaged themes</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="item" style="padding-left: 1.5em">
-        <!-- <i class="folder icon"></i> -->
-        <i class="fa fa-folder"></i>
-        <div class="content">
-          <div class="header">dist</div>
-          <div class="description">Compiled CSS and JS files</div>
-          <div class="list">
-            <div class="item" style="padding-left: 1.5em">
-              <!-- <i class="folder icon"></i> -->
-              <i class="fa fa-folder"></i>
-              <div class="content">
-                <div class="header">components</div>
-                <div class="description">Individual component CSS and JS</div>
+        <div class="item">
+          <i class="folder icon"></i>
+          <div class="content">
+            <div class="header">dist</div>
+            <div class="description">Compiled CSS and JS files</div>
+            <div class="list">
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">components</div>
+                  <div class="description">Individual component CSS and JS</div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="item" style="padding-left: 1.5em">
-        <!-- <i class="file icon"></i> -->
-        <i class="fa fa-file"></i>
-        <div class="content">
-          <div class="header">semantic.json</div>
-          <div class="description">Contains build settings for gulp</div>
+        <div class="item">
+          <i class="file icon"></i>
+          <div class="content">
+            <div class="header">semantic.json</div>
+            <div class="description">Contains build settings for gulp</div>
+          </div>
+        </div>
+
+        <div class="item">
+          <i class="folder icon"></i>
+          <div class="content">
+            <div class="header">src</div>
+            <div class="description">Source files for project</div>
+            <div class="list">
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">site</div>
+                  <div class="description">Your site's theme</div>
+                </div>
+              </div>
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">themes</div>
+                  <div class="description">Packaged theme files</div>
+                  <div class="list">
+                    <div class="item">
+                      <i class="folder icon"></i>
+                      <div class="content">
+                        <div class="header">default</div>
+                        <div class="description">Default packaged theme</div>
+                      </div>
+                    </div>
+                    <div class="item">
+                      <i class="folder icon"></i>
+                      <div class="content">
+                        <div class="header">my_theme</div>
+                        <div class="description">Packaged themes are also available in this folder</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <i class="file icon"></i>
+                <div class="content">
+                  <div class="header">theme.config</div>
+                  <div class="description">Config file for setting packaged themes</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <i class="folder icon"></i>
+          <div class="content">
+            <div class="header">dist</div>
+            <div class="description">Compiled CSS and JS files</div>
+            <div class="list">
+              <div class="item">
+                <i class="folder icon"></i>
+                <div class="content">
+                  <div class="header">components</div>
+                  <div class="description">Individual component CSS and JS</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <i class="file icon"></i>
+          <div class="content">
+            <div class="header">semantic.json</div>
+            <div class="description">Contains build settings for gulp</div>
+          </div>
         </div>
       </div>
     </div>
-    <div id="placeholder" style="flex-shrink: 0; height: 5em"></div>
-    <!-- </div> -->
   </div>
   <div id="wrapper-2">
     <div id="toolbar">
-      <i id="open-nav" class="compact caret right icon" (click)="openNav()"></i>
+      <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpen = true;">
+        <i class="sidebar icon"></i>
+      </button>
       to
       oo
       ls

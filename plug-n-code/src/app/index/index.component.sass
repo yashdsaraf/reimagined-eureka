@@ -26,15 +26,19 @@
 
 #file-ex
   background-color: white
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
   +display-flex
   +flex(1, 0, 20%)
   +flex-direction-column
-  overflow-y: auto
   padding: .5em
   +size(100%)
+  z-index: 1000
 
-#placeholder
-  display: none
+#nav-wrapper-1
+  +flex-basis(10%)
+
+#nav-wrapper-2
+  +flex-basis(auto)
 
 #wrapper-2
   +display-flex
@@ -42,8 +46,14 @@
   +size(100%)
 
 #toolbar
-  background-color: yellow
+  +align-items-center
+  background-color: $toolbar-light
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+  +display-inline-flex
   +flex-basis(7%)
+  +flex-direction-column
+  padding-top: .5em
+  z-index: 100
 
 #wrapper-3
   +display-flex
@@ -58,25 +68,16 @@
   background-color: teal
   +flex-basis(30%)
 
-#open-nav,
-#close-nav
-  display: none
-  font-size: 1.5em
-  padding: .5em
-
 @media only screen and (max-width: 768px)
-  #open-nav,
-  #close-nav,
-  #placeholder
-    display: block
 
   #file-ex
-    display: none
-    height: 100%
     left: 0
     position: fixed
     width: 15em
-    z-index: 10
+
+  #file-list
+    height: 33em
+    overflow-y: auto
 
   #wrapper-2
     +flex-direction-row
@@ -86,3 +87,8 @@
 
   #wrapper-3
     +flex-basis(85%)
+
+@media only screen and (max-width: 320px)
+
+  #file-list
+    height: 24em
