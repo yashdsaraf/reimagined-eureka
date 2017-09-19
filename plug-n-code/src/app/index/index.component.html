@@ -165,7 +165,14 @@
           #editor style="height:100%;"></ace-editor>
       </div> <!-- editor -->
       <div id="output">
-        OUTPUT
+        <sui-tabset style="height: 100%;">
+          <div class="ui top attached tabular menu">
+            <a class="items" suiTabHeader="1">OUTPUT</a>
+            <a class="items" suiTabHeader="2">ERROR</a>
+          </div>
+          <div class="output-tab-content ui bottom attached segment" suiTabContent="1">HELLO</div>
+          <div class="output-tab-content ui bottom attached segment" suiTabContent="2">WRONG INPUT</div>
+        </sui-tabset>
       </div> <!-- output -->
     </div> <!-- wrapper-2 -->
   </div> <!-- wrapper-1 -->
