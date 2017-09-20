@@ -24,8 +24,8 @@ import {Component, ViewChild} from '@angular/core';
 export class HeaderComponent {
 
   @ViewChild('header') header;
-  isHeaderOpen: boolean = false;
-  isMobile: boolean;
+  isHeaderOpen: boolean = true;
+  isMobile: boolean = false;
 
   constructor() {
     this.isMobile = window.screen.width <= 768;

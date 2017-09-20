@@ -14,8 +14,17 @@
  * limitations under the License.
  */
 
-import {Component, ViewChild} from '@angular/core';
-import {animate, keyframes, style, transition, trigger} from '@angular/animations';
+import {
+  Component,
+  ViewChild
+} from '@angular/core';
+import {
+  animate,
+  keyframes,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
 import 'brace/theme/eclipse';
 import 'brace/mode/json';
 import 'brace/ext/searchbox';
@@ -49,7 +58,7 @@ export class IndexComponent {
   @ViewChild('editor') editor;
   @ViewChild('sidebar') sidebar;
   isNavOpen: boolean = true;
-  isMobile: boolean;
+  isMobile: boolean = false;
 
   constructor() {
     this.isMobile = window.screen.width <= 768;
