@@ -56,7 +56,6 @@ export class IndexComponent {
   title = 'Plug n\' Code';
 
   @ViewChild('editor') editor;
-  @ViewChild('sidebar') sidebar;
   isNavOpen: boolean = true;
   isMobile: boolean = false;
 

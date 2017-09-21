@@ -38,7 +38,14 @@
   +flex-basis(10%)
 
 #nav-wrapper-2
+  +align-items-center
+  +display-inline-flex
   +flex-basis(auto)
+  +size(100%)
+
+#file-list
+  height: 85vh
+  overflow-y: auto
 
 #wrapper-2
   +display-flex
@@ -75,9 +82,11 @@
     position: fixed
     width: 15em
 
+  #nav-wrapper-2
+    +align-items-flex-start
+
   #file-list
-    height: 33em
-    overflow-y: auto
+    height: 72vh
 
   #wrapper-2
     +flex-direction-row
@@ -87,8 +96,3 @@
 
   #wrapper-3
     +flex-basis(85%)
-
-@media only screen and (max-width: 320px)
-
-  #file-list
-    height: 24em
