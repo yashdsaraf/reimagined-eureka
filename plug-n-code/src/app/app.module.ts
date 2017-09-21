@@ -15,6 +15,7 @@
  */
 
 import {BrowserModule} from '@angular/platform-browser';
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {NgModule} from '@angular/core';
 
 import {AceEditorComponent} from 'ng2-ace-editor';
@@ -35,6 +36,7 @@ import {AppRoutingModule} from './app-routing.module';
   imports: [
     AppRoutingModule,
     BrowserModule,
+    BrowserAnimationsModule,
     SuiModule
   ],
   providers: [],

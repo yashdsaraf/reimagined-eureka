@@ -24,33 +24,12 @@ import {Component, ViewChild} from '@angular/core';
 export class HeaderComponent {
 
   @ViewChild('header') header;
-  isHeaderOpen: boolean = false;
+  isHeaderOpen: boolean = true;
+  isMobile: boolean = false;
 
-  ngAfterViewInit() {
-    if (screen.width <= 1024) {
-      document.getElementById('guest-label').classList
-        .add('pointing', 'below');
-      document.getElementById('wrapper-2').firstElementChild
-        .classList.remove('ui');
-    }
-  }
-
-  openHeader(): void {
-    this.header.nativeElement.style.display = "flex";
-    this.isHeaderOpen = true;
-  }
-
-  closeHeader(): void {
-    this.header.nativeElement.style.display = "none"
-    this.isHeaderOpen = false;
-  }
-
-  toggleHeader(): void {
-    if (this.isHeaderOpen) {
-      this.closeHeader();
-    } else {
-      this.openHeader();
-    }
+  constructor() {
+    this.isMobile = window.screen.width <= 768;
+    this.isHeaderOpen = !this.isMobile;
   }
 
 }

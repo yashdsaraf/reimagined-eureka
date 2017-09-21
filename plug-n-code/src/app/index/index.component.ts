@@ -14,7 +14,17 @@
  * limitations under the License.
  */
 
-import {Component, ViewChild} from '@angular/core';
+import {
+  Component,
+  ViewChild
+} from '@angular/core';
+import {
+  animate,
+  keyframes,
+  style,
+  transition,
+  trigger
+} from '@angular/animations';
 import 'brace/theme/eclipse';
 import 'brace/mode/json';
 import 'brace/ext/searchbox';
@@ -23,13 +33,37 @@ import 'brace/ext/language_tools';
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.sass']
+  styleUrls: ['./index.component.sass'],
+  animations: [trigger('sidebarAnimation', [
+    transition(':enter', [
+      style({width: 0, opacity: 0}),
+      animate(400, keyframes([
+        style({width: '0', opacity: .25, offset: 0}),
+        style({width: '*', opacity: .55, offset: .5}),
+        style({width: '*', opacity: 1, offset: 1})
+      ]))
+    ]),
+    transition(':leave', [
+      style({width: '*', opacity: 1}),
+      animate(300, keyframes([
+        style({width: '*', opacity: 1, offset: 0}),
+        style({width: '0', opacity: .55, offset: 1})
+      ]))
+    ])
+  ])]
 })
 export class IndexComponent {
   title = 'Plug n\' Code';
 
   @ViewChild('editor') editor;
   @ViewChild('sidebar') sidebar;
+  isNavOpen: boolean = true;
+  isMobile: boolean = false;
+
+  constructor() {
+    this.isMobile = window.screen.width <= 768;
+    this.isNavOpen = !this.isMobile;
+  }
 
   ngAfterViewInit() {
     this.editor.setTheme('eclipse');
@@ -45,11 +79,4 @@ export class IndexComponent {
     })
   }
 
-  openNav(): void {
-    this.sidebar.nativeElement.style.display = "flex"
-  }
-
-  closeNav(): void {
-    this.sidebar.nativeElement.style.display = "none"
-  }
 }
