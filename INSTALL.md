@@ -10,7 +10,6 @@
 Required:
   - jdk 8 (latest available)
   - oracle glassfish server (4.1.1)
-  - ruby (>= 2.4.1)
   - nodejs (>= 8.3.0) & npm
   - maven (>=3.5.0)
   - oracle 11g XE
@@ -24,8 +23,6 @@ Optional:
   - Run `cmd.exe` with administrator privileges.
   - Install **angular-cli**
     `npm install -g @angular/cli gulp`
-  - Install **sass**
-    `gem install sass`
   - `cd` to project's root directory
   - Install all frontend dependencies
     `npm install`
