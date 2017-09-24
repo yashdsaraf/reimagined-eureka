@@ -6,7 +6,7 @@
     <button *ngIf="isMobile" id="header-toggle" class="large circular teal inverted ui icon button">
       <i class="arrow icon" [ngClass]="{'down': !isHeaderOpen, 'up': isHeaderOpen}" (click)='isHeaderOpen = !isHeaderOpen;'></i>
     </button>
-  </div> <!-- left-hander -->
+  </div> <!-- left-header -->
 
   <div *ngIf="isHeaderOpen" id="right-header">
     <div id="wrapper-1">
@@ -19,16 +19,15 @@
         <div class="visible content">
           <div id="guest-label" class="ui teal label" [ngClass]="{'pointing below': isMobile}">
                Unlock all the features!
-          </div> <!-- guest-label -->
-        </div>
+        </div> <!-- guest-label -->
+      </div> <!-- visible -->
       <div class="hidden content">
         <div class="ui floated medium buttons">
           <button class="blue ui inverted button">Login</button>
           <div class="or"></div>
           <button class="green ui inverted button">Sign up</button>
         </div>
-      </div>
-    </div>
-  </div> <!-- wrapper-2 -->
-</div> <!-- right-header -->
+      </div> <!-- hidden -->
+    </div> <!-- wrapper-2 -->
+  </div> <!-- right-header -->
 </div> <!-- container -->
