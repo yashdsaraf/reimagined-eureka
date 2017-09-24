@@ -35,12 +35,11 @@
   z-index: 1000
 
 #nav-wrapper-1
-  +flex-basis(10%)
+  +flex(1)
 
 #nav-wrapper-2
   +align-items-center
   +display-inline-flex
-  +flex-basis(auto)
   +size(100%)
 
 #file-list
@@ -73,11 +72,13 @@
 
 #output
   background-color: teal
-  +flex-basis(27%)
+  +flex-basis(30%)
 
 .output-tab-content
-  +size(74.3%)
-  overflow-y: scroll
+  font-size: .8em
+  height: 20vh
+  margin: 0 !important
+  overflow: auto
 
 @media only screen and (max-width: 768px)
 
