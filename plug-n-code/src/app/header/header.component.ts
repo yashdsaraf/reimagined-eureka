@@ -23,7 +23,6 @@ import {Component, ViewChild} from '@angular/core';
 })
 export class HeaderComponent {
 
-  @ViewChild('header') header;
   isHeaderOpen: boolean = true;
   isMobile: boolean = false;
 

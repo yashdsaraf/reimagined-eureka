@@ -9,7 +9,7 @@
 /node_modules
 
 # IDEs and editors
-/.idea
+.idea
 .project
 .classpath
 .c9/
@@ -26,7 +26,7 @@ nbproject/private
 !.vscode/extensions.json
 
 # misc
-/.sass-cache
+.sass-cache
 /connect.lock
 /coverage
 /libpeerconnection.log
