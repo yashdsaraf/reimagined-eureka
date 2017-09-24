@@ -1,10 +1,10 @@
-<div id="wrapper">
+<div id="container">
   <div *ngIf="isNavOpen" id="file-ex" [@sidebarAnimation]>
     <div *ngIf="isMobile" id="nav-wrapper-1">
       <button id="close-nav" class="basic blue ui button icon" (click)="isNavOpen = false;">
-        <i class="arrow left icon"></i>
+              <i class="arrow left icon"></i>
       </button>
-    </div>
+    </div> <!-- nav-wrapper-1 -->
     <div id="nav-wrapper-2">
       <div id="file-list" class="ui list">
         <div class="item">
@@ -146,10 +146,10 @@
             <div class="description">Contains build settings for gulp</div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
-  <div id="wrapper-2">
+      </div> <!-- file-list -->
+    </div> <!-- nav-wrapper-2 -->
+  </div> <!-- file-ex -->
+  <div id="wrapper-1">
     <div id="toolbar">
       <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpen = true;">
         <i class="sidebar icon"></i>
@@ -157,16 +157,16 @@
       to
       oo
       ls
-    </div>
-    <div id="wrapper-3">
+    </div> <!-- toolbar -->
+    <div id="wrapper-2">
       <div id="editor">
         <ace-editor
           [(text)]="text"
           #editor style="height:100%;"></ace-editor>
-      </div>
+      </div> <!-- editor -->
       <div id="output">
         OUTPUT
-      </div>
-    </div>
-  </div>
-</div>
+      </div> <!-- output -->
+    </div> <!-- wrapper-2 -->
+  </div> <!-- wrapper-1 -->
+</div> <!-- container -->
