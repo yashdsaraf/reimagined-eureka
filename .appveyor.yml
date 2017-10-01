@@ -2,13 +2,8 @@ version: '{build}'
 skip_tags: true
 install:
   - ps: Install-Product node 8 x64
-  - cmd: npm install -g @angular/cli gulp
+  - configure
   - cmd: cd plug-n-code
-  - cmd: npm install
-  - cmd: cd src\semantic
-  - cmd: gulp build
-  - cmd: cd ..\..
-build:
-  verbosity: normal
+build: off
 test_script:
   - ng test --single-run true
