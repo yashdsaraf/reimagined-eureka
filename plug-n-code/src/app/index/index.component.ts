@@ -16,6 +16,7 @@
 
 import {
   Component,
+  OnInit,
   ViewChild
 } from '@angular/core'
 import {
@@ -52,7 +53,8 @@ import 'brace/ext/language_tools'
     ])
   ])]
 })
-export class IndexComponent {
+export class IndexComponent implements OnInit {
+
   title = 'Plug n\' Code'
 
   @ViewChild('editor') editor
@@ -61,6 +63,9 @@ export class IndexComponent {
 
   constructor() {
     this.isMobile = window.screen.width <= 768
+  }
+
+  ngOnInit(): void {
     this.isNavOpen = !this.isMobile
   }
 

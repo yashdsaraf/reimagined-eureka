@@ -53,6 +53,34 @@ describe('IndexComponent', () => {
     debug = fixture.debugElement
   })
 
+  it('should not show open-nav button in desktop screen', () => {
+    fixture.detectChanges()
+    let element = debug.query(By.css('#open-nav'))
+    expect(element).toBe(null)
+  })
+
+  it('should show navbar in desktop screen', () => {
+    fixture.detectChanges()
+    expect(component.isNavOpen).toBe(true)
+    let element = debug.query(By.css('#file-ex'))
+    expect(element).not.toBe(null)
+  })  
+
+  it('should show open-nav button in mobile screen', () => {
+    component.isMobile = true
+    fixture.detectChanges()
+    let element = debug.query(By.css('#open-nav'))
+    expect(element).not.toBe(null)
+  })
+
+  it('should hide navbar in mobile screen', () => {
+    component.isMobile = true
+    fixture.detectChanges()
+    expect(component.isNavOpen).toBe(false)
+    let element = debug.query(By.css('#file-ex'))
+    expect(element).toBe(null)
+  })
+
   // TODO: Add tests for editor
 
 })
