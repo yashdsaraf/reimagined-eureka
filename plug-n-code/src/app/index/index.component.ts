@@ -16,19 +16,20 @@
 
 import {
   Component,
+  OnInit,
   ViewChild
-} from '@angular/core';
+} from '@angular/core'
 import {
   animate,
   keyframes,
   style,
   transition,
   trigger
-} from '@angular/animations';
-import 'brace/theme/eclipse';
-import 'brace/mode/json';
-import 'brace/ext/searchbox';
-import 'brace/ext/language_tools';
+} from '@angular/animations'
+import 'brace/theme/eclipse'
+import 'brace/mode/json'
+import 'brace/ext/searchbox'
+import 'brace/ext/language_tools'
 
 @Component({
   selector: 'app-index',
@@ -52,24 +53,28 @@ import 'brace/ext/language_tools';
     ])
   ])]
 })
-export class IndexComponent {
-  title = 'Plug n\' Code';
+export class IndexComponent implements OnInit {
 
-  @ViewChild('editor') editor;
-  isNavOpen: boolean = true;
-  isMobile: boolean = false;
+  title = 'Plug n\' Code'
+
+  @ViewChild('editor') editor
+  isNavOpen: boolean = true
+  isMobile: boolean = false
 
   constructor() {
-    this.isMobile = window.screen.width <= 768;
-    this.isNavOpen = !this.isMobile;
+    this.isMobile = window.screen.width <= 768
+  }
+
+  ngOnInit(): void {
+    this.isNavOpen = !this.isMobile
   }
 
   ngAfterViewInit() {
-    this.editor.setTheme('eclipse');
-    this.editor.setMode('json');
+    this.editor.setTheme('eclipse')
+    this.editor.setMode('json')
     this.editor.getEditor().setOptions({
       enableBasicAutocompletion: true
-    });
+    })
 
     this.editor.getEditor().commands.addCommand({
       name: 'showOtherCompletions',

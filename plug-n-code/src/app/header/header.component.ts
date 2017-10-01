@@ -14,21 +14,27 @@
  * limitations under the License.
  */
 
-import {Component, ViewChild} from '@angular/core';
+import {
+  Component,
+  OnInit
+} from '@angular/core'
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.sass']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
 
-  isHeaderOpen: boolean = true;
-  isMobile: boolean = false;
+  isHeaderOpen: boolean = true
+  isMobile: boolean = false
 
   constructor() {
-    this.isMobile = window.screen.width <= 768;
-    this.isHeaderOpen = !this.isMobile;
+    this.isMobile = window.screen.width <= 768
+  }
+
+  ngOnInit(): void {
+    this.isHeaderOpen = !this.isMobile
   }
 
 }

@@ -14,4 +14,60 @@
  * limitations under the License.
  */
 
+import {DebugElement} from '@angular/core'
+import {
+  ComponentFixture,
+  TestBed,
+  async
+} from '@angular/core/testing'
+import {By} from '@angular/platform-browser'
 
+import {HeaderComponent} from './header.component'
+
+describe('HeaderComponent', () => {
+
+  let component: HeaderComponent
+  let debug: DebugElement
+  let fixture: ComponentFixture<HeaderComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ HeaderComponent ]
+    }).compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeaderComponent)
+    component = fixture.componentInstance
+    debug = fixture.debugElement
+  })
+
+  it('should not show header-toggle button in desktop screen', () => {
+    fixture.detectChanges()
+    let element = debug.query(By.css('#header-toggle'))
+    expect(element).toBe(null)
+  })
+
+  it('should show right-header in desktop screen', () => {
+    fixture.detectChanges()
+    expect(component.isHeaderOpen).toBe(true)
+    let element = debug.query(By.css('#right-header'))
+    expect(element).not.toBe(null)
+  })  
+
+  it('should show header-toggle button in mobile screen', () => {
+    component.isMobile = true
+    fixture.detectChanges()
+    let element = debug.query(By.css('#header-toggle'))
+    expect(element).not.toBe(null)
+  })
+
+  it('should hide right-header in mobile screen', () => {
+    component.isMobile = true
+    fixture.detectChanges()
+    expect(component.isHeaderOpen).toBe(false)
+    let element = debug.query(By.css('#right-header'))
+    expect(element).toBe(null)
+  })
+
+})

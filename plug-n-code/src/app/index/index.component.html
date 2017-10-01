@@ -1,7 +1,7 @@
 <div id="container">
   <div *ngIf="isNavOpen" id="file-ex" [@sidebarAnimation]>
     <div *ngIf="isMobile" id="nav-wrapper-1">
-      <button id="close-nav" class="basic blue ui button icon" (click)="isNavOpen = false;">
+      <button id="close-nav" class="basic blue ui button icon" (click)="isNavOpen = false">
               <i class="arrow left icon"></i>
       </button>
     </div> <!-- nav-wrapper-1 -->
@@ -151,7 +151,7 @@
   </div> <!-- file-ex -->
   <div id="wrapper-1">
     <div id="toolbar">
-      <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpen = true;">
+      <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpen = true">
         <i class="sidebar icon"></i>
       </button>
       to
@@ -162,7 +162,7 @@
       <div id="editor">
         <ace-editor
           [(text)]="text"
-          #editor style="height:100%;"></ace-editor>
+          #editor style="height:100%"></ace-editor>
       </div> <!-- editor -->
       <div id="output">
         <sui-tabset>

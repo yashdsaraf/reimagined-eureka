@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-import {BrowserModule} from '@angular/platform-browser';
+import {BrowserModule} from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
-import {NgModule} from '@angular/core';
+import {NgModule} from '@angular/core'
 
-import {AceEditorComponent} from 'ng2-ace-editor';
-import {SuiModule} from 'ng2-semantic-ui';
+import {AceEditorComponent} from 'ng2-ace-editor'
+import {SuiModule} from 'ng2-semantic-ui'
 
-import {AppComponent} from './app.component';
-import {HeaderComponent} from './header/header.component';
-import {IndexComponent} from './index/index.component';
-import {AppRoutingModule} from './app-routing.module';
+import {AppComponent} from './app.component'
+import {AppRoutingModule} from './app-routing.module'
+import {HeaderComponent} from './header/header.component'
+import {IndexComponent} from './index/index.component'
 
 @NgModule({
   declarations: [
