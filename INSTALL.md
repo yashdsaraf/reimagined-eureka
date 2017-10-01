@@ -13,24 +13,15 @@ Required:
   - nodejs (>= 8.3.0) & npm
   - maven (>=3.5.0)
   - oracle 11g XE
+  - Firefox, Chrome, Edge, IE (>v9) or any other modern browser with JS ES6 or cross browser polyfill support
 
 Optional:
   - Netbeans IDE Java EE (>=8.2)
-  - [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
+  - [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases/latest)
   - SQL Developer
 
-## Installation
-  - Run `cmd.exe` with administrator privileges.
-  - Install **angular-cli**
-    `npm install -g @angular/cli gulp`
-  - `cd` to project's root directory
-  - Install all frontend dependencies
-    `npm install`
-  - Install oracle driver as maven plugin
-    `mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar`
-
 ### Netbeans specific setup instructions
-  - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
+  - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases/latest)
   - Open `Tools > Plugins` and go to `Downloaded` tab
   - Click on `Add plugins` and select the previously downloaded `.nbm` file
   - Follow the steps on the screen to finish the installation
@@ -39,4 +30,3 @@ Optional:
   - Click on `Download` next to `Sources` input if not already downloaded
   - Go to `CSS Preprocessors` tab
   - Make sure `Sass path` is set to the correct location of `sass.bat` installed in your system
-
