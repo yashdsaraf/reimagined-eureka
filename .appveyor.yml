@@ -2,7 +2,7 @@ version: '{build}'
 skip_tags: true
 install:
   - ps: Install-Product node 8 x64
-  - configure
+  - configure /np
   - cmd: cd plug-n-code
 build: off
 test_script:

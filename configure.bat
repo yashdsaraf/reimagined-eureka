@@ -1,5 +1,8 @@
 @echo off
 
+set "NO_PROMPT=%1"
+setx NO_PROMPT %NO_PROMPT% >nul
+
 :: BatchGotAdmin
 :-------------------------------------
 REM Check for permissions
@@ -10,7 +13,7 @@ REM Check for permissions
   )
 
 REM If error flag set, we do not have admin.
-if '%errorlevel%' NEQ '0' (
+if %ERRORLEVEL% NEQ 0 (
   echo Requesting administrative privileges...
   goto UACPrompt
 ) else ( goto gotAdmin )
@@ -48,16 +51,16 @@ call :showLine
 
 echo | set /p="Angular CLI"
 call :ifExists ng && ng --version | find "@angular/cli">nul
-if %errorlevel% NEQ 0 (
-  echo Installing angular-cli
+if %ERRORLEVEL% NEQ 0 (
+  echo  -- INSTALLING
   call npm install -g @angular/cli
   call :showErrorMsg
 ) else ( echo  -- INSTALLED )
 
 echo | set /p="Gulp"
 call :ifExists gulp
-if %errorlevel% NEQ 0 (
-  echo Installing gulp
+if %ERRORLEVEL% NEQ 0 (
+  echo  -- INSTALLING
   call npm install -g gulp
   call :showErrorMsg
 ) else ( echo  -- INSTALLED )
@@ -83,6 +86,10 @@ cd ..
 REM TODO: install server dependencies
 REM mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
 
+if defined NO_PROMPT (
+  setx NO_PROMPT "" >nul
+  goto :eof
+)
 echo.
 call :showLine
 echo All done!
@@ -92,13 +99,13 @@ pause>nul
 goto :eof
 
 :showErrorMsg
-  if %errorlevel% EQU 0 ( exit /b 0 )
+  if ERRORLEVEL 0 ( exit /b 0 )
   echo Seems like an error occurred while installing the dependencies
   echo Please try re-running this script
   echo If the issue still persists, please report the issue with all your system details at
   echo https://github.com/yashdsaraf/reimagined-eureka/issues/new
   pause>nul
-  (goto) 2>nul & endlocal & exit /b %errorlevel%
+  (goto) 2>nul & endlocal & exit /b %ERRORLEVEL%
 
 :isInstalled
   call :ifExists %1 && (
@@ -109,11 +116,11 @@ goto :eof
   echo Please install all the required dependencies listed in
   echo https://github.com/yashdsaraf/reimagined-eureka/tree/master/INSTALL.md
   pause>nul
-  (goto) 2>nul & endlocal & exit /b %errorlevel%
+  (goto) 2>nul & endlocal & exit /b %ERRORLEVEL%
 
 :ifExists
   where %1>nul 2>&1
-  exit /b %errorlevel%
+  exit /b %ERRORLEVEL%
 
 :showLine
   echo ========================================
