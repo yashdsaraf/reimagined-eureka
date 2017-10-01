@@ -17,11 +17,11 @@ Required:
 
 Optional:
   - Netbeans IDE Java EE (>=8.2)
-  - [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
+  - [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases/latest)
   - SQL Developer
 
 ### Netbeans specific setup instructions
-  - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases)
+  - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases/latest)
   - Open `Tools > Plugins` and go to `Downloaded` tab
   - Click on `Add plugins` and select the previously downloaded `.nbm` file
   - Follow the steps on the screen to finish the installation
