@@ -29,15 +29,21 @@ if '%errorlevel%' NEQ '0' (
   CD /D "%~dp0"
 :--------------------------------------
 
-echo. & echo Checking for required binaries..
+Set required_dependencies=node npm mvn java javac
+
+echo.
+call :showLine
+echo Checking if dependencies are satisfied..
 call :showLine
 
-for %%I in (node npm mvn java javac) do (
+for %%I in (%required_dependencies%) do (
   echo | set /p="%%I"
   call :isInstalled %%I
 )
 
-echo. & echo Installing the required dependencies..
+echo.
+call :showLine
+echo Installing..
 call :showLine
 
 echo | set /p="Angular CLI"
@@ -58,12 +64,16 @@ if %errorlevel% NEQ 0 (
 
 cd plug-n-code
 
-echo. & echo Running `npm install`..
+echo.
+call :showLine
+echo Running `npm install`..
 call :showLine
 call npm install
 call :showErrorMsg
 
-echo. & echo Building semantic dist files..
+echo.
+call :showLine
+echo Building semantic dist files..
 call :showLine
 call gulp build --gulpfile src/semantic/gulpfile.js --cwd src/semantic
 call :showErrorMsg
@@ -73,7 +83,11 @@ cd ..
 REM TODO: install server dependencies
 REM mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
 
-echo. & echo All done!
+echo.
+call :showLine
+echo All done!
+call :showLine
+echo. & echo Press enter to continue..
 pause>nul
 goto :eof
 
@@ -102,5 +116,5 @@ goto :eof
   exit /b %errorlevel%
 
 :showLine
-  echo ====================================
+  echo ========================================
   exit /b
