@@ -1,0 +1,7 @@
+version: {build}
+install:
+  - cmd: npm install -g @angular/cli gulp
+  - cmd: cd plug-n-code
+  - cmd: npm install
+test_script:
+  - ng test --single-run true
