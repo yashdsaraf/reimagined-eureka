@@ -14,4 +14,32 @@
  * limitations under the License.
  */
 
+import {DebugElement} from '@angular/core'
+import {
+  ComponentFixture,
+  TestBed,
+  async
+} from '@angular/core/testing'
+import {By} from '@angular/platform-browser'
 
+import {HeaderComponent} from './header.component'
+
+describe('HeaderComponent', () => {
+
+  let component: HeaderComponent
+  let debug: DebugElement
+  let fixture: ComponentFixture<HeaderComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ HeaderComponent ]
+    }).compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HeaderComponent)
+    component = fixture.componentInstance
+    debug = fixture.debugElement
+  })
+
+})

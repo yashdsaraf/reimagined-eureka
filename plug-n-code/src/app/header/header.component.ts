@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component, ViewChild} from '@angular/core';
+import {Component} from '@angular/core'
 
 @Component({
   selector: 'app-header',
@@ -23,12 +23,12 @@ import {Component, ViewChild} from '@angular/core';
 })
 export class HeaderComponent {
 
-  isHeaderOpen: boolean = true;
-  isMobile: boolean = false;
+  isHeaderOpen: boolean = true
+  isMobile: boolean = false
 
   constructor() {
-    this.isMobile = window.screen.width <= 768;
-    this.isHeaderOpen = !this.isMobile;
+    this.isMobile = window.screen.width <= 768
+    this.isHeaderOpen = !this.isMobile
   }
 
 }

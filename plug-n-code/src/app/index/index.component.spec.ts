@@ -13,3 +13,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import {DebugElement} from '@angular/core'
+import {
+  ComponentFixture,
+  TestBed,
+  async
+} from '@angular/core/testing'
+import {By} from '@angular/platform-browser'
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+
+import {AceEditorComponent} from 'ng2-ace-editor'
+import {SuiModule} from 'ng2-semantic-ui'
+
+import {IndexComponent} from './index.component'
+
+describe('IndexComponent', () => {
+
+  let component: IndexComponent
+  let debug: DebugElement
+  let fixture: ComponentFixture<IndexComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [
+        AceEditorComponent,
+        IndexComponent
+      ],
+      imports: [
+        BrowserAnimationsModule,
+        SuiModule
+      ]
+    }).compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(IndexComponent)
+    component = fixture.componentInstance
+    debug = fixture.debugElement
+  })
+
+  // TODO: Add tests for editor
+
+})
