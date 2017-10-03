@@ -26,10 +26,6 @@ import {
   transition,
   trigger
 } from '@angular/animations'
-import 'brace/theme/eclipse'
-import 'brace/mode/json'
-import 'brace/ext/searchbox'
-import 'brace/ext/language_tools'
 
 @Component({
   selector: 'app-index',
@@ -55,11 +51,10 @@ import 'brace/ext/language_tools'
 })
 export class IndexComponent implements OnInit {
 
-  title = 'Plug n\' Code'
-
   @ViewChild('editor') editor
   isNavOpen: boolean = true
   isMobile: boolean = false
+  editorConfig = {lineNumbers: true}
 
   constructor() {
     this.isMobile = window.screen.width <= 768
@@ -67,20 +62,6 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.isNavOpen = !this.isMobile
-  }
-
-  ngAfterViewInit() {
-    this.editor.setTheme('eclipse')
-    this.editor.setMode('json')
-    this.editor.getEditor().setOptions({
-      enableBasicAutocompletion: true
-    })
-
-    this.editor.getEditor().commands.addCommand({
-      name: 'showOtherCompletions',
-      bindKey: 'Ctrl-.',
-      exec: function (editor) {}
-    })
   }
 
 }
