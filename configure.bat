@@ -1,7 +1,7 @@
 @echo off
 
 set "NO_PROMPT=%1"
-setx NO_PROMPT %NO_PROMPT% >nul
+setx NO_PROMPT "%NO_PROMPT%" >nul
 
 :: BatchGotAdmin
 :-------------------------------------
