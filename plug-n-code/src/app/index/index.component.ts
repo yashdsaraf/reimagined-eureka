@@ -51,10 +51,11 @@ import {
 })
 export class IndexComponent implements OnInit {
 
-  @ViewChild('editor') editor
+  @ViewChild('editor') editorView
   isNavOpen: boolean = true
   isMobile: boolean = false
   editorConfig = {lineNumbers: true}
+  editor: any
 
   constructor() {
     this.isMobile = window.screen.width <= 768
@@ -62,6 +63,12 @@ export class IndexComponent implements OnInit {
 
   ngOnInit(): void {
     this.isNavOpen = !this.isMobile
+  }
+
+  ngAfterViewInit() {
+    this.editor = this.editorView.instance
+    let editorSize = this.isMobile ? '58vh' : '56vh'
+    this.editor.setSize(null, editorSize)
   }
 
 }
