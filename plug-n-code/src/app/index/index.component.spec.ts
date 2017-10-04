@@ -23,7 +23,7 @@ import {
 import {By} from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 
-import {AceEditorComponent} from 'ng2-ace-editor'
+import {CodemirrorModule} from 'ng2-codemirror'
 import {SuiModule} from 'ng2-semantic-ui'
 
 import {IndexComponent} from './index.component'
@@ -37,10 +37,10 @@ describe('IndexComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        AceEditorComponent,
         IndexComponent
       ],
       imports: [
+        CodemirrorModule,
         BrowserAnimationsModule,
         SuiModule
       ]
