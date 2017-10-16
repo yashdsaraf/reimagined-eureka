@@ -28,5 +28,5 @@ Optional:
   - Open `Tools > Options > HTML/JS`
   - Make sure `Node Path` and `npm Path` are set to correct locations of `node` and `npm` installed in your system
   - Click on `Download` next to `Sources` input if not already downloaded
-  - Go to `CSS Preprocessors` tab
-  - Make sure `Sass path` is set to the correct location of `sass.bat` installed in your system
+  
+### That's it. Go to [README](README.md) for further instructions.
