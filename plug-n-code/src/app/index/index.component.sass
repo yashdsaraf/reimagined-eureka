@@ -24,80 +24,88 @@
   padding: 0
   +size(100%)
 
-#file-ex
-  background-color: white
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
-  +display-flex
-  +flex(1, 0, 20%)
-  +flex-direction-column
-  padding: .5em
-  +size(100%)
-  z-index: 1000
+  #file-ex
+    background-color: white
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+    +display-flex
+    +flex(1, 0, 20%)
+    +flex-direction-column
+    padding: .5em
+    +size(100%)
+    z-index: 1000
 
-#nav-wrapper-1
-  +flex(1)
+    #nav-wrapper-1
+      +flex(1)
 
-#nav-wrapper-2
-  +align-items-center
-  +display-inline-flex
-  +size(100%)
+    #nav-wrapper-2
+      +align-items-center
+      +display-inline-flex
+      +size(100%)
 
-#file-list
-  height: 85vh
-  overflow-y: auto
+      #file-list
+        height: 85vh
+        overflow-y: auto
 
-#wrapper-1
-  +display-flex
-  +flex-direction-column
-  +size(100%)
+  #wrapper-1
+    +display-flex
+    +flex-direction-column
+    +size(100%)
 
-#toolbar
-  +align-items-center
-  background-color: $toolbar-light
-  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
-  +display-inline-flex
-  +flex-basis(7%)
-  +flex-direction-column
-  padding-top: .5em
-  z-index: 100
+    #toolbar
+      +align-items-center
+      background-color: $toolbar-light
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+      +display-inline-flex
+      +flex-basis(7%)
+      +flex-direction-column
+      padding-top: .5em
+      z-index: 100
 
-#wrapper-2
-  +display-flex
-  +flex-basis(93%)
-  +flex-direction-column
-  +size(100%)
+    #wrapper-2
+      +display-flex
+      +flex-basis(93%)
+      +flex-direction-column
 
-#editor
-  +flex-basis(70%)
+      #editor
+        +flex(1, 0, 1em)
 
-#output
-  background-color: teal
-  +flex-basis(30%)
+      #output
+        +display-inline-flex
+        +flex(1, 0, 1em)
+        +flex-direction-column
+        overflow: auto
+        +size(100%)
 
-.output-tab-content
-  font-size: .8em
-  height: 20vh
-  margin: 0 !important
-  overflow: auto
+        #output-tab-content
+          font-size: .6em
+          overflow-y: auto
+          overflow-x: hidden
+          +size(100%)
+
+          .segment
+            margin: 0 !important
+            min-height: 100%
 
 @media only screen and (max-width: 768px)
 
-  #file-ex
-    left: 0
-    position: fixed
-    width: 15em
+  #container
 
-  #nav-wrapper-2
-    +align-items-flex-start
+    #file-ex
+      left: 0
+      position: fixed
+      width: 15em
 
-  #file-list
-    height: 72vh
+      #nav-wrapper-2
+        +align-items-flex-start
 
-  #wrapper-1
-    +flex-direction-row
+        #file-list
+          height: 72vh
 
-  #toolbar
-    +flex-basis(15%)
+    #wrapper-1
+      +flex-direction-row
 
-  #wrapper-2
-    +flex-basis(85%)
+      #toolbar
+        +flex-basis(15%)
+
+      #wrapper-2
+        +flex-basis(85%)

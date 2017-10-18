@@ -27,65 +27,76 @@
   padding: .5em
   +size(100%)
 
-#left-header
-  +align-items-center
-  +display-inline-flex
-  +flex-basis(20%)
-
-#right-header
-  +display-inline-flex
-  +flex-basis(auto)
-  +size(100%)
-
-  #wrapper-1
+  #left-header
     +align-items-center
     +display-inline-flex
-    padding-left: 1em
-    +size(100%)
-    .button
-      margin-left: 1em
-  #wrapper-2
-    +align-items-center
+    +flex-basis(20%)
+
+  #right-header
     +display-inline-flex
-    +justify-content-flex-end
-    margin-right: 2em
+    +flex-basis(auto)
     +size(100%)
-    .hidden
+
+    #wrapper-1
+      +align-items-center
       +display-inline-flex
-      +justify-content-center
+      padding-left: 1em
       +size(100%)
-    #guest-label
-      font-size: 1.3em
-  .button
-    height: 2.7em
+
+      .button
+        margin-left: 1em
+
+    #wrapper-2
+      +align-items-center
+      +display-inline-flex
+      +justify-content-flex-end
+      margin-right: 2em
+      +size(100%)
+
+      .visible
+        #guest-label
+          font-size: 1.3em
+      
+      .hidden
+        +display-inline-flex
+        +justify-content-center
+        +size(100%)
+
+        .button
+          height: 2.7em
 
 @media only screen and (max-width: 768px)
 
-  #container,
-  #right-header,
-  #wrapper-1,
-  #wrapper-2
+  #container
     +flex-direction-column
 
-  #left-header
-    +align-items-flex-start
-    +flex(1)
+    #left-header
+      +align-items-flex-start
+      +flex(1)
 
-  #right-header
-    margin-top: 2.5em
-    #wrapper-1
-      margin: 0
-      padding: 0
-      .button
-        +align-items-center
-        +display-inline-flex
-        height: 3.3em
+    #right-header
+      +flex-direction-column
+      margin-top: 2.5em
+
+      #wrapper-1
+        +flex-direction-column
+        margin: 0
+        padding: 0
+
+        .button
+          +align-items-center
+          +display-inline-flex
+          height: 3.3em
+          +justify-content-center
+          +margin(.4em 0 0 0)
+          width: 100%
+
+      #wrapper-2
+        +flex-direction-column        
         +justify-content-center
-        +margin(.4em 0 0 0)
-        width: 100%
-    #wrapper-2
-      +justify-content-center
-      #guest-label
-        width: 100%
-      .button
-        width: 7.5em
+
+        #guest-label
+          width: 100%
+
+        .button
+          width: 7.5em

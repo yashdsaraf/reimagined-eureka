@@ -18,7 +18,7 @@ import {BrowserModule} from '@angular/platform-browser'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {NgModule} from '@angular/core'
 
-import {AceEditorComponent} from 'ng2-ace-editor'
+import {CodemirrorModule} from 'ng2-codemirror'
 import {SuiModule} from 'ng2-semantic-ui'
 
 import {AppComponent} from './app.component'
@@ -28,7 +28,6 @@ import {IndexComponent} from './index/index.component'
 
 @NgModule({
   declarations: [
-    AceEditorComponent,
     AppComponent,
     HeaderComponent,
     IndexComponent
@@ -37,6 +36,7 @@ import {IndexComponent} from './index/index.component'
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
+    CodemirrorModule,
     SuiModule
   ],
   providers: [],
