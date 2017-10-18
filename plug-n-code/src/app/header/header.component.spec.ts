@@ -32,7 +32,7 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HeaderComponent ]
+      declarations: [HeaderComponent]
     }).compileComponents()
   }))
 
@@ -53,7 +53,7 @@ describe('HeaderComponent', () => {
     expect(component.isHeaderOpen).toBe(true)
     let element = debug.query(By.css('#right-header'))
     expect(element).not.toBe(null)
-  })  
+  })
 
   it('should show header-toggle button in mobile screen', () => {
     component.isMobile = true

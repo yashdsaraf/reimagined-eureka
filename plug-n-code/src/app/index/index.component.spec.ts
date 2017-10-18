@@ -64,7 +64,7 @@ describe('IndexComponent', () => {
     expect(component.isNavOpen).toBe(true)
     let element = debug.query(By.css('#file-ex'))
     expect(element).not.toBe(null)
-  })  
+  })
 
   it('should show open-nav button in mobile screen', () => {
     component.isMobile = true

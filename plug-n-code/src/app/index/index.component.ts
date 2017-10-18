@@ -67,8 +67,7 @@ export class IndexComponent implements OnInit {
 
   ngAfterViewInit() {
     this.editor = this.editorView.instance
-    let editorSize = this.isMobile ? '58vh' : '56vh'
-    this.editor.setSize(null, editorSize)
+    this.editor.setSize(null, '57vh')
   }
 
 }
