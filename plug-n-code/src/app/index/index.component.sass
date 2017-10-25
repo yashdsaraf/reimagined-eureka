@@ -52,7 +52,7 @@
     +size(100%)
 
     #toolbar
-      +align-items-center
+      // +align-items-center
       background-color: $toolbar-light
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
       +display-inline-flex
@@ -107,5 +107,17 @@
       #toolbar
         +flex-basis(15%)
 
+      #toolrow
+        display: none
+
+      #toolcolumn
+        display: inline
+
       #wrapper-2
         +flex-basis(85%)
+
+
+@media only screen and (min-width: 768px)
+
+  #toolcolumn
+    display: none

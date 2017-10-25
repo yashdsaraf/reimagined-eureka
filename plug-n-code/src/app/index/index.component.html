@@ -154,10 +154,40 @@
       <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpen = true">
         <i class="sidebar icon"></i>
       </button>
-      to
-      oo
-      ls
+
+      <div id="toolrow" class="ui left aligned grid container" >
+        <div class="row" >
+          <div class="fourteen wide column">
+            <div class="ui mini basic icon buttons">
+              <button class="ui button" data-tooltip="Run" data-position="bottom left"><i class="play icon"></i></button>
+              <button class="ui button" data-tooltip="Stop" data-position="bottom left" data-variation="mini"><i class="stop icon"></i></button>
+              <button class="ui button" data-tooltip="New" data-position="bottom left" data-variation="mini"><i class="file outline icon"></i></button>
+              <button class="ui button" data-tooltip="Save" data-position="bottom left" data-variation="mini"><i class="save icon"></i></button>
+              <button class="ui button" data-tooltip="Zoom" data-position="bottom left" data-variation="mini"><i class="zoom icon"></i></button>
+              <button class="ui button" data-tooltip="Zoom out" data-position="bottom left" data-variation="mini"><i class="zoom out icon"></i></button>
+              <button class="ui button" data-tooltip="Share" data-position="right center" data-variation="mini"><i class="share icon"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="toolcolumn" class="ui grid">
+        <div class="column" >
+          <div class="row">
+            <div class="ui small vertical basic icon buttons">
+              <button class="ui button" ><i class="play icon"></i></button>
+              <button class="ui button" ><i class="stop icon"></i></button>
+              <button class="ui button" ><i class="file outline icon"></i></button>
+              <button class="ui button" ><i class="save icon"></i></button>
+              <button class="ui button" ><i class="zoom icon"></i></button>
+              <button class="ui button" ><i class="zoom out icon"></i></button>
+              <button class="ui button" ><i class="share icon"></i></button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div> <!-- toolbar -->
+    
     <div id="wrapper-2">
       <div id="editor">
         <codemirror
