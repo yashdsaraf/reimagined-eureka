@@ -14,32 +14,48 @@
  * limitations under the License.
  */
 
- import {
-  async,
+import {DebugElement} from '@angular/core'
+import {
   ComponentFixture,
-  TestBed
+  TestBed,
+  async
 } from '@angular/core/testing'
+import {By} from '@angular/platform-browser'
+
+import {SuiModule} from 'ng2-semantic-ui'
 
 import {ToolbarComponent} from './toolbar.component'
 
 describe('ToolbarComponent', () => {
+
   let component: ToolbarComponent
+  let debug: DebugElement
   let fixture: ComponentFixture<ToolbarComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToolbarComponent ]
-    })
-    .compileComponents()
+      declarations: [ ToolbarComponent ],
+      imports: [ SuiModule ]
+    }).compileComponents()
   }))
 
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolbarComponent)
     component = fixture.componentInstance
-    fixture.detectChanges()
+    debug = fixture.debugElement
   })
 
-  it('should be created', () => {
-    expect(component).toBeTruthy()
+  it('should not show open-nav button in desktop screen', () => {
+    fixture.detectChanges()
+    let element = debug.query(By.css('#open-nav'))
+    expect(element).toBe(null)
   })
+
+  it('should show open-nav button in mobile screen', () => {
+    component.isMobile = true
+    fixture.detectChanges()
+    let element = debug.query(By.css('#open-nav'))
+    expect(element).not.toBe(null)
+  })
+
 })

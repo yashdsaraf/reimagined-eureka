@@ -20,6 +20,8 @@ import {
   TestBed
 } from '@angular/core/testing'
 
+import {SuiModule} from 'ng2-semantic-ui'
+
 import {OutputComponent} from './output.component'
 
 describe('OutputComponent', () => {
@@ -28,7 +30,8 @@ describe('OutputComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OutputComponent ]
+      declarations: [ OutputComponent ],
+      imports: [ SuiModule ]
     })
     .compileComponents()
   }))
@@ -39,7 +42,7 @@ describe('OutputComponent', () => {
     fixture.detectChanges()
   })
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy()
   })
 })
