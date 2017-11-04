@@ -20,7 +20,7 @@ import {
   Routes
 } from '@angular/router'
 
-import {IndexComponent} from './index/index.component'
+import {IndexComponent} from './components/index/index.component'
 
 const routes: Routes = [
   {path: '', redirectTo: '/index', pathMatch: 'full'},

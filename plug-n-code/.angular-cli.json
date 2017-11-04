@@ -25,9 +25,14 @@
         "../src/semantic/dist/semantic.min.css"
       ],
       "scripts": [
-        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/jquery/dist/jquery.min.js",        
         "../src/semantic/dist/semantic.min.js"
       ],
+      "stylePreprocessorOptions": {
+        "includePaths": [
+          "styles"
+        ]
+      },
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",
