@@ -50,7 +50,7 @@ echo Installing..
 call :showLine
 
 echo | set /p="Angular CLI"
-call :ifExists ng && ng --version | find "@angular/cli">nul
+call :ifExists ng
 if %ERRORLEVEL% NEQ 0 (
   echo  -- INSTALLING
   call npm install -g @angular/cli

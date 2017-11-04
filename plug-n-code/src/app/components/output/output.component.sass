@@ -14,15 +14,20 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+@import base
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
-})
-export class AppComponent {
-  title = 'Plug n\' Code'
-}
+#container
+  +display-inline-flex
+  +flex-direction-column
+  overflow: auto
+  +size(100%)
 
-export const isMobile = window.screen.width <= 768
+  #output-tab-content
+    font-size: .6em
+    overflow-y: auto
+    overflow-x: hidden
+    +size(100%)
+
+    .segment
+      margin: 0 !important
+      min-height: 100%

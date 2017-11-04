@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+@import base
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
-})
-export class AppComponent {
-  title = 'Plug n\' Code'
-}
+#container
+  +display-flex
+  +flex-direction-column
 
-export const isMobile = window.screen.width <= 768
+  #nav-wrapper-1
+    +flex(1)
+
+  #nav-wrapper-2
+    +align-items-center
+    +display-inline-flex
+    +size(100%)
+
+    #file-list
+      height: 85vh
+      overflow-y: auto
+
+  @media only screen and (max-width: 768px)
+
+    #nav-wrapper-2
+      +align-items-flex-start
+
+      #file-list
+        height: 72vh

@@ -27,6 +27,8 @@ import {
   trigger
 } from '@angular/animations'
 
+import {isMobile} from '../../app.component'
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -52,13 +54,13 @@ import {
 export class IndexComponent implements OnInit {
 
   @ViewChild('editor') editorView
-  isNavOpen: boolean = true
-  isMobile: boolean = false
+  isNavOpen = true
+  isMobile: boolean
   editorConfig = {lineNumbers: true}
   editor: any
 
   constructor() {
-    this.isMobile = window.screen.width <= 768
+    this.isMobile = isMobile
   }
 
   ngOnInit(): void {

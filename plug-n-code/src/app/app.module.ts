@@ -23,14 +23,20 @@ import {SuiModule} from 'ng2-semantic-ui'
 
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
+import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
 import {IndexComponent} from './components/index/index.component'
+import {OutputComponent} from './components/output/output.component'
+import {ToolbarComponent} from './components/toolbar/toolbar.component'
 
 @NgModule({
   declarations: [
     AppComponent,
+    FileExComponent,
     HeaderComponent,
-    IndexComponent
+    IndexComponent,
+    OutputComponent,
+    ToolbarComponent
   ],
   imports: [
     AppRoutingModule,

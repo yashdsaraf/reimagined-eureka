@@ -14,15 +14,32 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+import {OutputComponent} from './output.component'
+
+describe('OutputComponent', () => {
+  let component: OutputComponent
+  let fixture: ComponentFixture<OutputComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ OutputComponent ]
+    })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(OutputComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should create', () => {
+    expect(component).toBeTruthy()
+  })
 })
-export class AppComponent {
-  title = 'Plug n\' Code'
-}
-
-export const isMobile = window.screen.width <= 768

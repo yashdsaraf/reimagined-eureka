@@ -19,6 +19,8 @@ import {
   OnInit
 } from '@angular/core'
 
+import {isMobile} from '../../app.component'
+
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
@@ -27,10 +29,10 @@ import {
 export class HeaderComponent implements OnInit {
 
   isHeaderOpen: boolean = true
-  isMobile: boolean = false
+  isMobile: boolean
 
   constructor() {
-    this.isMobile = window.screen.width <= 768
+    this.isMobile = isMobile
   }
 
   ngOnInit(): void {

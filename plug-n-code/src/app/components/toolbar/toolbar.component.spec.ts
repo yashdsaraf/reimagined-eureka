@@ -14,15 +14,32 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+ import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+import {ToolbarComponent} from './toolbar.component'
+
+describe('ToolbarComponent', () => {
+  let component: ToolbarComponent
+  let fixture: ComponentFixture<ToolbarComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ ToolbarComponent ]
+    })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(ToolbarComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should be created', () => {
+    expect(component).toBeTruthy()
+  })
 })
-export class AppComponent {
-  title = 'Plug n\' Code'
-}
-
-export const isMobile = window.screen.width <= 768

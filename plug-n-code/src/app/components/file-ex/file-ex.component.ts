@@ -14,15 +14,28 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
+
+import {isMobile} from '../../app.component'
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  selector: 'app-file-ex',
+  templateUrl: './file-ex.component.html',
+  styleUrls: ['./file-ex.component.sass']
 })
-export class AppComponent {
-  title = 'Plug n\' Code'
-}
+export class FileExComponent {
 
-export const isMobile = window.screen.width <= 768
+  @Input() isNavOpen: boolean
+  @Output() isNavOpenChange = new EventEmitter<boolean>()
+  isMobile: boolean
+
+  constructor() {
+    this.isMobile = isMobile
+  }
+
+}

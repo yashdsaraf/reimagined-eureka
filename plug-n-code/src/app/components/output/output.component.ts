@@ -17,12 +17,12 @@
 import {Component} from '@angular/core'
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.sass']
+  selector: 'app-output',
+  templateUrl: './output.component.html',
+  styleUrls: ['./output.component.sass']
 })
-export class AppComponent {
-  title = 'Plug n\' Code'
-}
+export class OutputComponent {
 
-export const isMobile = window.screen.width <= 768
+  constructor() { }
+
+}
