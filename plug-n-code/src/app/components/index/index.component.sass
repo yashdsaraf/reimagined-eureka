@@ -25,7 +25,7 @@
   #file-ex
     background-color: $file-ex-light
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
-    +flex(1, 0, 20%)
+    max-width: 20vw
     padding: .5em
     +size(100%)
     z-index: 1000
@@ -33,13 +33,13 @@
   #wrapper-1
     +display-flex
     +flex-direction-column
+    max-width: 80vw
     +size(100%)
 
     #toolbar
       background-color: $toolbar-light
       box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
       +flex-basis(7%)
-      padding-top: .5em
       z-index: 100
 
     #wrapper-2
@@ -58,14 +58,16 @@
 
     #file-ex
       left: 0
+      max-width: none
       position: fixed
       width: 15em
 
     #wrapper-1
       +flex-direction-row
+      max-width: 100vw
 
       #toolbar
-        +flex-basis(15%)
+        width: 20vw
 
       #wrapper-2
-        +flex-basis(85%)
+        width: 80vw

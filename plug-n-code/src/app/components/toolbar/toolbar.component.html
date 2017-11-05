@@ -1,37 +1,25 @@
 <div id="container">
-  <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpenChange.emit(true)">
+  <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon"
+    (click)="isNavOpenChange.emit(true)">
     <i class="sidebar icon"></i>
   </button>
-
-  <div id="toolrow" class="ui left aligned grid container" >
-    <div class="row" >
-      <div class="fourteen wide column">
-        <div class="ui mini basic icon buttons">
-          <button class="ui button" data-tooltip="Run" data-position="bottom left"><i class="play icon"></i></button>
-          <button class="ui button" data-tooltip="Stop" data-position="bottom left" data-variation="mini"><i class="stop icon"></i></button>
-          <button class="ui button" data-tooltip="New" data-position="bottom left" data-variation="mini"><i class="file outline icon"></i></button>
-          <button class="ui button" data-tooltip="Save" data-position="bottom left" data-variation="mini"><i class="save icon"></i></button>
-          <button class="ui button" data-tooltip="Zoom" data-position="bottom left" data-variation="mini"><i class="zoom icon"></i></button>
-          <button class="ui button" data-tooltip="Zoom out" data-position="bottom left" data-variation="mini"><i class="zoom out icon"></i></button>
-          <button class="ui button" data-tooltip="Share" data-position="right center" data-variation="mini"><i class="share icon"></i></button>
-        </div>
-      </div>
-    </div>
-  </div> <!-- toolrow -->
-
-  <div id="toolcolumn" class="ui grid">
-    <div class="column" >
-      <div class="row">
-        <div class="ui small vertical basic icon buttons">
-          <button class="ui button" ><i class="play icon"></i></button>
-          <button class="ui button" ><i class="stop icon"></i></button>
-          <button class="ui button" ><i class="file outline icon"></i></button>
-          <button class="ui button" ><i class="save icon"></i></button>
-          <button class="ui button" ><i class="zoom icon"></i></button>
-          <button class="ui button" ><i class="zoom out icon"></i></button>
-          <button class="ui button" ><i class="share icon"></i></button>
-        </div>
-      </div>
-    </div>
-  </div> <!-- toolcolumn -->
+  <div class="ui tiny icon scroll-icon">
+    <i class="chevron icon" [ngClass]="{'up': isMobile, 'left': !isMobile}" (click)="scroll(true)"></i>
+  </div>
+  <div id="wrapper" class="ui icon buttons" [ngClass]="{'vertical': isMobile, 'large': !isMobile}">
+    <ng-container *ngFor="let tool of tools">
+      <button *ngIf="!isMobile, else mobileTools" id="tool-{{tool.name | lowercase}}" class="ui button" suiPopup
+        popupPlacement="bottom left" popupText="{{tool.name}}" (click)="onClick($event)">
+        <i class="{{tool.icon}} icon" ></i>
+      </button>
+      <ng-template #mobileTools>
+        <button id="tool-{{tool.name | lowercase}}" class="ui button" (click)="onClick($event)">
+          {{tool.name}}
+        </button>
+      </ng-template>
+    </ng-container>
+  </div> <!-- wrapper -->
+  <div class="ui tiny icon scroll-icon">
+      <i class="chevron icon" [ngClass]="{'down': isMobile, 'right': !isMobile}" (click)="scroll()"></i>
+  </div>
 </div> <!-- container -->

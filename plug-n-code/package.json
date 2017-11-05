@@ -10,7 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "serve": "ng serve --open"
+    "serve": "ng serve --open",
+    "compodoc": "compodoc --tsconfig src/tsconfig.app.json --port 8282 --serve --open"
   },
   "private": true,
   "dependencies": {
@@ -40,6 +41,7 @@
     "@angular/cli": "^1.5.0",
     "@angular/compiler-cli": "^4.4.6",
     "@angular/language-service": "^4.4.6",
+    "@compodoc/compodoc": "^1.0.3",
     "@types/jasmine": "~2.5.53",
     "@types/jasminewd2": "^2.0.3",
     "@types/jquery": "^3.2.16",

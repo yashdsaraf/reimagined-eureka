@@ -17,18 +17,42 @@
 @import base
 
 #container
-  +display-inline-flex
-  +flex-direction-column
+  +align-items-center
+  +display-flex
+  +justify-content-flex-start
+  overflow: hidden
+  +size(100%)
 
-  @media only screen and (max-width: 768px)
+  .scroll-icon
+    &:hover
+      font-size: 1.5em
+    &:active
+      font-size: 1.2em
 
-    #toolrow
-      display: none
+  #wrapper
+    +align-items-center
+    +display-flex
+    +flex(1, 0, 1em)
+    overflow: hidden
+    +size(100%)
 
-    #toolcolumn
-      display: inline
+    .button
+      max-width: 4em
 
-  @media only screen and (min-width: 768px)
+@media only screen and (max-width: 768px)
 
-    #toolcolumn
-      display: none
+  #container
+    +align-items-center
+    +flex-direction-column
+    margin: 0
+    padding: .2em
+
+    #open-nav
+      +margin(.2em null .2em null)
+
+    #wrapper
+      +flex-direction-column
+      overflow-wrap: break-word
+
+      .button
+        max-width: 4.5em
