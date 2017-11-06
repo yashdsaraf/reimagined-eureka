@@ -23,7 +23,7 @@ import {
 
 import {isMobile} from '../../app.component'
 
-interface Tool {
+export interface Tool {
   name: string,
   icon: string
 }
@@ -108,18 +108,20 @@ export class ToolbarComponent {
     return document.getElementById(id)
   }
 
-  /* Iterate through the DOM tree to find the correct id
-  *  e.g tool-save, and return the tool name e.g save
+  /* Iterate through the given element's DOM hierarchy to
+  *  find the correct tool id e.g tool-save, and return the
+  *  tool with the matching name from "tools" array.
   *  This is needed in case user clicks the icon rather than the button
   */
-  getTool(event: any): string {
-    let tool: string = null
-    event.path.forEach(node => {
+  getTool(event: any): Tool {
+    let tool: Tool
+    for (let node of event.path) {
       if (node.id !== undefined && node.id.startsWith('tool-')) {
-        tool = node.id.split("-").slice(1).join('-')
-        return
+        tool = this.tools
+                .find(item => 'tool-' + item.name.toLowerCase() == node.id)
+        break
       }
-    })
+    }
     return tool
   }
 

@@ -24,7 +24,10 @@ import {By} from '@angular/platform-browser'
 
 import {SuiModule} from 'ng2-semantic-ui'
 
-import {ToolbarComponent} from './toolbar.component'
+import {
+  Tool,
+  ToolbarComponent
+} from './toolbar.component'
 
 describe('ToolbarComponent', () => {
 
@@ -45,17 +48,34 @@ describe('ToolbarComponent', () => {
     debug = fixture.debugElement
   })
 
-  it('should not show open-nav button in desktop screen', () => {
+  it('should not show open-nav button in desktop screen', async() => {
     fixture.detectChanges()
     let element = debug.query(By.css('#open-nav'))
     expect(element).toBe(null)
   })
 
-  it('should show open-nav button in mobile screen', () => {
+  it('should show open-nav button in mobile screen', async() => {
     component.isMobile = true
     fixture.detectChanges()
-    let element = debug.query(By.css('#open-nav'))
+    let element = debug.query(By.css('#open-nav')).nativeElement
     expect(element).not.toBe(null)
+  })
+
+  it('getTool should get the tool from event', async() => {
+    fixture.detectChanges()
+    let expected: Tool = component.tools[0]
+    let event = {path: [ {id: 'tool-' + expected.name.toLowerCase()} ]}
+    let result: Tool = component.getTool(event)
+    expect(result).toBe(expected)
+  })
+
+  it('getToolElement should get the element from tool', async() => {
+    fixture.detectChanges()
+    let tool: Tool = component.tools[0]
+    let id = 'tool-' + tool.name.toLowerCase()
+    let expected: Element = debug.query(By.css(id)).nativeElement
+    let result: Element = component.getToolElement(tool)
+    expect(result).toBe(expected)
   })
 
 })
