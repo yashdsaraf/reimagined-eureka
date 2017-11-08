@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-import {BrowserModule} from '@angular/platform-browser'
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {NgModule} from '@angular/core'
+import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
+import {BrowserModule} from '@angular/platform-browser'
 
 import {CodemirrorModule} from 'ng2-codemirror'
 import {SuiModule} from 'ng2-semantic-ui'
