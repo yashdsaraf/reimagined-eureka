@@ -65,7 +65,7 @@ if %ERRORLEVEL% NEQ 0 (
   call :showErrorMsg
 ) else ( echo  -- INSTALLED )
 
-cd plug-n-code
+cd frontend
 
 echo.
 call :showLine
@@ -83,13 +83,11 @@ call :showErrorMsg
 
 cd ..
 
-REM TODO: install server dependencies
-REM mvn install:install-file -Dfile=lib/ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
-
 if defined NO_PROMPT (
   setx NO_PROMPT "" >nul
   goto :eof
 )
+
 echo.
 call :showLine
 echo All done!
