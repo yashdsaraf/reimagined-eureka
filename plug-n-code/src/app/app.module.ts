@@ -40,8 +40,8 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component'
   ],
   imports: [
     AppRoutingModule,
-    BrowserModule,
     BrowserAnimationsModule,
+    BrowserModule,
     CodemirrorModule,
     SuiModule
   ],
