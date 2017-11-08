@@ -1,3 +1,7 @@
+DEVELOP | MASTER
+--------|-------
+[![Build status](https://ci.appveyor.com/api/projects/status/srqx7hncxmdh6shb/branch/develop?svg=true)](https://ci.appveyor.com/project/yashdsaraf/reimagined-eureka/branch/develop) | [![Build status](https://ci.appveyor.com/api/projects/status/srqx7hncxmdh6shb/branch/master?svg=true)](https://ci.appveyor.com/project/yashdsaraf/reimagined-eureka/branch/master)
+
 # Online Plugglable IDE
 
 For initial setup instructions go to [INSTALL](INSTALL.md)
