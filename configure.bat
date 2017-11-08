@@ -65,7 +65,7 @@ if %ERRORLEVEL% NEQ 0 (
   call :showErrorMsg
 ) else ( echo  -- INSTALLED )
 
-cd plug-n-code
+cd frontend
 
 echo.
 call :showLine
