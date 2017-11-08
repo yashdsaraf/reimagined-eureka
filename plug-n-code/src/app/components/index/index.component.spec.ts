@@ -26,7 +26,10 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {CodemirrorModule} from 'ng2-codemirror'
 import {SuiModule} from 'ng2-semantic-ui'
 
+import {FileExComponent} from '../file-ex/file-ex.component'
 import {IndexComponent} from './index.component'
+import {OutputComponent} from '../output/output.component'
+import {ToolbarComponent} from '../toolbar/toolbar.component'
 
 describe('IndexComponent', () => {
 
@@ -37,7 +40,10 @@ describe('IndexComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [
-        IndexComponent
+        FileExComponent,
+        IndexComponent,
+        OutputComponent,
+        ToolbarComponent
       ],
       imports: [
         CodemirrorModule,
@@ -53,23 +59,10 @@ describe('IndexComponent', () => {
     debug = fixture.debugElement
   })
 
-  it('should not show open-nav button in desktop screen', () => {
-    fixture.detectChanges()
-    let element = debug.query(By.css('#open-nav'))
-    expect(element).toBe(null)
-  })
-
   it('should show navbar in desktop screen', () => {
     fixture.detectChanges()
     expect(component.isNavOpen).toBe(true)
     let element = debug.query(By.css('#file-ex'))
-    expect(element).not.toBe(null)
-  })
-
-  it('should show open-nav button in mobile screen', () => {
-    component.isMobile = true
-    fixture.detectChanges()
-    let element = debug.query(By.css('#open-nav'))
     expect(element).not.toBe(null)
   })
 

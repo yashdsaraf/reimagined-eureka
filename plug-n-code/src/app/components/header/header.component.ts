@@ -14,21 +14,29 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
 import {
-  RouterModule,
-  Routes
-} from '@angular/router'
+  Component,
+  OnInit
+} from '@angular/core'
 
-import {IndexComponent} from './components/index/index.component'
+import {isMobile} from '../../app.component'
 
-const routes: Routes = [
-  {path: '', redirectTo: '/index', pathMatch: 'full'},
-  {path: 'index', component: IndexComponent}
-]
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+@Component({
+  selector: 'app-header',
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.sass']
 })
-export class AppRoutingModule {}
+export class HeaderComponent implements OnInit {
+
+  isHeaderOpen: boolean = true
+  isMobile: boolean
+
+  constructor() {
+    this.isMobile = isMobile
+  }
+
+  ngOnInit(): void {
+    this.isHeaderOpen = !this.isMobile
+  }
+
+}

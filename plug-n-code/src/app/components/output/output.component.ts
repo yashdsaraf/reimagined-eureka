@@ -14,21 +14,15 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
-import {
-  RouterModule,
-  Routes
-} from '@angular/router'
+import {Component} from '@angular/core'
 
-import {IndexComponent} from './components/index/index.component'
-
-const routes: Routes = [
-  {path: '', redirectTo: '/index', pathMatch: 'full'},
-  {path: 'index', component: IndexComponent}
-]
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+@Component({
+  selector: 'app-output',
+  templateUrl: './output.component.html',
+  styleUrls: ['./output.component.sass']
 })
-export class AppRoutingModule {}
+export class OutputComponent {
+
+  constructor() { }
+
+}

@@ -24,3 +24,5 @@ import {Component} from '@angular/core'
 export class AppComponent {
   title = 'Plug n\' Code'
 }
+
+export const isMobile = window.screen.width <= 768

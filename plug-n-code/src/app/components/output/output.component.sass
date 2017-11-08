@@ -14,27 +14,20 @@
  * limitations under the License.
  */
 
-import {
-  Component,
-  OnInit
-} from '@angular/core'
+@import base
 
-@Component({
-  selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.sass']
-})
-export class HeaderComponent implements OnInit {
+#container
+  +display-inline-flex
+  +flex-direction-column
+  overflow: auto
+  +size(100%)
 
-  isHeaderOpen: boolean = true
-  isMobile: boolean = false
+  #output-tab-content
+    font-size: .6em
+    overflow-y: auto
+    overflow-x: hidden
+    +size(100%)
 
-  constructor() {
-    this.isMobile = window.screen.width <= 768
-  }
-
-  ngOnInit(): void {
-    this.isHeaderOpen = !this.isMobile
-  }
-
-}
+    .segment
+      margin: 0 !important
+      min-height: 100%

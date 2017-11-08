@@ -1,0 +1,15 @@
+<div id="container">
+  <app-file-ex *ngIf="isNavOpen" id="file-ex" [(isNavOpen)]="isNavOpen" [@sidebarAnimation]></app-file-ex>
+  <div id="wrapper-1">
+    <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen"></app-toolbar>
+
+    <div id="wrapper-2">
+      <div id="editor">
+        <codemirror
+          [config]="editorConfig" #editor>
+        </codemirror>
+      </div> <!-- editor -->
+      <app-output id="output"></app-output>
+    </div> <!-- wrapper-2 -->
+  </div> <!-- wrapper-1 -->
+</div> <!-- container -->

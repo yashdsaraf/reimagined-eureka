@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
-import {
-  RouterModule,
-  Routes
-} from '@angular/router'
+@import base
 
-import {IndexComponent} from './components/index/index.component'
+#container
+  +display-flex
+  +flex-direction-column
 
-const routes: Routes = [
-  {path: '', redirectTo: '/index', pathMatch: 'full'},
-  {path: 'index', component: IndexComponent}
-]
+  #nav-wrapper-1
+    +flex(1)
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
-})
-export class AppRoutingModule {}
+  #nav-wrapper-2
+    +align-items-center
+    +display-inline-flex
+    +size(100%)
+
+    #file-list
+      height: 85vh
+      overflow-y: auto
+
+  @media only screen and (max-width: 768px)
+
+    #nav-wrapper-2
+      +align-items-flex-start
+
+      #file-list
+        height: 72vh

@@ -14,21 +14,32 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
 import {
-  RouterModule,
-  Routes
-} from '@angular/router'
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-import {IndexComponent} from './components/index/index.component'
+import {FileExComponent} from './file-ex.component'
 
-const routes: Routes = [
-  {path: '', redirectTo: '/index', pathMatch: 'full'},
-  {path: 'index', component: IndexComponent}
-]
+describe('FileExComponent', () => {
+  let component: FileExComponent
+  let fixture: ComponentFixture<FileExComponent>
 
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ FileExComponent ]
+    })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(FileExComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should be created', () => {
+    expect(component).toBeTruthy()
+  })
 })
-export class AppRoutingModule {}

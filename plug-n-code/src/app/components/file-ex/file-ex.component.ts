@@ -14,21 +14,28 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
 import {
-  RouterModule,
-  Routes
-} from '@angular/router'
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
 
-import {IndexComponent} from './components/index/index.component'
+import {isMobile} from '../../app.component'
 
-const routes: Routes = [
-  {path: '', redirectTo: '/index', pathMatch: 'full'},
-  {path: 'index', component: IndexComponent}
-]
-
-@NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+@Component({
+  selector: 'app-file-ex',
+  templateUrl: './file-ex.component.html',
+  styleUrls: ['./file-ex.component.sass']
 })
-export class AppRoutingModule {}
+export class FileExComponent {
+
+  @Input() isNavOpen: boolean
+  @Output() isNavOpenChange = new EventEmitter<boolean>()
+  isMobile: boolean
+
+  constructor() {
+    this.isMobile = isMobile
+  }
+
+}
