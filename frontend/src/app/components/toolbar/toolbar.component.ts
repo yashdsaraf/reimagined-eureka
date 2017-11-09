@@ -63,7 +63,7 @@ export class ToolbarComponent {
     for (let node of event.path) {
       if (node.id !== undefined && node.id.startsWith('tool-')) {
         tool = this.tools
-                .find(item => 'tool-' + item.name.toLowerCase() == node.id)
+          .find(item => 'tool-' + item.name.toLowerCase() == node.id)
         break
       }
     }

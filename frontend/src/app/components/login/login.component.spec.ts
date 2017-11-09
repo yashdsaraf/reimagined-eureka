@@ -20,29 +20,26 @@ import {
   TestBed
 } from '@angular/core/testing'
 
-import {SuiModule} from 'ng2-semantic-ui'
+import {LoginComponent} from './login.component'
 
-import {OutputComponent} from './output.component'
-
-describe('OutputComponent', () => {
-  let component: OutputComponent
-  let fixture: ComponentFixture<OutputComponent>
+describe('LoginComponent', () => {
+  let component: LoginComponent
+  let fixture: ComponentFixture<LoginComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OutputComponent],
-      imports: [SuiModule]
+      declarations: [LoginComponent]
     })
       .compileComponents()
   }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OutputComponent)
+    fixture = TestBed.createComponent(LoginComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
 
-  it('should be created', () => {
+  it('should create', () => {
     expect(component).toBeTruthy()
   })
 })

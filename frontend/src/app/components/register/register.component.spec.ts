@@ -20,29 +20,26 @@ import {
   TestBed
 } from '@angular/core/testing'
 
-import {SuiModule} from 'ng2-semantic-ui'
+import {RegisterComponent} from './register.component'
 
-import {OutputComponent} from './output.component'
-
-describe('OutputComponent', () => {
-  let component: OutputComponent
-  let fixture: ComponentFixture<OutputComponent>
+describe('RegisterComponent', () => {
+  let component: RegisterComponent
+  let fixture: ComponentFixture<RegisterComponent>
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OutputComponent],
-      imports: [SuiModule]
+      declarations: [RegisterComponent]
     })
       .compileComponents()
   }))
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(OutputComponent)
+    fixture = TestBed.createComponent(RegisterComponent)
     component = fixture.componentInstance
     fixture.detectChanges()
   })
 
-  it('should be created', () => {
+  it('should create', () => {
     expect(component).toBeTruthy()
   })
 })

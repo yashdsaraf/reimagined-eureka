@@ -35,8 +35,8 @@ describe('ToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ToolbarComponent ],
-      imports: [ SuiModule ]
+      declarations: [ToolbarComponent],
+      imports: [SuiModule]
     }).compileComponents()
   }))
 
@@ -46,23 +46,23 @@ describe('ToolbarComponent', () => {
     debug = fixture.debugElement
   })
 
-  it('should not show open-nav button in desktop screen', async() => {
+  it('should not show open-nav button in desktop screen', async () => {
     fixture.detectChanges()
     let element = debug.query(By.css('#open-nav'))
     expect(element).toBe(null)
   })
 
-  it('should show open-nav button in mobile screen', async() => {
+  it('should show open-nav button in mobile screen', async () => {
     component.isMobile = true
     fixture.detectChanges()
     let element = debug.query(By.css('#open-nav')).nativeElement
     expect(element).not.toBe(null)
   })
 
-  it('getTool should get the tool from event', async() => {
+  it('getTool should get the tool from event', async () => {
     fixture.detectChanges()
     let expected: Tool = component.tools[0]
-    let event = {path: [ {id: 'tool-' + expected.name.toLowerCase()} ]}
+    let event = {path: [{id: 'tool-' + expected.name.toLowerCase()}]}
     let result: Tool = component.getTool(event)
     expect(result).toBe(expected)
   })

@@ -20,11 +20,17 @@ import {
   Routes
 } from '@angular/router'
 
+import {AboutUsComponent} from './components/about-us/about-us.component'
 import {IndexComponent} from './components/index/index.component'
+import {LoginComponent} from './components/login/login.component'
+import {RegisterComponent} from './components/register/register.component'
 
 const routes: Routes = [
   {path: '', redirectTo: '/index', pathMatch: 'full'},
-  {path: 'index', component: IndexComponent}
+  {path: 'index', component: IndexComponent},
+  {path: 'aboutus', component: AboutUsComponent},
+  {path: 'login', component: LoginComponent},
+  {path: 'register', component: RegisterComponent}
 ]
 
 @NgModule({
