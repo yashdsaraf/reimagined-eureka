@@ -17,48 +17,53 @@
 @import base
 
 #container
-  +align-items-center
+  align-items: center
   background: $header-dark
-  +display-flex
-  +flex-direction-row
+  display: flex
+  flex-direction: row
+  height: 100%
   margin: 0 auto
   padding: .5em
-  +size(100%)
+  width: 100%
 
   #left-header
-    +align-items-center
-    +display-inline-flex
-    +flex-basis(20%)
+    align-items: center
+    display: inline-flex
+    flex-basis: 20%
 
   #right-header
-    +display-inline-flex
-    +flex-basis(auto)
-    +size(100%)
+    display: inline-flex
+    flex-basis: auto
+    height: 100%
+    width: 100%
 
     #wrapper-1
-      +align-items-center
-      +display-inline-flex
+      align-items: center
+      display: inline-flex
+      height: 100%
       padding-left: 1em
-      +size(100%)
+      width: 100%
 
       .button
         margin-left: 1em
 
     #wrapper-2
-      +align-items-center
-      +display-inline-flex
-      +justify-content-flex-end
+      align-items: center
+      display: inline-flex
+      height: 100%
+      justify-content: flex-end
       margin-right: 2em
-      +size(100%)
+      width: 100%
 
       .visible
         #guest-label
           font-size: 1.3em
-      
+
       .hidden
-        +display-inline-flex
-        +justify-content-center
-        +size(100%)
+        display: inline-flex
+        height: 100%
+        justify-content: center
+        width: 100%
 
         .button
           height: 2.7em
@@ -66,32 +71,33 @@
 @media only screen and (max-width: 768px)
 
   #container
-    +flex-direction-column
+    flex-direction: column
 
     #left-header
-      +align-items-flex-start
-      +flex(1)
+      align-items: flex-start
+      flex: 1
 
     #right-header
-      +flex-direction-column
-      margin-top: 2.5em
+      flex-direction: column
+      margin-top: 6em
 
       #wrapper-1
-        +flex-direction-column
+        flex-direction: column
         margin: 0
         padding: 0
 
         .button
-          +align-items-center
-          +display-inline-flex
+          align-items: center
+          display: inline-flex
           height: 3.3em
-          +justify-content-center
-          +margin(.4em 0 0 0)
+          justify-content: center
+          margin: 0
+          margin-top: .4em
           width: 100%
 
       #wrapper-2
-        +flex-direction-column        
-        +justify-content-center
+        flex-direction: column
+        justify-content: center
 
         #guest-label
           width: 100%

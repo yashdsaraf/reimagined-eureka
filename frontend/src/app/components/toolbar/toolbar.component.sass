@@ -17,18 +17,20 @@
 @import base
 
 #container
-  +align-items-center
-  +display-flex
-  +justify-content-flex-start
+  align-items: center
+  display: flex
+  height: 100%
+  justify-content: flex-start
   overflow: hidden
-  +size(100%)
+  width: 100%
 
   #wrapper
-    +align-items-center
-    +display-flex
-    +flex(1, 0, 1em)
+    align-items: center
+    display: flex
+    flex: 1 0 1em
+    height: 100%
     overflow: auto
-    +size(100%)
+    width: 100%
 
     .button
       max-width: 4em
@@ -36,16 +38,18 @@
 @media only screen and (max-width: 768px)
 
   #container
-    +align-items-center
-    +flex-direction-column
+    align-items: center
+    flex-direction: column
     margin: 0
     padding: .2em
 
     #open-nav
-      +margin(.2em null .2em null)
+      margin: 0
+      margin-top: .2em
+      margin-bottom: .2em
 
     #wrapper
-      +flex-direction-column
+      flex-direction: column
       overflow-wrap: break-word
 
       .button

@@ -33,7 +33,6 @@
     "ng2-semantic-ui": "^0.9.6",
     "node-sass": "^4.6.0",
     "rxjs": "^5.5.2",
-    "sass-flexbox": "^2.0.0",
     "semantic-ui": "^2.2.13",
     "zone.js": "^0.8.18"
   },

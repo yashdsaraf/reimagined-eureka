@@ -17,16 +17,17 @@
 @import base
 
 #container
-  +display-flex
-  +flex-direction-column
+  display: flex
+  flex-direction: column
 
   #nav-wrapper-1
-    +flex(1)
+    flex: 1
 
   #nav-wrapper-2
-    +align-items-center
-    +display-inline-flex
-    +size(100%)
+    align-items: center
+    display: inline-flex
+    height: 100%
+    width: 100%
 
     #file-list
       height: 85vh
@@ -35,7 +36,7 @@
   @media only screen and (max-width: 768px)
 
     #nav-wrapper-2
-      +align-items-flex-start
+      align-items: flex-start
 
       #file-list
         height: 72vh

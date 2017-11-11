@@ -17,16 +17,18 @@
 @import base
 
 #container
-  +display-inline-flex
-  +flex-direction-column
+  display: inline-flex
+  flex-direction: column
+  height: 100%
   overflow: auto
-  +size(100%)
+  width: 100%
 
   #output-tab-content
     font-size: .6em
+    height: 100%
     overflow-y: auto
     overflow-x: hidden
-    +size(100%)
+    width: 100%
 
     .segment
       margin: 0 !important
