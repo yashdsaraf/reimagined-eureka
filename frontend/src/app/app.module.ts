@@ -17,8 +17,10 @@
 import {NgModule} from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {BrowserModule} from '@angular/platform-browser'
+import {HttpClientModule} from '@angular/common/http'
 
 import {CodemirrorModule} from 'ng2-codemirror'
+import {JwtModule} from '@auth0/angular-jwt'
 import {SuiModule} from 'ng2-semantic-ui'
 
 import {AppComponent} from './app.component'
@@ -49,6 +51,15 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component'
     BrowserAnimationsModule,
     BrowserModule,
     CodemirrorModule,
+    HttpClientModule,
+    JwtModule.forRoot({
+      config: {
+        tokenGetter: () => {
+          return localStorage.getItem('access_token')
+        },
+        whitelistedDomains: ['localhost:8181']
+      }
+    }),
     SuiModule
   ],
   providers: [],
