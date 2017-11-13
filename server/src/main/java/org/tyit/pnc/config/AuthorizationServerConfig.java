@@ -50,16 +50,16 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
   @Value("${security.jwt.resource-id}")
   private String resourceId;
-  
+
   @Value("${security.jwt.refresh-token-validity}")
   private Integer refreshTokenValidity;
-  
+
   @Value("${security.jwt.access-token-validity}")
   private Integer accessTokenValidity;
 
   @Autowired
   private UserDetailsService userDetailsService;
-  
+
   @Autowired
   private TokenStore tokenStore;
 
@@ -91,5 +91,5 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             .tokenEnhancer(enhancerChain)
             .authenticationManager(authenticationManager);
   }
-  
+
 }

@@ -55,10 +55,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Autowired
   private UserDetailsService userDetailsService;
 
+  @Bean
+  @Override
+  public AuthenticationManager authenticationManagerBean() throws Exception {
+    return super.authenticationManagerBean();
+  }
+
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
     auth.userDetailsService(userDetailsService)
-            .passwordEncoder(new ShaPasswordEncoder(encodingStrength));
+            .passwordEncoder(new ShaPasswordEncoder(encodingStrength))
+            .and().inMemoryAuthentication()
+            .withUser("guest").password("").authorities("GUEST");
   }
 
   @Override
@@ -67,11 +75,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .cors().and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().csrf().disable()
-            .authorizeRequests()
+            .and().authorizeRequests()
             .anyRequest().authenticated()
             .and().httpBasic()
-            .realmName(realm);
+            .realmName(realm)
+            .and().csrf().disable();
   }
 
   @Bean
