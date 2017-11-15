@@ -34,6 +34,11 @@ import {OutputComponent} from './components/output/output.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 
+// Using an arrow function here will throw Angular AOT errors
+export function tokenGetter() {
+  return localStorage.getItem('access_token')
+}
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,9 +59,7 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component'
     HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: () => {
-          return localStorage.getItem('access_token')
-        },
+        tokenGetter,
         whitelistedDomains: ['localhost:8181']
       }
     }),
