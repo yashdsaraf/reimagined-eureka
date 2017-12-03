@@ -92,4 +92,10 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
             .authenticationManager(authenticationManager);
   }
 
+//  Uncomment the following to expose the "/oauth/check_token" endpoint
+//  @Override
+//  public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
+//    security.checkTokenAccess("permitAll()");
+//  }
+
 }
