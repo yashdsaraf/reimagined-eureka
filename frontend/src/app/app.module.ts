@@ -34,12 +34,14 @@ import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
+import {LogoutComponent} from './components/logout/logout.component'
 import {OutputComponent} from './components/output/output.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
 import {AuthService} from './services/auth.service'
 import {CookieService} from './services/cookie.service'
+import {LoginService} from './services/login.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 
@@ -51,6 +53,7 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
     HeaderComponent,
     IndexComponent,
     LoginComponent,
+    LogoutComponent,
     OutputComponent,
     RegisterComponent,
     ToolbarComponent
@@ -67,7 +70,8 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
-    CookieService
+    CookieService,
+    LoginService
   ],
   bootstrap: [AppComponent]
 })
