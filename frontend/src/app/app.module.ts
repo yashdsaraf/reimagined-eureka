@@ -42,6 +42,7 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component'
 import {AuthService} from './services/auth.service'
 import {CookieService} from './services/cookie.service'
 import {LoginService} from './services/login.service'
+import {LogoutService} from './services/logout.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 
@@ -71,7 +72,8 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     CookieService,
-    LoginService
+    LoginService,
+    LogoutService
   ],
   bootstrap: [AppComponent]
 })

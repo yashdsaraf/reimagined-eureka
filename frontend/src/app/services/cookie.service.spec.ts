@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
- import {TestBed, inject} from '@angular/core/testing'
+import {
+  TestBed,
+  inject
+} from '@angular/core/testing'
 
 import {CookieService} from './cookie.service'
 

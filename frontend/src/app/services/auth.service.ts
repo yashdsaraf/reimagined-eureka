@@ -30,12 +30,12 @@ import {environment} from '../../environments/environment'
 @Injectable()
 export class AuthService {
 
-  jwtHelper = new JwtHelper()
+  private jwtHelper = new JwtHelper()
 
   constructor(
     private cookie: CookieService,
     private http: Http
-  ) { }
+  ) {}
 
   /**
    * Retrieve access and refresh tokens from server

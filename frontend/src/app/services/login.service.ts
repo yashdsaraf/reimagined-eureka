@@ -16,7 +16,6 @@
 
 import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
-import {Router} from '@angular/router'
 
 import {LogoutComponent} from '../components/logout/logout.component'
 
@@ -24,26 +23,7 @@ import {LogoutComponent} from '../components/logout/logout.component'
 export class LoginService {
 
   constructor(
-    private http: HttpClient,
-    private router: Router
-  ) { }
-
-  logout() {
-    this.http.get('/api/destroy').subscribe(
-      data => {
-        let params = {}
-        if (data.hasOwnProperty('message')) {
-          params['message'] = data['message']
-        }
-        if (data.hasOwnProperty('error')) {
-          params['error'] = data['error']
-        }
-        this.router.navigate(['/logout', params])
-      },
-      err => {
-        throw err
-      }
-    )
-  }
+    private http: HttpClient
+  ) {}
 
 }

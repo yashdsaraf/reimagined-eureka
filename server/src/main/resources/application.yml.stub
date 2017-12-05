@@ -3,7 +3,3 @@ spring:
     url: #JDBC CONNECTION STRING
     username: #DATABASE USERNAME
     password: #DATABASE PASSWORD
-  jpa:
-    properties:
-      hibernate:
-        dialect: #HIBERNATE DATABASE DIALECT CLASS

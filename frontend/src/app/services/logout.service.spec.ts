@@ -14,26 +14,31 @@
  * limitations under the License.
  */
 
-@import base
+import {
+  TestBed,
+  inject
+} from '@angular/core/testing'
+import {HttpModule} from '@angular/http'
+import {Router} from '@angular/router'
 
-#container
-  margin-top: 5rem
-  font-size: 2em
+import {LogoutService} from './logout.service'
 
-  .header
-    word-break: break-all
+class MockRouter {
+  navigate = jasmine.createSpy('navigate')
+}
 
-  #error
-    display: flex
-    justify-content: center
-    word-break: break-all
+describe('LogoutService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpModule],
+      providers: [
+        LogoutService,
+        {provide: Router, useClass: MockRouter}
+      ]
+    })
+  })
 
-  #button-wrapper
-    display: flex
-    justify-content: space-around
-
-@media only screen and (max-width: 768px)
-
-  #container
-    margin-top: 3rem
-    font-size: 1em
+  it('should be created', inject([LogoutService], (service: LogoutService) => {
+    expect(service).toBeTruthy()
+  }))
+})

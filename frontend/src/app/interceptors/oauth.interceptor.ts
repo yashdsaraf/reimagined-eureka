@@ -27,6 +27,7 @@ import {
 import {Observable} from 'rxjs/Observable'
 
 import {AuthService} from '../services/auth.service'
+import {LogoutService} from '../services/logout.service'
 
 /**
  * Adds an OAuth Bearer header on all requests made using HttpClient
@@ -40,8 +41,11 @@ export class OAuthInterceptor implements HttpInterceptor {
   access_token: string
   refresh_token: string
 
-  constructor(private auth: AuthService) {
-    let tokens = auth.getSavedTokens()
+  constructor(
+    private authService: AuthService,
+    private logoutService: LogoutService
+  ) {
+    let tokens = authService.getSavedTokens()
     this.access_token = tokens.access_token
     this.refresh_token = tokens.refresh_token
   }
@@ -51,20 +55,18 @@ export class OAuthInterceptor implements HttpInterceptor {
       headers: req.headers.set('Authorization', `Bearer ${this.access_token}`)
     })
 
-    if (this.access_token == null || this.auth.isTokenExpired(this.access_token)) {
-      if (this.refresh_token == null || this.auth.isTokenExpired(this.refresh_token)) {
-        // TODO: Logout
+    if (this.access_token == null || this.authService.isTokenExpired(this.access_token)) {
+      if (localStorage.getItem('remember_me') != 'true' || this.refresh_token == null || this.authService.isTokenExpired(this.refresh_token)) {
+        this.logoutService.logout(null, "Session expired")
       }
       let value: any = null
-      // TODO: Check if "remember me" is checked and call this function
-      // accordingly
-      this.auth.getTokensUsingRefreshToken()
+      this.authService.getTokensUsingRefreshToken()
         .subscribe(
           data => {
             value = duplicate
           },
           err => {
-            // TODO: Logout
+            throw err
           }
         )
       return next.handle(value)

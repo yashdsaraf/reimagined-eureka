@@ -19,26 +19,18 @@ import {
   inject
 } from '@angular/core/testing'
 import {HttpClientModule} from '@angular/common/http'
-import {Router} from '@angular/router'
 
 import {LoginService} from './login.service'
-
-class MockRouter {
-  navigate = jasmine.createSpy('navigate')
-}
 
 describe('LoginService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientModule],
-      providers: [
-        LoginService,
-        {provide: Router, useClass: MockRouter}
-      ]
+      providers: [LoginService]
     })
   })
 
-  it('should be created', inject([LoginService], (service: LoginService, router: Router) => {
+  it('should be created', inject([LoginService], (service: LoginService) => {
     expect(service).toBeTruthy()
   }))
 })
