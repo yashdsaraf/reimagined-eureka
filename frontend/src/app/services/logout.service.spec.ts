@@ -21,6 +21,7 @@ import {
 import {HttpModule} from '@angular/http'
 import {Router} from '@angular/router'
 
+import {AuthService} from './auth.service'
 import {LogoutService} from './logout.service'
 
 class MockRouter {
@@ -32,6 +33,7 @@ describe('LogoutService', () => {
     TestBed.configureTestingModule({
       imports: [HttpModule],
       providers: [
+        AuthService,
         LogoutService,
         {provide: Router, useClass: MockRouter}
       ]

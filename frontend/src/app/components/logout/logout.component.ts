@@ -28,7 +28,10 @@ export class LogoutComponent {
   error: string
 
   constructor(route: ActivatedRoute) {
-    this.message = route.snapshot.params.message || 'Come back soon'
+    this.message = route.snapshot.params.message
+    if (this.message == 'null' || this.message == 'undefined') {
+      this.message = 'Come back soon'
+    }
     this.error = route.snapshot.params.error
   }
 

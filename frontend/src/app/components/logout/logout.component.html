@@ -5,7 +5,7 @@
     <div class="ui header huge">
       {{message}}.
     </div>
-    <div *ngIf="error" id="error" class="ui mini negative message">
+    <div *ngIf="error != 'undefined' && error != 'null'" id="error" class="ui mini negative message">
       {{error}}!
     </div>
     <div id="button-wrapper">

@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import {Http} from '@angular/http'
+import {
+  Headers,
+  Http
+} from '@angular/http'
 import {Injectable} from '@angular/core'
 import {Router} from '@angular/router'
 
@@ -30,7 +33,9 @@ export class LogoutService {
   ) {}
 
   logout(message?: string, error?: string) {
-    this.http.get('/api/destroy').subscribe(
+    let access_token = this.authService.getSavedTokens().access_token
+    let headers = new Headers({'Authorization': `Bearer ${access_token}`})
+    this.http.get('/api/destroy', {headers}).subscribe(
       data => {
         let params = {message, error}
         if (data.hasOwnProperty('message')) {
