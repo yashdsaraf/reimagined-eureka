@@ -22,6 +22,7 @@ import {HttpModule} from '@angular/http'
 import {Router} from '@angular/router'
 
 import {AuthService} from './auth.service'
+import {CookieService} from './cookie.service'
 import {LogoutService} from './logout.service'
 
 class MockRouter {
@@ -34,6 +35,7 @@ describe('LogoutService', () => {
       imports: [HttpModule],
       providers: [
         AuthService,
+        CookieService,
         LogoutService,
         {provide: Router, useClass: MockRouter}
       ]
