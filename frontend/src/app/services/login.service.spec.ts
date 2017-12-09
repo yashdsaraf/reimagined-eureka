@@ -13,13 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.User;
+import {
+  TestBed,
+  inject
+} from '@angular/core/testing'
+import {HttpClientModule} from '@angular/common/http'
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+import {LoginService} from './login.service'
 
-  public User findByUsername(String username);
+describe('LoginService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpClientModule],
+      providers: [LoginService]
+    })
+  })
 
-}
+  it('should be created', inject([LoginService], (service: LoginService) => {
+    expect(service).toBeTruthy()
+  }))
+})

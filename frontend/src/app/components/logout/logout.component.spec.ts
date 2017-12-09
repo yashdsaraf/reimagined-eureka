@@ -13,13 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.User;
+import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+import {LogoutComponent} from './logout.component'
 
-  public User findByUsername(String username);
+describe('LogoutComponent', () => {
+  let component: LogoutComponent
+  let fixture: ComponentFixture<LogoutComponent>
 
-}
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [LogoutComponent]
+    })
+      .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(LogoutComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+})

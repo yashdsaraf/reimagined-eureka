@@ -13,13 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.User;
+@import base
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+#container
+  margin-top: 5rem
+  font-size: 2em
 
-  public User findByUsername(String username);
+  .header
+    word-break: break-all
 
-}
+  #error
+    display: flex
+    justify-content: center
+    word-break: break-all
+
+  #button-wrapper
+    display: flex
+    justify-content: space-around
+
+@media only screen and (max-width: 768px)
+
+  #container
+    margin-top: 3rem
+    font-size: 1em

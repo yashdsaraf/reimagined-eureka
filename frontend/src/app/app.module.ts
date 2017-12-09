@@ -17,12 +17,16 @@
 import {NgModule} from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {BrowserModule} from '@angular/platform-browser'
-import {HttpClientModule} from '@angular/common/http'
+import {
+  HTTP_INTERCEPTORS,
+  HttpClientModule
+} from '@angular/common/http'
+import {HttpModule} from '@angular/http'
 
 import {CodemirrorModule} from 'ng2-codemirror'
-import {JwtModule} from '@auth0/angular-jwt'
 import {SuiModule} from 'ng2-semantic-ui'
 
+//COMPONENTS
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {AboutUsComponent} from './components/about-us/about-us.component'
@@ -30,14 +34,17 @@ import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
+import {LogoutComponent} from './components/logout/logout.component'
 import {OutputComponent} from './components/output/output.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
-
-// Using an arrow function here will throw Angular AOT errors
-export function tokenGetter() {
-  return localStorage.getItem('access_token')
-}
+//SERVICES
+import {AuthService} from './services/auth.service'
+import {CookieService} from './services/cookie.service'
+import {LoginService} from './services/login.service'
+import {LogoutService} from './services/logout.service'
+//INTERCEPTORS
+import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 
 @NgModule({
   declarations: [
@@ -47,6 +54,7 @@ export function tokenGetter() {
     HeaderComponent,
     IndexComponent,
     LoginComponent,
+    LogoutComponent,
     OutputComponent,
     RegisterComponent,
     ToolbarComponent
@@ -57,15 +65,16 @@ export function tokenGetter() {
     BrowserModule,
     CodemirrorModule,
     HttpClientModule,
-    JwtModule.forRoot({
-      config: {
-        tokenGetter,
-        whitelistedDomains: ['localhost:8181']
-      }
-    }),
+    HttpModule,
     SuiModule
   ],
-  providers: [],
+  providers: [
+    {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
+    AuthService,
+    CookieService,
+    LoginService,
+    LogoutService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

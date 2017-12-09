@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.User;
+import {HttpClient} from '@angular/common/http'
+import {Injectable} from '@angular/core'
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+import {LogoutComponent} from '../components/logout/logout.component'
 
-  public User findByUsername(String username);
+@Injectable()
+export class LoginService {
+
+  constructor(
+    private http: HttpClient
+  ) {}
 
 }

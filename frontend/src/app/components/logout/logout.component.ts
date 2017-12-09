@@ -13,13 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.User;
+import {Component} from '@angular/core'
+import {ActivatedRoute, Params} from '@angular/router'
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+@Component({
+  selector: 'app-logout',
+  templateUrl: './logout.component.html',
+  styleUrls: ['./logout.component.sass']
+})
+export class LogoutComponent {
 
-  public User findByUsername(String username);
+  message: string
+  error: string
+
+  constructor(route: ActivatedRoute) {
+    this.message = route.snapshot.params.message
+    if (this.message == 'null' || this.message == 'undefined') {
+      this.message = 'Come back soon'
+    }
+    this.error = route.snapshot.params.error
+  }
 
 }

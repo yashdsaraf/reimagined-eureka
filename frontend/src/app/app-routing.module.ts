@@ -23,6 +23,7 @@ import {
 import {AboutUsComponent} from './components/about-us/about-us.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
+import {LogoutComponent} from './components/logout/logout.component'
 import {RegisterComponent} from './components/register/register.component'
 
 const routes: Routes = [
@@ -30,6 +31,9 @@ const routes: Routes = [
   {path: 'index', component: IndexComponent},
   {path: 'aboutus', component: AboutUsComponent},
   {path: 'login', component: LoginComponent},
+  {path: 'logout/:message', component: LogoutComponent},
+  {path: 'logout/:message/:error', component: LogoutComponent},
+  {path: 'logout', component: LogoutComponent},
   {path: 'register', component: RegisterComponent}
 ]
 

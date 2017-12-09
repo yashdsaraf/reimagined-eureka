@@ -24,8 +24,6 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -37,8 +35,6 @@ import javax.validation.constraints.NotNull;
  */
 @Entity
 @Table(name = "DEVELOPER_DETAILS")
-@NamedQueries({
-  @NamedQuery(name = "DeveloperDetails.findAll", query = "SELECT d FROM DeveloperDetails d")})
 public class DeveloperDetails implements Serializable {
 
   private static final long serialVersionUID = 1L;
