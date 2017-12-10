@@ -17,6 +17,7 @@
 import {NgModule} from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {BrowserModule} from '@angular/platform-browser'
+import {FormsModule} from '@angular/forms'
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule
@@ -70,6 +71,7 @@ import {AdminComponent} from './components/admin/admin.component'
     BrowserModule,
     CodemirrorModule,
     FlashMessagesModule,
+    FormsModule,
     HttpClientModule,
     HttpModule,
     SuiModule

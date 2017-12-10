@@ -23,6 +23,8 @@ import {Component} from '@angular/core'
 })
 export class LoginComponent {
 
-  constructor() {}
+  username:string = ""
+  password:string = ""
 
+  constructor() {}
 }
