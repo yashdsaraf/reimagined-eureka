@@ -1,36 +1,65 @@
 <div class="container">
-  <div class="ui raised segment">
-      <form class="ui fluid form" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
-        <div class="ui field">
-          <h2 class="ui header">Log into Plug 'n Code</h2><hr>
+    <form class="ui fluid form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" >
+      <div class="ui field">
+        <h2 class="ui header">Log into Plug 'n Code</h2><hr>
+      </div>
+      <div class="field">
+        <label>Username</label>
+        <div class="ui left icon input">
+          <input type="text" placeholder="username" [(ngModel)]="username" name="username"
+          #userName = "ngModel"
+          minlength = "8"
+          required
+          maxlength = "14"
+          >
+          <i class="user icon"></i>
         </div>
-        <div class="field">
-          <label>Username</label>
-          <div class="ui left icon input">
-            <input type="text" placeholder="username" [(ngModel)]="username" name="username">
-            <i class="user icon"></i>
+        <div *ngIf="userName.errors?.required && userName.touched" class="ui error message">
+          Username is required
+        </div>
+        <div *ngIf="userName.errors?.minlength && userName.touched" class="ui error message">
+          Must be at least 8 characters
+        </div>
+
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <div class="ui left icon input">
+          <input type="password" [(ngModel)]="password" name="password"
+          #Password="ngModel"
+          required
+          minlength="8"
+          maxlength="14">
+          
+          <i class="lock icon"></i>
+          <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
+            Must be at least 8 characters
           </div>
-        </div>
-        <div class="field">
-          <label>Password</label>
-          <div class="ui left icon input">
-            <input type="password" [(ngModel)]="password" name="password" >
-            <i class="lock icon"></i>
+          <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+            Password is required
           </div>
+          <div *ngIf="Password.errors?.maxlength && Password.touched" class="ui error message">
+            too strong!
+          </div>
+
         </div>
-        <div class="field">
-          <div class="ui checked checkbox">
-            <input type="checkbox" checked="" tabindex="0" name="remember" >
-            <label>remember me</label>
-          </div><br>
-          <a href="#">forget password ?</a>
-        </div>
-        <div class="ui blue submit button">Login</div>
-      </form>
-      <div >
+      </div>
+      <div class="field">
+        <div class="ui checked checkbox">
+          <input type="checkbox" checked="" tabindex="0" name="remember" >
+          <label>remember me</label>
+        </div><br>
+      </div>
+      <button class="fluid ui blue submit button">Login</button><br>
+      <button class="fluid ui submit button" type="reset">Clear</button>
+      <div>
+        <br>
+        <a href="#">forget password ?</a>
+      </div>
+      <div>
         <h5>Username: {{username}}</h5>
         <h5>Passwod: {{password}}</h5>
       </div>
-  </div>
+    </form>
 
 </div>

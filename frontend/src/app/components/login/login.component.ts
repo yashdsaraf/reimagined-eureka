@@ -15,6 +15,7 @@
  */
 
 import {Component} from '@angular/core'
+import {NgForm} from '@angular/forms'
 
 @Component({
   selector: 'app-login',
@@ -27,4 +28,10 @@ export class LoginComponent {
   password:string = ""
 
   constructor() {}
+
+  onSubmit(f: NgForm) {
+    console.log(this.username)
+    console.log(this.password)
+  }
+
 }

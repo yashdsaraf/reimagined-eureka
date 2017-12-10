@@ -15,6 +15,7 @@
  */
 
 import {Component} from '@angular/core'
+import {NgForm} from '@angular/forms'
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,18 @@ import {Component} from '@angular/core'
 })
 export class RegisterComponent {
 
+  name:string = ""
+  email:string = ""
+  username:string = ""
+  password:string = ""
+  cpassword:string = ""
+
   constructor() {}
 
+  onSubmit(f: NgForm) {
+    console.log(this.name)
+    console.log(this.email)
+    console.log(this.username)
+    console.log(this.password)
+  }
 }
