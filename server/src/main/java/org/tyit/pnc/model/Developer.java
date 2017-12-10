@@ -21,6 +21,8 @@ import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -34,11 +36,12 @@ import javax.validation.constraints.NotNull;
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Entity
-@Table(name = "DEVELOPER_DETAILS")
-public class DeveloperDetails implements Serializable {
+@Table(name = "DEVELOPER")
+public class Developer implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
   @Column(name = "ID")
@@ -46,16 +49,16 @@ public class DeveloperDetails implements Serializable {
   @Lob
   @Column(name = "PUBLIC_KEY")
   private String publicKey;
+  @JoinColumn(name = "USER_ID", referencedColumnName = "ID", unique = true)
+  @OneToOne(optional = false)
+  private AppUser userId;
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "developerId")
   private Collection<Plugin> pluginCollection;
-  @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
-  @OneToOne(optional = false)
-  private User userId;
 
-  public DeveloperDetails() {
+  public Developer() {
   }
 
-  public DeveloperDetails(Long id) {
+  public Developer(Long id) {
     this.id = id;
   }
 
@@ -75,20 +78,20 @@ public class DeveloperDetails implements Serializable {
     this.publicKey = publicKey;
   }
 
+  public AppUser getUserId() {
+    return userId;
+  }
+
+  public void setUserId(AppUser userId) {
+    this.userId = userId;
+  }
+
   public Collection<Plugin> getPluginCollection() {
     return pluginCollection;
   }
 
   public void setPluginCollection(Collection<Plugin> pluginCollection) {
     this.pluginCollection = pluginCollection;
-  }
-
-  public User getUserId() {
-    return userId;
-  }
-
-  public void setUserId(User userId) {
-    this.userId = userId;
   }
 
   @Override
@@ -101,10 +104,10 @@ public class DeveloperDetails implements Serializable {
   @Override
   public boolean equals(Object object) {
     // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof DeveloperDetails)) {
+    if (!(object instanceof Developer)) {
       return false;
     }
-    DeveloperDetails other = (DeveloperDetails) object;
+    Developer other = (Developer) object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -113,7 +116,7 @@ public class DeveloperDetails implements Serializable {
 
   @Override
   public String toString() {
-    return "org.tyit.pnc.model.DeveloperDetails[ id=" + id + " ]";
+    return "org.tyit.pnc.model.Developer[ id=" + id + " ]";
   }
 
 }

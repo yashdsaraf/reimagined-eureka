@@ -16,8 +16,8 @@
 package org.tyit.pnc.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.DeveloperDetails;
+import org.tyit.pnc.model.Developer;
 
-public interface DeveloperDetailsRepository extends CrudRepository<DeveloperDetails, Integer> {
+public interface DeveloperRepository extends CrudRepository<Developer, Integer> {
 
 }

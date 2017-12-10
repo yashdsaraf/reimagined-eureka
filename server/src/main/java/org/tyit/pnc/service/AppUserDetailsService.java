@@ -20,12 +20,13 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.tyit.pnc.model.User;
-import org.tyit.pnc.repository.UserRepository;
+import org.tyit.pnc.model.AppUser;
+import org.tyit.pnc.repository.AppUserRepository;
 
 /**
  *
@@ -37,7 +38,7 @@ public class AppUserDetailsService implements UserDetailsService {
   private static final String EMPTY_PASSWORD = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
   @Autowired
-  private UserRepository userRepository;
+  private AppUserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -49,17 +50,15 @@ public class AppUserDetailsService implements UserDetailsService {
       return new org.springframework.security.core.userdetails.User(username, EMPTY_PASSWORD, authorities);
     }
 
-    User user = userRepository.findByUsername(username);
+    AppUser user = userRepository.findByUsername(username);
 
     if (user == null) {
       throw new UsernameNotFoundException("The username " + username + " does not exist");
     }
 
-    user.getRoleCollection().forEach(role -> {
-      authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-    });
+    authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
 
-    UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, username, authorities);
+    UserDetails userDetails = new User(username, username, authorities);
     return userDetails;
   }
 

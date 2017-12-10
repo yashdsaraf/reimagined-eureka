@@ -21,6 +21,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -43,6 +45,7 @@ public class Plugin implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
   @Column(name = "ID")
@@ -50,7 +53,7 @@ public class Plugin implements Serializable {
   @Basic(optional = false)
   @NotNull
   @Size(min = 1, max = 255)
-  @Column(name = "NAME")
+  @Column(name = "NAME", unique = true)
   private String name;
   @Size(max = 500)
   @Column(name = "DESCRIPTION")
@@ -79,10 +82,13 @@ public class Plugin implements Serializable {
     @JoinColumn(name = "PLUGIN_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
   @ManyToMany
-  private Collection<User> userCollection;
+  private Collection<AppUser> appUserCollection;
+  @JoinColumn(name = "ADMINID", referencedColumnName = "ID")
+  @ManyToOne(optional = false)
+  private AppAdmin adminid;
   @JoinColumn(name = "DEVELOPER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
-  private DeveloperDetails developerId;
+  private Developer developerId;
 
   public Plugin() {
   }
@@ -156,19 +162,27 @@ public class Plugin implements Serializable {
     this.updatedOn = updatedOn;
   }
 
-  public Collection<User> getUserCollection() {
-    return userCollection;
+  public Collection<AppUser> getAppUserCollection() {
+    return appUserCollection;
   }
 
-  public void setUserCollection(Collection<User> userCollection) {
-    this.userCollection = userCollection;
+  public void setAppUserCollection(Collection<AppUser> appUserCollection) {
+    this.appUserCollection = appUserCollection;
   }
 
-  public DeveloperDetails getDeveloperId() {
+  public AppAdmin getAdminid() {
+    return adminid;
+  }
+
+  public void setAdminid(AppAdmin adminid) {
+    this.adminid = adminid;
+  }
+
+  public Developer getDeveloperId() {
     return developerId;
   }
 
-  public void setDeveloperId(DeveloperDetails developerId) {
+  public void setDeveloperId(Developer developerId) {
     this.developerId = developerId;
   }
 

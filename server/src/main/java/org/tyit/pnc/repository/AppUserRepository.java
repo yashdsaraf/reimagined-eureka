@@ -16,10 +16,10 @@
 package org.tyit.pnc.repository;
 
 import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.User;
+import org.tyit.pnc.model.AppUser;
 
-public interface UserRepository extends CrudRepository<User, Integer> {
+public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
 
-  public User findByUsername(String username);
+  public AppUser findByUsername(String username);
 
 }

@@ -13,11 +13,15 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
+package org.tyit.pnc.validator;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.Role;
+import org.springframework.stereotype.Component;
 
-public interface RoleRepository extends CrudRepository<Role, Integer> {
+/**
+ *
+ * @author Yash D. Saraf <yashdsaraf@gmail.com>
+ */
+@Component
+public class RegisterValidator {
 
 }
