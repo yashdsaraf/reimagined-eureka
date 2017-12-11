@@ -58,7 +58,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
 
-    UserDetails userDetails = new User(username, username, authorities);
+    UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
     return userDetails;
   }
 
