@@ -1,100 +1,108 @@
 <div class="container">
-    <form class="ui fluid form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
-      <div class="field">
-        <h1 class="ui header">Registration</h1>
-        <hr>
-      </div>
-      <div class="field">
-        <label>Name</label>
-        <div class="ui left icon input">
-          <input type="text" placeholder="Enter your name" [(ngModel)] = "name" name="name" #Name = "ngModel"
-          maxlength="35" minlength="5"
-          required>
+  <form class="ui fluid form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
+    <div class="field">
+      <h1 class="ui header">Registration</h1><hr>
+    </div>
 
-          <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
-            Name is required
-          </div>
-          <div *ngIf="Name.errors?.minlength && Name.touched" class="ui error message">
-            Must be at least 5 characters
-          </div>
-          <div *ngIf="Name.errors?.maxlength && Name.touched" class="ui error message">
-            maximum 14 characters
-          </div>
-          <i class="write icon"></i>
-        </div>
+    <div class="field">
+      <label>Name</label>
+      <div class="ui left icon input">
+        <input type="text" placeholder="Enter your name" [(ngModel)]="name" name="name"
+        #Name = "ngModel"
+        minlength = "4"
+        required>
+      <i class="write icon"></i>
       </div>
-
-      <div class="field">
-        <label>your email id</label>
-        <div class="ui left icon input">
-          <input type="email" placeholder="your email id" [(ngModel)]="email" name = "email" #Email = "ngModel" required>
-          <i class="user icon"></i>
-          <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
-            Email is required
-          </div>
-        </div>
+      <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
+        Name is required
       </div>
-
-      <div class="field">
-        <label>Choose your username</label>
-        <div class="ui left icon input">
-          <input type="text" placeholder="username" [(ngModel)] = "username" name = "username" #userName = "ngModel" required maxlength = "14" minlength = "5">
-          <i class="user icon"></i>
-
-          <div *ngIf="userName.errors?.required && userName.touched" class="ui error message">
-            Username is required
-          </div>
-          <div *ngIf="userName.errors?.minlength && userName.touched" class="ui error message">
-            Must be at least 5 characters
-          </div>
-          <div *ngIf="userName.errors?.maxlength && userName.touched" class="ui error message">
-            maximum 14 characters
-          </div>
-        </div>
+      <div *ngIf="Name.errors?.minlength && Name.touched" class="ui error message">
+        Must be at least 4 characters
       </div>
-      <div class="field">
-        <label>Create your password</label>
-        <div class="ui left icon input">
-          <input type="password" [(ngModel)]="password" name="password"
-          #Password="ngModel"
+    </div> <!-- Name field -->
+
+    <div class="field">
+      <label>Email id</label>
+      <div class="ui left icon input">
+        <input type="email" placeholder="example@test.com" [(ngModel)]="email" name="email"
+          #Email = "ngModel"
           required
-          minlength="8"
-          maxlength="14">
-          <i class="lock icon"></i>
-          <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
-            Must be at least 8 characters
-          </div>
-          <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
-            Password is required
-          </div>
-          <div *ngIf="Password.errors?.maxlength && Password.touched" class="ui error message">
-            too strong!
-          </div>
-        </div>
+          pattern = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+        <i class="user icon"></i>
       </div>
-      <div class="field">
-        <label>Confirm your password</label>
-        <div class="ui left icon input">
-          <input type="password" [(ngModel)] = "cpassword" name = "cpassword"
-          #cPassword = "ngModel" required minlength = "8" maxlength = "14"
-          match = #Password >
-          <i class="lock icon"></i>
-          <div *ngIf="cPassword.errors?.minlength && cPassword.touched" class="ui error message">
-            Must be at least 8 characters
-          </div>
-          <div *ngIf="cPassword.errors?.required && cPassword.touched" class="ui error message">
-            Password is required
-          </div>
-          <div *ngIf="cPassword.errors?.match && cPassword.touched" class="ui error message">
-          Password does not match
-          </div>
-        </div>
+      <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
+        Email id is required
       </div>
+      <div *ngIf="Email.errors?.pattern && Email.touched" class="ui error message">
+        Invalid email
+      </div>
+    </div> <!-- Email id field -->
 
-      <div><button class="fluid ui blue submit button">Sign up</button></div>
-      <div style="align: right">
-        <h5>Name: {{name}}</h5><h5>Email Id: {{email}}</h5>
-        <h5>Username: {{username}}</h5><h5>Passwod: {{password}}</h5>
+    <div class="field">
+      <label>Choose your username</label>
+      <div class="ui left icon input">
+        <input type="text" placeholder="username" [(ngModel)]="username" name="username"
+          #userName = "ngModel"
+          minlength = "5"
+          required
+          pattern = "^\S*$">
+        <i class="user icon"></i>
       </div>
-    </form>
+      <div *ngIf="userName.errors?.required && userName.touched" class="ui error message">
+        Username is required
+      </div>
+      <div *ngIf="userName.errors?.minlength && userName.touched" class="ui error message">
+        Must be at least 5 characters
+      </div>
+      <div *ngIf="userName.errors?.pattern && userName.touched" class="ui error message">
+        Username can't have spaces
+      </div>
+    </div> <!-- Username field -->
+
+    <div class="field">
+      <label>Create your password</label>
+      <div class="ui left icon input">
+        <input type="password" [(ngModel)]="password" name="password"
+          #Password = "ngModel"
+          minlength = "8"
+          required
+          pattern = "^\S*$">
+        <i class="lock icon"></i>
+      </div>
+      <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+        Password is required
+      </div>
+      <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
+        Must be at least 8 characters
+      </div>
+      <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
+        Password can't have spaces
+      </div>
+    </div> <!-- Password field -->
+
+    <div class="field">
+      <label>Confirm password</label>
+      <div class="ui left icon input">
+        <input type="password" [(ngModel)]="cpassword" name="cpassword"
+          #cPassword = "ngModel"
+          required
+          pattern="^\S*$">
+        <i class="lock icon"></i>
+      </div>
+      <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+        Password is required
+      </div>
+      <div *ngIf="password!=cpassword && cPassword.touched" class="ui error message">
+        These passwords don't match. Try again?
+      </div>
+    </div> <!-- Confirm password field -->
+
+    <div><button class="fluid ui blue submit button">Sign up</button></div>
+
+    <div>
+      <h5>Name: {{name}} <br> Email Id: {{email}}
+      <br>Username: {{username}} <br> Passwod: {{password}}</h5>
+    </div>
+
+  </form>
 </div>
