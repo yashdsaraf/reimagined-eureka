@@ -18,19 +18,29 @@ import {
   TestBed,
   inject
 } from '@angular/core/testing'
-import {HttpClientModule} from '@angular/common/http'
+import {HttpModule} from '@angular/http'
+import {Router} from '@angular/router'
 
+import {AuthService} from './auth.service'
 import {LoginService} from './login.service'
+import {MockRouter} from '../utils/mock-router'
+import {CookieService} from './cookie.service'
+
 
 describe('LoginService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientModule],
-      providers: [LoginService]
+      imports: [HttpModule],
+      providers: [
+        AuthService,
+        CookieService,
+        LoginService,
+        {provide: Router, useClass: MockRouter}
+      ]
     })
   })
 
-  it('should be created', inject([LoginService], (service: LoginService) => {
+  it('should be created', inject([LoginService, Router], (service: LoginService) => {
     expect(service).toBeTruthy()
   }))
 })

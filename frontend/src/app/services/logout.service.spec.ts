@@ -24,10 +24,7 @@ import {Router} from '@angular/router'
 import {AuthService} from './auth.service'
 import {CookieService} from './cookie.service'
 import {LogoutService} from './logout.service'
-
-class MockRouter {
-  navigate = jasmine.createSpy('navigate')
-}
+import {MockRouter} from '../utils/mock-router'
 
 describe('LogoutService', () => {
   beforeEach(() => {
