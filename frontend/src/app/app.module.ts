@@ -24,6 +24,7 @@ import {
 import {HttpModule} from '@angular/http'
 
 import {CodemirrorModule} from 'ng2-codemirror'
+import {FlashMessagesModule} from 'angular2-flash-messages'
 import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
@@ -64,6 +65,7 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
     BrowserAnimationsModule,
     BrowserModule,
     CodemirrorModule,
+    FlashMessagesModule,
     HttpClientModule,
     HttpModule,
     SuiModule

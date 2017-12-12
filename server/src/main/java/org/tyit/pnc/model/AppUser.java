@@ -60,12 +60,12 @@ public class AppUser implements Serializable {
   private String email;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 255)
+  @Size(min = 8, max = 255)
   @Column(name = "USERNAME", unique = true)
   private String username;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 255)
+  @Size(min = 8, max = 255)
   @Column(name = "PASSWORD")
   private String password;
   @Basic(optional = false)

@@ -51,21 +51,17 @@ export class LoginService {
       )
   }
 
-  public register(user: User) {
+  public register(user: User): Promise<any> {
     let headers = new Headers({
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
     })
     let params = HttpUtils.getURLParams(user)
-    this.http.post('/api/register', params, {headers})
+    return new Promise((resolve, reject) => {
+      this.http.post('/api/register', params, {headers})
       .subscribe(
-        data => {
-          this.login(user.username, user.password)
-        },
-        err => {
-          // console.log(err._body)
-          // TODO: Flash message
-        }
+        data => resolve(),
+        err => reject(err._body)
       )
+    })
   }
-
 }
