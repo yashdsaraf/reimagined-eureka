@@ -15,7 +15,7 @@
  */
 package org.tyit.pnc.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -42,11 +42,10 @@ public class AppUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-    List<GrantedAuthority> authorities = new ArrayList<>();
-
+    List<GrantedAuthority> authorities;
     if (username.equalsIgnoreCase("guest")) {
-      authorities.add(new SimpleGrantedAuthority("GUEST"));
+      authorities = Arrays.asList(
+              new SimpleGrantedAuthority("GUEST"));
       return new org.springframework.security.core.userdetails.User(username, EMPTY_PASSWORD, authorities);
     }
 
@@ -56,8 +55,8 @@ public class AppUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException("The username " + username + " does not exist");
     }
 
-    authorities.add(new SimpleGrantedAuthority(user.getRole().toString()));
-
+    authorities = Arrays.asList(
+            new SimpleGrantedAuthority(user.getRole().toString()));
     UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
     return userDetails;
   }

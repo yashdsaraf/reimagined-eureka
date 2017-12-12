@@ -23,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -59,9 +60,9 @@ public class RegisterController {
     } catch (NoSuchAlgorithmException ex) {
       Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
     } catch (NullPointerException ex) {
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity("Invalid request structure", HttpStatus.BAD_REQUEST);
     }
-    return ResponseEntity.ok("An internal error occured");
+    return new ResponseEntity("An internal error occured", HttpStatus.NO_CONTENT);
   }
 
 }

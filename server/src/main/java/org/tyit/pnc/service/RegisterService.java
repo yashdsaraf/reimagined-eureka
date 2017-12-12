@@ -17,9 +17,14 @@ package org.tyit.pnc.service;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionSystemException;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
 
@@ -34,11 +39,28 @@ public class RegisterService {
   private AppUserRepository appUserRepository;
 
   public ResponseEntity<String> register(AppUser user) {
-    // TODO: Validate user and user data
+    AppUser checkUser = appUserRepository.findByUsername(user.getUsername());
+    if (checkUser != null) {
+      return new ResponseEntity("User already exists", HttpStatus.BAD_REQUEST);
+    }
     user.setCreatedOn(Date.from(Instant.now()));
     user.setRole(AppUser.Role.USER);
-    appUserRepository.save(user);
-    return ResponseEntity.ok().build();
+    try {
+      appUserRepository.save(user);
+      return ResponseEntity.ok().build();
+    } catch (TransactionSystemException ex) {
+      if (ex.getRootCause() instanceof ConstraintViolationException) {
+        StringBuilder sb = new StringBuilder();
+        ConstraintViolationException realEx = (ConstraintViolationException) ex.getRootCause();
+        realEx.getConstraintViolations().forEach((t) -> {
+          sb.append(sb.length() > 0 ? ", " : "Invalid ");
+          sb.append(t.getPropertyPath().toString());
+        });
+        return new ResponseEntity(sb.toString(), HttpStatus.BAD_REQUEST);
+      }
+      Logger.getLogger(RegisterService.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
   }
 
 }
