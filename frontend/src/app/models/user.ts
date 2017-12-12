@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-export interface Tool {
+export interface User {
   name: string
-  icon: string
+  username: string
+  password: string
+  email: string
+  created_on?: Date
 }

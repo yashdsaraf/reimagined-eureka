@@ -14,16 +14,58 @@
  * limitations under the License.
  */
 
-import {HttpClient} from '@angular/common/http'
 import {Injectable} from '@angular/core'
+import {
+  Http,
+  Headers,
+  Response
+} from '@angular/http'
+import {Router} from '@angular/router'
 
+import {AuthService} from './auth.service'
+import {HttpUtils} from '../utils/http-utils'
 import {LogoutComponent} from '../components/logout/logout.component'
+import {User} from '../models/user'
 
 @Injectable()
 export class LoginService {
 
   constructor(
-    private http: HttpClient
+    private authService: AuthService,
+    private http: Http,
+    private router: Router
   ) {}
+
+  public login(username: string, password: string, remember_me: boolean = false) {
+    this.authService.getTokens(username, password)
+      .subscribe(
+        data => {
+          if (remember_me) {
+            localStorage.setItem('remember_me', 'true')
+            this.authService.updateTokens(data.access_token, data.refresh_token)
+          } else {
+            this.authService.updateTokens(data.access_token)
+          }
+          this.router.navigate['/home']
+        }
+      )
+  }
+
+  public register(user: User) {
+    let headers = new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    })
+    let params = HttpUtils.getURLParams(user)
+    this.http.post('/api/register', params, {headers})
+      .subscribe(
+        data => {
+          this.login(user.username, user.password)
+        },
+        err => {
+          // console.log(err._body)
+          // TODO: Flash message
+        }
+      )
+  }
 
 }
