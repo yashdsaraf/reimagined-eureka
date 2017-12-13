@@ -24,7 +24,7 @@ import {Router} from '@angular/router'
 import {AuthService} from './auth.service'
 import {CookieService} from './cookie.service'
 import {LogoutService} from './logout.service'
-import {MockRouter} from '../utils/mock-router'
+import {MockRouter} from '../utils/router.mock'
 
 describe('LogoutService', () => {
   beforeEach(() => {

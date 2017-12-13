@@ -15,32 +15,31 @@
  */
 
 import {
-  TestBed,
-  inject
+  async,
+  ComponentFixture,
+  TestBed
 } from '@angular/core/testing'
-import {HttpModule} from '@angular/http'
-import {Router} from '@angular/router'
 
-import {AuthService} from './auth.service'
-import {LoginService} from './login.service'
-import {MockRouter} from '../utils/router.mock'
-import {CookieService} from './cookie.service'
+import {AdminComponent} from './admin.component'
 
+describe('AdminComponent', () => {
+  let component: AdminComponent
+  let fixture: ComponentFixture<AdminComponent>
 
-describe('LoginService', () => {
-  beforeEach(() => {
+  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [HttpModule],
-      providers: [
-        AuthService,
-        CookieService,
-        LoginService,
-        {provide: Router, useClass: MockRouter}
-      ]
+      declarations: [AdminComponent]
     })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(AdminComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
   })
 
-  it('should be created', inject([LoginService, Router], (service: LoginService) => {
-    expect(service).toBeTruthy()
-  }))
+  it('should be created', () => {
+    expect(component).toBeTruthy()
+  })
 })

@@ -46,13 +46,17 @@ import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
+import {HomeComponent} from './components/home/home.component'
+import {AdminComponent} from './components/admin/admin.component'
 
 @NgModule({
   declarations: [
+    AdminComponent,
     AppComponent,
     AboutUsComponent,
     FileExComponent,
     HeaderComponent,
+    HomeComponent,
     IndexComponent,
     LoginComponent,
     LogoutComponent,
