@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
+import {
+  APP_INITIALIZER,
+  NgModule
+} from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {BrowserModule} from '@angular/platform-browser'
 import {FormsModule} from '@angular/forms'
@@ -45,10 +48,15 @@ import {AuthService} from './services/auth.service'
 import {CookieService} from './services/cookie.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
+import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 import {HomeComponent} from './components/home/home.component'
 import {AdminComponent} from './components/admin/admin.component'
+
+export function init(startupService: StartupService) {
+  return () => startupService.init();
+}
 
 @NgModule({
   declarations: [
@@ -77,11 +85,13 @@ import {AdminComponent} from './components/admin/admin.component'
     SuiModule
   ],
   providers: [
+    {provide: APP_INITIALIZER, useFactory: init, deps: [StartupService], multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     CookieService,
     LoginService,
-    LogoutService
+    LogoutService,
+    StartupService
   ],
   bootstrap: [AppComponent]
 })

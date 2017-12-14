@@ -7,7 +7,7 @@
     <div class="field">
       <label>Name</label>
       <div class="ui left icon input">
-        <input type="text" placeholder="Enter your name" [(ngModel)]="name" name="name"
+        <input type="text" placeholder="Enter your name" [(ngModel)]="user.name" name="name"
         #Name = "ngModel"
         minlength = "4"
         required>
@@ -24,7 +24,7 @@
     <div class="field">
       <label>Email id</label>
       <div class="ui left icon input">
-        <input type="email" placeholder="example@test.com" [(ngModel)]="email" name="email"
+        <input type="email" placeholder="example@test.com" [(ngModel)]="user.email" name="email"
           #Email = "ngModel"
           required
           pattern = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
@@ -41,7 +41,7 @@
     <div class="field">
       <label>Choose your username</label>
       <div class="ui left icon input">
-        <input type="text" placeholder="username" [(ngModel)]="username" name="username"
+        <input type="text" placeholder="username" [(ngModel)]="user.username" name="username"
           #userName = "ngModel"
           minlength = "5"
           required
@@ -62,7 +62,7 @@
     <div class="field">
       <label>Create your password</label>
       <div class="ui left icon input">
-        <input type="password" [(ngModel)]="password" name="password"
+        <input type="password" [(ngModel)]="user.password" name="password"
           #Password = "ngModel"
           minlength = "8"
           required
@@ -83,7 +83,7 @@
     <div class="field">
       <label>Confirm password</label>
       <div class="ui left icon input">
-        <input type="password" [(ngModel)]="cpassword" name="cpassword"
+        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
           #cPassword = "ngModel"
           required
           pattern="^\S*$">
@@ -92,17 +92,18 @@
       <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
         Password is required
       </div>
-      <div *ngIf="password!=cpassword && cPassword.touched" class="ui error message">
+      <div *ngIf="user.password!=confirmPassword && cPassword.touched" class="ui error message">
         These passwords don't match. Try again?
       </div>
     </div> <!-- Confirm password field -->
 
+    <div class="field">
+      <div class="ui checked checkbox">
+        <input type="checkbox" checked="" tabindex="0" name="remember" (change)="remember_me=!remember_me" />
+        <label>Remember me</label>
+      </div><br>
+    </div> <!-- remember field -->
+
     <div><button class="fluid ui blue submit button">Sign up</button></div>
-
-    <div>
-      <h5>Name: {{name}} <br> Email Id: {{email}}
-      <br>Username: {{username}} <br> Passwod: {{password}}</h5>
-    </div>
-
   </form>
 </div>

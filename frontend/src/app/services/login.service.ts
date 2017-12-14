@@ -36,8 +36,9 @@ export class LoginService {
     private router: Router
   ) {}
 
-  public login(username: string, password: string, remember_me: boolean = false) {
-    this.authService.getTokens(username, password)
+  public login(username: string, password: string, remember_me: boolean): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authService.getTokens(username, password)
       .subscribe(
         data => {
           if (remember_me) {
@@ -46,12 +47,18 @@ export class LoginService {
           } else {
             this.authService.updateTokens(data.access_token)
           }
-          this.router.navigate['/home']
+          this.router.navigate(['/home'])
+          resolve()
+        },
+        err => {
+          let json = JSON.parse(err._body)
+          reject(json.error_description)
         }
       )
+    })
   }
 
-  public register(user: User): Promise<any> {
+  public register(user: User, remember_me: boolean): Promise<any> {
     let headers = new Headers({
       'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
     })

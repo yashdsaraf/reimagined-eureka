@@ -17,6 +17,11 @@
 import {Component} from '@angular/core'
 import {NgForm} from '@angular/forms'
 
+
+import {FlashMessagesService} from 'angular2-flash-messages'
+
+import {LoginService} from '../../services/login.service'
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -24,14 +29,25 @@ import {NgForm} from '@angular/forms'
 })
 export class LoginComponent {
 
-  username:string = ""
-  password:string = ""
+  username = ""
+  password = ""
+  remember_me = true
 
-  constructor() {}
+  constructor(
+    private flashMessagesService: FlashMessagesService,
+    private loginService: LoginService
+  ) {}
 
   onSubmit(f: NgForm) {
-    console.log(this.username)
-    console.log(this.password)
+    if (f.valid) {
+      this.loginService.login(this.username, this.password, this.remember_me)
+        .catch(err => {
+          this.flashMessagesService.show(err, {
+            cssClass: 'ui error message',
+            timeout: 4000
+          })
+        })
+    }
   }
 
 }

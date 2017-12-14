@@ -47,8 +47,8 @@
 
     <div class="field">
       <div class="ui checked checkbox">
-        <input type="checkbox" checked="" tabindex="0" name="remember" >
-        <label>remember me</label>
+        <input type="checkbox" checked="" tabindex="0" name="remember" (change)="remember_me=!remember_me" />
+        <label>Remember me</label>
       </div><br>
     </div> <!-- remember field -->
 
@@ -59,10 +59,5 @@
         <a href="#">forget password ?</a>
     </div>
 
-    <div>
-      <h5>Username: {{username}}</h5>
-      <h5>Passwod: {{password}}</h5>
-    </div>
-      
   </form>
 </div>

@@ -17,6 +17,10 @@
 import {Component} from '@angular/core'
 import {NgForm} from '@angular/forms'
 
+import {FlashMessagesService} from 'angular2-flash-messages/module/flash-messages.service'
+import {LoginService} from '../../services/login.service'
+import {User} from '../../models/user'
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -24,18 +28,38 @@ import {NgForm} from '@angular/forms'
 })
 export class RegisterComponent {
 
-  name:string = ""
-  email:string = ""
-  username:string = ""
-  password:string = ""
-  cpassword:string = ""
+  user: User = {
+    name: "",
+    email: "",
+    username: "",
+    password: ""
+  }
+  confirmPassword = ""
+  remember_me = true
 
-  constructor() {}
+  constructor(
+    private flashMessagesService: FlashMessagesService,
+    private loginService: LoginService
+  ) {}
 
   onSubmit(f: NgForm) {
-    console.log(this.name)
-    console.log(this.email)
-    console.log(this.username)
-    console.log(this.password)
+    if (f.valid && this.user.password == this.confirmPassword) {
+      this.loginService.register(this.user, this.remember_me)
+        .then(() => {
+          this.loginService.login(this.user.username, this.user.password, this.remember_me)
+            .catch(err => {
+              this.flashMessagesService.show(err, {
+                cssClass: 'ui error message',
+                timeout: 4000
+              })
+            })
+        })
+        .catch(err => {
+          this.flashMessagesService.show(err, {
+            cssClass: 'ui error message',
+            timeout: 4000
+          })
+        })
+    }
   }
 }

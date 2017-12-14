@@ -13,15 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
+import {
+  TestBed,
+  inject
+} from '@angular/core/testing'
 
-public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
+import {StartupService} from './startup.service'
 
-  public AppUser findByUsername(String username);
+describe('StartupService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [StartupService]
+    })
+  })
 
-  public AppUser findByEmail(String email);
-
-}
+  it('should be created', inject([StartupService], (service: StartupService) => {
+    expect(service).toBeTruthy()
+  }))
+})

@@ -70,6 +70,7 @@ export class AuthService {
   }
 
   public updateTokens(access_token: string, refresh_token?: string) {
+    this.deleteTokens()
     if (access_token !== null && access_token !== undefined) {
       this.saveToken('access_token', access_token)
     }
