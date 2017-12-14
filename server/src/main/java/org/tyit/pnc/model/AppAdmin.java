@@ -18,51 +18,44 @@ package org.tyit.pnc.model;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Entity
-@Table(name = "ROLE")
-public class Role implements Serializable {
+@Table(name = "APP_ADMIN")
+public class AppAdmin implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
   @Column(name = "ID")
   private Long id;
-  @Basic(optional = false)
-  @NotNull
-  @Size(min = 1, max = 255)
-  @Column(name = "ROLE_NAME")
-  private String roleName;
-  @JoinTable(name = "USER_ROLE", joinColumns = {
-    @JoinColumn(name = "ROLE_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
-  @ManyToMany
-  private Collection<User> userCollection;
+  @JoinColumn(name = "USER_ID", referencedColumnName = "ID", unique = true)
+  @ManyToOne(optional = false)
+  private AppUser userId;
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminid")
+  private Collection<Plugin> pluginCollection;
 
-  public Role() {
+  public AppAdmin() {
   }
 
-  public Role(Long id) {
+  public AppAdmin(Long id) {
     this.id = id;
-  }
-
-  public Role(Long id, String roleName) {
-    this.id = id;
-    this.roleName = roleName;
   }
 
   public Long getId() {
@@ -73,20 +66,20 @@ public class Role implements Serializable {
     this.id = id;
   }
 
-  public String getRoleName() {
-    return roleName;
+  public AppUser getUserId() {
+    return userId;
   }
 
-  public void setRoleName(String roleName) {
-    this.roleName = roleName;
+  public void setUserId(AppUser userId) {
+    this.userId = userId;
   }
 
-  public Collection<User> getUserCollection() {
-    return userCollection;
+  public Collection<Plugin> getPluginCollection() {
+    return pluginCollection;
   }
 
-  public void setUserCollection(Collection<User> userCollection) {
-    this.userCollection = userCollection;
+  public void setPluginCollection(Collection<Plugin> pluginCollection) {
+    this.pluginCollection = pluginCollection;
   }
 
   @Override
@@ -99,10 +92,10 @@ public class Role implements Serializable {
   @Override
   public boolean equals(Object object) {
     // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof Role)) {
+    if (!(object instanceof AppAdmin)) {
       return false;
     }
-    Role other = (Role) object;
+    AppAdmin other = (AppAdmin) object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -111,7 +104,7 @@ public class Role implements Serializable {
 
   @Override
   public String toString() {
-    return "org.tyit.pnc.model.Role[ id=" + id + " ]";
+    return "org.tyit.pnc.model.AppAdmin[ id=" + id + " ]";
   }
 
 }

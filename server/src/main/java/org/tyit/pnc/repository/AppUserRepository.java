@@ -13,8 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.tyit.pnc.repository;
 
-export interface Tool {
-  name: string
-  icon: string
+import org.springframework.data.repository.CrudRepository;
+import org.tyit.pnc.model.AppUser;
+
+public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
+
+  public AppUser findByUsername(String username);
+
 }

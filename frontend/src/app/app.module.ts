@@ -24,6 +24,7 @@ import {
 import {HttpModule} from '@angular/http'
 
 import {CodemirrorModule} from 'ng2-codemirror'
+import {FlashMessagesModule} from 'angular2-flash-messages'
 import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
@@ -45,13 +46,17 @@ import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
+import {HomeComponent} from './components/home/home.component'
+import {AdminComponent} from './components/admin/admin.component'
 
 @NgModule({
   declarations: [
+    AdminComponent,
     AppComponent,
     AboutUsComponent,
     FileExComponent,
     HeaderComponent,
+    HomeComponent,
     IndexComponent,
     LoginComponent,
     LogoutComponent,
@@ -64,6 +69,7 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
     BrowserAnimationsModule,
     BrowserModule,
     CodemirrorModule,
+    FlashMessagesModule,
     HttpClientModule,
     HttpModule,
     SuiModule

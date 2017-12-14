@@ -16,16 +16,15 @@
 package org.tyit.pnc.model;
 
 import java.io.Serializable;
-import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -39,10 +38,11 @@ import javax.validation.constraints.Size;
  */
 @Entity
 @Table(name = "APP_USER")
-public class User implements Serializable {
+public class AppUser implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
   @Column(name = "ID")
@@ -52,20 +52,20 @@ public class User implements Serializable {
   @Size(min = 1, max = 255)
   @Column(name = "NAME")
   private String name;
-  @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")//if the field contains email address consider using this annotation to enforce field validation
+  @Pattern(regexp = "[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message = "Invalid email")
   @Basic(optional = false)
   @NotNull
   @Size(min = 1, max = 255)
-  @Column(name = "EMAIL")
+  @Column(name = "EMAIL", unique = true)
   private String email;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 255)
-  @Column(name = "USERNAME")
+  @Size(min = 8, max = 255)
+  @Column(name = "USERNAME", unique = true)
   private String username;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 255)
+  @Size(min = 8, max = 255)
   @Column(name = "PASSWORD")
   private String password;
   @Basic(optional = false)
@@ -75,35 +75,29 @@ public class User implements Serializable {
   private Date createdOn;
   @Basic(optional = false)
   @NotNull
-  @Column(name = "LAST_USED_ON")
-  @Temporal(TemporalType.TIMESTAMP)
-  private Date lastUsedOn;
-  @ManyToMany(mappedBy = "userCollection")
-  private Collection<Plugin> pluginCollection;
-  @ManyToMany(mappedBy = "userCollection")
-  private Collection<Role> roleCollection;
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-  private Collection<Docker> dockerCollection;
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-  private Collection<Project> projectCollection;
-  @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
-  private DeveloperDetails developerDetails;
+  @Enumerated(EnumType.STRING)
+  @Column(name = "ROLE")
+  private Role role;
 
-  public User() {
+  public enum Role {
+    ADMIN, USER, DEVELOPER, GUEST
   }
 
-  public User(Long id) {
+  public AppUser() {
+  }
+
+  public AppUser(Long id) {
     this.id = id;
   }
 
-  public User(Long id, String name, String email, String username, String password, Date createdOn, Date lastUsedOn) {
+  public AppUser(Long id, String name, String email, String username, String password, Date createdOn, Role role) {
     this.id = id;
     this.name = name;
     this.email = email;
     this.username = username;
     this.password = password;
     this.createdOn = createdOn;
-    this.lastUsedOn = lastUsedOn;
+    this.role = role;
   }
 
   public Long getId() {
@@ -154,52 +148,12 @@ public class User implements Serializable {
     this.createdOn = createdOn;
   }
 
-  public Date getLastUsedOn() {
-    return lastUsedOn;
+  public Role getRole() {
+    return role;
   }
 
-  public void setLastUsedOn(Date lastUsedOn) {
-    this.lastUsedOn = lastUsedOn;
-  }
-
-  public Collection<Plugin> getPluginCollection() {
-    return pluginCollection;
-  }
-
-  public void setPluginCollection(Collection<Plugin> pluginCollection) {
-    this.pluginCollection = pluginCollection;
-  }
-
-  public Collection<Role> getRoleCollection() {
-    return roleCollection;
-  }
-
-  public void setRoleCollection(Collection<Role> roleCollection) {
-    this.roleCollection = roleCollection;
-  }
-
-  public Collection<Docker> getDockerCollection() {
-    return dockerCollection;
-  }
-
-  public void setDockerCollection(Collection<Docker> dockerCollection) {
-    this.dockerCollection = dockerCollection;
-  }
-
-  public Collection<Project> getProjectCollection() {
-    return projectCollection;
-  }
-
-  public void setProjectCollection(Collection<Project> projectCollection) {
-    this.projectCollection = projectCollection;
-  }
-
-  public DeveloperDetails getDeveloperDetails() {
-    return developerDetails;
-  }
-
-  public void setDeveloperDetails(DeveloperDetails developerDetails) {
-    this.developerDetails = developerDetails;
+  public void setRole(Role role) {
+    this.role = role;
   }
 
   @Override
@@ -212,10 +166,10 @@ public class User implements Serializable {
   @Override
   public boolean equals(Object object) {
     // TODO: Warning - this method won't work in the case the id fields are not set
-    if (!(object instanceof User)) {
+    if (!(object instanceof AppUser)) {
       return false;
     }
-    User other = (User) object;
+    AppUser other = (AppUser) object;
     if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
       return false;
     }
@@ -224,7 +178,7 @@ public class User implements Serializable {
 
   @Override
   public String toString() {
-    return "org.tyit.pnc.model.User[ id=" + id + " ]";
+    return "org.tyit.pnc.model.AppUser[ id=" + id + " ]";
   }
 
 }

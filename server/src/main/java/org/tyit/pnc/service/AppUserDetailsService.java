@@ -15,17 +15,18 @@
  */
 package org.tyit.pnc.service;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.tyit.pnc.model.User;
-import org.tyit.pnc.repository.UserRepository;
+import org.tyit.pnc.model.AppUser;
+import org.tyit.pnc.repository.AppUserRepository;
 
 /**
  *
@@ -37,29 +38,26 @@ public class AppUserDetailsService implements UserDetailsService {
   private static final String EMPTY_PASSWORD = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
 
   @Autowired
-  private UserRepository userRepository;
+  private AppUserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
-    List<GrantedAuthority> authorities = new ArrayList<>();
-
+    List<GrantedAuthority> authorities;
     if (username.equalsIgnoreCase("guest")) {
-      authorities.add(new SimpleGrantedAuthority("GUEST"));
+      authorities = Arrays.asList(
+              new SimpleGrantedAuthority("GUEST"));
       return new org.springframework.security.core.userdetails.User(username, EMPTY_PASSWORD, authorities);
     }
 
-    User user = userRepository.findByUsername(username);
+    AppUser user = userRepository.findByUsername(username);
 
     if (user == null) {
       throw new UsernameNotFoundException("The username " + username + " does not exist");
     }
 
-    user.getRoleCollection().forEach(role -> {
-      authorities.add(new SimpleGrantedAuthority(role.getRoleName()));
-    });
-
-    UserDetails userDetails = new org.springframework.security.core.userdetails.User(username, username, authorities);
+    authorities = Arrays.asList(
+            new SimpleGrantedAuthority(user.getRole().toString()));
+    UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
     return userDetails;
   }
 

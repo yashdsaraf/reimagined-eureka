@@ -13,11 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.Role;
+import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-public interface RoleRepository extends CrudRepository<Role, Integer> {
+import {HomeComponent} from './home.component'
 
-}
+describe('HomeComponent', () => {
+  let component: HomeComponent
+  let fixture: ComponentFixture<HomeComponent>
+
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ HomeComponent ]
+    })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(HomeComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should be created', () => {
+    expect(component).toBeTruthy()
+  })
+})

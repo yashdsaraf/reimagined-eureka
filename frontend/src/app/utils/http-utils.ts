@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-export interface Tool {
-  name: string
-  icon: string
+import {URLSearchParams} from '@angular/http'
+
+export class HttpUtils {
+
+  public static getURLParams(data: object): string {
+    let params = new URLSearchParams
+    for (let key in data) {
+      params.set(key, data[key])
+    }
+    return params.toString()
+  }
+
 }

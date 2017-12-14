@@ -13,11 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.DeveloperDetails;
+import {Component} from '@angular/core'
 
-public interface DeveloperDetailsRepository extends CrudRepository<DeveloperDetails, Integer> {
+@Component({
+  selector: 'app-admin',
+  templateUrl: './admin.component.html',
+  styleUrls: ['./admin.component.sass']
+})
+export class AdminComponent {
+
+  constructor() { }
 
 }
