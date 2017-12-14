@@ -19,8 +19,17 @@ import {
   ComponentFixture,
   TestBed
 } from '@angular/core/testing'
+import {FormsModule} from '@angular/forms'
+import {HttpModule} from '@angular/http'
+import {Router} from '@angular/router'
 
+import {FlashMessagesModule} from 'angular2-flash-messages'
+
+import {AuthService} from '../../services/auth.service'
+import {CookieService} from '../../services/cookie.service'
 import {LoginComponent} from './login.component'
+import {LoginService} from '../../services/login.service'
+import {MockRouter} from '../../utils/router.mock'
 
 describe('LoginComponent', () => {
   let component: LoginComponent
@@ -28,7 +37,18 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [LoginComponent]
+      declarations: [LoginComponent],
+      imports: [
+        FlashMessagesModule,
+        FormsModule,
+        HttpModule
+      ],
+      providers: [
+        AuthService,
+        CookieService,
+        LoginService,
+        {provide: Router, useClass: MockRouter}
+      ]
     })
       .compileComponents()
   }))
@@ -39,7 +59,7 @@ describe('LoginComponent', () => {
     fixture.detectChanges()
   })
 
-  it('should create', () => {
+  it('should be created', () => {
     expect(component).toBeTruthy()
   })
 })

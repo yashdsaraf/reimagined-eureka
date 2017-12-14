@@ -19,12 +19,21 @@ import {
   inject
 } from '@angular/core/testing'
 
+import {HttpModule} from '@angular/http'
+
+import {AuthService} from './auth.service'
+import {CookieService} from './cookie.service'
 import {StartupService} from './startup.service'
 
 describe('StartupService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [StartupService]
+      imports: [HttpModule],
+      providers: [
+        AuthService,
+        CookieService,
+        StartupService
+      ]
     })
   })
 
