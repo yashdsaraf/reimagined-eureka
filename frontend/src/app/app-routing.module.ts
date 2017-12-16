@@ -22,6 +22,7 @@ import {
 
 import {AboutUsComponent} from './components/about-us/about-us.component'
 import {AdminComponent} from './components/admin/admin.component'
+import {DocsComponent} from './components/docs/docs.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
@@ -32,6 +33,7 @@ const routes: Routes = [
   {path: '', redirectTo: '/index', pathMatch: 'full'},
   {path: 'aboutus', component: AboutUsComponent},
   {path: 'admin', component: AdminComponent},
+  {path: 'docs', component: DocsComponent},
   {path: 'home', component: HomeComponent},
   {path: 'index', component: IndexComponent},
   {path: 'login', component: LoginComponent},

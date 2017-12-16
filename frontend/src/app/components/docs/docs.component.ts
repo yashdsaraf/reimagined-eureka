@@ -14,16 +14,15 @@
  * limitations under the License.
  */
 
-@import base
+import {Component} from '@angular/core'
 
-@font-face
-  font-family: 'Merriweather Sans'
-  src: url('assets/fonts/MerriweatherSans-Regular.ttf')
+@Component({
+  selector: 'app-docs',
+  templateUrl: './docs.component.html',
+  styleUrls: ['./docs.component.sass']
+})
+export class DocsComponent {
 
-@font-face
-  font-family: 'Fredoka One'
-  src: url('assets/fonts/FredokaOne-Regular.ttf')
+  constructor() { }
 
-*
-  box-sizing: border-box
-  font-family: 'Merriweather Sans', sans-serif;
+}

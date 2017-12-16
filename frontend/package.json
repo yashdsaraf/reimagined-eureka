@@ -10,8 +10,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "compodoc": "compodoc --tsconfig src/tsconfig.app.json --port 8282 --serve --open",
-    "serve": "ng serve --proxy-config proxy.conf.json --open"
+    "compodoc": "compodoc --tsconfig src/tsconfig.app.json --port 8282 --serve",
+    "serve": "ng serve --proxy-config proxy.conf.json"
   },
   "private": true,
   "dependencies": {

@@ -32,11 +32,14 @@ import {FlashMessagesModule} from 'angular2-flash-messages'
 import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
+import {AdminComponent} from './components/admin/admin.component'
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {AboutUsComponent} from './components/about-us/about-us.component'
+import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
+import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
@@ -51,11 +54,9 @@ import {LogoutService} from './services/logout.service'
 import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
-import {HomeComponent} from './components/home/home.component'
-import {AdminComponent} from './components/admin/admin.component'
 
 export function init(startupService: StartupService) {
-  return () => startupService.init();
+  return () => startupService.init()
 }
 
 @NgModule({
@@ -71,7 +72,8 @@ export function init(startupService: StartupService) {
     LogoutComponent,
     OutputComponent,
     RegisterComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    DocsComponent
   ],
   imports: [
     AppRoutingModule,

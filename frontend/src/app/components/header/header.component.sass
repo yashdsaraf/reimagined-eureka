@@ -27,9 +27,14 @@
   width: 100%
 
   #left-header
-    align-items: center
+    justify-content: center
     display: inline-flex
     flex-basis: 20%
+
+    #logo
+      color: $header-font
+      font-family: 'Fredoka One', cursive
+      font-size: 2.5em
 
   #right-header
     display: inline-flex
@@ -41,11 +46,16 @@
       align-items: center
       display: inline-flex
       height: 100%
+      justify-content: center
       padding-left: 1em
       width: 100%
 
-      .button
-        margin-left: 1em
+      a
+        color: $header-font
+        font-size: 1.3em
+        margin-left: 2em
+        &:hover
+          color: $header-button
 
     #wrapper-2
       align-items: center
@@ -57,6 +67,7 @@
 
       .visible
         #guest-label
+          background-color: $header-font
           font-size: 1.3em
 
       .hidden
@@ -77,12 +88,22 @@
       align-items: flex-start
       flex: 1
 
+      #logo
+        margin-bottom: .5em
+        margin-top: .5em
+
+      #header-toggle
+        right: .3em
+        position: absolute
+        top: 1em
+
     #right-header
       flex-direction: column
-      margin-top: 6em
+      margin-top: 2em
+      margin-bottom: 1em
 
       #wrapper-1
-        flex-direction: column
+        flex-wrap: wrap
         margin: 0
         padding: 0
 

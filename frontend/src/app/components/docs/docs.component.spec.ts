@@ -14,16 +14,32 @@
  * limitations under the License.
  */
 
-@import base
+import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-@font-face
-  font-family: 'Merriweather Sans'
-  src: url('assets/fonts/MerriweatherSans-Regular.ttf')
+import { DocsComponent } from './docs.component'
 
-@font-face
-  font-family: 'Fredoka One'
-  src: url('assets/fonts/FredokaOne-Regular.ttf')
+describe('DocsComponent', () => {
+  let component: DocsComponent
+  let fixture: ComponentFixture<DocsComponent>
 
-*
-  box-sizing: border-box
-  font-family: 'Merriweather Sans', sans-serif;
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ DocsComponent ]
+    })
+    .compileComponents()
+  }))
+
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DocsComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should create', () => {
+    expect(component).toBeTruthy()
+  })
+})
