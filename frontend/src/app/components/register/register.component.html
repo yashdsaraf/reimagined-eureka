@@ -1,73 +1,71 @@
-<div class="container">
-  <form class="ui fluid form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <div class="field">
-      <h1 class="ui header">Registration</h1><hr>
-    </div>
+<div id="container">
+  <div class="pnc-header">Welcome to <span>Plug n' Code</span>!</div>
+  <br>
+  <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" [ngClass]="{big: !isMobile}">
 
-    <div class="field">
-      <label>Name</label>
+    <div class="inline field" [ngClass]="{error: Name.errors && Name.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Name</label><br><br>
       <div class="ui left icon input">
-        <input type="text" placeholder="Enter your name" [(ngModel)]="user.name" name="name"
+        <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name"
         #Name = "ngModel"
-        minlength = "4"
         required>
       <i class="write icon"></i>
       </div>
       <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
         Name is required
       </div>
-      <div *ngIf="Name.errors?.minlength && Name.touched" class="ui error message">
-        Must be at least 4 characters
-      </div>
     </div> <!-- Name field -->
 
-    <div class="field">
-      <label>Email id</label>
+    <div class="inline field" [ngClass]="{error: Email.errors && Email.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Email ID</label><br><br>
       <div class="ui left icon input">
-        <input type="email" placeholder="example@test.com" [(ngModel)]="user.email" name="email"
+        <input type="email" placeholder="johndoe@example.com" [(ngModel)]="user.email" name="email"
           #Email = "ngModel"
           required
           pattern = "^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
         <i class="user icon"></i>
       </div>
       <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
-        Email id is required
+        Email ID is required
       </div>
       <div *ngIf="Email.errors?.pattern && Email.touched" class="ui error message">
         Invalid email
       </div>
     </div> <!-- Email id field -->
 
-    <div class="field">
-      <label>Choose your username</label>
+    <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Username</label>
+      <input type="checkbox" class="ui checkbox" (change)="onUsernameChange()" />
+      <small>Use email as username?</small>
+      <br><br>
       <div class="ui left icon input">
-        <input type="text" placeholder="username" [(ngModel)]="user.username" name="username"
-          #userName = "ngModel"
-          minlength = "5"
+        <input type="text" placeholder="johndoe123" [(ngModel)]="user.username" name="username" [disabled]="useEmailAsPass"
+          #Username = "ngModel"
+          minlength = "8"
           required
           pattern = "^\S*$">
         <i class="user icon"></i>
       </div>
-      <div *ngIf="userName.errors?.required && userName.touched" class="ui error message">
+      <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
         Username is required
       </div>
-      <div *ngIf="userName.errors?.minlength && userName.touched" class="ui error message">
-        Must be at least 5 characters
+      <div *ngIf="Username.errors?.minlength && Username.touched" class="ui error message">
+        Must be at least 8 characters
       </div>
-      <div *ngIf="userName.errors?.pattern && userName.touched" class="ui error message">
+      <div *ngIf="Username.errors?.pattern && Username.touched" class="ui error message">
         Username can't have spaces
       </div>
     </div> <!-- Username field -->
 
-    <div class="field">
-      <label>Create your password</label>
-      <div class="ui left icon input">
-        <input type="password" [(ngModel)]="user.password" name="password"
-          #Password = "ngModel"
-          minlength = "8"
-          required
-          pattern = "^\S*$">
-        <i class="lock icon"></i>
+    <div class="inline field" [ngClass]="{error: Password.errors && Password.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Password</label><br><br>
+      <div class="ui right labeled left icon input">
+        <i class="icon lock"></i>
+        <input type="password" placeholder="strongestpassword" [(ngModel)]="user.password" name="password" #Password="ngModel"
+          minlength="8" pattern="^\S*$" required #passwordField>
+        <a class="ui label" (click)="onPasswordChange()">
+          &nbsp;&nbsp;<i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
+        </a>
       </div>
       <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
         Password is required
@@ -80,17 +78,17 @@
       </div>
     </div> <!-- Password field -->
 
-    <div class="field">
-      <label>Confirm password</label>
+    <div class="inline field" [ngClass]="{error: cPassword.errors && cPassword.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Confirm password</label><br><br>
       <div class="ui left icon input">
-        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword"
+        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Retype password"
           #cPassword = "ngModel"
           required
           pattern="^\S*$">
         <i class="lock icon"></i>
       </div>
-      <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
-        Password is required
+      <div *ngIf="cPassword.errors?.required && cPassword.touched" class="ui error message">
+        Please retype your password
       </div>
       <div *ngIf="user.password!=confirmPassword && cPassword.touched" class="ui error message">
         These passwords don't match. Try again?
@@ -98,12 +96,26 @@
     </div> <!-- Confirm password field -->
 
     <div class="field">
-      <div class="ui checked checkbox">
+      <div class="ui checked slider checkbox">
         <input type="checkbox" checked="" tabindex="0" name="remember" (change)="remember_me=!remember_me" />
         <label>Remember me</label>
-      </div><br>
+      </div>
     </div> <!-- remember field -->
 
-    <div><button class="fluid ui blue submit button">Sign up</button></div>
+    <button class="ui blue animated submit button" [ngClass]="{large: !isMobile, loading: loading}">
+      <div class="visible content">Sign up</div>
+      <div class="hidden content"><i class="icon add user"></i></div>
+    </button>
+    <button id="clear" class="ui animated button" type="reset" [ngClass]="{'large': !isMobile}">
+      <div class="visible content">Clear</div>
+      <div class="hidden content"><i class="icon erase"></i></div>
+    </button>
   </form>
+
+  <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true">
+    <div class="ui huge header">Oops!</div>
+    <div class="content">
+      <h2>{{error}}</h2>
+    </div>
+  </sui-modal>
 </div>

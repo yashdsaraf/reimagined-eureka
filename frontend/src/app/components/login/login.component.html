@@ -1,38 +1,34 @@
-<div class="container">
-  <form class="ui fluid form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" >
-    <div class="ui field">
-      <h2 class="ui header">Log into Plug 'n Code</h2><hr>
-    </div>
-    <div class="field">
-      <label>Username</label>
+<div id="container">
+  <div class="pnc-header">Welcome back!</div>
+  <br>
+  <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" [ngClass]="{big: !isMobile}">
+    <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Username</label><br><br>
       <div class="ui left icon input">
-        <input type="text" placeholder="username" [(ngModel)]="username" name="username"
-        #userName = "ngModel"
-        minlength = "8"
-        required
-        pattern = "^\S*$">
+        <input type="text" placeholder="johndoe123" [(ngModel)]="username" name="username" #Username="ngModel" minlength="8" required
+          pattern="^\S*$">
         <i class="user icon"></i>
       </div>
-      <div *ngIf="userName.errors?.required && userName.touched" class="ui error message">
+      <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
         Username is required
       </div>
-      <div *ngIf="userName.errors?.minlength && userName.touched" class="ui error message">
+      <div *ngIf="Username.errors?.minlength && Username.touched" class="ui error message">
         Must be at least 8 characters
       </div>
-      <div *ngIf="userName.errors?.pattern && userName.touched" class="ui error message">
+      <div *ngIf="Username.errors?.pattern && Username.touched" class="ui error message">
         Username can't have spaces
       </div>
     </div> <!-- Username field-->
 
-    <div class="field">
-      <label>Password</label>
-      <div class="ui left icon input">
-        <input type="password" [(ngModel)]="password" name="password"
-          #Password = "ngModel"
-          minlength = "8"
-          pattern = "^\S*$"
-          required>
-        <i class="lock icon"></i>
+    <div class="inline field" [ngClass]="{error: Password.errors && Password.touched, 'six wide': !isMobile, 'fluid': isMobile}">
+      <label>Password</label><br><br>
+      <div class="ui right labeled left icon input">
+        <i class="icon lock"></i>
+        <input type="password" placeholder="strongestpassword" [(ngModel)]="password" name="password" #Password="ngModel"
+          minlength="8" pattern="^\S*$" required #passwordField>
+        <a class="ui label" (click)="onPasswordChange()">
+          &nbsp;&nbsp;<i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
+        </a>
       </div>
       <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
         Password is required
@@ -41,23 +37,38 @@
         Must be at least 8 characters
       </div>
       <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
-        Password can't have space
+        Password can't have spaces
       </div>
     </div> <!-- Password field-->
 
-    <div class="field">
-      <div class="ui checked checkbox">
-        <input type="checkbox" checked="" tabindex="0" name="remember" (change)="remember_me=!remember_me" />
-        <label>Remember me</label>
-      </div><br>
+    <div [ngClass]="{'inline fields': !isMobile}">
+      <div class="field" [ngClass]="{'four wide': !isMobile}">
+          <a href="#">Forgot password?</a>
+      </div>
+      <div class="field">
+        <div class="ui slider checked checkbox">
+          <input type="checkbox" checked="" tabindex="0" name="remember" (change)="remember_me=!remember_me" />
+          <label>Remember me</label>
+        </div>
+      </div>
     </div> <!-- remember field -->
 
-    <button class="fluid ui blue submit button">Login</button><br>
-    <button class="fluid ui submit button" type="reset">Clear</button>
-
-    <div><br>
-        <a href="#">forget password ?</a>
-    </div>
-
+    <button class="ui blue animated submit button" [ngClass]="{large: !isMobile, loading: loading}">
+      <div class="visible content">Sign in</div>
+      <div class="hidden content"><i class="icon sign in"></i></div>
+    </button>
+    <button id="clear" class="ui animated button" type="reset" [ngClass]="{'large': !isMobile}">
+      <div class="visible content">Clear</div>
+      <div class="hidden content"><i class="icon erase"></i></div>
+    </button>
+    <br><br>
+    <a class="ui basic positive button" routerLink="/register">New user?</a>
   </form>
+
+  <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true">
+      <div class="ui huge header">Oops!</div>
+      <div class="content">
+          <h2>{{error}}</h2>
+      </div>
+  </sui-modal>
 </div>

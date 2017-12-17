@@ -51,8 +51,7 @@ export class LoginService {
           resolve()
         },
         err => {
-          let json = JSON.parse(err._body)
-          reject(json.error_description)
+          reject(err._body)
         }
       )
     })

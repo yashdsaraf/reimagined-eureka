@@ -16,8 +16,21 @@
 
 @import base
 
-.container
+#container
+  flex-direction: column
   display: flex
-  justify-content: center
-  align-items: center
-  padding: .6em
+  padding: 1em
+
+  label
+    font-family: 'Raleway', sans-serif
+
+  button
+    width: 8em
+
+  #clear
+    background-color: $clear-button
+    color: white
+
+  .icon,
+  .label
+    user-select: none
