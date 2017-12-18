@@ -24,6 +24,7 @@ import {HttpModule} from '@angular/http'
 import {Router} from '@angular/router'
 
 import {FlashMessagesModule} from 'angular2-flash-messages'
+import {SuiModule} from 'ng2-semantic-ui'
 
 import {AuthService} from '../../services/auth.service'
 import {CookieService} from '../../services/cookie.service'
@@ -41,7 +42,8 @@ describe('LoginComponent', () => {
       imports: [
         FlashMessagesModule,
         FormsModule,
-        HttpModule
+        HttpModule,
+        SuiModule
       ],
       providers: [
         AuthService,
