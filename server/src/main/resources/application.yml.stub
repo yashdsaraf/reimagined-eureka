@@ -3,3 +3,9 @@ spring:
     url: #JDBC CONNECTION STRING
     username: #DATABASE USERNAME
     password: #DATABASE PASSWORD
+user:
+  mail:
+    username: #SENDER EMAIL ADDRESS
+    password: #SENDER EMAIL PASSWORD
+    server: #SMTP SERVER ADDRESS
+    port: #SMTP SERVER PORT
