@@ -3,7 +3,9 @@
   <br>
   <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" [ngClass]="{big: !isMobile}">
     <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
-      <label>Username</label><br><br>
+      <label>Username</label>
+      <br>
+      <br>
       <div class="ui left icon input">
         <input type="text" placeholder="johndoe123" [(ngModel)]="username" name="username" #Username="ngModel" minlength="8" required
           pattern="^\S*$">
@@ -18,16 +20,20 @@
       <div *ngIf="Username.errors?.pattern && Username.touched" class="ui error message">
         Username can't have spaces
       </div>
-    </div> <!-- Username field-->
+    </div>
+    <!-- Username field-->
 
     <div class="inline field" [ngClass]="{error: Password.errors && Password.touched, 'six wide': !isMobile, 'fluid': isMobile}">
-      <label>Password</label><br><br>
+      <label>Password</label>
+      <br>
+      <br>
       <div class="ui right labeled left icon input">
         <i class="icon lock"></i>
-        <input type="password" placeholder="strongestpassword" [(ngModel)]="password" name="password" #Password="ngModel"
-          minlength="8" pattern="^\S*$" required #passwordField>
+        <input type="password" placeholder="strongestpassword" [(ngModel)]="password" name="password" #Password="ngModel" minlength="8"
+          pattern="^\S*$" required #passwordField>
         <a class="ui label" (click)="onPasswordChange()">
-          &nbsp;&nbsp;<i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
+          &nbsp;&nbsp;
+          <i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
         </a>
       </div>
       <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
@@ -39,11 +45,12 @@
       <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
         Password can't have spaces
       </div>
-    </div> <!-- Password field-->
+    </div>
+    <!-- Password field-->
 
     <div [ngClass]="{'inline fields': !isMobile}">
       <div class="field" [ngClass]="{'four wide': !isMobile}">
-          <a href="#">Forgot password?</a>
+        <button class="ui basic small button" (click)="forgotPassword = true">Forgot password?</button>
       </div>
       <div class="field">
         <div class="ui slider checked checkbox">
@@ -51,24 +58,85 @@
           <label>Remember me</label>
         </div>
       </div>
-    </div> <!-- remember field -->
-
+    </div>
+    <!-- remember field -->
+    <br>
     <button class="ui blue animated submit button" [ngClass]="{large: !isMobile, loading: loading}">
       <div class="visible content">Sign in</div>
-      <div class="hidden content"><i class="icon sign in"></i></div>
+      <div class="hidden content">
+        <i class="icon sign in"></i>
+      </div>
     </button>
     <button id="clear" class="ui animated button" type="reset" [ngClass]="{'large': !isMobile}">
       <div class="visible content">Clear</div>
-      <div class="hidden content"><i class="icon erase"></i></div>
+      <div class="hidden content">
+        <i class="icon erase"></i>
+      </div>
     </button>
-    <br><br>
+    <br>
+    <br>
     <a class="ui basic positive button" routerLink="/register">New user?</a>
   </form>
 
   <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true">
-      <div class="ui huge header">Oops!</div>
-      <div class="content">
-          <h2>{{error}}</h2>
+    <div class="ui huge header">Oops!</div>
+    <div class="content">
+      <h2>{{error}}</h2>
+    </div>
+  </sui-modal>
+
+  <sui-modal *ngIf="forgotPassword" [isClosable]="true" [isInverted]="true" (dismissed)="forgotPassword = false" (denied)="forgotPassword = false"
+    (approved)="onForgotPasswordEmail()" #emailModal>
+    <div class="header">
+      Please enter your email
+    </div>
+    <div class="content">
+      <div class="ui fluid transparent left icon input">
+        <input type="email" placeholder="johndoe@example.com" [(ngModel)]="forgotPasswordEmail" name="forgotPasswordEmail">
+        <i class="mail icon"></i>
+        <br>
+        <br>
       </div>
+      <br>
+      <button [disabled]="!isForgotPasswordEmailValid()" class="ui right labeled icon submit primary button" (click)="emailModal.approve()">
+        Go
+        <i class="icon search"></i>
+      </button>
+      <button class="ui right labeled icon red button" (click)="emailModal.deny()">Cancel
+        <i class="icon remove"></i>
+      </button>
+    </div>
+  </sui-modal>
+
+  <sui-modal *ngIf="otpPrompt" [isClosable]="true" [isInverted]="true" (dismissed)="otpPrompt = false" (denied)="otpPrompt = false"
+    (approved)="onForgotPasswordOtp()" #otpModal>
+    <div class="content">
+      <label>One time password (OTP): </label>
+      <br>
+      <div class="ui transparent input">
+        <input type="number" placeholder="Enter OTP" [(ngModel)]="otp" name="otp">
+      </div>
+      <br>
+      <label>New password: </label>
+      <br>
+      <div class="ui transparent input">
+        <input type="password" placeholder="Enter password" [(ngModel)]="newPassword" name="newPassword">
+      </div>
+      <br>
+      <label>Confirm password: </label>
+      <br>
+      <div class="ui transparent input">
+        <input type="password" placeholder="Retype password" [(ngModel)]="cNewPassword" name="cNewPassword">
+      </div>
+      <br>
+      <br>
+      <button [disabled]="isForgotPasswordOtpNotValid()" class="ui right labeled icon submit primary button" (click)="otpModal.approve()">
+        Go
+        <i class="icon right arrow"></i>
+      </button>
+      <button class="ui right labeled icon red button" (click)="otpModal.deny()">Cancel
+        <i class="icon remove"></i>
+      </button>
+    </div>
   </sui-modal>
 </div>

@@ -1,34 +1,42 @@
 <div id="container">
-  <div id="left-header" >
+  <div id="left-header">
     <a class="ui logo icon image" routerLink="/">
       <!-- <img id="logo" src="../../../assets/images/logo.png"> -->
       <div id="logo">Plug n' Code</div>
     </a>
-    <button *ngIf="isMobile" id="header-toggle" class="ui inverted basic red icon button">
+    <button *ngIf="isMobile" id="header-toggle" class="ui inverted basic blue icon button">
       <i class="arrow icon" [ngClass]="{'down': !isHeaderOpen, 'up': isHeaderOpen}" (click)='isHeaderOpen = !isHeaderOpen'></i>
     </button>
-  </div> <!-- left-header -->
+  </div>
+  <!-- left-header -->
 
   <div *ngIf="isHeaderOpen" id="right-header">
     <div id="wrapper-1">
       <a routerLink="/aboutus">About us</a>
       <a routerLink="/docs">Docs</a>
       <a href="https://www.apache.org/licenses/LICENSE-2.0">License</a>
-    </div> <!-- wrapper-1 -->
+    </div>
+    <!-- wrapper-1 -->
     <div id="wrapper-2">
       <div class="move up reveal" [ngClass]="{'ui': !isMobile}">
         <div class="visible content">
           <div id="guest-label" class="ui label" [ngClass]="{'pointing below': isMobile}">
-               Unlock all the features!
-        </div> <!-- guest-label -->
-      </div> <!-- visible -->
-      <div class="hidden content">
-        <div class="ui floated medium buttons">
-          <button class="ui red inverted button" routerLink="/login">Login</button>
-          <div class="or"></div>
-          <button class="ui red inverted button" routerLink="/register">Sign up</button>
+            Unlock all the features!
+          </div>
+          <!-- guest-label -->
         </div>
-      </div> <!-- hidden -->
-    </div> <!-- wrapper-2 -->
-  </div> <!-- right-header -->
-</div> <!-- container -->
+        <!-- visible -->
+        <div class="hidden content">
+          <div class="ui floated medium buttons">
+            <button class="ui blue inverted button" routerLink="/login">Login</button>
+            <div class="or"></div>
+            <button class="ui blue inverted button" routerLink="/register">Sign up</button>
+          </div>
+        </div>
+        <!-- hidden -->
+      </div>
+      <!-- wrapper-2 -->
+    </div>
+    <!-- right-header -->
+  </div>
+  <!-- container -->

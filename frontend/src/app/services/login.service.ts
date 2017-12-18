@@ -70,4 +70,33 @@ export class LoginService {
       )
     })
   }
+
+  public forgotPasswordEmail(email: string): Promise<any> {
+    let headers = new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    })
+    let params = HttpUtils.getURLParams({email})
+    return new Promise((resolve, reject) => {
+      this.http.post('/api/forgotpassword', params, {headers})
+      .subscribe(
+        data => resolve(),
+        err => reject(err._body)
+      )
+    })
+  }
+
+  public forgotPasswordOtp(email: string, otp: string, password: string): Promise<any> {
+    let headers = new Headers({
+      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+    })
+    let params = HttpUtils.getURLParams({email, otp, password})
+    return new Promise((resolve, reject) => {
+      this.http.post('/api/forgotpassword', params, {headers})
+      .subscribe(
+        data => resolve(),
+        err => reject(err._body)
+      )
+    })
+  }
+
 }

@@ -39,6 +39,13 @@ export class LoginComponent {
   isHidden = true
   error = ''
   loading = false
+  forgotPassword = false
+  isEmailValid = true
+  forgotPasswordEmail = ''
+  otpPrompt = false
+  otp = ''
+  newPassword = ''
+  cNewPassword = ''
   @ViewChild('passwordField') passwordField
 
   constructor(
@@ -53,6 +60,38 @@ export class LoginComponent {
     let element = this.passwordField.nativeElement
     element.type = this.isHidden ? 'password' : 'text'
     element.focus()
+  }
+
+  onForgotPasswordEmail() {
+    this.error = ''
+    this.loginService.forgotPasswordEmail(this.forgotPasswordEmail)
+      .then(() => {
+        this.otpPrompt = true
+      })
+      .catch(err => {
+        this.error = err
+      })
+  }
+
+  onForgotPasswordOtp() {
+    this.error = ''
+    this.loginService.forgotPasswordOtp(this.forgotPasswordEmail, this.otp, this.newPassword)
+      .then(() => {
+        this.flashMessagesService.show('Password updated successfully!', {
+          cssClass: 'ui success message', timeout: 4000
+        })
+      })
+      .catch(err => {
+        this.error = err
+      })
+  }
+
+  isForgotPasswordEmailValid() {
+    return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/g.test(this.forgotPasswordEmail)
+  }
+
+  isForgotPasswordOtpNotValid() {
+    return this.otp == null || this.newPassword == null || this.otp.length < 4 || this.newPassword.length < 8 || this.newPassword != this.cNewPassword
   }
 
   onSubmit(f: NgForm) {
