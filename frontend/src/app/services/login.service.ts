@@ -30,6 +30,10 @@ import {User} from '../models/user'
 @Injectable()
 export class LoginService {
 
+  headers = new Headers({
+    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+  })
+
   constructor(
     private authService: AuthService,
     private http: Http,
@@ -58,12 +62,9 @@ export class LoginService {
   }
 
   public register(user: User, remember_me: boolean): Promise<any> {
-    let headers = new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    })
     let params = HttpUtils.getURLParams(user)
     return new Promise((resolve, reject) => {
-      this.http.post('/api/register', params, {headers})
+      this.http.post('/api/register', params, {headers: this.headers})
       .subscribe(
         data => resolve(),
         err => reject(err._body)
@@ -72,12 +73,9 @@ export class LoginService {
   }
 
   public forgotPasswordEmail(email: string): Promise<any> {
-    let headers = new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    })
     let params = HttpUtils.getURLParams({email})
     return new Promise((resolve, reject) => {
-      this.http.post('/api/forgotpassword', params, {headers})
+      this.http.post('/api/forgotpassword', params, {headers: this.headers})
       .subscribe(
         data => resolve(),
         err => reject(err._body)
@@ -86,15 +84,29 @@ export class LoginService {
   }
 
   public forgotPasswordOtp(email: string, otp: string, password: string): Promise<any> {
-    let headers = new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    })
     let params = HttpUtils.getURLParams({email, otp, password})
     return new Promise((resolve, reject) => {
-      this.http.post('/api/forgotpassword', params, {headers})
+      this.http.post('/api/forgotpassword', params, {headers: this.headers})
       .subscribe(
         data => resolve(),
         err => reject(err._body)
+      )
+    })
+  }
+
+  public loginAsGuest(): Promise<any> {
+  	return new Promise((resolve, reject) => {
+      this.authService.getTokens('guest', '')
+      .subscribe(
+        data => {
+        	localStorage.removeItem('remember_me')
+					this.authService.updateTokens(data.access_token)
+          this.router.navigate(['/home'])
+          resolve()
+        },
+        err => {
+          reject(err._body)
+        }
       )
     })
   }
