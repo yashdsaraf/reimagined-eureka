@@ -39,6 +39,7 @@ export class LoginComponent {
   isHidden = true
   error = ''
   loading = false
+  guestLoading = false
   forgotPassword = false
   isEmailValid = true
   forgotPasswordEmail = ''
@@ -63,7 +64,6 @@ export class LoginComponent {
   }
 
   onForgotPasswordEmail() {
-    this.error = ''
     this.loginService.forgotPasswordEmail(this.forgotPasswordEmail)
       .then(() => {
         this.otpPrompt = true
@@ -74,7 +74,6 @@ export class LoginComponent {
   }
 
   onForgotPasswordOtp() {
-    this.error = ''
     this.loginService.forgotPasswordOtp(this.forgotPasswordEmail, this.otp, this.newPassword)
       .then(() => {
         this.flashMessagesService.show('Password updated successfully!', {
@@ -94,9 +93,18 @@ export class LoginComponent {
     return this.otp == null || this.newPassword == null || this.otp.length < 4 || this.newPassword.length < 8 || this.newPassword != this.cNewPassword
   }
 
+  loginAsGuest() {
+    this.guestLoading = true
+    this.loginService.loginAsGuest()
+      .then(() => this.guestLoading = false)
+      .catch(err => {
+        this.error = err
+        this.guestLoading = false
+      })
+    }
+
   onSubmit(f: NgForm) {
     if (f.valid) {
-      this.error = ''
       this.loading = true
       this.loginService.login(this.username, this.password, this.remember_me)
         .then(() => this.loading = false)

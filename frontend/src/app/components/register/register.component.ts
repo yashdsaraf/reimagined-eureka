@@ -74,7 +74,6 @@ export class RegisterComponent {
     }
 
     if (f.valid && this.user.password == this.confirmPassword) {
-      this.error = ''
       this.loading = true
       this.loginService.register(this.user, this.remember_me)
         .then(() => {

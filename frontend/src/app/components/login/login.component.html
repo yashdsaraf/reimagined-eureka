@@ -1,7 +1,7 @@
 <div id="container">
   <div class="pnc-header">Welcome back!</div>
   <br>
-  <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)" [ngClass]="{big: !isMobile}">
+  <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
     <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
       <label>Username</label>
       <br>
@@ -60,25 +60,31 @@
       </div>
     </div>
     <!-- remember field -->
-    <br>
-    <button class="ui blue animated submit button" [ngClass]="{large: !isMobile, loading: loading}">
-      <div class="visible content">Sign in</div>
-      <div class="hidden content">
-        <i class="icon sign in"></i>
+    <div class="inline fields">
+      <div class="field">
+        <button class="ui teal animated submit button" [ngClass]="{loading: loading}">
+          <div class="visible content">Sign in</div>
+          <div class="hidden content">
+            <i class="icon sign in"></i>
+          </div>
+        </button>
       </div>
-    </button>
-    <button id="clear" class="ui animated button" type="reset" [ngClass]="{'large': !isMobile}">
-      <div class="visible content">Clear</div>
-      <div class="hidden content">
-        <i class="icon erase"></i>
+      <div class="field">
+        <button id="clear" class="ui animated button" type="reset">
+          <div class="visible content">Clear</div>
+          <div class="hidden content">
+            <i class="icon erase"></i>
+          </div>
+        </button>
       </div>
+    </div>
+    <button class="ui basic positive button" [ngClass]="{loading: guestLoading}" (click)="loginAsGuest()">
+      Continue as guest
     </button>
-    <br>
-    <br>
     <a class="ui basic positive button" routerLink="/register">New user?</a>
   </form>
 
-  <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true">
+  <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true" (dismissed)="error = ''">
     <div class="ui huge header">Oops!</div>
     <div class="content">
       <h2>{{error}}</h2>
