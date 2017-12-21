@@ -98,7 +98,7 @@ export class LoginComponent {
     this.loginService.loginAsGuest()
       .then(() => this.guestLoading = false)
       .catch(err => {
-        this.error = err
+        this.error = this.getMessageFromError(err)
         this.guestLoading = false
       })
     }
@@ -109,17 +109,21 @@ export class LoginComponent {
       this.loginService.login(this.username, this.password, this.remember_me)
         .then(() => this.loading = false)
         .catch(err => {
-          let message
-          try {
-            let json = JSON.parse(err)
-            message = json.error_description
-          } catch(e) {
-            message = err
-          }
-          this.error = message
+          this.error = this.getMessageFromError(err)
           this.loading = false
         })
     }
   }
 
+  private getMessageFromError(err: any): string {
+    let message: string
+    try {
+      let json = JSON.parse(err)
+      message = json.error_description
+    } catch(e) {
+      message = err
+    }
+    return message
+  }
+  
 }
