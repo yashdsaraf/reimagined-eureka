@@ -19,6 +19,7 @@ import {
   OnInit
 } from '@angular/core'
 
+import {AuthService} from '../../services/auth.service'
 import {isMobile} from '../../app.component'
 
 @Component({
@@ -30,8 +31,9 @@ export class HeaderComponent implements OnInit {
 
   isHeaderOpen: boolean = true
   isMobile: boolean
+  role = this.authService.getRole()
 
-  constructor() {
+  constructor(private authService: AuthService) {
     this.isMobile = isMobile
   }
 
