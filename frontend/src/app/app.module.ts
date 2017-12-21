@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
-import {NgModule} from '@angular/core'
+import {
+  APP_INITIALIZER,
+  NgModule
+} from '@angular/core'
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations'
 import {BrowserModule} from '@angular/platform-browser'
+import {FormsModule} from '@angular/forms'
 import {
   HTTP_INTERCEPTORS,
   HttpClientModule
@@ -28,11 +32,14 @@ import {FlashMessagesModule} from 'angular2-flash-messages'
 import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
+import {AdminComponent} from './components/admin/admin.component'
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {AboutUsComponent} from './components/about-us/about-us.component'
+import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
+import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
@@ -44,10 +51,13 @@ import {AuthService} from './services/auth.service'
 import {CookieService} from './services/cookie.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
+import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
-import {HomeComponent} from './components/home/home.component'
-import {AdminComponent} from './components/admin/admin.component'
+
+export function init(startupService: StartupService) {
+  return () => startupService.init()
+}
 
 @NgModule({
   declarations: [
@@ -62,7 +72,8 @@ import {AdminComponent} from './components/admin/admin.component'
     LogoutComponent,
     OutputComponent,
     RegisterComponent,
-    ToolbarComponent
+    ToolbarComponent,
+    DocsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -70,16 +81,19 @@ import {AdminComponent} from './components/admin/admin.component'
     BrowserModule,
     CodemirrorModule,
     FlashMessagesModule,
+    FormsModule,
     HttpClientModule,
     HttpModule,
     SuiModule
   ],
   providers: [
+    {provide: APP_INITIALIZER, useFactory: init, deps: [StartupService], multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     CookieService,
     LoginService,
-    LogoutService
+    LogoutService,
+    StartupService
   ],
   bootstrap: [AppComponent]
 })

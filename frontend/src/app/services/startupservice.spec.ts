@@ -14,20 +14,30 @@
  * limitations under the License.
  */
 
-@import base
+import {
+  TestBed,
+  inject
+} from '@angular/core/testing'
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+import {HttpModule} from '@angular/http'
 
-  label
-    font-family: 'Raleway', sans-serif
+import {AuthService} from './auth.service'
+import {CookieService} from './cookie.service'
+import {StartupService} from './startup.service'
 
-  #clear
-    background-color: $clear-button
-    color: white
+describe('StartupService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [HttpModule],
+      providers: [
+        AuthService,
+        CookieService,
+        StartupService
+      ]
+    })
+  })
 
-  .icon,
-  .label
-    user-select: none
+  it('should be created', inject([StartupService], (service: StartupService) => {
+    expect(service).toBeTruthy()
+  }))
+})

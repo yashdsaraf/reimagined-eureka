@@ -30,14 +30,19 @@ import {User} from '../models/user'
 @Injectable()
 export class LoginService {
 
+  headers = new Headers({
+    'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
+  })
+
   constructor(
     private authService: AuthService,
     private http: Http,
     private router: Router
   ) {}
 
-  public login(username: string, password: string, remember_me: boolean = false) {
-    this.authService.getTokens(username, password)
+  public login(username: string, password: string, remember_me: boolean): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this.authService.getTokens(username, password)
       .subscribe(
         data => {
           if (remember_me) {
@@ -46,22 +51,64 @@ export class LoginService {
           } else {
             this.authService.updateTokens(data.access_token)
           }
-          this.router.navigate['/home']
+          this.router.navigate(['/home'])
+          resolve()
+        },
+        err => {
+          reject(err._body)
         }
       )
+    })
   }
 
-  public register(user: User): Promise<any> {
-    let headers = new Headers({
-      'Content-Type': 'application/x-www-form-urlencoded; charset=utf-8'
-    })
+  public register(user: User, remember_me: boolean): Promise<any> {
     let params = HttpUtils.getURLParams(user)
     return new Promise((resolve, reject) => {
-      this.http.post('/api/register', params, {headers})
+      this.http.post('/api/register', params, {headers: this.headers})
       .subscribe(
         data => resolve(),
         err => reject(err._body)
       )
     })
   }
+
+  public forgotPasswordEmail(email: string): Promise<any> {
+    let params = HttpUtils.getURLParams({email})
+    return new Promise((resolve, reject) => {
+      this.http.post('/api/forgotpassword', params, {headers: this.headers})
+      .subscribe(
+        data => resolve(),
+        err => reject(err._body)
+      )
+    })
+  }
+
+  public forgotPasswordOtp(email: string, otp: string, password: string): Promise<any> {
+    let params = HttpUtils.getURLParams({email, otp, password})
+    return new Promise((resolve, reject) => {
+      this.http.post('/api/forgotpassword', params, {headers: this.headers})
+      .subscribe(
+        data => resolve(),
+        err => reject(err._body)
+      )
+    })
+  }
+
+  public loginAsGuest(): Promise<any> {
+  	return new Promise((resolve, reject) => {
+      this.authService.getTokens('guest', '')
+      .subscribe(
+        data => {
+        	localStorage.removeItem('remember_me')
+					this.authService.updateTokens(data.access_token)
+          this.router.navigate(['/home'])
+          resolve()
+        },
+        err => {
+          reject(err._body)
+        }
+      )
+    })
+  }
+
 }

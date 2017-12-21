@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-@import base
+import {Component} from '@angular/core'
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+@Component({
+  selector: 'app-docs',
+  templateUrl: './docs.component.html',
+  styleUrls: ['./docs.component.sass']
+})
+export class DocsComponent {
 
-  label
-    font-family: 'Raleway', sans-serif
+  constructor() { }
 
-  #clear
-    background-color: $clear-button
-    color: white
-
-  .icon,
-  .label
-    user-select: none
+}

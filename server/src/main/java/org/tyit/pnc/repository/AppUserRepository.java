@@ -22,4 +22,6 @@ public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
 
   public AppUser findByUsername(String username);
 
+  public AppUser findByEmail(String email);
+
 }

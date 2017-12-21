@@ -19,8 +19,18 @@ import {
   ComponentFixture,
   TestBed
 } from '@angular/core/testing'
+import {FormsModule} from '@angular/forms'
+import {HttpModule} from '@angular/http'
+import {Router} from '@angular/router'
 
+import {FlashMessagesModule} from 'angular2-flash-messages'
+import {SuiModule} from 'ng2-semantic-ui'
+
+import {AuthService} from '../../services/auth.service'
+import {CookieService} from '../../services/cookie.service'
 import {RegisterComponent} from './register.component'
+import {LoginService} from '../../services/login.service'
+import {MockRouter} from '../../utils/router.mock'
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent
@@ -28,7 +38,19 @@ describe('RegisterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RegisterComponent]
+      declarations: [RegisterComponent],
+      imports: [
+        FlashMessagesModule,
+        FormsModule,
+        HttpModule,
+        SuiModule
+      ],
+      providers: [
+        AuthService,
+        CookieService,
+        LoginService,
+        {provide: Router, useClass: MockRouter}
+      ]
     })
       .compileComponents()
   }))

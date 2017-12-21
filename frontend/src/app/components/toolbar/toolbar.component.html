@@ -1,13 +1,12 @@
 <div id="container">
-  <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon"
-    (click)="isNavOpenChange.emit(true)">
+  <button *ngIf="isMobile" id="open-nav" class="basic blue small ui button icon" (click)="isNavOpenChange.emit(true)">
     <i class="sidebar icon"></i>
   </button>
   <div id="wrapper" class="ui icon buttons" [ngClass]="{'vertical': isMobile, 'large': !isMobile}">
     <ng-container *ngFor="let tool of tools">
-      <button *ngIf="!isMobile, else mobileTools" id="tool-{{tool.name | lowercase}}" class="ui button"
-        suiPopup popupPlacement="bottom left" popupText="{{tool.name}}" (click)="onClick($event)">
-        <i class="{{tool.icon}} icon" ></i>
+      <button *ngIf="!isMobile, else mobileTools" id="tool-{{tool.name | lowercase}}" class="ui button" suiPopup popupPlacement="bottom left"
+        popupText="{{tool.name}}" (click)="onClick($event)">
+        <i class="{{tool.icon}} icon"></i>
       </button>
       <ng-template #mobileTools>
         <button id="tool-{{tool.name | lowercase}}" class="ui button" (click)="onClick($event)">
@@ -15,5 +14,7 @@
         </button>
       </ng-template>
     </ng-container>
-  </div> <!-- wrapper -->
-</div> <!-- container -->
+  </div>
+  <!-- wrapper -->
+</div>
+<!-- container -->

@@ -39,9 +39,14 @@ public class RegisterService {
   private AppUserRepository appUserRepository;
 
   public ResponseEntity<String> register(AppUser user) {
-    AppUser checkUser = appUserRepository.findByUsername(user.getUsername());
+    AppUser checkUser;
+    checkUser = appUserRepository.findByUsername(user.getUsername());
     if (checkUser != null) {
-      return new ResponseEntity("User already exists", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity("Username already exists", HttpStatus.BAD_REQUEST);
+    }
+    checkUser = appUserRepository.findByEmail(user.getEmail());
+    if (checkUser != null) {
+      return new ResponseEntity("Email already exists", HttpStatus.BAD_REQUEST);
     }
     user.setCreatedOn(Date.from(Instant.now()));
     user.setRole(AppUser.Role.USER);

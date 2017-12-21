@@ -10,8 +10,19 @@
             <goals>
                 <goal>org.springframework.boot:spring-boot-maven-plugin:1.5.8.RELEASE:run</goal>
             </goals>
+        </action>
+        <action>
+            <actionName>debug</actionName>
+            <packagings>
+                <packaging>war</packaging>
+                <packaging>ear</packaging>
+                <packaging>ejb</packaging>
+            </packagings>
+            <goals>
+                <goal>package</goal>
+            </goals>
             <properties>
-                <netbeans.deploy>true</netbeans.deploy>
+                <netbeans.deploy.debugmode>true</netbeans.deploy.debugmode>
             </properties>
         </action>
     </actions>

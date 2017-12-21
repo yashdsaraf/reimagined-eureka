@@ -14,20 +14,32 @@
  * limitations under the License.
  */
 
-@import base
+import {
+  async,
+  ComponentFixture,
+  TestBed
+} from '@angular/core/testing'
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+import { DocsComponent } from './docs.component'
 
-  label
-    font-family: 'Raleway', sans-serif
+describe('DocsComponent', () => {
+  let component: DocsComponent
+  let fixture: ComponentFixture<DocsComponent>
 
-  #clear
-    background-color: $clear-button
-    color: white
+  beforeEach(async(() => {
+    TestBed.configureTestingModule({
+      declarations: [ DocsComponent ]
+    })
+    .compileComponents()
+  }))
 
-  .icon,
-  .label
-    user-select: none
+  beforeEach(() => {
+    fixture = TestBed.createComponent(DocsComponent)
+    component = fixture.componentInstance
+    fixture.detectChanges()
+  })
+
+  it('should create', () => {
+    expect(component).toBeTruthy()
+  })
+})
