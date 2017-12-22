@@ -18,25 +18,17 @@
     </div>
     <!-- wrapper-1 -->
     <div id="wrapper-2">
-      <div class="move up reveal" [ngClass]="{'ui': !isMobile}">
-        <div class="visible content">
-          <div id="guest-label" class="ui label" [ngClass]="{'pointing below': isMobile}">
-            Unlock all the features!
-          </div>
-          <!-- guest-label -->
-        </div>
-        <!-- visible -->
-        <div class="hidden content">
-          <div class="ui floated medium buttons">
-            <button class="ui blue inverted button" routerLink="/login">Login</button>
-            <div class="or"></div>
-            <button class="ui blue inverted button" routerLink="/register">Sign up</button>
-          </div>
-        </div>
-        <!-- hidden -->
+      <div *ngIf="getRole() == null, else loggedIn" class="ui floated medium buttons">
+        <button class="ui blue inverted button" routerLink="/login">Login</button>
+        <div class="or"></div>
+        <button class="ui blue inverted button" routerLink="/register">Sign up</button>
       </div>
-      <!-- wrapper-2 -->
+      <ng-template #loggedIn>
+        <button class="ui button primary" (click)="logout()">Logout</button>
+      </ng-template>
     </div>
-    <!-- right-header -->
+    <!-- wrapper-2 -->
   </div>
-  <!-- container -->
+  <!-- right-header -->
+</div>
+<!-- container -->

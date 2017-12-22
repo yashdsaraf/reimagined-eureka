@@ -21,6 +21,7 @@ import {
 
 import {AuthService} from '../../services/auth.service'
 import {isMobile} from '../../app.component'
+import {LogoutService} from '../../services/logout.service'
 
 @Component({
   selector: 'app-header',
@@ -29,16 +30,26 @@ import {isMobile} from '../../app.component'
 })
 export class HeaderComponent implements OnInit {
 
-  isHeaderOpen: boolean = true
+  isHeaderOpen: boolean
   isMobile: boolean
-  role = this.authService.getRole()
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private logoutService: LogoutService
+  ) {
     this.isMobile = isMobile
   }
 
   ngOnInit(): void {
     this.isHeaderOpen = !this.isMobile
+  }
+
+  getRole(): string {
+    return this.authService.getRole()
+  }
+
+  logout() {
+    this.logoutService.logout()
   }
 
 }

@@ -17,6 +17,8 @@
 import {Component} from '@angular/core'
 import {ActivatedRoute, Params} from '@angular/router'
 
+import {isMobile} from '../../app.component'
+
 @Component({
   selector: 'app-logout',
   templateUrl: './logout.component.html',
@@ -24,10 +26,12 @@ import {ActivatedRoute, Params} from '@angular/router'
 })
 export class LogoutComponent {
 
+  isMobile: boolean
   message: string
   error: string
 
   constructor(route: ActivatedRoute) {
+    this.isMobile = isMobile
     this.message = route.snapshot.params.message
     if (this.message == 'null' || this.message == 'undefined') {
       this.message = 'Come back soon'
