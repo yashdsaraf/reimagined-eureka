@@ -54,6 +54,11 @@ import {LogoutService} from './services/logout.service'
 import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
+//GUARDS
+import {AdminGuard} from './guards/admin.guard'
+import {DeveloperGuard} from './guards/developer.guard'
+import {GuestGuard} from './guards/guest.guard'
+import {UserGuard} from './guards/user.guard'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -93,7 +98,11 @@ export function init(startupService: StartupService) {
     CookieService,
     LoginService,
     LogoutService,
-    StartupService
+    StartupService,
+    AdminGuard,
+    DeveloperGuard,
+    GuestGuard,
+    UserGuard
   ],
   bootstrap: [AppComponent]
 })
