@@ -58,7 +58,9 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 import {AdminGuard} from './guards/admin.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
-import {UserGuard} from './guards/user.guard'
+import {UserGuard} from './guards/user.guard';
+//DIRECTIVES
+import {IdenticonDirective} from './directives/identicon.directive'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -78,7 +80,8 @@ export function init(startupService: StartupService) {
     OutputComponent,
     RegisterComponent,
     ToolbarComponent,
-    DocsComponent
+    DocsComponent,
+    IdenticonDirective
   ],
   imports: [
     AppRoutingModule,
