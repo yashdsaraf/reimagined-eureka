@@ -44,8 +44,22 @@ export class HeaderComponent implements OnInit {
     this.isHeaderOpen = !this.isMobile
   }
 
+  getIdenticonObject() {
+    let obj = {
+      value: this.getUsername(),
+      size: 60
+    }
+    return JSON.stringify(obj)
+  }
+
   getRole(): string {
     return this.authService.getRole()
+  }
+
+  getUsername(): string {
+    let username = this.authService.getUsername()
+    username = username.toLowerCase()
+    return username.charAt(0).toUpperCase() + username.slice(1)
   }
 
   logout() {

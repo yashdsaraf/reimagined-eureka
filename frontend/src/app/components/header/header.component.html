@@ -4,8 +4,8 @@
       <!-- <img id="logo" src="../../../assets/images/logo.png"> -->
       <div id="logo">Plug n' Code</div>
     </a>
-    <button *ngIf="isMobile" id="header-toggle" class="ui inverted basic blue icon button">
-      <i class="arrow icon" [ngClass]="{'down': !isHeaderOpen, 'up': isHeaderOpen}" (click)='isHeaderOpen = !isHeaderOpen'></i>
+    <button *ngIf="isMobile" id="header-toggle" class="ui inverted basic blue icon button" (click)="isHeaderOpen = !isHeaderOpen">
+      <i class="arrow icon" [ngClass]="{'down': !isHeaderOpen, 'up': isHeaderOpen}"></i>
     </button>
   </div>
   <!-- left-header -->
@@ -24,7 +24,41 @@
         <button class="ui blue inverted button" routerLink="/register">Sign up</button>
       </div>
       <ng-template #loggedIn>
-        <button class="ui button primary" (click)="logout()">Logout</button>
+        <div id="logged-in">
+          <div id="username">Hi, {{getUsername()}}</div>
+          <div class="ui dropdown" suiDropdown>
+            <div id="profile" [appIdenticon]="getIdenticonObject()">
+            </div>
+            <div class="left menu" suiDropdownMenu>
+              <div class="header">
+                <i class="icon user circle"></i>
+                {{getRole()}}
+              </div>
+              <!-- header -->
+              <div class="divider"></div>
+              <ng-container *ngIf="getRole() == 'GUEST'">
+                <div class="item guest-button" routerLink="/login">
+                  Login
+                </div>
+                <div class="item guest-button" routerLink="/register">
+                  Sign up
+                </div>
+                <div class="divider"></div>
+              </ng-container>
+              <div class="item" routerLink="/profile">
+                Profile
+              </div>
+              <!-- profile -->
+              <div class="divider"></div>
+              <div id="logout" class="item" (click)="logout()">
+                <i class="icon power"></i>
+                Logout
+              </div>
+              <!-- logout -->
+            </div>
+          </div>
+          <i class="icon dropdown"></i>
+        </div>
       </ng-template>
     </div>
     <!-- wrapper-2 -->

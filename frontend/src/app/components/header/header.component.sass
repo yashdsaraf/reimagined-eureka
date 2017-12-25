@@ -23,13 +23,13 @@
   flex-direction: row
   height: 100%
   margin: 0 auto
-  padding: .5em
   width: 100%
 
   #left-header
     justify-content: center
     display: inline-flex
     flex-basis: 20%
+    padding: .5em
 
     #logo
       color: $header-font
@@ -46,6 +46,7 @@
       align-items: center
       display: inline-flex
       height: 100%
+      padding: .5em
       padding-left: 1em
       width: 100%
 
@@ -64,19 +65,31 @@
       margin-right: 2em
       width: 100%
 
-      .visible
-        #guest-label
-          background-color: $header-font
-          font-size: 1.3em
-
-      .hidden
-        display: inline-flex
+      #logged-in
+        align-items: center
+        display: flex
+        color: white
         height: 100%
-        justify-content: center
+        justify-content: flex-end
         width: 100%
 
-        .button
-          height: 2.7em
+        .header
+          font-size: 1em
+
+        #logout:hover
+          color: red
+
+        .guest-button:hover
+          color: green
+
+        #username
+          font-family: 'Raleway', sans-serif
+          font-size: 1.3em
+          padding-right: .5em
+
+        #profile
+          display: inline-flex
+          align-items: center
 
 @media only screen and (max-width: 768px)
 
