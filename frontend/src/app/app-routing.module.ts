@@ -28,6 +28,7 @@ import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
+import {ProfileComponent} from './components/profile/profile.component'
 import {RegisterComponent} from './components/register/register.component'
 //GUARDS
 import {AdminGuard} from './guards/admin.guard'
@@ -45,6 +46,7 @@ const routes: Routes = [
   {path: 'logout/:message', component: LogoutComponent},
   {path: 'logout/:message/:error', component: LogoutComponent},
   {path: 'logout', component: LogoutComponent},
+  {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
   {path: 'register', component: RegisterComponent}
 ]
 
