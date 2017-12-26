@@ -32,13 +32,19 @@ export class StartupService {
 
   init() {
     let router: Router = this.injector.get(Router)
-    if (localStorage.getItem('remember_me') == 'true') {
-      this.authService.getTokensUsingRefreshToken()
-        .subscribe(
-          data => this.authService.updateTokens(data.access_token, data.refresh_token),
-          err => this.authService.deleteTokens()
-        )
+    let tokens = this.authService.getSavedTokens()
+    if (!this.authService.isTokenExpired(tokens.access_token)) {
+      return
     }
+    if (localStorage.getItem('remember_me') != 'true' || this.authService.isTokenExpired(tokens.refresh_token)) {
+      this.authService.deleteTokens()
+      return
+    }
+    this.authService.getTokensUsingRefreshToken()
+      .subscribe(
+        data => this.authService.updateTokens(data.access_token, data.refresh_token),
+        err => this.authService.deleteTokens()
+      )
   }
 
 }

@@ -48,6 +48,27 @@
     </div>
     <!-- Password field-->
 
+    <div class="inline fields">
+      <div class="field">
+        <button class="ui teal animated submit button" [ngClass]="{loading: loading}">
+          <div class="visible content">Sign in</div>
+          <div class="hidden content">
+            <i class="icon sign in"></i>
+          </div>
+        </button>
+      </div>
+      <!-- sign in -->
+      <div class="field">
+        <button id="clear" class="ui animated button" type="reset">
+          <div class="visible content">Clear</div>
+          <div class="hidden content">
+            <i class="icon erase"></i>
+          </div>
+        </button>
+      </div>
+      <!-- clear -->
+    </div>
+
     <div [ngClass]="{'inline fields': !isMobile}">
       <div class="field" [ngClass]="{'four wide': !isMobile}">
         <button class="ui basic small button" (click)="forgotPassword = true">Forgot password?</button>
@@ -59,25 +80,8 @@
         </div>
       </div>
     </div>
-    <!-- remember field -->
-    <div class="inline fields">
-      <div class="field">
-        <button class="ui teal animated submit button" [ngClass]="{loading: loading}">
-          <div class="visible content">Sign in</div>
-          <div class="hidden content">
-            <i class="icon sign in"></i>
-          </div>
-        </button>
-      </div>
-      <div class="field">
-        <button id="clear" class="ui animated button" type="reset">
-          <div class="visible content">Clear</div>
-          <div class="hidden content">
-            <i class="icon erase"></i>
-          </div>
-        </button>
-      </div>
-    </div>
+    <!-- remember me -->
+
     <button class="ui basic positive button" [ngClass]="{loading: guestLoading}" (click)="loginAsGuest()">
       Continue as guest
     </button>

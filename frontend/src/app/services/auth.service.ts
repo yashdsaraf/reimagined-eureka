@@ -102,7 +102,7 @@ export class AuthService {
   }
 
   public isTokenExpired(token: string): boolean {
-    return this.jwtHelper.isTokenExpired(token)
+    return token == null || this.jwtHelper.isTokenExpired(token)
   }
 
   public deleteTokens() {

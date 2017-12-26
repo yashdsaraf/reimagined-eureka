@@ -35,22 +35,22 @@ export class LogoutService {
   logout(message?: string, error?: string) {
     let access_token = this.authService.getSavedTokens().access_token
     let headers = new Headers({'Authorization': `Bearer ${access_token}`})
+    let params = {message, error}
     this.http.get('/api/destroy', {headers}).subscribe(
       data => {
-        let params = {message, error}
         if (data.hasOwnProperty('message')) {
           params.message = data['message']
         }
         if (data.hasOwnProperty('error')) {
           params.error = data['error']
         }
-        this.authService.deleteTokens()
-        this.router.navigate(['/logout', params])
       },
       err => {
-        throw err
+        // DO NOT HANDLE ERRORS FOR LOGOUT
       }
     )
+    this.authService.deleteTokens()
+    this.router.navigate(['/logout', params])
   }
 
 }

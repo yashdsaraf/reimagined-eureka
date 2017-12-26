@@ -55,28 +55,24 @@ export class OAuthInterceptor implements HttpInterceptor {
       headers: req.headers.set('Authorization', `Bearer ${this.access_token}`)
     })
 
-    if (this.access_token == null || this.authService.isTokenExpired(this.access_token)) {
-      if (localStorage.getItem('remember_me') != 'true' || this.refresh_token == null || this.authService.isTokenExpired(this.refresh_token)) {
-        this.logoutService.logout(null, "Session expired")
-      }
-      let value: any = null
-      this.authService.getTokensUsingRefreshToken()
-        .subscribe(
-          data => {
-            value = duplicate
-          },
-          err => {
-            throw err
-          }
-        )
-      return next.handle(value)
+    if (
+      this.authService.isTokenExpired(this.access_token) &&
+      (localStorage.getItem('remember_me') != 'true' || this.authService.isTokenExpired(this.refresh_token))
+    ) {
+      this.logoutService.logout(null, "Session expired")
     }
-    return next.handle(duplicate)
-  }
 
-  success(req: HttpRequest<any>, next: HttpHandler) {
-
-
+    let value: any = null
+    this.authService.getTokensUsingRefreshToken()
+      .subscribe(
+        data => {
+          value = duplicate
+        },
+        err => {
+          throw err
+        }
+      )
+    return next.handle(value)
   }
 
 }
