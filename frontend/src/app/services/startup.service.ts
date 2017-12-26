@@ -35,10 +35,7 @@ export class StartupService {
     if (localStorage.getItem('remember_me') == 'true') {
       this.authService.getTokensUsingRefreshToken()
         .subscribe(
-          data => {
-            this.authService.updateTokens(data.access_token, data.refresh_token)
-            router.navigate(['/home'])
-          },
+          data => this.authService.updateTokens(data.access_token, data.refresh_token),
           err => this.authService.deleteTokens()
         )
     }
