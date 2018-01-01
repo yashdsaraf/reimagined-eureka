@@ -16,6 +16,7 @@
 
 import {
   Component,
+  ElementRef,
   ViewChild
 } from '@angular/core'
 import {NgForm} from '@angular/forms'
@@ -46,7 +47,7 @@ export class RegisterComponent {
   useEmailAsPass = false
   error = ''
   loading = false
-  @ViewChild('passwordField') passwordField
+  @ViewChild('passwordField') passwordField: ElementRef
 
   constructor(
     private flashMessagesService: FlashMessagesService,

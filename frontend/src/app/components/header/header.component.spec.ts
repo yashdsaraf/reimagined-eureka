@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,7 +22,15 @@ import {
 } from '@angular/core/testing'
 import {By} from '@angular/platform-browser'
 
+import {HttpModule} from '@angular/http'
+import {Router} from '@angular/router'
+
+import {AuthService} from '../../services/auth.service'
+import {CookieService} from '../../services/cookie.service'
 import {HeaderComponent} from './header.component'
+import {IdenticonDirective} from '../../directives/identicon.directive'
+import {LogoutService} from '../../services/logout.service'
+import {MockRouter} from '../../utils/router.mock'
 
 describe('HeaderComponent', () => {
 
@@ -32,7 +40,17 @@ describe('HeaderComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [HeaderComponent]
+      declarations: [
+        HeaderComponent,
+        IdenticonDirective
+      ],
+      imports: [HttpModule],
+      providers: [
+        AuthService,
+        CookieService,
+        LogoutService,
+        {provide: Router, useClass: MockRouter}
+      ]
     }).compileComponents()
   }))
 

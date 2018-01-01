@@ -9,8 +9,8 @@
       {{error}}!
     </div>
     <div id="button-wrapper">
-      <button routerLink="/" class="ui big button">Go home</button>
-      <button routerLink="/login" class="ui big button">Log back in</button>
+      <button routerLink="/" class="ui button" [ngClass]="{big: !isMobile}">Go home</button>
+      <button routerLink="/login" class="ui button" [ngClass]="{big: !isMobile}">Log back in</button>
     </div>
   </div>
 </div>

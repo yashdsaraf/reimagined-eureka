@@ -51,7 +51,7 @@ export class LoginService {
           } else {
             this.authService.updateTokens(data.access_token)
           }
-          this.router.navigate(['/home'])
+          this.router.navigate([''])
           resolve()
         },
         err => {
@@ -101,7 +101,7 @@ export class LoginService {
         data => {
         	localStorage.removeItem('remember_me')
 					this.authService.updateTokens(data.access_token)
-          this.router.navigate(['/home'])
+          this.router.navigate([''])
           resolve()
         },
         err => {

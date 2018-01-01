@@ -1,6 +1,5 @@
 <div id="container">
   <div class="pnc-header">Welcome back!</div>
-  <br>
   <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
     <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
       <label>Username</label>
@@ -77,6 +76,7 @@
         <div class="ui slider checked checkbox">
           <input type="checkbox" checked="" tabindex="0" name="remember" (change)="remember_me=!remember_me" />
           <label>Remember me</label>
+          <br>
         </div>
       </div>
     </div>

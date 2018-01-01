@@ -44,6 +44,7 @@ import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
 import {OutputComponent} from './components/output/output.component'
+import {ProfileComponent} from './components/profile/profile.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
@@ -54,6 +55,13 @@ import {LogoutService} from './services/logout.service'
 import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
+//GUARDS
+import {AdminGuard} from './guards/admin.guard'
+import {DeveloperGuard} from './guards/developer.guard'
+import {GuestGuard} from './guards/guest.guard'
+import {UserGuard} from './guards/user.guard'
+//DIRECTIVES
+import {IdenticonDirective} from './directives/identicon.directive'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -64,6 +72,7 @@ export function init(startupService: StartupService) {
     AdminComponent,
     AppComponent,
     AboutUsComponent,
+    DocsComponent,
     FileExComponent,
     HeaderComponent,
     HomeComponent,
@@ -71,9 +80,10 @@ export function init(startupService: StartupService) {
     LoginComponent,
     LogoutComponent,
     OutputComponent,
+    ProfileComponent,
     RegisterComponent,
     ToolbarComponent,
-    DocsComponent
+    IdenticonDirective
   ],
   imports: [
     AppRoutingModule,
@@ -93,7 +103,11 @@ export function init(startupService: StartupService) {
     CookieService,
     LoginService,
     LogoutService,
-    StartupService
+    StartupService,
+    AdminGuard,
+    DeveloperGuard,
+    GuestGuard,
+    UserGuard
   ],
   bootstrap: [AppComponent]
 })

@@ -19,7 +19,9 @@ import {
   OnInit
 } from '@angular/core'
 
+import {AuthService} from '../../services/auth.service'
 import {isMobile} from '../../app.component'
+import {LogoutService} from '../../services/logout.service'
 
 @Component({
   selector: 'app-header',
@@ -28,15 +30,40 @@ import {isMobile} from '../../app.component'
 })
 export class HeaderComponent implements OnInit {
 
-  isHeaderOpen: boolean = true
+  isHeaderOpen: boolean
   isMobile: boolean
 
-  constructor() {
+  constructor(
+    private authService: AuthService,
+    private logoutService: LogoutService
+  ) {
     this.isMobile = isMobile
   }
 
   ngOnInit(): void {
     this.isHeaderOpen = !this.isMobile
+  }
+
+  getIdenticonObject() {
+    let obj = {
+      value: this.getUsername(),
+      size: 60
+    }
+    return JSON.stringify(obj)
+  }
+
+  getRole(): string {
+    return this.authService.getRole()
+  }
+
+  getUsername(): string {
+    let username = this.authService.getUsername()
+    username = username.toLowerCase()
+    return username.charAt(0).toUpperCase() + username.slice(1)
+  }
+
+  logout() {
+    this.logoutService.logout()
   }
 
 }
