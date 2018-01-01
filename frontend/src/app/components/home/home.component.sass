@@ -17,33 +17,55 @@
 @import base
 
 #container
+  background: #0D61F2;
+  background-image: url('../../../assets/images/home.svg')
   display: flex
   flex-direction: column
   height: 100%
   width: 100%
 
-  #plugins
-    flex: 2
-    height: 100%
-    width: 100%
-    padding-top: 20px
-    padding-bottom: 5px
+  .logo
+    font-family: 'Fredoka One', cursive
+    font-weight: normal
+
+  #description
+    flex: 1
+    padding: 2em
+
+    .header
+      font-family: 'Raleway', sans-serif
+      font-size: 2.5em
+
+    .label
+      font-size: 1.1em
 
   #projects
-    flex: 2
-    height: 100%
-    width: 100%
+    flex: 1
 
-    #segment
+    .segment
       border: hidden
       height: inherit
       width: 100%
 
-      #title
-        // font-family: 'Fredoka One', cursive
-        color: green
-        font-family: 'Helvetica Neue'
-        font-size: 3.5em
+    .content
+      font-family: 'Raleway', sans-serif
+
+  #info
+    flex: 2 0 10em
+    height: 100%
+    width: 100%
+    border: none
+    overflow: auto
+    padding: 1em
+
+    .header
+      font-family: 'Merriweather Sans', sans-serif
+
+    li
+      font-family: 'Raleway', sans-serif
+      font-weight: bold
+      font-size: 1.2em
+      line-height: 1.7em
 
   #footer
     display: inline-flex
@@ -70,6 +92,22 @@
         font-family: 'Raleway', sans-serif
 
   @media only screen and (max-width: 768px)
+
+    #description
+
+      .header,
+      .label
+        font-size: 1em
+
+    #projects
+
+      .button
+        margin-bottom: 1em
+
+    #info
+      .header
+        font-weight: bold
+        padding-left: 1em
 
     #left-footer
       padding: 1.5em 1em 1.5em 1em !important

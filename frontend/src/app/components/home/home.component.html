@@ -1,39 +1,79 @@
 <div id="container">
-  <div id="plugins">
-<<<<<<< HEAD
-  </div> <!-- plugins -->
+
+  <div id="description">
+    <div class="ui center aligned grid">
+      <div class="row">
+        <div class="ui header center aligned column">
+          <span class="logo">Plug n’ Code</span> aims to provide a pluggable and dynamic development environment with a clean and easy to use
+          and user interface.
+        </div>
+      </div>
+      <div *ngIf="isNotLoggedIn()" class="row">
+        <div class="right aligned column">
+          <a href="#" routerLink="/register" class="ui yellow tag label">
+            Create a free account now!
+          </a>
+        </div>
+      </div>
+    </div>
+    <!-- grid -->
+  </div>
+  <!-- description -->
 
   <div id="projects">
-    <div class="ui center aligned top attached segment" id="segment">
-      <h1 class="ui center aligned huge header" id="title">
-        Plug n' Code
-        <div class="sub header" id="tagline">Integated Development Environment</div>
-      </h1>
-
+    <div class="ui center aligned top attached basic segment">
       <div id="btn">
-        <button type="button" name="createBtn" class="ui compact inverted blue animated fade button">
+        <button name="createBtn" class="ui compact teal animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
           <div class="visible content">Create project</div>
           <div class="hidden content">
             <i class="icon write"></i>
           </div>
         </button>
 
-        <button type="button" name="importBtn" class="ui compact inverted blue animated fade button">
+        <button name="importBtn" class="ui compact teal animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
           <div class="visible content">Import project</div>
           <div class="hidden content">
             <i class="icon cloud download "></i>
           </div>
         </button>
 
-        <button type="button" name="openBtn" class="ui compact inverted blue animated fade button">
+        <button name="openBtn" class="ui compact teal animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
           <div class="visible content">Open project</div>
           <div class="hidden content">
             <i class="icon folder open"></i>
           </div>
         </button>
-      </div><br>
+      </div>
+      <br>
     </div>
-  </div> <!-- projects -->
+  </div>
+  <!-- projects -->
+
+  <div *ngIf="!isMobile, else mobileInfo" id="info" class="ui equal width grid">
+    <div class="row">
+      <div *ngFor="let header of headers" class="ui basic segment" [ngClass]="{column: !isMobile}">
+        <div class="ui header">{{header}}</div>
+        <div innerHTML="{{info[header]}}">
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- info -->
+
+  <ng-template #mobileInfo>
+    <div id="info">
+      <sui-accordion>
+        <sui-accordion-panel *ngFor="let header of headers">
+          <div class="header" title>
+            {{header}}
+            <i class="ui icon dropdown"></i>
+          </div>
+          <div innerHTML="{{info[header]}}" content></div>
+        </sui-accordion-panel>
+      </sui-accordion>
+    </div>
+  </ng-template>
 
   <div class="ui black inverted vertical segment" id="footer">
     <div id="left-footer">
@@ -51,80 +91,7 @@
         <span class="footer-text">99-9999-9999</span>
       </p>
     </div>
-  </div> <!-- footer -->
-=======
-    <div class="ui centered cards">
-  <div class="card" style="width:240px">
-    <div class="content">
-      <img class="right floated mini ui image" src="/images/avatar/large/elliot.jpg">
-      <div class="header">
-        Created_on
-      </div>
-      <div class="description">
-        Plugin description
-      </div>
-    </div>
-    <div class="extra content">
-      <div class="ui bottom attached button">
-      Python
-    </div>
-    </div>
   </div>
-<<<<<<< HEAD
-  <div class="card" style="width:240px">
-    <div class="content">
-      <img class="right floated mini ui image" src="/images/avatar/large/jenny.jpg">
-      <div class="header">
-        Created_on
-      </div>
-      <div class="description">
-       Plugin description
-      </div>
-    </div>
-    <div class="extra content">
-      <div class="ui bottom attached button">
-      C#
-    </div>
-    </div>
-  </div>
-  <div class="card" style="width:240px">
-    <div class="content">
-      <img class="right floated mini ui image" src="/images/avatar/large/jenny.jpg">
-      <div class="header">
-        Created_on
-      </div>
-      <div class="description">
-        Plugin description
-      </div>
-    </div>
-    <div class="extra content">
-      <div class="ui bottom attached button">
-      JAVA
-    </div>
-    </div>
-  </div>
-  <div class="card" style="width:240px">
-    <div class="content">
-      <img class="right floated mini ui image" src="/images/avatar/large/jenny.jpg">
-      <div class="header">
-        Created_on
-      </div>
-      <div class="description">
-        Plugin description
-      </div>
-    </div>
-    <div class="extra content">
-      <div class="ui bottom attached button">
-      C++
-    </div>
-    </div>
-  </div>
-</div>
-  </div>
-  <div id="projects"></div>
->>>>>>> Add plugin cards #34
-=======
   <!-- footer -->
-
->>>>>>> Fix homepage footer #34
 </div>
+<!-- container -->
