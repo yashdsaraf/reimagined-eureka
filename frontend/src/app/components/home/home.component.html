@@ -10,7 +10,7 @@
       </div>
       <div *ngIf="isNotLoggedIn()" class="row">
         <div class="right aligned column">
-          <a href="#" routerLink="/register" class="ui yellow tag label">
+          <a href="#" routerLink="/register" class="ui green tag label">
             Create a free account now!
           </a>
         </div>
@@ -23,21 +23,21 @@
   <div id="projects">
     <div class="ui center aligned top attached basic segment">
       <div id="btn">
-        <button name="createBtn" class="ui compact teal animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <button name="createBtn" class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
           <div class="visible content">Create project</div>
           <div class="hidden content">
             <i class="icon write"></i>
           </div>
         </button>
 
-        <button name="importBtn" class="ui compact teal animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <button name="importBtn" class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
           <div class="visible content">Import project</div>
           <div class="hidden content">
             <i class="icon cloud download "></i>
           </div>
         </button>
 
-        <button name="openBtn" class="ui compact teal animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <button name="openBtn" class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
           <div class="visible content">Open project</div>
           <div class="hidden content">
             <i class="icon folder open"></i>
@@ -52,9 +52,8 @@
   <div *ngIf="!isMobile, else mobileInfo" id="info" class="ui equal width grid">
     <div class="row">
       <div *ngFor="let header of headers" class="ui basic segment" [ngClass]="{column: !isMobile}">
-        <div class="ui header">{{header}}</div>
-        <div innerHTML="{{info[header]}}">
-
+        <div class="ui basic center aligned segment header">{{header}}</div>
+        <div class="info-content" innerHTML="{{info[header]}}">
         </div>
       </div>
     </div>
@@ -69,7 +68,7 @@
             {{header}}
             <i class="ui icon dropdown"></i>
           </div>
-          <div innerHTML="{{info[header]}}" content></div>
+          <div class="info-content" innerHTML="{{info[header]}}" content></div>
         </sui-accordion-panel>
       </sui-accordion>
     </div>
