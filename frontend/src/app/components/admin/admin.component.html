@@ -1,3 +1,12 @@
-<p>
-  admin works!
-</p>
+<sui-sidebar-container class="ui bottom attached segment">
+    <sui-sidebar class="inverted vertical" [isVisible]="true" #sidebar>
+        <a class="item" (click)="dash()">Dashboard</a>
+        <a class="item" (click)="plugins()">Plugins</a>
+        <a class="item" (click)="users()">Users</a>
+        <a class="item" (click)="uiElems()">UI Elements</a>
+    </sui-sidebar>
+    <sui-sidebar-sibling>
+      <div class="ui button" (click)="sidebar.open()">Menu</div>
+      <div #parent></div>
+    </sui-sidebar-sibling>
+</sui-sidebar-container>

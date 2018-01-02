@@ -14,7 +14,16 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core'
+import { AdminUsersComponent } from '../admin-users/admin-users.component';
+import { AdminPluginsComponent } from '../admin-plugins/admin-plugins.component';
+import { AdminUiElemsComponent } from '../admin-ui-elems/admin-ui-elems.component';
+import { AdminDashComponent } from '../admin-dash/admin-dash.component';
 
 @Component({
   selector: 'app-admin',
@@ -23,6 +32,34 @@ import {Component} from '@angular/core'
 })
 export class AdminComponent {
 
-  constructor() { }
+  @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef
+
+  constructor(private _cfr: ComponentFactoryResolver) { }
+
+  ngAfterViewInit() {
+    this.dash()
+  }
+
+  users() {
+    this.addComponent(AdminUsersComponent)
+  }
+
+  plugins() {
+    this.addComponent(AdminPluginsComponent)
+  }
+
+  dash() {
+    this.addComponent(AdminDashComponent)
+  }
+
+  uiElems() {
+    this.addComponent(AdminUiElemsComponent)
+  }
+
+  addComponent(component) {
+    let comp = this._cfr.resolveComponentFactory(component)
+    this.container.clear()
+    let created = this.container.createComponent(comp)
+  }
 
 }

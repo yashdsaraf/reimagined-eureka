@@ -33,6 +33,10 @@ import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
 import {AdminComponent} from './components/admin/admin.component'
+import {AdminDashComponent} from './components/admin-dash/admin-dash.component'
+import {AdminPluginsComponent} from './components/admin-plugins/admin-plugins.component'
+import {AdminUiElemsComponent} from './components/admin-ui-elems/admin-ui-elems.component'
+import {AdminUsersComponent} from './components/admin-users/admin-users.component'
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {AboutUsComponent} from './components/about-us/about-us.component'
@@ -74,6 +78,10 @@ export function init(startupService: StartupService) {
 @NgModule({
   declarations: [
     AdminComponent,
+    AdminDashComponent,
+    AdminPluginsComponent,
+    AdminUiElemsComponent,
+    AdminUsersComponent,
     AppComponent,
     AboutUsComponent,
     BlogComponent,
@@ -115,6 +123,12 @@ export function init(startupService: StartupService) {
     DeveloperGuard,
     GuestGuard,
     UserGuard
+  ],
+  entryComponents: [
+    AdminDashComponent,
+    AdminPluginsComponent,
+    AdminUiElemsComponent,
+    AdminUsersComponent
   ],
   bootstrap: [AppComponent]
 })
