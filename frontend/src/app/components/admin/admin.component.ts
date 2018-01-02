@@ -20,10 +20,11 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core'
-import { AdminUsersComponent } from '../admin-users/admin-users.component';
-import { AdminPluginsComponent } from '../admin-plugins/admin-plugins.component';
-import { AdminUiElemsComponent } from '../admin-ui-elems/admin-ui-elems.component';
-import { AdminDashComponent } from '../admin-dash/admin-dash.component';
+
+import {AdminDashComponent} from '../admin-dash/admin-dash.component'
+import {AdminPluginsComponent} from '../admin-plugins/admin-plugins.component'
+import {AdminUiElemsComponent} from '../admin-ui-elems/admin-ui-elems.component'
+import {AdminUsersComponent} from '../admin-users/admin-users.component'
 
 @Component({
   selector: 'app-admin',
@@ -33,11 +34,12 @@ import { AdminDashComponent } from '../admin-dash/admin-dash.component';
 export class AdminComponent {
 
   @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef
+  @ViewChild('sidebar') sidebar
 
   constructor(private _cfr: ComponentFactoryResolver) { }
 
   ngAfterViewInit() {
-    this.dash()
+    this.loadComponent(AdminDashComponent)
   }
 
   users() {
@@ -57,6 +59,11 @@ export class AdminComponent {
   }
 
   addComponent(component) {
+    this.sidebar.close()
+    this.loadComponent(component)
+  }
+
+  loadComponent(component) {
     let comp = this._cfr.resolveComponentFactory(component)
     this.container.clear()
     let created = this.container.createComponent(comp)
