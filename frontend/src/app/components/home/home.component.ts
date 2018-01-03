@@ -19,6 +19,8 @@ import {Component} from '@angular/core'
 import {AuthService} from '../../services/auth.service'
 import {isMobile} from '../../app.component'
 
+declare var $: any
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -67,8 +69,26 @@ export class HomeComponent {
     this.isMobile = isMobile
   }
 
+  ngAfterViewInit() {
+    $('.cards .card').dimmer({
+      on: 'hover'
+    })
+  }
+
   isNotLoggedIn(): boolean {
     return this.authService.getRole() == null
+  }
+
+  get environments(): String[] {
+    return ['Java', 'Python', 'PHP', 'Ruby']
+  }
+
+  getIdenticon(value: string): string {
+    let size = this.isMobile ? 90 : 120
+    let obj = {
+      value, size
+    }
+    return JSON.stringify(obj)
   }
 
 }

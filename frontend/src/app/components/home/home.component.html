@@ -1,53 +1,76 @@
 <div id="container">
 
-  <div id="description">
-    <div class="ui center aligned grid">
-      <div class="row">
-        <div class="ui header center aligned column">
-          <span class="logo">Plug n’ Code</span> aims to provide a pluggable and dynamic development environment with a clean and easy to use
-          and user interface.
-        </div>
-      </div>
-      <div *ngIf="isNotLoggedIn()" class="row">
-        <div class="right aligned column">
-          <a href="#" routerLink="/register" class="ui green tag label">
-            Create a free account now!
-          </a>
-        </div>
-      </div>
-    </div>
-    <!-- grid -->
-  </div>
-  <!-- description -->
-
   <div id="projects">
     <div class="ui center aligned top attached basic segment">
-      <div id="btn">
-        <button name="createBtn" class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
-          <div class="visible content">Create project</div>
-          <div class="hidden content">
-            <i class="icon write"></i>
-          </div>
-        </button>
+      <button class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <div class="visible content">Create project</div>
+        <div class="hidden content">
+          <i class="icon write"></i>
+        </div>
+      </button>
 
-        <button name="importBtn" class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
-          <div class="visible content">Import project</div>
-          <div class="hidden content">
-            <i class="icon cloud download "></i>
-          </div>
-        </button>
+      <button class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <div class="visible content">Import project</div>
+        <div class="hidden content">
+          <i class="icon cloud download "></i>
+        </div>
+      </button>
 
-        <button name="openBtn" class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
-          <div class="visible content">Open project</div>
-          <div class="hidden content">
-            <i class="icon folder open"></i>
-          </div>
-        </button>
-      </div>
+      <button class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <div class="visible content">Open project</div>
+        <div class="hidden content">
+          <i class="icon folder open"></i>
+        </div>
+      </button>
       <br>
+    </div>
+    <div class="ui horizontal inverted divider">
+      Or
     </div>
   </div>
   <!-- projects -->
+
+  <div id="environments" class="ui segments">
+    <div class="ui basic segment">
+      <div class="ui header">Start coding now in
+        <i class="icon level down"></i>
+      </div>
+    </div>
+    <div class="ui basic cards segment">
+      <div *ngFor="let environment of environments" class="ui card">
+        <div class="ui top black attached label">{{environment}}</div>
+        <div class="image">
+          <div [appIdenticon]="getIdenticon(environment)"></div>
+        </div>
+        <div class="ui dimmer">
+          <div class="content">
+            <div class="center">
+              <div class="ui inverted button" routerLink="/index">Let's code</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- <div id="environments">
+    <div class="ui header">Start coding now in <i class="icon pointing right"></i></div>
+    <div class="ui cards">
+      <div *ngFor="let environment of environments" class="card">
+        <div class="ui top black attached label">{{environment}}</div>
+        <div class="image">
+          <div [appIdenticon]="getIdenticon(environment)"></div>
+        </div>
+        <div class="ui dimmer">
+          <div class="content">
+            <div class="center">
+              <div class="ui inverted button">Let's code</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  <!-- environments -->
 
   <div *ngIf="!isMobile, else mobileInfo" id="info" class="ui equal width grid">
     <div class="row">
