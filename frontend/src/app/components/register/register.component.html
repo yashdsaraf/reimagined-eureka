@@ -9,42 +9,45 @@
       <br>
       <br>
       <div class="ui left icon input">
-        <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name" #Name="ngModel" required>
-        <i class="write icon"></i>
+        <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name" #Name="ngModel" required pattern="^[\w]+(\s|\.\s)?(\w(\s|\.\s)?)*[\w]+$">
+        <i class="user circle icon"></i>
       </div>
       <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
         Name is required
+      </div>
+      <div *ngIf="Name.errors?.pattern && Name.touched" class="ui error message">
+        Invalid name
       </div>
     </div>
     <!-- Name field -->
 
     <div class="inline field" [ngClass]="{error: Email.errors && Email.touched, 'six wide': !isMobile, 'fluid': isMobile}">
-      <label>Email ID</label>
+      <label>Email address</label>
       <br>
       <br>
       <div class="ui left icon input">
-        <input type="email" placeholder="johndoe@example.com" [(ngModel)]="user.email" name="email" #Email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-        <i class="user icon"></i>
+        <input type="email" placeholder="johndoe@example.com" [(ngModel)]="user.email" name="email" #Email="ngModel" (change)="onEmailChange()" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+        <i class="mail icon"></i>
       </div>
       <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
-        Email ID is required
+        Email address is required
       </div>
       <div *ngIf="Email.errors?.pattern && Email.touched" class="ui error message">
-        Invalid email
+        Invalid email address
       </div>
     </div>
     <!-- Email id field -->
 
     <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
-      <label>Username</label>
+      <label>Login ID</label>
       <input type="checkbox" class="ui checkbox" (change)="onUsernameChange()" />
-      <small>Use email as username?</small>
+      <small>Use email address as login ID?</small>
       <br>
       <br>
       <div class="ui left icon input">
         <input type="text" placeholder="johndoe123" [(ngModel)]="user.username" name="username" [disabled]="useEmailAsPass" #Username="ngModel"
           minlength="8" required pattern="^\S*$">
-        <i class="user icon"></i>
+        <i class="id badge icon"></i>
       </div>
       <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
         Username is required
@@ -126,7 +129,7 @@
   <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true" (dismissed)="error = false">
     <div class="ui huge header">Oops!</div>
     <div class="content">
-      <h2>{{error}}</h2>
+      <h3>{{error}}</h3>
     </div>
   </sui-modal>
 </div>

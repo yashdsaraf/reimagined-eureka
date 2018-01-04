@@ -52,12 +52,12 @@ public class AppUserDetailsService implements UserDetailsService {
     AppUser user = userRepository.findByUsername(username);
 
     if (user == null) {
-      throw new UsernameNotFoundException("The username " + username + " does not exist");
+      throw new UsernameNotFoundException("The login ID " + username + " does not exist");
     }
 
     authorities = Arrays.asList(
             new SimpleGrantedAuthority(user.getRole().toString()));
-    UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
+    UserDetails userDetails = new User(user.getName(), user.getPassword(), authorities);
     return userDetails;
   }
 

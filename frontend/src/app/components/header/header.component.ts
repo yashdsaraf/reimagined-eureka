@@ -59,7 +59,9 @@ export class HeaderComponent implements OnInit {
   getUsername(): string {
     let username = this.authService.getUsername()
     username = username.toLowerCase()
-    return username.charAt(0).toUpperCase() + username.slice(1)
+    username = username.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
+      .join(' ')
+    return username.length <= 20 ? username : username.split(' ')[0]
   }
 
   logout() {
