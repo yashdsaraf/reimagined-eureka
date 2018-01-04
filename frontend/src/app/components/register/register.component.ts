@@ -68,6 +68,12 @@ export class RegisterComponent {
     this.useEmailAsPass = !this.useEmailAsPass
   }
 
+  onEmailChange() {
+    if (this.useEmailAsPass) {
+      this.user.username = this.user.email
+    }
+  }
+
   onSubmit(f: NgForm) {
     let onReject = err => {
       this.error = err

@@ -1,14 +1,14 @@
 <div id="container">
-  <div class="pnc-header">Welcome back!</div>
+  <div class="pnc-header">Welcome back!</div><br>
   <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
     <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'six wide': !isMobile, 'fluid': isMobile}">
-      <label>Username</label>
+      <label>Login ID</label>
       <br>
       <br>
       <div class="ui left icon input">
         <input type="text" placeholder="johndoe123" [(ngModel)]="username" name="username" #Username="ngModel" minlength="8" required
           pattern="^\S*$">
-        <i class="user icon"></i>
+        <i class="id badge icon"></i>
       </div>
       <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
         Username is required
@@ -91,7 +91,7 @@
   <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true" (dismissed)="error = ''">
     <div class="ui huge header">Oops!</div>
     <div class="content">
-      <h2>{{error}}</h2>
+      <h3>{{error}}</h3>
     </div>
   </sui-modal>
 
