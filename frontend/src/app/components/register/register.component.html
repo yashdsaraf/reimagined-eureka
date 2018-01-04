@@ -9,7 +9,7 @@
       <br>
       <br>
       <div class="ui left icon input">
-        <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name" #Name="ngModel" required pattern="^[\w]+(\s|\.\s)?(\w(\s|\.\s)?)*[\w]+$">
+        <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name" #Name="ngModel" required pattern="^[a-zA-Z]+(\s|\.\s)?([a-zA-Z](\s|\.\s)?)*[a-zA-Z]+$">
         <i class="user circle icon"></i>
       </div>
       <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
