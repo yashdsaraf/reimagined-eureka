@@ -2,7 +2,13 @@
 
 echo. & echo Starting the frontend...
 
-start "FRONTEND" cmd /c "cd frontend & npm start & pause>nul"
+rem Add a light mode to run the frontend using lesser resources
+set "LIGHT=%1"
+if defined LIGHT (
+  start "FRONTEND" cmd /c "cd frontend & npm run serve & pause>nul"
+) else (
+  start "FRONTEND" cmd /c "cd frontend & npm start & pause>nul"
+)
 
 echo. & echo Starting the backend...
 
