@@ -1,101 +1,86 @@
 <div id="container">
 
-  <div id="projects">
-    <div class="ui center aligned top attached basic segment">
-      <button class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
-        <div class="visible content">Create project</div>
-        <div class="hidden content">
-          <i class="icon write"></i>
-        </div>
-      </button>
+  <div id="main">
+    <div id="projects">
+      <div class="ui center aligned top attached basic segment">
+        <button class="ui compact orange animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+          <div class="visible content">Create project</div>
+          <div class="hidden content">
+            <i class="icon write"></i>
+          </div>
+        </button>
 
-      <button class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
-        <div class="visible content">Import project</div>
-        <div class="hidden content">
-          <i class="icon cloud download "></i>
-        </div>
-      </button>
+        <button class="ui compact orange animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+          <div class="visible content">Import project</div>
+          <div class="hidden content">
+            <i class="icon cloud download "></i>
+          </div>
+        </button>
 
-      <button class="ui compact inverted grey animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
-        <div class="visible content">Open project</div>
-        <div class="hidden content">
-          <i class="icon folder open"></i>
-        </div>
-      </button>
-      <br>
-    </div>
-    <div class="ui horizontal inverted divider">
-      Or
-    </div>
-  </div>
-  <!-- projects -->
-
-  <div id="environments" class="ui segments">
-    <div class="ui basic segment">
-      <div class="ui header">Start coding now in
-        <i class="icon level down"></i>
+        <button class="ui compact orange animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+          <div class="visible content">Open project</div>
+          <div class="hidden content">
+            <i class="icon folder open"></i>
+          </div>
+        </button>
+        <br>
+      </div>
+      <div class="ui horizontal inverted divider">
+        Or
       </div>
     </div>
-    <div class="ui basic cards segment">
-      <div *ngFor="let environment of environments" class="ui card">
-        <div class="ui top black attached label">{{environment}}</div>
-        <div class="image">
-          <div [appIdenticon]="getIdenticon(environment)"></div>
+    <!-- projects -->
+
+    <div id="environments" class="ui segments">
+      <div class="ui basic segment">
+        <div class="ui header">Start coding now in
+          <i class="icon level down"></i>
         </div>
-        <div class="ui dimmer">
-          <div class="content">
-            <div class="center">
-              <div class="ui inverted button" routerLink="/index">Let's code</div>
+      </div>
+      <div class="ui basic cards segment">
+        <div *ngFor="let environment of environments" class="ui card">
+          <div class="ui top black attached label">{{environment}}</div>
+          <div class="image">
+            <img src="../../../assets/images/{{environmentCls[environment]}}">
+          </div>
+          <div class="ui dimmer">
+            <div class="content">
+              <div class="center">
+                <div class="ui inverted button" routerLink="/index">Let's code</div>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <!-- <div id="environments">
-    <div class="ui header">Start coding now in <i class="icon pointing right"></i></div>
-    <div class="ui cards">
-      <div *ngFor="let environment of environments" class="card">
-        <div class="ui top black attached label">{{environment}}</div>
-        <div class="image">
-          <div [appIdenticon]="getIdenticon(environment)"></div>
+    <!-- environments -->
+
+    <div *ngIf="!isMobile, else mobileInfo" id="info" class="ui equal width grid">
+      <div class="row">
+        <div *ngFor="let header of headers" class="ui basic segment" [ngClass]="{column: !isMobile}">
+          <div class="ui basic center aligned segment header">{{header}}</div>
+          <div class="info-content" innerHTML="{{info[header]}}">
+          </div>
         </div>
-        <div class="ui dimmer">
-          <div class="content">
-            <div class="center">
-              <div class="ui inverted button">Let's code</div>
+      </div>
+    </div>
+    <!-- info -->
+
+    <ng-template #mobileInfo>
+      <div id="info">
+        <sui-accordion>
+          <sui-accordion-panel *ngFor="let header of headers">
+            <div class="header" title>
+              {{header}}
+              <i class="ui icon dropdown"></i>
             </div>
-          </div>
-        </div>
+            <div class="info-content" innerHTML="{{info[header]}}" content></div>
+          </sui-accordion-panel>
+        </sui-accordion>
       </div>
-    </div>
-  </div> -->
-  <!-- environments -->
-
-  <div *ngIf="!isMobile, else mobileInfo" id="info" class="ui equal width grid">
-    <div class="row">
-      <div *ngFor="let header of headers" class="ui basic segment" [ngClass]="{column: !isMobile}">
-        <div class="ui basic center aligned segment header">{{header}}</div>
-        <div class="info-content" innerHTML="{{info[header]}}">
-        </div>
-      </div>
-    </div>
+    </ng-template>
   </div>
-  <!-- info -->
-
-  <ng-template #mobileInfo>
-    <div id="info">
-      <sui-accordion>
-        <sui-accordion-panel *ngFor="let header of headers">
-          <div class="header" title>
-            {{header}}
-            <i class="ui icon dropdown"></i>
-          </div>
-          <div class="info-content" innerHTML="{{info[header]}}" content></div>
-        </sui-accordion-panel>
-      </sui-accordion>
-    </div>
-  </ng-template>
+  <!-- main -->
 
   <div class="ui black inverted vertical segment" id="footer">
     <div id="left-footer">

@@ -64,6 +64,13 @@ export class HomeComponent {
   </ul>`
   }
   headers = Object.keys(this.info)
+  environments = ['Java', 'Python', 'PHP', 'Ruby']
+  environmentCls = {
+    Java: 'java-original.svg',
+    Python: 'python-original.svg',
+    PHP: 'php-original.svg',
+    Ruby: 'ruby-original.svg'
+  }
 
   constructor(private authService: AuthService) {
     this.isMobile = isMobile
@@ -77,10 +84,6 @@ export class HomeComponent {
 
   isNotLoggedIn(): boolean {
     return this.authService.getRole() == null
-  }
-
-  get environments(): String[] {
-    return ['Java', 'Python', 'PHP', 'Ruby']
   }
 
   getIdenticon(value: string): string {
