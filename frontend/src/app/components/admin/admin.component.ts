@@ -39,7 +39,7 @@ export class AdminComponent {
   constructor(private _cfr: ComponentFactoryResolver) { }
 
   ngAfterViewInit() {
-    this.loadComponent(AdminDashComponent)
+    this.loadComponent(AdminUsersComponent)
   }
 
   users() {

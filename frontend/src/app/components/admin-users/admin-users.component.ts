@@ -15,6 +15,7 @@
  */
 
 import {Component} from '@angular/core'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-admin-users',
@@ -22,7 +23,10 @@ import {Component} from '@angular/core'
   styleUrls: ['./admin-users.component.sass']
 })
 export class AdminUsersComponent {
-
-  constructor() { }
+  isMobile: boolean
+  
+  constructor() {
+    this.isMobile = isMobile
+  }
 
 }

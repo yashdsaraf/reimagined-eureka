@@ -1,3 +1,102 @@
-<p>
-  admin-users works!
-</p>
+<div id="container">
+    <div class="ui segments">
+        <div class="ui inverted teal segment">
+            <div id="wrapper">
+                <div id="wrapper-1">
+                    <h1 class="ui large left aligned header" [ngClass]="{tiny: isMobile,large: !isMobile}"><i class="large users icon" [ngClass]="{small: isMobile}" ></i>Users Table</h1>
+                </div>
+                <div id="wrapper-2">
+                    <div class="ui category search">
+                        <div class="ui icon input" [ngClass]="{small: isMobile,large: !isMobile}">
+                             <input class="prompt" type="text" placeholder="Search username...">
+                            <i class="search icon"></i>
+                        </div>
+                        <div class="results"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="ui raised segment">
+            <table class="ui striped small compact padded selectable table">
+                <thead >
+                    <tr>
+                        <th><h3 class="ui center aligned header">Name</h3></th>
+                        <th class="single line"><h3 class="ui left aligned header">Created on</h3></th>
+                        <th class="single line"><h3 class="ui left aligned header">Email ID</h3></th>
+                        <th><h3 class="ui left aligned header">Username</h3></th>
+                        <th><h3 class="ui left aligned header">Role</h3></th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="single line">
+                            <h2 class="ui center aligned header">Raees R. Mulla</h2>
+                        </td>
+                        <td class="single line">
+                            01-01-18
+                        </td>
+                        <td class="left aligned single line">
+                            <a href="#">raeesmulla97@gmail.com</a>
+                        </td>
+                        <td class="left aligned single line">
+                            raeesmulla97
+                        </td>
+                        <td class="left aligned single line">
+                            USER
+                        </td>
+                        <td>
+                            <button class="ui fluid negative button">
+                                <i class="trash icon"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="single line">
+                            <h2 class="ui center aligned header">Raees R. Mulla</h2>
+                        </td>
+                        <td class="single line">
+                            01-01-18
+                        </td>
+                        <td class="left aligned single line">
+                            <a href="#">raeesmulla97@gmail.com</a>
+                        </td>
+                        <td class="left aligned single line">
+                            raeesmulla97
+                        </td>
+                        <td class="left aligned single line">
+                            DEVELOPER
+                        </td>
+                        <td>
+                            <button class="ui fluid negative button">
+                                <i class="trash icon"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="single line">
+                            <h2 class="ui center aligned header">Raees R. Mulla</h2>
+                        </td>
+                        <td class="single line">
+                            01-01-18
+                        </td>
+                        <td class="left aligned single line">
+                            <a href="#">raeesmulla97@gmail.com</a>
+                        </td>
+                        <td class="left aligned single line">
+                            raeesmulla97
+                        </td>
+                        <td class="left aligned single line">
+                            USER
+                        </td>
+                        <td>
+                            <button class="ui fluid negative button">
+                                <i class="trash icon"></i> Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
