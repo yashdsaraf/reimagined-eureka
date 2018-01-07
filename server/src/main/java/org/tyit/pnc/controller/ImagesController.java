@@ -16,10 +16,15 @@
 package org.tyit.pnc.controller;
 
 import java.io.IOException;
+import java.net.URLDecoder;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -44,7 +49,7 @@ public class ImagesController {
   @GetMapping(value = "/jpg/{name}", produces = MediaType.IMAGE_JPEG_VALUE)
   public ResponseEntity<byte[]> getJpg(@PathVariable("name") String imgName) {
     try {
-      return ResponseEntity.ok(imageService.loadJpg(imgName));
+      return ResponseEntity.ok(imageService.load(imgName, true));
     } catch (IOException ex) {
       return ResponseEntity.notFound().build();
     }
@@ -53,9 +58,19 @@ public class ImagesController {
   @GetMapping(value = "/svg/{name}", produces = MediaType.TEXT_HTML_VALUE)
   public ResponseEntity<String> getSvg(@PathVariable("name") String imgName) {
     try {
-      return ResponseEntity.ok(imageService.loadSvg(imgName));
+      return ResponseEntity.ok(new String(imageService.load(imgName, false)));
     } catch (IOException ex) {
       return ResponseEntity.notFound().build();
+    }
+  }
+
+  @GetMapping(value = "/plugins", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  public ResponseEntity<Map> getAllPlugins() {
+    try {
+      return ResponseEntity.ok(imageService.loadPlugins());
+    } catch (IOException ex) {
+      Logger.getLogger(ImagesController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
     }
   }
 
@@ -63,7 +78,7 @@ public class ImagesController {
   @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<String> setJpg(@PathVariable("name") String imgName, @RequestParam("file") MultipartFile image) {
     try {
-      imageService.storeJpg(imgName, image);
+      imageService.store(imgName, image);
       return ResponseEntity.ok().build();
     } catch (IOException ex) {
       return ResponseEntity.badRequest().build();
@@ -74,9 +89,35 @@ public class ImagesController {
   @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<String> setSvg(@PathVariable("name") String imgName, @RequestBody String content) {
     try {
-      imageService.storeSvg(imgName, content);
+      String decoded = URLDecoder.decode(content, "UTF-8");
+      imageService.store(imgName, decoded);
       return ResponseEntity.ok().build();
     } catch (IOException ex) {
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @PostMapping("/plugin/{name}")
+  public ResponseEntity<String> storePlugin(@PathVariable("name") String name, @RequestBody String content) {
+    try {
+      String decoded = URLDecoder.decode(content, "UTF-8");
+      imageService.storePlugin(name, decoded);
+      return ResponseEntity.ok().build();
+    } catch (IOException ex) {
+      Logger.getLogger(ImagesController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @PreAuthorize("hasAuthority('ADMIN')")
+  @DeleteMapping("/plugin/{name}")
+  public ResponseEntity<String> deletePlugin(@PathVariable("name") String name) {
+    try {
+      imageService.deletePlugin(name);
+      return ResponseEntity.ok().build();
+    } catch (IOException ex) {
+      Logger.getLogger(ImagesController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();
     }
   }

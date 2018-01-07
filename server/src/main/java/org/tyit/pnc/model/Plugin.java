@@ -21,6 +21,8 @@ import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -60,9 +62,9 @@ public class Plugin implements Serializable {
   private String description;
   @Basic(optional = false)
   @NotNull
-  @Size(min = 1, max = 3)
+  @Enumerated(EnumType.STRING)
   @Column(name = "STATUS")
-  private String status;
+  private Status status;
   @Basic(optional = false)
   @NotNull
   @Lob
@@ -90,6 +92,10 @@ public class Plugin implements Serializable {
   @ManyToOne(optional = false)
   private Developer developerId;
 
+  public enum Status {
+    PEN, APP, CAN
+  }
+
   public Plugin() {
   }
 
@@ -97,7 +103,7 @@ public class Plugin implements Serializable {
     this.id = id;
   }
 
-  public Plugin(Long id, String name, String status, String pluginFile, Date createdOn, Date updatedOn) {
+  public Plugin(Long id, String name, Status status, String pluginFile, Date createdOn, Date updatedOn) {
     this.id = id;
     this.name = name;
     this.status = status;
@@ -130,11 +136,11 @@ public class Plugin implements Serializable {
     this.description = description;
   }
 
-  public String getStatus() {
+  public Status getStatus() {
     return status;
   }
 
-  public void setStatus(String status) {
+  public void setStatus(Status status) {
     this.status = status;
   }
 

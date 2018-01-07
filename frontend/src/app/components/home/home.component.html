@@ -1,5 +1,4 @@
-<div id="container">
-
+<div id="container" [style.background-image]="image">
   <div id="main">
     <div id="projects">
       <div class="ui center aligned top attached basic segment">
@@ -38,20 +37,21 @@
         </div>
       </div>
       <div class="ui basic cards segment">
-        <div *ngFor="let environment of environments" class="ui card">
-          <div class="ui top black attached label">{{environment}}</div>
-          <div class="image">
-            <img src="../../../assets/images/{{environmentCls[environment]}}">
+        <div *ngFor="let env of envKeys" class="ui card" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
+          <div class="ui top black attached label">{{toInitCap(env)}}</div>
+          <div class="image" [innerHTML]="environments[env] | sanitizeHtml">
           </div>
-          <div class="ui dimmer">
+          <sui-dimmer transitionDuration=500 isClickable="false" #dimmer>
             <div class="content">
               <div class="center">
                 <div class="ui inverted button" routerLink="/index">Let's code</div>
               </div>
             </div>
-          </div>
+          </sui-dimmer>
         </div>
+        <!-- card -->
       </div>
+      <!-- segment -->
     </div>
     <!-- environments -->
 

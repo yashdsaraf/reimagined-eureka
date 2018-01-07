@@ -17,13 +17,13 @@ package org.tyit.pnc.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Map;
+import java.util.TreeMap;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -34,31 +34,71 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ImageService {
 
-  public void storeJpg(String name, MultipartFile image) throws IOException {
-    Resource resource = new ClassPathResource("images");
-    File file = new File(resource.getFile(), name + ".jpg");
+  public ClassPathResource getResource() {
+    return new ClassPathResource("images");
+  }
+
+  public ClassPathResource getResource(String path) {
+    return new ClassPathResource(path);
+  }
+
+  public void store(String name, MultipartFile image) throws IOException {
+    File file = new File(getResource().getFile(), name + ".jpg");
     Files.write(Paths.get(file.getAbsolutePath()), image.getBytes(), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
-  public void storeSvg(String name, String content) throws IOException {
-    Resource resource = new ClassPathResource("images");
+  public void store(String name, String content) throws IOException {
+    store(name, content, getResource());
+  }
+
+  public void store(String name, String content, ClassPathResource resource) throws IOException {
     File file = new File(resource.getFile(), name + ".svg");
     Files.write(Paths.get(file.getAbsolutePath()), content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
-  public byte[] loadJpg(String name) throws IOException {
-    Resource resource = new ClassPathResource("images" + File.separator + name + ".jpg");
-    InputStream inputStream = resource.getInputStream();
-    byte[] byteStream = new byte[inputStream.available()];
-    inputStream.read(byteStream);
-    return byteStream;
+  public byte[] load(String name, boolean isJpg) throws IOException {
+    String extension = isJpg ? ".jpg" : ".svg";
+    return Files.readAllBytes(Paths.get(getResource().getFile().getAbsolutePath(), name + extension));
   }
 
-  public String loadSvg(String name) throws IOException {
-    Resource resource = new ClassPathResource("images" + File.separator + name + ".svg");
-    StringBuilder stringBuffer = new StringBuilder();
-    Files.readAllLines(Paths.get(resource.getURI())).forEach(stringBuffer::append);
-    return stringBuffer.toString();
+  public void delete(String name, boolean isJpg) throws IOException {
+    delete(name, isJpg, getResource());
+  }
+
+  public void delete(String name, boolean isJpg, ClassPathResource resource) throws IOException {
+    String extension = isJpg ? ".jpg" : ".svg";
+    File file = new File(resource.getFile(), name + extension);
+    if (!file.exists()) {
+      throw new IOException("Image does not exist");
+    }
+    if (!file.delete()) {
+      throw new IOException("Exception occurred while delete the image");
+    }
+  }
+
+  public Map<String, String> loadPlugins() throws IOException {
+    File[] images = getResource("images/plugins").getFile().listFiles();
+    Map imageMap = new TreeMap();
+    StringBuilder stringBuilder;
+    for (File image : images) {
+      stringBuilder = new StringBuilder();
+      String key = image.getName();
+      key = key.substring(0, key.length() - 4);
+      Files.readAllLines(image.toPath()).forEach(stringBuilder::append);
+//      String value = URLEncoder.encode(stringBuilder.toString(), "UTF-8");
+      String value = stringBuilder.toString();
+//      String value = Base64.getEncoder().encodeToString(Files.readAllBytes(image.toPath()));
+      imageMap.put(key, value);
+    }
+    return imageMap;
+  }
+
+  public void deletePlugin(String name) throws IOException {
+    this.delete(name, false, getResource("images/plugins"));
+  }
+
+  public void storePlugin(String name, String image) throws IOException {
+    this.store(name, image, getResource("images/plugins"));
   }
 
 }

@@ -15,11 +15,11 @@
  */
 
 import {Component} from '@angular/core'
+import {Observable} from 'rxjs/Observable'
 
 import {AuthService} from '../../services/auth.service'
+import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
-
-declare var $: any
 
 @Component({
   selector: 'app-home',
@@ -64,22 +64,41 @@ export class HomeComponent {
   </ul>`
   }
   headers = Object.keys(this.info)
-  environments = ['Java', 'Python', 'PHP', 'Ruby']
-  environmentCls = {
-    Java: 'java-original.svg',
-    Python: 'python-original.svg',
-    PHP: 'php-original.svg',
-    Ruby: 'ruby-original.svg'
-  }
+  environments: Object
+  envKeys = []
+  image: any
 
-  constructor(private authService: AuthService) {
+  constructor(
+    private authService: AuthService,
+    private imagesServce: ImagesService
+  ) {
     this.isMobile = isMobile
+    this.imagesServce.getImage('home').subscribe(
+      data => {
+        this.createImageFromBlob(data)
+      }
+    )
+    this.imagesServce.getPlugins().subscribe(
+      data => {
+        this.environments = data
+        this.envKeys = Object.keys(data)
+      }
+    )
   }
 
-  ngAfterViewInit() {
-    $('.cards .card').dimmer({
-      on: 'hover'
-    })
+  toInitCap(value: string) {
+    return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+  }
+
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+       this.image = `url(${reader.result})`;
+    }, false);
+
+    if (image) {
+       reader.readAsDataURL(image);
+    }
   }
 
   isNotLoggedIn(): boolean {

@@ -63,6 +63,9 @@ import {GuestGuard} from './guards/guest.guard'
 import {UserGuard} from './guards/user.guard'
 //DIRECTIVES
 import {IdenticonDirective} from './directives/identicon.directive'
+import {ImagesService} from './services/images.service'
+//PIPES
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -85,7 +88,8 @@ export function init(startupService: StartupService) {
     ProfileComponent,
     RegisterComponent,
     ToolbarComponent,
-    IdenticonDirective
+    IdenticonDirective,
+    SanitizeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
@@ -103,6 +107,7 @@ export function init(startupService: StartupService) {
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     CookieService,
+    ImagesService,
     LoginService,
     LogoutService,
     StartupService,
