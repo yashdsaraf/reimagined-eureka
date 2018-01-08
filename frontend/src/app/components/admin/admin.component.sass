@@ -17,6 +17,7 @@
 @import base
 
 $border-radius: 10em
+$height: 2.8rem
 
 #container
   height: 100%
@@ -26,14 +27,31 @@ $border-radius: 10em
     height: 100%
     width: 100%
 
+  .highlighted
+    background-color: $sidebar-highlight
+
   #menubar
     background-color: red
     border-radius: $border-radius
     display: flex
-    height: 2.8rem
+    height: $height
     margin: .5em
 
-    .button
-      border-radius: 0
-      border-top-left-radius: $border-radius
-      border-bottom-left-radius: $border-radius
+    #menu-toggle
+      flex: 1
+
+      .button
+        height: $height
+        border-radius: 0
+        border-top-left-radius: $border-radius
+        border-bottom-left-radius: $border-radius
+
+    #search
+      flex: 1
+      display: inline-flex
+      justify-content: flex-end
+
+      input
+        border-radius: 0
+        border-top-right-radius: $border-radius
+        border-bottom-right-radius: $border-radius

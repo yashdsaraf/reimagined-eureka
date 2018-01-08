@@ -36,26 +36,33 @@ export class AdminComponent {
   @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef
   @ViewChild('sidebar') sidebar
 
+  isOpen: string
+
   constructor(private _cfr: ComponentFactoryResolver) { }
 
   ngAfterViewInit() {
-    this.loadComponent(AdminUsersComponent)
+    this.loadComponent(AdminDashComponent)
+    this.isOpen = 'dash'
   }
 
   users() {
     this.addComponent(AdminUsersComponent)
+    this.isOpen = 'users'
   }
 
   plugins() {
     this.addComponent(AdminPluginsComponent)
+    this.isOpen = 'plugins'
   }
 
   dash() {
     this.addComponent(AdminDashComponent)
+    this.isOpen = 'dash'
   }
 
   uiElems() {
     this.addComponent(AdminUiElemsComponent)
+    this.isOpen = 'ui'
   }
 
   addComponent(component) {

@@ -1,19 +1,27 @@
 <div id="container">
   <sui-sidebar-container class="ui bottom attached segment">
     <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
-      <a class="item" (click)="dash()">Dashboard</a>
-      <a class="item" (click)="plugins()">Plugins</a>
-      <a class="item" (click)="users()">Users</a>
-      <a class="item" (click)="uiElems()">UI Elements</a>
+      <a class="item" (click)="dash()" [ngClass]="{'highlighted': isOpen == 'dash'}">Dashboard</a>
+      <a class="item" (click)="plugins()" [ngClass]="{'highlighted': isOpen == 'plugins'}">Plugins</a>
+      <a class="item" (click)="users()" [ngClass]="{'highlighted': isOpen == 'users'}">Users</a>
+      <a class="item" (click)="uiElems()" [ngClass]="{'highlighted': isOpen == 'ui'}">UI Elements</a>
     </sui-sidebar>
     <sui-sidebar-sibling id="sidebar" [isDimmedWhenVisible]="true">
 
       <div id="menubar">
-        <div *ngIf="!sidebar.isVisible" class="ui icon button" (click)="sidebar.open()">
-          <i class="icon sidebar"></i>
-          Menu
+        <div id="menu-toggle">
+          <div *ngIf="!sidebar.isVisible" class="ui icon button" (click)="sidebar.open()">
+            <i class="icon sidebar"></i>
+            Menu
+          </div>
         </div>
-      </div>      
+        <div id="search">
+          <div class="ui icon input">
+            <input type="text" placeholder="Search...">
+            <i class="search icon"></i>
+          </div>
+        </div>
+      </div>
 
       <div id="parent" #parent></div>
     </sui-sidebar-sibling>
