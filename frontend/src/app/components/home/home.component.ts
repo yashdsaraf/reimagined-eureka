@@ -113,4 +113,9 @@ export class HomeComponent {
     return JSON.stringify(obj)
   }
 
+  dataUri(env: string) {
+    let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
+    return uri
+  }
+
 }
