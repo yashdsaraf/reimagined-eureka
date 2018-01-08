@@ -6,19 +6,16 @@
       <a class="item" (click)="users()">Users</a>
       <a class="item" (click)="uiElems()">UI Elements</a>
     </sui-sidebar>
-    <sui-sidebar-sibling [isDimmedWhenVisible]="true">
+    <sui-sidebar-sibling id="sidebar" [isDimmedWhenVisible]="true">
 
-      <div id="menu-toggle" class="ui animated big black right attached fixed button" (click)="sidebar.open()">
-        <div class="visible content">
-          <i class="sidebar icon"></i>
-        </div>
-        <div class="hidden content">
+      <div id="menubar">
+        <div *ngIf="!sidebar.isVisible" class="ui icon button" (click)="sidebar.open()">
+          <i class="icon sidebar"></i>
           Menu
         </div>
-      </div>
-      <!-- Menu toggle -->
+      </div>      
 
-      <div #parent></div>
+      <div id="parent" #parent></div>
     </sui-sidebar-sibling>
   </sui-sidebar-container>
 </div>

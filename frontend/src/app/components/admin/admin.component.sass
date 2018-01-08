@@ -16,12 +16,24 @@
 
 @import base
 
+$border-radius: 10em
+
 #container
   height: 100%
   width: 100%
 
-  #menu-toggle
-    margin-top: 1em
-    padding-left: 1em
-    padding-right: 1em
-    text-align: center
+  #sidebar
+    height: 100%
+    width: 100%
+
+  #menubar
+    background-color: red
+    border-radius: $border-radius
+    display: flex
+    height: 2.8rem
+    margin: .5em
+
+    .button
+      border-radius: 0
+      border-top-left-radius: $border-radius
+      border-bottom-left-radius: $border-radius
