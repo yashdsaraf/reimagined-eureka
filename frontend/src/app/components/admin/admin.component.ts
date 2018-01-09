@@ -18,51 +18,51 @@ import {
   Component,
   ComponentFactoryResolver,
   ViewChild,
-  ViewContainerRef
+  ViewContainerRef,
+  OnInit
 } from '@angular/core'
 
 import {AdminDashComponent} from '../admin-dash/admin-dash.component'
 import {AdminPluginsComponent} from '../admin-plugins/admin-plugins.component'
 import {AdminUiElemsComponent} from '../admin-ui-elems/admin-ui-elems.component'
 import {AdminUsersComponent} from '../admin-users/admin-users.component'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.sass']
 })
-export class AdminComponent {
+export class AdminComponent implements OnInit {
 
   @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef
   @ViewChild('sidebar') sidebar
 
-  isOpen: string
+  heading: string
+  isMobile: boolean
 
-  constructor(private _cfr: ComponentFactoryResolver) { }
+  constructor(private _cfr: ComponentFactoryResolver) {
+    this.isMobile = isMobile
+  }
 
-  ngAfterViewInit() {
+  ngOnInit() {
     this.loadComponent(AdminDashComponent)
-    this.isOpen = 'dash'
   }
 
   users() {
     this.addComponent(AdminUsersComponent)
-    this.isOpen = 'users'
   }
 
   plugins() {
     this.addComponent(AdminPluginsComponent)
-    this.isOpen = 'plugins'
   }
 
   dash() {
     this.addComponent(AdminDashComponent)
-    this.isOpen = 'dash'
   }
 
   uiElems() {
     this.addComponent(AdminUiElemsComponent)
-    this.isOpen = 'ui'
   }
 
   addComponent(component) {
@@ -74,6 +74,7 @@ export class AdminComponent {
     let comp = this._cfr.resolveComponentFactory(component)
     this.container.clear()
     let created = this.container.createComponent(comp)
+    this.heading = component.heading
   }
 
 }

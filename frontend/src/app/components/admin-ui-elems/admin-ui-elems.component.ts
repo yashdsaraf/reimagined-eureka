@@ -23,6 +23,8 @@ import {Component} from '@angular/core'
 })
 export class AdminUiElemsComponent {
 
+  static heading = 'UI Elements'
+
   constructor() { }
 
 }

@@ -23,6 +23,8 @@ import {Component} from '@angular/core'
 })
 export class AdminPluginsComponent {
 
+  static heading = 'Plugins'
+
   constructor() {}
 
 }

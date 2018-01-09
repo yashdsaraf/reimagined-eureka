@@ -1,29 +1,39 @@
 <div id="container">
   <sui-sidebar-container class="ui bottom attached segment">
     <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
-      <a class="item" (click)="dash()" [ngClass]="{'highlighted': isOpen == 'dash'}">Dashboard</a>
-      <a class="item" (click)="plugins()" [ngClass]="{'highlighted': isOpen == 'plugins'}">Plugins</a>
-      <a class="item" (click)="users()" [ngClass]="{'highlighted': isOpen == 'users'}">Users</a>
-      <a class="item" (click)="uiElems()" [ngClass]="{'highlighted': isOpen == 'ui'}">UI Elements</a>
+      <a class="item" (click)="dash()" [ngClass]="{'highlighted': heading == 'Dashboard'}">Dashboard</a>
+      <a class="item" (click)="plugins()" [ngClass]="{'highlighted': heading == 'Plugins'}">Plugins</a>
+      <a class="item" (click)="users()" [ngClass]="{'highlighted': heading == 'Users'}">Users</a>
+      <a class="item" (click)="uiElems()" [ngClass]="{'highlighted': heading == 'UI Elements'}">UI Elements</a>
     </sui-sidebar>
     <sui-sidebar-sibling id="sidebar" [isDimmedWhenVisible]="true">
 
       <div id="menubar">
-        <div id="menu-toggle">
-          <div *ngIf="!sidebar.isVisible" class="ui icon button" (click)="sidebar.open()">
+        <div id="menu-toggle" *ngIf="!sidebar.isVisible">
+          <div class="ui icon button" (click)="sidebar.open()">
             <i class="icon sidebar"></i>
-            Menu
+                Menu
           </div>
+          <ng-container *ngIf="!isMobile">
+            {{heading}}
+          </ng-container>
         </div>
+        <!-- menu-toggle -->
         <div id="search">
           <div class="ui icon input">
             <input type="text" placeholder="Search...">
             <i class="search icon"></i>
           </div>
         </div>
+        <!-- search -->
       </div>
+      <!-- menubar -->
 
-      <div id="parent" #parent></div>
+      <div id="parent">
+        <div #parent></div>
+        <!-- Selected sub-component will be added here -->
+      </div>
+      <!-- parent -->
     </sui-sidebar-sibling>
   </sui-sidebar-container>
 </div>

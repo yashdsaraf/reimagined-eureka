@@ -23,8 +23,10 @@ import {isMobile} from '../../app.component'
   styleUrls: ['./admin-users.component.sass']
 })
 export class AdminUsersComponent {
+
   isMobile: boolean
-  
+  static heading = 'Users'
+
   constructor() {
     this.isMobile = isMobile
   }

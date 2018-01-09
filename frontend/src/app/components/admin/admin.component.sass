@@ -23,35 +23,53 @@ $height: 2.8rem
   height: 100%
   width: 100%
 
-  #sidebar
-    height: 100%
-    width: 100%
-
   .highlighted
     background-color: $sidebar-highlight
 
-  #menubar
-    background-color: red
-    border-radius: $border-radius
+  #sidebar
+    height: 100%
+    width: 100%
     display: flex
-    height: $height
-    margin: .5em
+    flex-direction: column
 
-    #menu-toggle
-      flex: 1
+    #menubar
+      background-color: red
+      border-radius: $border-radius
+      display: flex
+      height: $height
+      margin: .5em
 
-      .button
-        height: $height
-        border-radius: 0
-        border-top-left-radius: $border-radius
-        border-bottom-left-radius: $border-radius
+      #menu-toggle
+        flex: 1
 
-    #search
-      flex: 1
-      display: inline-flex
-      justify-content: flex-end
+        .button
+          height: $height
+          border-radius: 0
+          border-top-left-radius: $border-radius
+          border-bottom-left-radius: $border-radius
 
-      input
-        border-radius: 0
-        border-top-right-radius: $border-radius
-        border-bottom-right-radius: $border-radius
+      #search
+        flex: 1
+        display: inline-flex
+        justify-content: flex-end
+
+        input
+          border-radius: 0
+          border-top-right-radius: $border-radius
+          border-bottom-right-radius: $border-radius
+
+    #parent
+      flex: 3
+      height: 100%
+      width: 100%
+      overflow: auto
+
+  @media only screen and (max-width: 768px)
+
+    $height: 2.5rem
+
+    #menubar
+      height: $height !important
+
+      #menu-toggle .button
+          height: $height !important

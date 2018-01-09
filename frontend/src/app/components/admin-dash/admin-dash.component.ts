@@ -15,6 +15,7 @@
  */
 
 import {Component} from '@angular/core'
+import { isMobile } from '../../app.component';
 
 @Component({
   selector: 'app-admin-dash',
@@ -23,6 +24,11 @@ import {Component} from '@angular/core'
 })
 export class AdminDashComponent {
 
-  constructor() { }
+  static heading = 'Dashboard'
+  isMobile: boolean
+
+  constructor() {
+    this.isMobile = isMobile
+  }
 
 }

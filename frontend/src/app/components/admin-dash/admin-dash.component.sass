@@ -23,6 +23,7 @@
   flex-direction: column
   height: 100%
   width: 100%
+  overflow: auto
 
   #stats
     display: flex
@@ -43,10 +44,36 @@
 
   #graphs
     display: flex
+    flex: 3
     flex-direction: row
     background-color: yellow
-    flex: 3
 
     div
       flex: 1
       background-color: green
+
+  @media only screen and (max-width: 768px)
+
+    #stats,
+    #graphs
+      flex-direction: column
+
+    #stats
+      flex: auto
+
+      .content
+        display: inline-flex
+        justify-content: space-around
+        align-items: center
+        height: 100%
+        width: 100%
+
+      .header
+        flex: 1
+        font-size: 1em
+
+      .statistic
+        flex: 1
+
+    #graphs
+      flex: 1 0 auto
