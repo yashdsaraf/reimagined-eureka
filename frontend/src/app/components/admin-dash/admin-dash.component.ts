@@ -35,9 +35,6 @@ export class AdminDashComponent {
 
   constructor() {
     this.isMobile = isMobile
-  }
-
-  ngAfterViewInit() {
     this.heading.emit('Dashboard')
   }
 

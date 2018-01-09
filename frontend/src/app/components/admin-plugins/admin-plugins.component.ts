@@ -35,9 +35,6 @@ export class AdminPluginsComponent {
 
   constructor() {
     this.isMobile = isMobile
-  }
-
-  ngAfterViewInit() {
     this.heading.emit('Plugins')
   }
 
