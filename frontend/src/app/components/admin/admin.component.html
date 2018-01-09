@@ -1,10 +1,10 @@
 <div id="container">
   <sui-sidebar-container class="ui bottom attached segment">
-    <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
-      <a class="item" (click)="dash()" [ngClass]="{'highlighted': heading == 'Dashboard'}">Dashboard</a>
-      <a class="item" (click)="plugins()" [ngClass]="{'highlighted': heading == 'Plugins'}">Plugins</a>
-      <a class="item" (click)="users()" [ngClass]="{'highlighted': heading == 'Users'}">Users</a>
-      <a class="item" (click)="uiElems()" [ngClass]="{'highlighted': heading == 'UI Elements'}">UI Elements</a>
+    <sui-sidebar class="inverted vertical" [isVisible]="true" #sidebar>
+      <a class="item" (click)="isOpen = 'dash'" [ngClass]="{'highlighted': isOpen == 'dash'}">Dashboard</a>
+      <a class="item" (click)="isOpen = 'plugins'" [ngClass]="{'highlighted': isOpen == 'plugins'}">Plugins</a>
+      <a class="item" (click)="isOpen = 'users'" [ngClass]="{'highlighted': isOpen == 'users'}">Users</a>
+      <a class="item" (click)="isOpen = 'ui'" [ngClass]="{'highlighted': isOpen == 'ui'}">UI Elements</a>
     </sui-sidebar>
     <sui-sidebar-sibling id="sidebar" [isDimmedWhenVisible]="true">
 
@@ -12,7 +12,7 @@
         <div id="menu-toggle" *ngIf="!sidebar.isVisible">
           <div class="ui icon button" (click)="sidebar.open()">
             <i class="icon sidebar"></i>
-                Menu
+            Menu
           </div>
           <ng-container *ngIf="!isMobile">
             {{heading}}
@@ -21,7 +21,7 @@
         <!-- menu-toggle -->
         <div id="search">
           <div class="ui icon input">
-            <input type="text" placeholder="Search...">
+            <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
             <i class="search icon"></i>
           </div>
         </div>
@@ -30,8 +30,10 @@
       <!-- menubar -->
 
       <div id="parent">
-        <div #parent></div>
-        <!-- Selected sub-component will be added here -->
+        <app-admin-dash *ngIf="isOpen == 'dash'" [(search)]="search" (heading)="heading = $event"></app-admin-dash>
+        <app-admin-users *ngIf="isOpen == 'users'" [(search)]="search" (heading)="heading = $event"></app-admin-users>
+        <app-admin-plugins *ngIf="isOpen == 'plugins'" [(search)]="search" (heading)="heading = $event"></app-admin-plugins>
+        <app-admin-ui *ngIf="isOpen == 'ui'" [(search)]="search" (heading)="heading = $event"></app-admin-ui>
       </div>
       <!-- parent -->
     </sui-sidebar-sibling>

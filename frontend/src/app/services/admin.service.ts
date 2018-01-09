@@ -13,19 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
+import {Injectable} from '@angular/core'
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http'
+import {Observable} from 'rxjs/Observable'
 
-public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
+import {User} from '../models/user'
 
-  public AppUser findByUsername(String username);
+@Injectable()
+export class AdminService {
 
-  @Query("SELECT U FROM AppUser U WHERE LOWER(U.name) LIKE LOWER(CONCAT(?1, '%'))")
-  public Iterable<AppUser> findAllByName(String name);
+  constructor(private http: HttpClient) { }
 
-  public AppUser findByEmail(String email);
+  getUsers(name?: string): Observable<User[]> {
+    let params: HttpParams
+    if (name !== null && name !== undefined) {
+      params = new HttpParams().append("name", name)
+    } else {
+      params = new HttpParams()
+    }
+    return this.http.get<User[]>('/api/admin/users', {params})
+  }
 
 }

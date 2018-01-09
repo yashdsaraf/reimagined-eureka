@@ -14,8 +14,15 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
 import {isMobile} from '../../app.component'
+import {User} from '../../models/user'
+import {AdminService} from '../../services/admin.service'
 
 @Component({
   selector: 'app-admin-users',
@@ -24,11 +31,29 @@ import {isMobile} from '../../app.component'
 })
 export class AdminUsersComponent {
 
+  @Output('heading') heading = new EventEmitter()
   isMobile: boolean
-  static heading = 'Users'
+  users: User[]
 
-  constructor() {
+  constructor(private adminService: AdminService) {
     this.isMobile = isMobile
+  }
+
+  ngAfterViewInit() {
+    this.heading.emit('Users')
+    this.getUsers()
+  }
+
+  getUsers(value?: string) {
+    this.adminService.getUsers(value).
+      subscribe(
+        data => this.users = data
+      )
+  }
+
+  @Input('search')
+  set search(value: string) {
+    this.getUsers(value)
   }
 
 }

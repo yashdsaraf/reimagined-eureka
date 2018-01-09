@@ -16,16 +16,11 @@
 
 import {
   Component,
-  ComponentFactoryResolver,
   ViewChild,
-  ViewContainerRef,
   OnInit
 } from '@angular/core'
 
-import {AdminDashComponent} from '../admin-dash/admin-dash.component'
-import {AdminPluginsComponent} from '../admin-plugins/admin-plugins.component'
-import {AdminUiElemsComponent} from '../admin-ui-elems/admin-ui-elems.component'
-import {AdminUsersComponent} from '../admin-users/admin-users.component'
+import {AdminService} from '../../services/admin.service'
 import {isMobile} from '../../app.component'
 
 @Component({
@@ -35,46 +30,27 @@ import {isMobile} from '../../app.component'
 })
 export class AdminComponent implements OnInit {
 
-  @ViewChild('parent', {read: ViewContainerRef}) container: ViewContainerRef
   @ViewChild('sidebar') sidebar
 
   heading: string
+  _isOpen = 'dash'
   isMobile: boolean
+  search: string
 
-  constructor(private _cfr: ComponentFactoryResolver) {
+  constructor(private adminService: AdminService) {
     this.isMobile = isMobile
   }
 
   ngOnInit() {
-    this.loadComponent(AdminDashComponent)
   }
 
-  users() {
-    this.addComponent(AdminUsersComponent)
+  get isOpen(): string {
+    return this._isOpen
   }
 
-  plugins() {
-    this.addComponent(AdminPluginsComponent)
-  }
-
-  dash() {
-    this.addComponent(AdminDashComponent)
-  }
-
-  uiElems() {
-    this.addComponent(AdminUiElemsComponent)
-  }
-
-  addComponent(component) {
+  set isOpen(value: string) {
     this.sidebar.close()
-    this.loadComponent(component)
-  }
-
-  loadComponent(component) {
-    let comp = this._cfr.resolveComponentFactory(component)
-    this.container.clear()
-    let created = this.container.createComponent(comp)
-    this.heading = component.heading
+    this._isOpen = value
   }
 
 }

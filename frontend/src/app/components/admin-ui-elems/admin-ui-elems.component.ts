@@ -14,17 +14,31 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
+import {isMobile} from '../../app.component'
 
 @Component({
-  selector: 'app-admin-ui-elems',
+  selector: 'app-admin-ui',
   templateUrl: './admin-ui-elems.component.html',
   styleUrls: ['./admin-ui-elems.component.sass']
 })
 export class AdminUiElemsComponent {
 
-  static heading = 'UI Elements'
+  @Output('heading') heading = new EventEmitter()
+  @Input('search') search: string
+  isMobile: boolean
 
-  constructor() { }
+  constructor() {
+    this.isMobile = isMobile
+  }
+
+  ngAfterViewInit() {
+    this.heading.emit('UI Elements')
+  }
 
 }

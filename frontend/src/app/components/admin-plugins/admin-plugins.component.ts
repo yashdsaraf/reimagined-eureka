@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-admin-plugins',
@@ -23,8 +29,16 @@ import {Component} from '@angular/core'
 })
 export class AdminPluginsComponent {
 
-  static heading = 'Plugins'
+  @Output('heading') heading = new EventEmitter()
+  @Input('search') search: string
+  isMobile: boolean
 
-  constructor() {}
+  constructor() {
+    this.isMobile = isMobile
+  }
+
+  ngAfterViewInit() {
+    this.heading.emit('Plugins')
+  }
 
 }

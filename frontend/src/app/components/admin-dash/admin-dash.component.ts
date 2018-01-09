@@ -14,8 +14,13 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
-import { isMobile } from '../../app.component';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-admin-dash',
@@ -24,11 +29,16 @@ import { isMobile } from '../../app.component';
 })
 export class AdminDashComponent {
 
-  static heading = 'Dashboard'
+  @Output('heading') heading = new EventEmitter()
+  @Input('search') search: string
   isMobile: boolean
 
   constructor() {
     this.isMobile = isMobile
+  }
+
+  ngAfterViewInit() {
+    this.heading.emit('Dashboard')
   }
 
 }

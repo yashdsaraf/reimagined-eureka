@@ -53,6 +53,7 @@ import {ProfileComponent} from './components/profile/profile.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
+import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
 import {CookieService} from './services/cookie.service'
 import {LoginService} from './services/login.service'
@@ -114,6 +115,7 @@ export function init(startupService: StartupService) {
     {provide: APP_INITIALIZER, useFactory: init, deps: [StartupService], multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
+    AdminService,
     CookieService,
     ImagesService,
     LoginService,

@@ -48,7 +48,7 @@ public class AppAdmin implements Serializable {
   @JoinColumn(name = "USER_ID", referencedColumnName = "ID", unique = true)
   @ManyToOne(optional = false)
   private AppUser userId;
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminid")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminId")
   private Collection<Plugin> pluginCollection;
 
   public AppAdmin() {
