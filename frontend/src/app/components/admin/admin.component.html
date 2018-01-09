@@ -1,6 +1,6 @@
-<div id="container">
-  <sui-sidebar-container class="ui bottom attached segment">
-    <sui-sidebar class="inverted vertical" [isVisible]="true" #sidebar>
+<!-- <div id="container"> -->
+  <sui-sidebar-container id="container" class="ui bottom attached segment">
+    <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
       <a class="item" (click)="isOpen = 'dash'" [ngClass]="{'highlighted': isOpen == 'dash'}">Dashboard</a>
       <a class="item" (click)="isOpen = 'plugins'" [ngClass]="{'highlighted': isOpen == 'plugins'}">Plugins</a>
       <a class="item" (click)="isOpen = 'users'" [ngClass]="{'highlighted': isOpen == 'users'}">Users</a>
@@ -12,14 +12,16 @@
         <div id="menu-toggle" *ngIf="!sidebar.isVisible">
           <div class="ui icon button" (click)="sidebar.open()">
             <i class="icon sidebar"></i>
-            Menu
+            <ng-container *ngIf="!isMobile">
+              Menu
+            </ng-container>
           </div>
-          <ng-container *ngIf="!isMobile">
+          <!-- <ng-container *ngIf="!isMobile"> -->
             {{heading}}
-          </ng-container>
+          <!-- </ng-container> -->
         </div>
         <!-- menu-toggle -->
-        <div id="search">
+        <div *ngIf="isOpen != 'ui' && isOpen != 'dash'" id="search">
           <div class="ui icon input">
             <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
             <i class="search icon"></i>
@@ -30,12 +32,12 @@
       <!-- menubar -->
 
       <div id="parent">
-        <app-admin-dash *ngIf="isOpen == 'dash'" [(search)]="search" (heading)="heading = $event"></app-admin-dash>
+        <app-admin-dash *ngIf="isOpen == 'dash'" (heading)="heading = $event"></app-admin-dash>
         <app-admin-users *ngIf="isOpen == 'users'" [(search)]="search" (heading)="heading = $event"></app-admin-users>
         <app-admin-plugins *ngIf="isOpen == 'plugins'" [(search)]="search" (heading)="heading = $event"></app-admin-plugins>
-        <app-admin-ui *ngIf="isOpen == 'ui'" [(search)]="search" (heading)="heading = $event"></app-admin-ui>
+        <app-admin-ui *ngIf="isOpen == 'ui'" (heading)="heading = $event"></app-admin-ui>
       </div>
       <!-- parent -->
     </sui-sidebar-sibling>
   </sui-sidebar-container>
-</div>
+<!-- </div> -->

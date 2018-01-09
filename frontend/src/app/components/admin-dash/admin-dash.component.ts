@@ -17,7 +17,6 @@
 import {
   Component,
   EventEmitter,
-  Input,
   Output
 } from '@angular/core'
 import {isMobile} from '../../app.component'
@@ -30,7 +29,6 @@ import {isMobile} from '../../app.component'
 export class AdminDashComponent {
 
   @Output('heading') heading = new EventEmitter()
-  @Input('search') search: string
   isMobile: boolean
 
   constructor() {
