@@ -36,7 +36,7 @@ export class StartupService {
     if (!this.authService.isTokenExpired(tokens.access_token)) {
       return
     }
-    if (localStorage.getItem('remember_me') != 'true' || this.authService.isTokenExpired(tokens.refresh_token)) {
+    if (this.authService.isTokenExpired(tokens.refresh_token)) {
       this.authService.deleteTokens()
       return
     }

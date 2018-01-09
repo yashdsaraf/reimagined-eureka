@@ -51,28 +51,35 @@ export class OAuthInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    const duplicate = req.clone({
+
+    if (this.access_token == null) {
+      return next.handle(req)
+    }
+
+    if (this.authService.isTokenExpired(this.access_token)) {
+      if (this.authService.isTokenExpired(this.refresh_token)) {
+        this.error("Session expired")
+      } else {
+        this.authService.getTokensUsingRefreshToken()
+          .subscribe(data => {
+            this.authService.updateTokens(data.access_token)
+            this.authService.updateTokens(data.refresh_token)
+          }, err => {
+            this.authService.deleteTokens()
+            this.error(err)
+          })
+      }
+    }
+
+    let duplicate = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${this.access_token}`)
     })
 
-    if (
-      this.authService.isTokenExpired(this.access_token) &&
-      (localStorage.getItem('remember_me') != 'true' || this.authService.isTokenExpired(this.refresh_token))
-    ) {
-      this.logoutService.logout(null, "Session expired")
-    }
+    return next.handle(duplicate)
+  }
 
-    let value: any = null
-    this.authService.getTokensUsingRefreshToken()
-      .subscribe(
-        data => {
-          value = duplicate
-        },
-        err => {
-          throw err
-        }
-      )
-    return next.handle(value)
+  error(cause: string) {
+    this.logoutService.logout(null, cause)
   }
 
 }

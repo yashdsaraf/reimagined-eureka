@@ -46,7 +46,6 @@ export class LoginService {
       .subscribe(
         data => {
           if (remember_me) {
-            localStorage.setItem('remember_me', 'true')
             this.authService.updateTokens(data.access_token, data.refresh_token)
           } else {
             this.authService.updateTokens(data.access_token)
@@ -99,7 +98,6 @@ export class LoginService {
       this.authService.getTokens('guest', '')
       .subscribe(
         data => {
-        	localStorage.removeItem('remember_me')
 					this.authService.updateTokens(data.access_token)
           this.router.navigate([''])
           resolve()
