@@ -15,6 +15,11 @@
  */
 
 import {Component} from '@angular/core'
+import {Observable} from 'rxjs/Observable'
+
+import {AuthService} from '../../services/auth.service'
+import {ImagesService} from '../../services/images.service'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-home',
@@ -23,6 +28,94 @@ import {Component} from '@angular/core'
 })
 export class HomeComponent {
 
-  constructor() { }
+  isMobile: boolean
+
+  info = {
+    'Plugin support': `<ul>
+    <li>
+      In
+      <span class="logo">Plug n’ Code</span>, any user, after going through a minimal authentication process, can create and publish a
+      plugin in the marketplace to add support for a specific language. This enables the users to go beyond the pre-defined
+      capabilities of the application.
+    </li>
+    <li>
+      Each plugin goes through a thorough screening process to ensure no harmful or ill-intended code goes into the system. It
+      goes through automated tests to test the structure of the plugin, it is then tested by the admins to test the
+      functionality provided by the plugin.
+    </li>
+  </ul>`,
+    'Complex execution environments': `<ul>
+    <li>
+      In
+      <span class="logo">Plug n’ Code</span> the goal is to provide pre-defined environments as well as the option to tailor the execution
+      environment specific to the project’s needs.
+    </li>
+  </ul>`,
+    'Secure execution of code': `<ul>
+    <li>
+      Each build of a project in
+      <span class="logo">Plug n’ Code</span> runs on a separate isolated docker instance to make sure no system specific issues interfere
+      with the job.
+    </li>
+    <li>
+      This ensures safety of the project data and all kinds of output or logs are directly forwarded to the user’s browser window
+      without being persisted in any kind of data storage medium.
+    </li>
+  </ul>`
+  }
+  headers = Object.keys(this.info)
+  environments: Object
+  envKeys = []
+  image: any
+
+  constructor(
+    private authService: AuthService,
+    private imagesServce: ImagesService
+  ) {
+    this.isMobile = isMobile
+    this.imagesServce.getImage('home').subscribe(
+      data => {
+        this.createImageFromBlob(data)
+      }
+    )
+    this.imagesServce.getPlugins().subscribe(
+      data => {
+        this.environments = data
+        this.envKeys = Object.keys(data)
+      }
+    )
+  }
+
+  toInitCap(value: string) {
+    return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+  }
+
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader();
+    reader.addEventListener("load", () => {
+       this.image = `url(${reader.result})`;
+    }, false);
+
+    if (image) {
+       reader.readAsDataURL(image);
+    }
+  }
+
+  isNotLoggedIn(): boolean {
+    return this.authService.getRole() == null
+  }
+
+  getIdenticon(value: string): string {
+    let size = this.isMobile ? 90 : 120
+    let obj = {
+      value, size
+    }
+    return JSON.stringify(obj)
+  }
+
+  dataUri(env: string) {
+    let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
+    return uri
+  }
 
 }

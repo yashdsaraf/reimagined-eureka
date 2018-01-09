@@ -36,6 +36,7 @@ import {AdminComponent} from './components/admin/admin.component'
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {AboutUsComponent} from './components/about-us/about-us.component'
+import {BlogComponent} from './components/blog/blog.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
@@ -62,6 +63,9 @@ import {GuestGuard} from './guards/guest.guard'
 import {UserGuard} from './guards/user.guard'
 //DIRECTIVES
 import {IdenticonDirective} from './directives/identicon.directive'
+import {ImagesService} from './services/images.service'
+//PIPES
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -72,6 +76,7 @@ export function init(startupService: StartupService) {
     AdminComponent,
     AppComponent,
     AboutUsComponent,
+    BlogComponent,
     DocsComponent,
     FileExComponent,
     HeaderComponent,
@@ -83,7 +88,8 @@ export function init(startupService: StartupService) {
     ProfileComponent,
     RegisterComponent,
     ToolbarComponent,
-    IdenticonDirective
+    IdenticonDirective,
+    SanitizeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
@@ -101,6 +107,7 @@ export function init(startupService: StartupService) {
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     CookieService,
+    ImagesService,
     LoginService,
     LogoutService,
     StartupService,

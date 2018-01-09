@@ -20,6 +20,8 @@
       "prefix": "app",
       "styles": [
         "styles.sass",
+        "../node_modules/devicon/devicon.min.css",
+        "../node_modules/devicon/devicon-colors.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/codemirror/lib/codemirror.css",
         "../src/semantic/dist/semantic.min.css"

@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ * Copyright 2018 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,18 @@
  * limitations under the License.
  */
 
-@import base
+import { TestBed, inject } from '@angular/core/testing';
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+import { ImagesService } from './images.service';
 
-  label
-    font-family: $sans-serif
+describe('ImagesService', () => {
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [ImagesService]
+    });
+  });
 
-  #clear
-    background-color: $clear-button
-    color: white
-
-  .icon,
-  .label
-    user-select: none
+  it('should be created', inject([ImagesService], (service: ImagesService) => {
+    expect(service).toBeTruthy();
+  }));
+});

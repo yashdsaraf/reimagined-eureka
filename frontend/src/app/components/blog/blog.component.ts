@@ -14,20 +14,15 @@
  * limitations under the License.
  */
 
-@import base
+import {Component} from '@angular/core'
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+@Component({
+  selector: 'app-blog',
+  templateUrl: './blog.component.html',
+  styleUrls: ['./blog.component.sass']
+})
+export class BlogComponent {
 
-  label
-    font-family: $sans-serif
+  constructor() { }
 
-  #clear
-    background-color: $clear-button
-    color: white
-
-  .icon,
-  .label
-    user-select: none
+}

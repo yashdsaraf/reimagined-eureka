@@ -33,7 +33,7 @@
 
     #logo
       color: $header-font
-      font-family: 'Fredoka One', cursive
+      font-family: $cursive
       font-size: 2.5em
 
   #right-header
@@ -44,6 +44,7 @@
 
     #wrapper-1
       align-items: center
+      justify-content: flex-end
       display: inline-flex
       height: 100%
       padding: .5em
@@ -65,6 +66,17 @@
       margin-right: 2em
       width: 100%
 
+      #login-button
+        background-color: $login
+        color: $home-content
+
+      #register-button
+        background-color: $home-project-button
+        color: $home-content
+
+      .button
+        font-family: $serif
+
       #logged-in
         align-items: center
         display: flex
@@ -83,7 +95,7 @@
           color: green
 
         #username
-          font-family: 'Raleway', sans-serif
+          font-family: $sans-serif
           font-size: 1.3em
           padding-right: .5em
 
@@ -116,7 +128,7 @@
 
       #wrapper-1
         flex-wrap: wrap
-        justify-content: center
+        justify-content: flex-start
         margin: 0
         padding: 0
 

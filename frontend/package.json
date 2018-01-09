@@ -29,6 +29,7 @@
     "codemirror": "^5.31.0",
     "concurrently": "^3.5.0",
     "core-js": "^2.5.1",
+    "devicon": "^2.0.0",
     "font-awesome": "^4.7.0",
     "gulp": "^3.9.1",
     "jdenticon": "^1.7.2",

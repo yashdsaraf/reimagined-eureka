@@ -23,6 +23,7 @@ import {
 //COMPONENTS
 import {AboutUsComponent} from './components/about-us/about-us.component'
 import {AdminComponent} from './components/admin/admin.component'
+import {BlogComponent} from './components/blog/blog.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
@@ -40,6 +41,7 @@ const routes: Routes = [
   {path: '', component: HomeComponent},
   {path: 'aboutus', component: AboutUsComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AdminGuard]},
+  {path: 'blog', component: BlogComponent},
   {path: 'docs', component: DocsComponent},
   {path: 'index', component: IndexComponent, canActivate: [GuestGuard]},
   {path: 'login', component: LoginComponent},

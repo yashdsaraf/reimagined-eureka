@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ * Copyright 2018 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,24 @@
  * limitations under the License.
  */
 
-@import base
+import {
+  Pipe,
+  PipeTransform
+} from "@angular/core"
+import {
+  DomSanitizer,
+  SafeHtml
+} from '@angular/platform-browser'
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+@Pipe({
+  name: 'sanitizeHtml'
+})
+export class SanitizeHtmlPipe implements PipeTransform {
 
-  label
-    font-family: $sans-serif
+  constructor(private _sanitizer: DomSanitizer) {
+  }
 
-  #clear
-    background-color: $clear-button
-    color: white
-
-  .icon,
-  .label
-    user-select: none
+  transform(v: string): SafeHtml {
+    return this._sanitizer.bypassSecurityTrustHtml(v)
+  }
+}

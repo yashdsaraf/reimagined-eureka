@@ -14,14 +14,15 @@
     <div id="wrapper-1">
       <a routerLink="/aboutus">About us</a>
       <a routerLink="/docs">Docs</a>
+      <a routerLink="/blog">Blog</a>
       <a href="https://www.apache.org/licenses/LICENSE-2.0">License</a>
     </div>
     <!-- wrapper-1 -->
     <div id="wrapper-2">
       <div *ngIf="getRole() == null, else loggedIn" class="ui floated medium buttons">
-        <button class="ui blue inverted button" routerLink="/login">Login</button>
+        <button id="login-button" class="ui button" routerLink="/login">Login</button>
         <div class="or"></div>
-        <button class="ui blue inverted button" routerLink="/register">Sign up</button>
+        <button class="ui green button" routerLink="/register">Sign up</button>
       </div>
       <ng-template #loggedIn>
         <div id="logged-in">

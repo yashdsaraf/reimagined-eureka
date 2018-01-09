@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ * Copyright 2018 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,20 +14,21 @@
  * limitations under the License.
  */
 
-@import base
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs/Observable'
 
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
+@Injectable()
+export class ImagesService {
 
-  label
-    font-family: $sans-serif
+  constructor(private http: HttpClient) { }
 
-  #clear
-    background-color: $clear-button
-    color: white
+  getImage(name: string): Observable<any> {
+    return this.http.get(`/api/images/jpg/${name}`, {responseType: 'blob'})
+  }
 
-  .icon,
-  .label
-    user-select: none
+  getPlugins(): Observable<any> {
+    return this.http.get('/api/images/plugins')
+  }
+
+}
