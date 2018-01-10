@@ -42,8 +42,6 @@ public class AdminService {
     } else {
       users = appUserRepository.findAll();
     }
-    // Hide passwords
-    users.forEach(i -> i.setPassword(""));
     return users;
   }
 

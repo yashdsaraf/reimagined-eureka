@@ -15,6 +15,7 @@
  */
 package org.tyit.pnc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import javax.persistence.Basic;
@@ -25,8 +26,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -46,9 +47,10 @@ public class AppAdmin implements Serializable {
   @Column(name = "ID")
   private Long id;
   @JoinColumn(name = "USER_ID", referencedColumnName = "ID", unique = true)
-  @ManyToOne(optional = false)
+  @OneToOne(optional = false)
   private AppUser userId;
   @OneToMany(cascade = CascadeType.ALL, mappedBy = "adminId")
+  @JsonIgnore
   private Collection<Plugin> pluginCollection;
 
   public AppAdmin() {
