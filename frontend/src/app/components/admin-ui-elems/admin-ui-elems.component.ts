@@ -33,7 +33,10 @@ export class AdminUiElemsComponent {
 
   constructor() {
     this.isMobile = isMobile
-    this.heading.emit('UI Elements')
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.heading.emit('UI Elements'))
   }
 
 }

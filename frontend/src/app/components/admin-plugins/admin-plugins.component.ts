@@ -39,7 +39,10 @@ export class AdminPluginsComponent {
 
   constructor(private adminService: AdminService) {
     this.isMobile = isMobile
-    this.heading.emit('Plugins')
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.heading.emit('Plugins'))
   }
 
   getPlugins(value?: string) {
@@ -52,7 +55,6 @@ export class AdminPluginsComponent {
   @Input('search')
   set search(value: string) {
     this._search = value
-    console.log(this.plugins)
     this.getPlugins(value)
   }
 

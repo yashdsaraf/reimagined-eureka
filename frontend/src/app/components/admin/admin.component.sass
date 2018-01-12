@@ -20,11 +20,15 @@ $border-radius: 10em
 $height: 2.8rem
 
 #container
+  background-color: $admin-bg
   height: 100%
   width: 100%
 
   .highlighted
     background-color: $sidebar-highlight
+
+  .normal:hover
+    background-color: $sidebar-button
 
   #sidebar
     height: 100%
@@ -35,6 +39,7 @@ $height: 2.8rem
     #menubar
       background-color: red
       border-radius: $border-radius
+      box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26)
       display: flex
       height: $height
       margin: .5em

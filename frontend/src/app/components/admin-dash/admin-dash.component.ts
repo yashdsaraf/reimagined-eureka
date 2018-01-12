@@ -33,7 +33,10 @@ export class AdminDashComponent {
 
   constructor() {
     this.isMobile = isMobile
-    this.heading.emit('Dashboard')
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.heading.emit('Dashboard'))
   }
 
 }

@@ -41,10 +41,10 @@ export class AdminUsersComponent {
 
   constructor(private adminService: AdminService) {
     this.isMobile = isMobile
-    this.heading.emit('Users')
   }
 
   ngAfterViewInit() {
+    setTimeout(() => this.heading.emit('Users'))
     this.getUsers()
   }
 

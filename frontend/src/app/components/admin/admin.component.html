@@ -1,10 +1,10 @@
 <!-- <div id="container"> -->
   <sui-sidebar-container id="container" class="ui bottom attached segment">
     <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
-      <a class="item" (click)="isOpen = 'dash'" [ngClass]="{'highlighted': isOpen == 'dash'}">Dashboard</a>
-      <a class="item" (click)="isOpen = 'plugins'" [ngClass]="{'highlighted': isOpen == 'plugins'}">Plugins</a>
-      <a class="item" (click)="isOpen = 'users'" [ngClass]="{'highlighted': isOpen == 'users'}">Users</a>
-      <a class="item" (click)="isOpen = 'ui'" [ngClass]="{'highlighted': isOpen == 'ui'}">UI Elements</a>
+      <a class="item" (click)="isOpen = 'dash'" [ngClass]="{highlighted: isOpen == 'dash', normal: isOpen != 'dash'}">Dashboard</a>
+      <a class="item" (click)="isOpen = 'plugins'" [ngClass]="{highlighted: isOpen == 'plugins', normal: isOpen != 'plugins'}">Plugins</a>
+      <a class="item" (click)="isOpen = 'users'" [ngClass]="{highlighted: isOpen == 'users', normal: isOpen != 'users'}">Users</a>
+      <a class="item" (click)="isOpen = 'ui'" [ngClass]="{highlighted: isOpen == 'ui', normal: isOpen != 'ui'}">UI Elements</a>
     </sui-sidebar>
     <sui-sidebar-sibling id="sidebar" [isDimmedWhenVisible]="true">
 
@@ -16,9 +16,7 @@
               Menu
             </ng-container>
           </div>
-          <!-- <ng-container *ngIf="!isMobile"> -->
-            {{heading}}
-          <!-- </ng-container> -->
+          {{heading}}
         </div>
         <!-- menu-toggle -->
         <div *ngIf="isOpen != 'ui' && isOpen != 'dash'" id="search">
