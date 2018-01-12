@@ -21,6 +21,7 @@ import {
 } from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
 
+import {Plugin} from '../models/plugin'
 import {User} from '../models/user'
 
 @Injectable()
@@ -36,6 +37,21 @@ export class AdminService {
       params = new HttpParams()
     }
     return this.http.get<User[]>('/api/admin/users', {params})
+  }
+
+  deleteUser(username: string): Observable<any> {
+    let params = new HttpParams().append('username', username)
+    return this.http.delete('/api/admin/user', {params, responseType: 'text'})
+  }
+
+  getPlugins(name?: string): Observable<Plugin[]> {
+    let params: HttpParams
+    if (name !== null && name !== undefined) {
+      params = new HttpParams().append("name", name)
+    } else {
+      params = new HttpParams()
+    }
+    return this.http.get<Plugin[]>('/api/admin/plugins', {params})
   }
 
 }

@@ -28,19 +28,19 @@
               <h2 class="ui center aligned header">{{user.name}}</h2>
             </td>
             <td class="single line">
-              {{user.createdOn | date}}
+              <ng-container *ngIf="isMobile"><strong>Created on:</strong></ng-container> {{user.createdOn | date}}
             </td>
             <td class="left aligned single line">
-              <a href="mailto:{{user.email}}">{{user.email}}</a>
+              <ng-container *ngIf="isMobile"><strong>Email:</strong></ng-container> <a href="mailto:</strong>{{user.email}}">{{user.email}}</a>
             </td>
             <td class="left aligned single line">
-              {{user.username}}
+              <ng-container *ngIf="isMobile"><strong>Username:</strong></ng-container> {{user.username}}
             </td>
             <td class="left aligned single line">
-              {{user.role}}
+              <ng-container *ngIf="isMobile"><strong>Role:</strong></ng-container> {{user.role}}
             </td>
             <td>
-              <button class="ui fluid negative button">
+              <button class="ui fluid negative button" (click)="deleteUsername = user.username">
                 <i class="trash icon"></i> Delete
               </button>
             </td>
@@ -53,3 +53,22 @@
     </div>
   </div>
 </div>
+
+<sui-modal *ngIf="deleteUsername !== ''" (approved)="deleteUser(deleteUsername)" (denied)="deleteUsername = ''" [isBasic]="true" [isClosable]="false" #deleteModal>
+  <div class="header">Are you sure you would like to delete this user?</div>
+  <div class="actions">
+      <button class="ui grey button" (click)="deleteModal.deny()">Cancel</button>
+      <button class="ui red button" (click)="deleteModal.approve()" autofocus>Delete</button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="userDeletedSuccess" (dismissed)="userDeletedSuccess = false" [isBasic]="true">
+  <div class="header">User has been deleted successfully</div>
+  <div class="ui positive button">OK</div>
+</sui-modal>
+
+<sui-modal *ngIf="!userDeletedSuccess && userDeleteError != ''" (dismissed)="userDeletedSuccess = false; userDeleteError = ''" [isBasic]="true" #errorModal>
+  <div class="header">An error occurred while deleting the user</div>
+  <div class="content">{{userDeleteError}}</div>
+  <div class="ui primary button" (click)="errorModal.approve()">OK</div>
+</sui-modal>

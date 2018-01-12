@@ -1,107 +1,65 @@
 <div id="container">
   <div class="ui segments">
     <div class="ui raised segment">
-      <table class="ui striped small compact padded selectable table">
+      <table *ngIf="plugins != undefined && plugins.length > 0; else notFound" class="ui striped small compact padded selectable table">
         <thead *ngIf="!isMobile">
           <tr>
             <th>
               <h3 class="ui center aligned header">Name</h3>
             </th>
             <th class="single line">
-              <h3 class="ui left aligned header">Created on</h3>
+              <h3 class="ui left aligned header single line">Created on</h3>
             </th>
             <th class="single line">
-              <h3 class="ui left aligned header">Updated on</h3>
+              <h3 class="ui left aligned header single line">Updated on</h3>
             </th>
             <th class="single line">
               <h3 class="ui left aligned header">Description</h3>
             </th>
             <th>
-              <h3 class="ui left aligned header">Plugin file</h3>
+              <h3 class="ui left aligned header single line">Plugin file</h3>
             </th>
             <th>
               <h3 class="ui left aligned header">Status</h3>
+            </th>
+            <th>
+              <h3 class="ui left aligned header single line">Developed by</h3>
+            </th>
+            <th>
+              <h3 class="ui left aligned header single line">Approved by</h3>
             </th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr *ngFor="let plugin of plugins">
             <td class="single line">
-              <h2 class="ui center aligned header">Java 8</h2>
+              <h2 class="ui center aligned header">{{plugin.name}}</h2>
             </td>
             <td class="single line">
-              01-01-18
+              <ng-container *ngIf="isMobile"><strong>Created on:</strong></ng-container> {{plugin.createdOn | date}}
             </td>
             <td class="single line">
-              30-01-18
+              <ng-container *ngIf="isMobile"><strong>Updated on:</strong></ng-container> {{plugin.updatedOn | date}}
             </td>
-            <td class="left aligned single line">
-              <a>JDK</a>
+            <td class="plugin-description left aligned">
+              <ng-container *ngIf="isMobile"><strong>Description:</strong></ng-container> {{plugin.description}}
             </td>
             <td class="left aligned single line">
               Dockerfile
             </td>
             <td class="left aligned single line">
-              APP
+              <ng-container *ngIf="isMobile"><strong>Status:</strong></ng-container> {{plugin.status}}
+            </td>
+            <td class="left aligned single line">
+              <ng-container *ngIf="isMobile"><strong>Developed by:</strong></ng-container> {{plugin.developerId.userId.name}}
+            </td>
+            <td class="left aligned single line">
+              <ng-container *ngIf="isMobile"><strong>Approved by:</strong></ng-container> {{plugin.adminid.userId.name}}
             </td>
             <td>
-              <div class="ui buttons">
+              <div class="ui fluid buttons">
                 <button class="ui positive disabled button">Approve</button>
-                <div class="or"></div>
-                <button class="ui negative button">Delete</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="single line">
-              <h2 class="ui center aligned header">Java 8</h2>
-            </td>
-            <td class="single line">
-              01-01-18
-            </td>
-            <td class="single line">
-              30-01-18
-            </td>
-            <td class="left aligned single line">
-              <a>JDK</a>
-            </td>
-            <td class="left aligned single line">
-              Dockerfile
-            </td>
-            <td class="left aligned single line">
-              APP
-            </td>
-            <td>
-              <div class="ui buttons">
-                <button class="ui positive disabled button">Approve</button>
-                <div class="or"></div>
-                <button class="ui negative button">Delete</button>
-              </div>
-            </td>
-          </tr>
-          <tr>
-            <td class="single line">
-              <h2 class="ui center aligned header">Java 8</h2>
-            </td>
-            <td class="single line">
-              01-01-18
-            </td>
-            <td class="single line">
-              30-01-18
-            </td>
-            <td class="left aligned single line">
-              <a>JDK</a>
-            </td>
-            <td class="left aligned single line">
-              Dockerfile
-            </td>
-            <td class="left aligned single line">
-              PEN
-            </td>
-            <td>
-              <div class="ui buttons">
-                <button class="ui positive button">Approve</button>
                 <div class="or"></div>
                 <button class="ui negative button">Delete</button>
               </div>
@@ -109,6 +67,9 @@
           </tr>
         </tbody>
       </table>
+      <ng-template #notFound>
+        No plugins found
+      </ng-template>
     </div>
   </div>
 </div>

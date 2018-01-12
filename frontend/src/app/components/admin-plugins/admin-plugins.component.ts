@@ -20,7 +20,10 @@ import {
   Input,
   Output
 } from '@angular/core'
+
 import {isMobile} from '../../app.component'
+import {AdminService} from '../../services/admin.service'
+import {Plugin} from '../../models/plugin'
 
 @Component({
   selector: 'app-admin-plugins',
@@ -30,12 +33,31 @@ import {isMobile} from '../../app.component'
 export class AdminPluginsComponent {
 
   @Output('heading') heading = new EventEmitter()
-  @Input('search') search: string
+  _search: string
   isMobile: boolean
+  plugins: Plugin[]
 
-  constructor() {
+  constructor(private adminService: AdminService) {
     this.isMobile = isMobile
     this.heading.emit('Plugins')
+  }
+
+  getPlugins(value?: string) {
+    this.adminService.getPlugins(value).
+      subscribe(
+        data => this.plugins = data
+      )
+  }
+
+  @Input('search')
+  set search(value: string) {
+    this._search = value
+    console.log(this.plugins)
+    this.getPlugins(value)
+  }
+
+  get search(): string {
+    return this._search
   }
 
 }

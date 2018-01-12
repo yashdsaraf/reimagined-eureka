@@ -34,6 +34,10 @@ export class AdminUsersComponent {
   @Output('heading') heading = new EventEmitter()
   isMobile: boolean
   users: User[]
+  deleteUsername = ''
+  userDeleted = false
+  userDeleteError = ''
+  _search: string
 
   constructor(private adminService: AdminService) {
     this.isMobile = isMobile
@@ -51,9 +55,28 @@ export class AdminUsersComponent {
       )
   }
 
+  deleteUser(username: string) {
+    this.adminService.deleteUser(username).
+      subscribe(
+        data => this.userDeleted = true,
+        err => {
+          this.userDeleted = false
+          this.userDeleteError = err.error
+          console.log(err)
+        }
+      )
+    this.getUsers(this.search)
+    this.deleteUsername = ''
+  }
+
   @Input('search')
   set search(value: string) {
+    this._search = value
     this.getUsers(value)
+  }
+
+  get search(): string {
+    return this._search
   }
 
 }

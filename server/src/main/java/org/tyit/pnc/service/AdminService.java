@@ -16,10 +16,15 @@
 package org.tyit.pnc.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
+import org.tyit.pnc.model.AppUser.Role;
+import org.tyit.pnc.model.Developer;
 import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.repository.AppUserRepository;
+import org.tyit.pnc.repository.DeveloperRepository;
 import org.tyit.pnc.repository.PluginRepository;
 
 /**
@@ -34,6 +39,9 @@ public class AdminService {
 
   @Autowired
   private PluginRepository pluginRepository;
+
+  @Autowired
+  private DeveloperRepository developerRepository;
 
   public Iterable<AppUser> getUsers(String name) {
     Iterable<AppUser> users;
@@ -53,6 +61,21 @@ public class AdminService {
       plugins = pluginRepository.findAll();
     }
     return plugins;
+  }
+
+  public ResponseEntity<String> deleteUser(String username) {
+    AppUser user = appUserRepository.findByUsername(username);
+    if (user != null) {
+      if (user.getRole() == Role.ADMIN) {
+        return new ResponseEntity("Cannot delete admin user", HttpStatus.BAD_REQUEST);
+      }
+      if (user.getRole() == Role.DEVELOPER) {
+        Developer developer = developerRepository.findByUserId(user);
+        developer.getPluginCollection().forEach(System.out::println);
+      }
+      appUserRepository.delete(user);
+    }
+    return ResponseEntity.ok().build();
   }
 
 }
