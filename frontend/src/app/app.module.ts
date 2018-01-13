@@ -32,6 +32,8 @@ import {FlashMessagesModule} from 'angular2-flash-messages'
 import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
+import {AboutUsComponent} from './components/about-us/about-us.component'
+import {AdminBlogComponent} from './components/admin-blog/admin-blog.component'
 import {AdminComponent} from './components/admin/admin.component'
 import {AdminDashComponent} from './components/admin-dash/admin-dash.component'
 import {AdminPluginsComponent} from './components/admin-plugins/admin-plugins.component'
@@ -39,7 +41,6 @@ import {AdminUiElemsComponent} from './components/admin-ui-elems/admin-ui-elems.
 import {AdminUsersComponent} from './components/admin-users/admin-users.component'
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
-import {AboutUsComponent} from './components/about-us/about-us.component'
 import {BlogComponent} from './components/blog/blog.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
@@ -78,13 +79,14 @@ export function init(startupService: StartupService) {
 
 @NgModule({
   declarations: [
+    AboutUsComponent,
+    AdminBlogComponent,
     AdminComponent,
     AdminDashComponent,
     AdminPluginsComponent,
     AdminUiElemsComponent,
     AdminUsersComponent,
     AppComponent,
-    AboutUsComponent,
     BlogComponent,
     DocsComponent,
     FileExComponent,

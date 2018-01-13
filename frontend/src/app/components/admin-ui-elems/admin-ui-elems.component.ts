@@ -19,7 +19,9 @@ import {
   EventEmitter,
   Output
 } from '@angular/core'
+
 import {isMobile} from '../../app.component'
+import {ImagesService} from '../../services/images.service'
 
 @Component({
   selector: 'app-admin-ui',
@@ -30,13 +32,38 @@ export class AdminUiElemsComponent {
 
   @Output('heading') heading = new EventEmitter()
   isMobile: boolean
+  image: any
+  uploaded = false
 
-  constructor() {
+  constructor(private imagesService: ImagesService) {
     this.isMobile = isMobile
   }
 
   ngAfterViewInit() {
     setTimeout(() => this.heading.emit('UI Elements'))
+  }
+
+  onImageChange(files: any) {
+    let file = files[0].srcElement
+    this.image = file
+    // let reader = new FileReader()
+    // if(event.srcElement.files && event.srcElement.files.length > 0) {
+    //   let file = event.srcElement.files[0]
+    //   reader.readAsDataURL(file)
+    //   reader.onload = () => {
+    //     this.image = reader.result.split(',')[1]
+    this.uploaded = true
+    //   }
+    // }
+  }
+
+  onImageSubmit() {
+    if (this.image != null && this.image != undefined) {
+      this.imagesService.setHomeImage(this.image)
+        .subscribe(data => console.log('done'))
+      this.image = null
+      this.uploaded = false
+    }
   }
 
 }

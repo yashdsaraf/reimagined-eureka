@@ -15,8 +15,13 @@
  */
 
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
+import {
+  HttpClient,
+  HttpHeaders
+} from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
+
+import {HttpUtils} from '../utils/http-utils'
 
 @Injectable()
 export class ImagesService {
@@ -29,6 +34,17 @@ export class ImagesService {
 
   getPlugins(): Observable<any> {
     return this.http.get('/api/images/plugins')
+  }
+
+  setHomeImage(file): Observable<any> {
+    // let content
+    let formData = new FormData()
+    formData.append('file', file)
+    // let content = HttpUtils.getURLParams(file)
+    console.log('Hellos')
+    let headers = new HttpHeaders().append('Content-Type', 'multipart/form-data')
+    // let headers = new HttpHeaders()
+    return this.http.post('/api/images/jpg/home', formData, {headers})
   }
 
 }
