@@ -41,7 +41,9 @@ export class AdminUiElemsComponent {
   environments: Object
   envKeys = []
   svg: string
-
+  email:string = ""
+  phone:string = ""
+  
   constructor(
     private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService

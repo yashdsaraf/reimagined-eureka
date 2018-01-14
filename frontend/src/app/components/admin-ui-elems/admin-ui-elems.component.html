@@ -119,8 +119,28 @@
       </div>
     </div>
     <div class="ui attached fluid center aligned segment">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta, debitis? Labore eveniet illo sapiente voluptatum quod aspernatur
-      placeat provident non facilis soluta, culpa dolore incidunt eligendi mollitia ex ducimus distinctio!
+      <div class="ui labeled input" [ngClass]="{mini: isMobile}">
+        <div class="ui label">
+          <i class="mail icon"></i>
+          Email:
+        </div>
+        <input type="text" placeholder="" [(ngModel)]="email" name="email">
+      </div>
+      <div class="ui labeled input" [ngClass]="{mini: isMobile}">
+        <div class="ui label">
+          <i class="text telephone icon"></i>
+          Phone:
+        </div>
+        <input type="text" placeholder="" [(ngModel)]="phone" name="phone">
+      </div>
+      <br>
+      <button class="ui button">
+        submit
+      </button>
+
+      <br>
+      Email: {{ email }} <br>
+      Phone: {{ phone }}
     </div>
   </div>
   <!-- contact -->
