@@ -18,6 +18,7 @@ import {Component} from '@angular/core'
 import {Observable} from 'rxjs/Observable'
 
 import {AuthService} from '../../services/auth.service'
+import {ContactsService} from '../../services/contacts.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 
@@ -67,9 +68,11 @@ export class HomeComponent {
   environments: Object
   envKeys = []
   image: any
+  contacts: any
 
   constructor(
     private authService: AuthService,
+    private contactsService: ContactsService,
     private imagesService: ImagesService
   ) {
     this.isMobile = isMobile
@@ -84,6 +87,8 @@ export class HomeComponent {
         this.envKeys = Object.keys(data)
       }
     )
+    this.contactsService.getContacts().
+      subscribe(data => this.contacts = data)
   }
 
   createImageFromBlob(image: Blob) {
