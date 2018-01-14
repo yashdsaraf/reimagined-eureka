@@ -55,11 +55,21 @@
     display: flex
     flex: 3
     flex-direction: row
-    background-color: yellow
 
-    div
+    #left-graph
       flex: 1
-      background-color: green
+      flex-direction: row
+
+    #right-graph
+      display: flex
+      flex-direction: column
+      flex: 1
+
+      #users-graph
+        flex: 1
+
+      #plugins-graph
+        flex: 1
 
   @media only screen and (max-width: 768px)
 
