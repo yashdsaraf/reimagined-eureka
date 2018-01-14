@@ -56,6 +56,9 @@ export class AdminDashComponent {
     ]);
 
     var options = {
+      backgroundColor: {
+        fill: 'transparent'
+      },
       title: 'My Daily Activities',
       is3D: true,
     };
@@ -86,6 +89,9 @@ export class AdminDashComponent {
 
 
       var options = {
+        backgroundColor: {
+          fill: 'transparent'
+        },
         chart: {
           title: 'Total Number of Users',
         },
@@ -130,6 +136,9 @@ export class AdminDashComponent {
 
 
       var options = {
+        backgroundColor: {
+          fill: 'transparent'
+        },
         chart: {
           title: 'Total Number of Plugins',
         },
