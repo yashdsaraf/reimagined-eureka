@@ -22,8 +22,9 @@ import {
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
-import {isMobile} from '../../app.component'
+import {ContactsService} from '../../services/contacts.service'
 import {ImagesService} from '../../services/images.service'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-admin-ui',
@@ -41,16 +42,18 @@ export class AdminUiElemsComponent {
   environments: Object
   envKeys = []
   svg: string
-  email:string = ""
-  phone:string = ""
-  
+  email:string = ''
+  phone:string = ''
+
   constructor(
     private flashMessagesService: FlashMessagesService,
+    private contactsService: ContactsService,
     private imagesService: ImagesService
   ) {
     this.isMobile = isMobile
     this.updateBgImage()
     this.updatePlugins()
+    this.updateContacts()
   }
 
   ngAfterViewInit() {
@@ -86,6 +89,14 @@ export class AdminUiElemsComponent {
     }
   }
 
+  updateContacts() {
+    this.contactsService.getContacts().
+    subscribe((data: any) => {
+      this.email = data.email
+      this.phone = data.phone
+    })
+  }
+
   updateBgImage() {
     this.imagesService.getImage('home').subscribe(
       data => {
@@ -118,6 +129,19 @@ export class AdminUiElemsComponent {
           {cssClass: 'ui error message', timeout: 4000})
         )
     }
+  }
+
+  onContactsSubmit() {
+    this.contactsService.setContacts(this.email, this.phone)
+      .subscribe(
+        data => {
+          this.flashMessagesService.show('Contact details have been updated!',
+            {cssClass: 'ui success message', timeout: 4000})
+          this.updateContacts()
+        },
+        err => this.flashMessagesService.show('Contact details could not be updated',
+        {cssClass: 'ui error message', timeout: 4000})
+      )
   }
 
   dataUri(env: string) {

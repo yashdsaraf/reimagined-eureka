@@ -10,19 +10,21 @@
     <!-- header -->
     <div class="ui attached fluid segment">
       <div class="ui center aligned grid container">
-        <div class="row">
-          <div class="four wide column">
+        <div class="one column row">
+          <div class="column" [ngClass]="{'four wide': !isMobile}">
             <img *ngIf="bgImage != undefined" [src]="bgImage">
           </div>
         </div>
-        <div class="row">
-          <div class="four wide right aligned column">
-            <div class="ui left icon input">
-              <i class="file icon"></i>
-              <input type="file" accept=".jpg" (change)="onImageChange($event)">
-            </div>
+        <div class="two column row">
+          <div class="center aligned column">
+            <label for="hidden-image">
+              <div class="ui button">
+                Select an image
+              </div>
+            </label>
+            <input [hidden]="true" id="hidden-image" type="file" accept=".jpg" (change)="onImageChange($event)">
           </div>
-          <div class="flex-center one wide center aligned column">
+          <div class="flex-center center aligned column">
             <div class="ui icon button" (click)="onImageSubmit()" [ngClass]="{disabled: !uploadButton}">
               <i class="icon upload"></i>
             </div>
@@ -134,14 +136,12 @@
         <input type="text" placeholder="" [(ngModel)]="phone" name="phone">
       </div>
       <br>
-      <button class="ui button">
-        submit
+      <button class="ui labeled icon button" (click)="onContactsSubmit()">
+        <i class="icon thumbs up"></i>
+        Submit
       </button>
-
-      <br>
-      Email: {{ email }} <br>
-      Phone: {{ phone }}
     </div>
+    <!-- segment -->
   </div>
   <!-- contact -->
 </div>

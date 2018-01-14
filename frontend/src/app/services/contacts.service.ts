@@ -31,7 +31,7 @@ export class ContactsService {
     let formData = new FormData()
     formData.append('email', email)
     formData.append('phone', phone)
-    return this.http.post('/api/contacts', formData)
+    return this.http.post('/api/contacts', formData, {responseType: 'text'})
   }
 
 }
