@@ -86,7 +86,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   public void configure(WebSecurity web) throws Exception {
     web.ignoring().antMatchers("/register", "/forgotpassword")
-            .antMatchers(HttpMethod.GET, "/images/**");
+            .antMatchers(HttpMethod.GET, "/images/**")
+            .antMatchers(HttpMethod.GET, "/contacts/**");
   }
 
   @Bean
