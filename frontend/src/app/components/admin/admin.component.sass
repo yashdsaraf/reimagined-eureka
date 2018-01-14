@@ -24,6 +24,13 @@ $height: 2.8rem
   height: 100%
   width: 100%
 
+  .heading-text
+    color: $menubar-heading-text
+    font-family: $alt-sans-serif
+    font-size: 1.1em
+    font-weight: bold
+    padding-left: 1em
+
   .highlighted
     background-color: $sidebar-highlight
 
@@ -37,7 +44,7 @@ $height: 2.8rem
     flex-direction: column
 
     #menubar
-      background-color: red
+      background-color: $menubar-bg
       border-radius: $border-radius
       box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.26)
       display: flex
@@ -46,6 +53,8 @@ $height: 2.8rem
 
       #menu-toggle
         flex: 1
+        display: inline-flex
+        align-items: center
 
         .button
           height: $height

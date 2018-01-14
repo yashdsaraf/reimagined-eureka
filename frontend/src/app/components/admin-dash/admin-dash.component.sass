@@ -32,8 +32,18 @@
     justify-content: center
 
     .card
-      display: inline-flex
-      align-items: center
+
+      .grid
+        padding: 0 !important
+
+      .icon
+        font-size: 2em
+        padding-top: 1.3em
+        padding-right: 2em
+        opacity: .4
+
+        &::before
+          font-size: 3em
 
       &:nth-of-type(1)
         background-color: #f46e5d
@@ -46,6 +56,10 @@
 
     .header
       font-size: 1.3em
+
+    .header,
+    .value
+      color: white
 
     .item
       font-size: 3em
@@ -76,6 +90,9 @@
         align-items: center
         height: 100%
         width: 100%
+
+        .icon
+          padding-top: 1em
 
       .header
         flex: 1

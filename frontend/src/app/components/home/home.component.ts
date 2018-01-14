@@ -68,7 +68,10 @@ export class HomeComponent {
   environments: Object
   envKeys = []
   image: any
-  contacts: any
+  contacts: Object = {
+    email: '',
+    phone: ''
+  }
 
   constructor(
     private authService: AuthService,
@@ -88,7 +91,7 @@ export class HomeComponent {
       }
     )
     this.contactsService.getContacts().
-      subscribe(data => this.contacts = data)
+      subscribe((data: Object) => this.contacts = data)
   }
 
   createImageFromBlob(image: Blob) {
