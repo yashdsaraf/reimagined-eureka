@@ -38,7 +38,7 @@
       </div>
       <div class="ui basic cards segment">
         <div *ngFor="let env of envKeys" class="ui card" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
-          <div class="ui top black attached label">{{toInitCap(env)}}</div>
+          <div class="ui top black attached label">{{env | initCap}}</div>
           <div class="image" [innerHTML]="dataUri(env) | sanitizeHtml">
           </div>
           <sui-dimmer transitionDuration=500 [isClickable]="false" #dimmer>

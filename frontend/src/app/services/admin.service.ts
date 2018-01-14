@@ -47,7 +47,7 @@ export class AdminService {
   getPlugins(name?: string): Observable<Plugin[]> {
     let params: HttpParams
     if (name !== null && name !== undefined) {
-      params = new HttpParams().append("name", name)
+      params = new HttpParams().append('name', name)
     } else {
       params = new HttpParams()
     }

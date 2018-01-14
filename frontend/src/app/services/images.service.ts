@@ -42,4 +42,11 @@ export class ImagesService {
     return this.http.post('/api/images/jpg/home', formData, {responseType: 'text'})
   }
 
+  setPlugin(replace: string, name: string, content: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('replace', replace.toLowerCase())
+    formData.append('content', encodeURIComponent(content))
+    return this.http.post(`/api/images/plugin/${name.toLowerCase()}`, formData, {responseType: 'text'})
+  }
+
 }

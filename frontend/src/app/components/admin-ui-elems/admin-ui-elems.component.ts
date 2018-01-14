@@ -37,8 +37,10 @@ export class AdminUiElemsComponent {
   image: File
   uploadButton = false
   bgImage: any
+  isEdit: string
   environments: Object
   envKeys = []
+  svg: string
 
   constructor(
     private flashMessagesService: FlashMessagesService,
@@ -46,7 +48,7 @@ export class AdminUiElemsComponent {
   ) {
     this.isMobile = isMobile
     this.updateBgImage()
-    // this.updatePlugins()
+    this.updatePlugins()
   }
 
   ngAfterViewInit() {
@@ -57,6 +59,18 @@ export class AdminUiElemsComponent {
     let file = event.target.files[0]
     this.image = file
     this.uploadButton = true
+  }
+
+  onSvgChange(event) {
+    let file = event.target.files[0]
+    let reader = new FileReader()
+    reader.addEventListener("load", () => {
+      this.svg = reader.result
+    }, false)
+
+    if (file) {
+      reader.readAsText(file, 'UTF-8')
+    }
   }
 
   createImageFromBlob(image: Blob) {
@@ -102,6 +116,26 @@ export class AdminUiElemsComponent {
           {cssClass: 'ui error message', timeout: 4000})
         )
     }
+  }
+
+  dataUri(env: string) {
+    let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
+    return uri
+  }
+
+  setPlugin(env: string, name: string) {
+    this.imagesService.setPlugin(env, name, this.svg)
+      .subscribe(
+        data => {
+          this.flashMessagesService.show('Plugin updated!',
+            {cssClass: 'ui success message', timeout: 4000})
+          this.isEdit = ''
+          this.svg = ''
+          this.updatePlugins()
+        },
+        err => this.flashMessagesService.show('Plugin could not be updated',
+        {cssClass: 'ui error message', timeout: 4000})
+      )
   }
 
 }

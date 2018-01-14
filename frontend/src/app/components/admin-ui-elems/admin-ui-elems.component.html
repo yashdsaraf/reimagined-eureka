@@ -39,6 +39,7 @@
         <li>Use 1080p images</li>
       </ul>
     </div>
+    <!-- warning -->
   </div>
   <!-- home-bg -->
   <div id="plugins">
@@ -50,12 +51,55 @@
       </div>
     </div>
     <div class="ui attached fluid center aligned segment">
-      <div *ngFor="let env of envKeys">
-        <div class="ui top black attached label">{{toInitCap(env)}}</div>
-        <div class="image" [innerHTML]="dataUri(env) | sanitizeHtml">
+      <div class="ui center aligned grid">
+        <div class="three column row ui compact raised segment no-pad" *ngFor="let env of envKeys">
+          <ng-container *ngIf="isEdit == env">
+            <div class="ui center aligned grid">
+              <div class="row">
+                <div class="ui input flex-center">
+                  <input type="text" [value]="env | initCap" #input>
+                </div>
+              </div>
+              <!-- row -->
+              <div class="row">
+                <label for="hidden-file">
+                  <div class="ui button flex-center">
+                    Select SVG image
+                  </div>
+                </label>
+                <input id="hidden-file" [hidden]="true" type="file" accept=".svg" (change)="onSvgChange($event)">
+              </div>
+              <!-- row -->
+              <div class="row">
+                <div *ngIf="isEdit == env" class="flex-center">
+                  <div class="ui labeled icon primary button" (click)="setPlugin(env, input.value)">
+                    <i class="icon checkmark"></i>
+                    Done
+                  </div>
+                </div>
+              </div>
+              <!-- row -->
+            </div>
+            <!-- inner grid -->
+          </ng-container>
+          <!-- edit -->
+          <ng-container *ngIf="isEdit != env">
+            <div class="column ui header flex-center" [ngClass]="{large: !isMobile, small: isMobile}">{{env | initCap}}</div>
+            <div class="column" [ngClass]="{'two wide': !isMobile}" [innerHTML]="dataUri(env) | sanitizeHtml"></div>
+            <div class="column flex-center">
+              <div class="ui icon button" (click)="isEdit = env; svg = environments[env]">
+                <i class="icon edit"></i>
+              </div>
+            </div>
+            <!-- column -->
+          </ng-container>
+          <!-- non-edit -->
         </div>
+        <!-- raised segment -->
       </div>
+      <!-- outer grid -->
     </div>
+    <!-- segment -->
     <div class="ui warning message">
       <div class="header">Warning</div>
       <ul class="list">
@@ -63,6 +107,7 @@
           <strong>.svg</strong> files are allowed</li>
       </ul>
     </div>
+    <!-- warning -->
   </div>
   <!-- plugins -->
   <div id="contact">

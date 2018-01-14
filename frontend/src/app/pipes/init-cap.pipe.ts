@@ -18,20 +18,14 @@ import {
   Pipe,
   PipeTransform
 } from '@angular/core'
-import {
-  DomSanitizer,
-  SafeHtml
-} from '@angular/platform-browser'
 
 @Pipe({
-  name: 'sanitizeHtml'
+  name: 'initCap'
 })
-export class SanitizeHtmlPipe implements PipeTransform {
+export class InitCapPipe implements PipeTransform {
 
-  constructor(private _sanitizer: DomSanitizer) {
+  transform(value: any): any {
+    return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
   }
 
-  transform(v: string): SafeHtml {
-    return this._sanitizer.bypassSecurityTrustHtml(v)
-  }
 }

@@ -86,10 +86,6 @@ export class HomeComponent {
     )
   }
 
-  toInitCap(value: string) {
-    return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
-  }
-
   createImageFromBlob(image: Blob) {
     let reader = new FileReader()
     reader.addEventListener("load", () => {

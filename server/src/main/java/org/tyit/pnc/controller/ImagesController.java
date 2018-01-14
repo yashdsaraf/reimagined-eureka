@@ -99,10 +99,12 @@ public class ImagesController {
 
   @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping("/plugin/{name}")
-  public ResponseEntity<String> storePlugin(@PathVariable("name") String name, @RequestBody String content) {
+  public ResponseEntity<String> storePlugin(@PathVariable("name") String name,
+          @RequestParam("replace") String replace,
+          @RequestParam("content") String content) {
     try {
       String decoded = URLDecoder.decode(content, "UTF-8");
-      imageService.storePlugin(name, decoded);
+      imageService.storePlugin(name, decoded, replace);
       return ResponseEntity.ok().build();
     } catch (IOException ex) {
       Logger.getLogger(ImagesController.class.getName()).log(Level.SEVERE, null, ex);

@@ -71,6 +71,7 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 import {ImagesService} from './services/images.service'
 //PIPES
+import {InitCapPipe} from './pipes/init-cap.pipe'
 import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
@@ -100,6 +101,7 @@ export function init(startupService: StartupService) {
     RegisterComponent,
     ToolbarComponent,
     IdenticonDirective,
+    InitCapPipe,
     SanitizeHtmlPipe
   ],
   imports: [
