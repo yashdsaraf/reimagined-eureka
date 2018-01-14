@@ -20,6 +20,8 @@ import {
   Output
 } from '@angular/core'
 
+import {FlashMessagesService} from 'angular2-flash-messages'
+
 import {isMobile} from '../../app.component'
 import {ImagesService} from '../../services/images.service'
 
@@ -32,37 +34,73 @@ export class AdminUiElemsComponent {
 
   @Output('heading') heading = new EventEmitter()
   isMobile: boolean
-  image: any
-  uploaded = false
+  image: File
+  uploadButton = false
+  bgImage: any
+  environments: Object
+  envKeys = []
 
-  constructor(private imagesService: ImagesService) {
+  constructor(
+    private flashMessagesService: FlashMessagesService,
+    private imagesService: ImagesService
+  ) {
     this.isMobile = isMobile
+    this.updateBgImage()
+    // this.updatePlugins()
   }
 
   ngAfterViewInit() {
     setTimeout(() => this.heading.emit('UI Elements'))
   }
 
-  onImageChange(files: any) {
-    let file = files[0].srcElement
+  onImageChange(event) {
+    let file = event.target.files[0]
     this.image = file
-    // let reader = new FileReader()
-    // if(event.srcElement.files && event.srcElement.files.length > 0) {
-    //   let file = event.srcElement.files[0]
-    //   reader.readAsDataURL(file)
-    //   reader.onload = () => {
-    //     this.image = reader.result.split(',')[1]
-    this.uploaded = true
-    //   }
-    // }
+    this.uploadButton = true
+  }
+
+  createImageFromBlob(image: Blob) {
+    let reader = new FileReader()
+    reader.addEventListener("load", () => {
+       this.bgImage = reader.result
+    }, false)
+
+    if (image) {
+       reader.readAsDataURL(image)
+    }
+  }
+
+  updateBgImage() {
+    this.imagesService.getImage('home').subscribe(
+      data => {
+        this.createImageFromBlob(data)
+      }
+    )
+  }
+
+  updatePlugins() {
+    this.imagesService.getPlugins().subscribe(
+      data => {
+        this.environments = data
+        this.envKeys = Object.keys(data)
+      }
+    )
   }
 
   onImageSubmit() {
     if (this.image != null && this.image != undefined) {
       this.imagesService.setHomeImage(this.image)
-        .subscribe(data => console.log('done'))
-      this.image = null
-      this.uploaded = false
+        .subscribe(
+          data => {
+            this.flashMessagesService.show('Home background image has been updated!',
+              {cssClass: 'ui success message', timeout: 4000})
+            this.image = null
+            this.uploadButton = false
+            this.updateBgImage()
+          },
+          err => this.flashMessagesService.show('Home background image could not be updated',
+          {cssClass: 'ui error message', timeout: 4000})
+        )
     }
   }
 

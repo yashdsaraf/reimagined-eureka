@@ -7,14 +7,37 @@
         <p>Manage background image</p>
       </div>
     </div>
-    <div class="ui attached fluid center aligned segment">
-      <div class="ui left icon input">
-        <i class="file icon"></i>
-        <input type="file" accept=".jpg" (change)="onImageChange(homeBg.files)" #homeBg>
+    <!-- header -->
+    <div class="ui attached fluid segment">
+      <div class="ui center aligned grid container">
+        <div class="row">
+          <div class="four wide column">
+            <img *ngIf="bgImage != undefined" [src]="bgImage">
+          </div>
+        </div>
+        <div class="row">
+          <div class="four wide right aligned column">
+            <div class="ui left icon input">
+              <i class="file icon"></i>
+              <input type="file" accept=".jpg" (change)="onImageChange($event)">
+            </div>
+          </div>
+          <div class="flex-center one wide center aligned column">
+            <div class="ui icon button" (click)="onImageSubmit()" [ngClass]="{disabled: !uploadButton}">
+              <i class="icon upload"></i>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="ui icon button" (click)="onImageSubmit()" [ngClass]="{disabled: !uploaded}">
-        <i class="icon upload"></i>
-      </div>
+    </div>
+    <!-- segment -->
+    <div class="ui warning message">
+      <div class="header">Warning</div>
+      <ul class="list">
+        <li>Only
+          <strong>.jpg</strong> files are allowed</li>
+        <li>Use 1080p images</li>
+      </ul>
     </div>
   </div>
   <!-- home-bg -->
@@ -27,8 +50,18 @@
       </div>
     </div>
     <div class="ui attached fluid center aligned segment">
-      Lorem ipsum dolor, sit amet consectetur adipisicing elit. Soluta, debitis? Labore eveniet illo sapiente voluptatum quod aspernatur
-      placeat provident non facilis soluta, culpa dolore incidunt eligendi mollitia ex ducimus distinctio!
+      <div *ngFor="let env of envKeys">
+        <div class="ui top black attached label">{{toInitCap(env)}}</div>
+        <div class="image" [innerHTML]="dataUri(env) | sanitizeHtml">
+        </div>
+      </div>
+    </div>
+    <div class="ui warning message">
+      <div class="header">Warning</div>
+      <ul class="list">
+        <li>Only
+          <strong>.svg</strong> files are allowed</li>
+      </ul>
     </div>
   </div>
   <!-- plugins -->

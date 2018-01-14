@@ -36,15 +36,10 @@ export class ImagesService {
     return this.http.get('/api/images/plugins')
   }
 
-  setHomeImage(file): Observable<any> {
-    // let content
+  setHomeImage(file: File): Observable<any> {
     let formData = new FormData()
     formData.append('file', file)
-    // let content = HttpUtils.getURLParams(file)
-    console.log('Hellos')
-    let headers = new HttpHeaders().append('Content-Type', 'multipart/form-data')
-    // let headers = new HttpHeaders()
-    return this.http.post('/api/images/jpg/home', formData, {headers})
+    return this.http.post('/api/images/jpg/home', formData, {responseType: 'text'})
   }
 
 }

@@ -70,15 +70,15 @@ export class HomeComponent {
 
   constructor(
     private authService: AuthService,
-    private imagesServce: ImagesService
+    private imagesService: ImagesService
   ) {
     this.isMobile = isMobile
-    this.imagesServce.getImage('home').subscribe(
+    this.imagesService.getImage('home').subscribe(
       data => {
         this.createImageFromBlob(data)
       }
     )
-    this.imagesServce.getPlugins().subscribe(
+    this.imagesService.getPlugins().subscribe(
       data => {
         this.environments = data
         this.envKeys = Object.keys(data)
@@ -91,26 +91,18 @@ export class HomeComponent {
   }
 
   createImageFromBlob(image: Blob) {
-    let reader = new FileReader();
+    let reader = new FileReader()
     reader.addEventListener("load", () => {
-       this.image = `url(${reader.result})`;
-    }, false);
+       this.image = `url(${reader.result})`
+    }, false)
 
     if (image) {
-       reader.readAsDataURL(image);
+       reader.readAsDataURL(image)
     }
   }
 
   isNotLoggedIn(): boolean {
     return this.authService.getRole() == null
-  }
-
-  getIdenticon(value: string): string {
-    let size = this.isMobile ? 90 : 120
-    let obj = {
-      value, size
-    }
-    return JSON.stringify(obj)
   }
 
   dataUri(env: string) {
