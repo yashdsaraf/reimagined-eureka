@@ -52,7 +52,7 @@ public class ImageService {
   }
 
   public void store(String name, String content, ClassPathResource resource) throws IOException {
-    File file = new File(resource.getFile(), name + ".svg");
+    File file = new File(resource.getFile(), name.toLowerCase() + ".svg");
     Files.write(Paths.get(file.getAbsolutePath()), content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
@@ -85,20 +85,19 @@ public class ImageService {
       String key = image.getName();
       key = key.substring(0, key.length() - 4);
       Files.readAllLines(image.toPath()).forEach(stringBuilder::append);
-//      String value = URLEncoder.encode(stringBuilder.toString(), "UTF-8");
       String value = stringBuilder.toString();
-//      String value = Base64.getEncoder().encodeToString(Files.readAllBytes(image.toPath()));
       imageMap.put(key, value);
     }
     return imageMap;
   }
 
   public void deletePlugin(String name) throws IOException {
-    this.delete(name, false, getResource("images/plugins"));
+    delete(name, false, getResource("images/plugins"));
   }
 
-  public void storePlugin(String name, String image) throws IOException {
-    this.store(name, image, getResource("images/plugins"));
+  public void storePlugin(String name, String image, String replace) throws IOException {
+    deletePlugin(replace);
+    store(name, image, getResource("images/plugins"));
   }
 
 }

@@ -15,8 +15,13 @@
  */
 
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
+import {
+  HttpClient,
+  HttpHeaders
+} from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
+
+import {HttpUtils} from '../utils/http-utils'
 
 @Injectable()
 export class ImagesService {
@@ -29,6 +34,19 @@ export class ImagesService {
 
   getPlugins(): Observable<any> {
     return this.http.get('/api/images/plugins')
+  }
+
+  setHomeImage(file: File): Observable<any> {
+    let formData = new FormData()
+    formData.append('file', file)
+    return this.http.post('/api/images/jpg/home', formData, {responseType: 'text'})
+  }
+
+  setPlugin(replace: string, name: string, content: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('replace', replace.toLowerCase())
+    formData.append('content', encodeURIComponent(content))
+    return this.http.post(`/api/images/plugin/${name.toLowerCase()}`, formData, {responseType: 'text'})
   }
 
 }

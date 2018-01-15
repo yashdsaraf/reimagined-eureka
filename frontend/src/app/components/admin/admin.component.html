@@ -1,3 +1,41 @@
-<p>
-  admin works!
-</p>
+<sui-sidebar-container id="container" class="ui bottom attached segment">
+  <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
+    <a class="item" (click)="isOpen = 'dash'" [ngClass]="{highlighted: isOpen == 'dash', normal: isOpen != 'dash'}">Dashboard</a>
+    <a class="item" (click)="isOpen = 'plugins'" [ngClass]="{highlighted: isOpen == 'plugins', normal: isOpen != 'plugins'}">Plugins</a>
+    <a class="item" (click)="isOpen = 'users'" [ngClass]="{highlighted: isOpen == 'users', normal: isOpen != 'users'}">Users</a>
+    <a class="item" (click)="isOpen = 'ui'" [ngClass]="{highlighted: isOpen == 'ui', normal: isOpen != 'ui'}">UI Elements</a>
+    <a class="item" (click)="isOpen = 'blog'" [ngClass]="{highlighted: isOpen == 'blog', normal: isOpen != 'blog'}">Blog</a>
+  </sui-sidebar>
+  <sui-sidebar-sibling id="sidebar" [isDimmedWhenVisible]="true">
+
+    <div id="menubar">
+      <div id="menu-toggle" *ngIf="!sidebar.isVisible">
+        <div class="ui icon button" (click)="sidebar.open()">
+          <i class="icon sidebar"></i>
+          <ng-container *ngIf="!isMobile">
+            Menu
+          </ng-container>
+        </div>
+        <span class="heading-text">{{heading}}</span>
+      </div>
+      <!-- menu-toggle -->
+      <div *ngIf="isOpen != 'ui' && isOpen != 'dash'" id="search">
+        <div class="ui icon input">
+          <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
+          <i class="search icon"></i>
+        </div>
+      </div>
+      <!-- search -->
+    </div>
+    <!-- menubar -->
+
+    <div id="parent">
+      <app-admin-dash *ngIf="isOpen == 'dash'" (heading)="heading = $event"></app-admin-dash>
+      <app-admin-users *ngIf="isOpen == 'users'" [(search)]="search" (heading)="heading = $event"></app-admin-users>
+      <app-admin-plugins *ngIf="isOpen == 'plugins'" [(search)]="search" (heading)="heading = $event"></app-admin-plugins>
+      <app-admin-ui *ngIf="isOpen == 'ui'" (heading)="heading = $event"></app-admin-ui>
+      <app-admin-blog *ngIf="isOpen == 'blog'" (heading)="heading = $event"></app-admin-blog>
+    </div>
+    <!-- parent -->
+  </sui-sidebar-sibling>
+</sui-sidebar-container>

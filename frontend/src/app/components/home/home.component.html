@@ -2,21 +2,21 @@
   <div id="main">
     <div id="projects">
       <div class="ui center aligned top attached basic segment">
-        <button class="ui compact orange animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}">
           <div class="visible content">Create project</div>
           <div class="hidden content">
             <i class="icon write"></i>
           </div>
         </button>
 
-        <button class="ui compact orange animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}">
           <div class="visible content">Import project</div>
           <div class="hidden content">
             <i class="icon cloud download "></i>
           </div>
         </button>
 
-        <button class="ui compact orange animated fade button" [ngClass]="{huge: !isMobile, small: isMobile}">
+        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}">
           <div class="visible content">Open project</div>
           <div class="hidden content">
             <i class="icon folder open"></i>
@@ -38,7 +38,7 @@
       </div>
       <div class="ui basic cards segment">
         <div *ngFor="let env of envKeys" class="ui card" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
-          <div class="ui top black attached label">{{toInitCap(env)}}</div>
+          <div class="ui top black attached label">{{env | initCap}}</div>
           <div class="image" [innerHTML]="dataUri(env) | sanitizeHtml">
           </div>
           <sui-dimmer transitionDuration=500 [isClickable]="false" #dimmer>
@@ -90,12 +90,12 @@
       <p>
         <i class="ui icon mail"></i>
         <a href="mailto:help.plugncode@gmail.com">
-          <span class="footer-text">help.plugncode@gmail.com</span>
+          <span class="footer-text">{{contacts.email}}</span>
         </a>
       </p>
       <p>
         <i class="ui icon text telephone"></i>
-        <span class="footer-text">99-9999-9999</span>
+        <span class="footer-text">{{contacts.phone}}</span>
       </p>
     </div>
   </div>

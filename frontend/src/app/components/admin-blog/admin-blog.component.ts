@@ -13,14 +13,30 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Developer;
+import {
+  Component,
+  EventEmitter,
+  Output
+} from '@angular/core'
+import {isMobile} from '../../app.component'
 
-public interface DeveloperRepository extends CrudRepository<Developer, Long> {
+@Component({
+  selector: 'app-admin-blog',
+  templateUrl: './admin-blog.component.html',
+  styleUrls: ['./admin-blog.component.sass']
+})
+export class AdminBlogComponent {
 
-  public Developer findByUserId(AppUser userId);
+  @Output('heading') heading = new EventEmitter()
+  isMobile: boolean
+
+  constructor() {
+    this.isMobile = isMobile
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.heading.emit('Blog'))
+  }
 
 }

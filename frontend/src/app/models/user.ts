@@ -19,5 +19,6 @@ export interface User {
   username: string
   password: string
   email: string
-  created_on?: Date
+  createdOn?: Date
+  role?: string
 }

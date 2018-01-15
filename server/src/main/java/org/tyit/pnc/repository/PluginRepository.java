@@ -15,9 +15,13 @@
  */
 package org.tyit.pnc.repository;
 
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.tyit.pnc.model.Plugin;
 
 public interface PluginRepository extends CrudRepository<Plugin, Integer> {
+
+  @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) LIKE LOWER(CONCAT(?1, '%'))")
+  public Iterable<Plugin> findAllByName(String name);
 
 }

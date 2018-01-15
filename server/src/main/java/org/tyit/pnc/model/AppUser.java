@@ -15,6 +15,7 @@
  */
 package org.tyit.pnc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -67,6 +68,7 @@ public class AppUser implements Serializable {
   @NotNull
   @Size(min = 8, max = 255)
   @Column(name = "PASSWORD")
+  @JsonIgnore
   private String password;
   @Basic(optional = false)
   @NotNull

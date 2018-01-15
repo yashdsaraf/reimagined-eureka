@@ -13,14 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Developer;
+@import base
 
-public interface DeveloperRepository extends CrudRepository<Developer, Long> {
+#container
+  margin: 1em
 
-  public Developer findByUserId(AppUser userId);
+  .flex-center
+    display: inline-flex
+    align-items: center
+    justify-content: center
 
-}
+  .no-pad
+    padding: .5em !important
+
+  > div
+    margin-bottom: 2em
+
+    .labeled.input
+      padding-left: 1em
+      padding-bottom: .5em
+@media only screen and (max-width: 768px)
+
+  .labeled.input
+    padding-bottom: 1em

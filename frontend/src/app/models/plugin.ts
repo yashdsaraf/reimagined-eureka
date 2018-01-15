@@ -1,3 +1,5 @@
+import { User } from "./user";
+
 /*
  * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
@@ -13,14 +15,18 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Developer;
-
-public interface DeveloperRepository extends CrudRepository<Developer, Long> {
-
-  public Developer findByUserId(AppUser userId);
-
+export interface Plugin {
+  name: string
+  description?: string
+  status: string
+  plugin_file: string
+  createdOn: Date
+  updatedOn: Date
+  developerId: {
+    userId: User
+  }
+  adminId: {
+    userId: User
+  }
 }

@@ -17,7 +17,7 @@
 import {
   Pipe,
   PipeTransform
-} from "@angular/core"
+} from '@angular/core'
 import {
   DomSanitizer,
   SafeHtml

@@ -1,0 +1,147 @@
+<div id="container">
+  <div id="home-bg">
+    <div class="ui icon attached message">
+      <i class="settings icon"></i>
+      <div class="content">
+        <div class="header">Background Settings</div>
+        <p>Manage background image</p>
+      </div>
+    </div>
+    <!-- header -->
+    <div class="ui attached fluid segment">
+      <div class="ui center aligned grid container">
+        <div class="one column row">
+          <div class="column" [ngClass]="{'four wide': !isMobile}">
+            <img *ngIf="bgImage != undefined" [src]="bgImage">
+          </div>
+        </div>
+        <div class="two column row">
+          <div class="center aligned column">
+            <label for="hidden-image">
+              <div class="ui button">
+                Select an image
+              </div>
+            </label>
+            <input [hidden]="true" id="hidden-image" type="file" accept=".jpg" (change)="onImageChange($event)">
+          </div>
+          <div class="flex-center center aligned column">
+            <div class="ui icon button" (click)="onImageSubmit()" [ngClass]="{disabled: !uploadButton}">
+              <i class="icon upload"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- segment -->
+    <div class="ui warning message">
+      <div class="header">Warning</div>
+      <ul class="list">
+        <li>Only
+          <strong>.jpg</strong> files are allowed</li>
+        <li>Use 1080p images</li>
+      </ul>
+    </div>
+    <!-- warning -->
+  </div>
+  <!-- home-bg -->
+  <div id="plugins">
+    <div class="ui icon attached message">
+      <i class="plug icon"></i>
+      <div class="content">
+        <div class="header">Plugin Settings</div>
+        <p>Manage plugins for home</p>
+      </div>
+    </div>
+    <div class="ui attached fluid center aligned segment">
+      <div class="ui center aligned grid">
+        <div class="three column row ui compact raised segment no-pad" *ngFor="let env of envKeys">
+          <ng-container *ngIf="isEdit == env">
+            <div class="ui center aligned grid">
+              <div class="row">
+                <div class="ui input flex-center">
+                  <input type="text" [value]="env | initCap" #input>
+                </div>
+              </div>
+              <!-- row -->
+              <div class="row">
+                <label for="hidden-file">
+                  <div class="ui button flex-center">
+                    Select SVG image
+                  </div>
+                </label>
+                <input id="hidden-file" [hidden]="true" type="file" accept=".svg" (change)="onSvgChange($event)">
+              </div>
+              <!-- row -->
+              <div class="row">
+                <div *ngIf="isEdit == env" class="flex-center">
+                  <div class="ui labeled icon primary button" (click)="setPlugin(env, input.value)">
+                    <i class="icon checkmark"></i>
+                    Done
+                  </div>
+                </div>
+              </div>
+              <!-- row -->
+            </div>
+            <!-- inner grid -->
+          </ng-container>
+          <!-- edit -->
+          <ng-container *ngIf="isEdit != env">
+            <div class="column ui header flex-center" [ngClass]="{large: !isMobile, small: isMobile}">{{env | initCap}}</div>
+            <div class="column" [ngClass]="{'two wide': !isMobile}" [innerHTML]="dataUri(env) | sanitizeHtml"></div>
+            <div class="column flex-center">
+              <div class="ui icon button" (click)="isEdit = env; svg = environments[env]">
+                <i class="icon edit"></i>
+              </div>
+            </div>
+            <!-- column -->
+          </ng-container>
+          <!-- non-edit -->
+        </div>
+        <!-- raised segment -->
+      </div>
+      <!-- outer grid -->
+    </div>
+    <!-- segment -->
+    <div class="ui warning message">
+      <div class="header">Warning</div>
+      <ul class="list">
+        <li>Only
+          <strong>.svg</strong> files are allowed</li>
+      </ul>
+    </div>
+    <!-- warning -->
+  </div>
+  <!-- plugins -->
+  <div id="contact">
+    <div class="ui icon attached message">
+      <i class="mail icon"></i>
+      <div class="content">
+        <div class="header">Contact Settings</div>
+        <p>Manage contact us details</p>
+      </div>
+    </div>
+    <div class="ui attached fluid center aligned segment">
+      <div class="ui labeled input" [ngClass]="{mini: isMobile}">
+        <div class="ui label">
+          <i class="mail icon"></i>
+          Email:
+        </div>
+        <input type="text" placeholder="" [(ngModel)]="email" name="email">
+      </div>
+      <div class="ui labeled input" [ngClass]="{mini: isMobile}">
+        <div class="ui label">
+          <i class="text telephone icon"></i>
+          Phone:
+        </div>
+        <input type="text" placeholder="" [(ngModel)]="phone" name="phone">
+      </div>
+      <br>
+      <button class="ui labeled icon button" (click)="onContactsSubmit()">
+        <i class="icon thumbs up"></i>
+        Submit
+      </button>
+    </div>
+    <!-- segment -->
+  </div>
+  <!-- contact -->
+</div>

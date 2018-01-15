@@ -1,0 +1,100 @@
+<div id="container">
+  <div id="stats" class="ui cards">
+    <div class="card">
+      <div class="content ui grid">
+        <div class="center aligned two column row">
+          <div class="column">
+            <div class="header">
+              Total Users
+            </div>
+            <!-- header -->
+            <div class="ui statistic" [ngClass]="{small: isMobile}">
+              <div class="value">
+                5,550
+              </div>
+            </div>
+            <!-- statistic -->
+          </div>
+          <!-- column -->
+          <div class="center aligned column">
+            <i class="users icon"></i>
+          </div>
+          <!-- column -->
+        </div>
+        <!-- row -->
+      </div>
+      <!-- grid -->
+    </div>
+    <!-- card -->
+
+    <div class="card">
+      <div class="content ui grid">
+        <div class="center aligned two column row">
+          <div class="column">
+            <div class="header">
+              Total Plugins
+            </div>
+            <!-- header -->
+            <div class="ui statistic" [ngClass]="{small: isMobile}">
+              <div class="value">
+                5,550
+              </div>
+            </div>
+            <!-- statistic -->
+          </div>
+          <!-- column -->
+          <div class="center aligned column">
+            <i class="plug icon"></i>
+          </div>
+          <!-- column -->
+        </div>
+        <!-- row -->
+      </div>
+      <!-- grid -->
+    </div>
+    <!-- card -->
+
+    <div class="card">
+      <div class="content ui grid">
+        <div class="center aligned two column row">
+          <div class="column">
+            <div class="header">
+              Total Devs
+            </div>
+            <!-- header -->
+            <div class="ui statistic" [ngClass]="{small: isMobile}">
+              <div class="value">
+                5,550
+              </div>
+            </div>
+            <!-- statistic -->
+          </div>
+          <!-- column -->
+          <div class="center aligned column">
+            <i class="code icon"></i>
+          </div>
+          <!-- column -->
+        </div>
+        <!-- row -->
+      </div>
+      <!-- grid -->
+    </div>
+    <!-- card -->
+  </div>
+  <!-- stats -->
+
+  <div id="graphs">
+    <div class="" id="left-graph">
+      <div id="piechart_3d" [style.height]="pieSize"></div>
+    </div>
+    <div class="" id="right-graph">
+      <div class="" id="users-graph">
+        <div id="line_top_x" style="padding:1em; height: 300px;"></div>
+      </div>
+      <div class="" id="plugins-graph">
+        <div id="line_down_x" style="padding:1em; height: 300px;"></div>
+      </div>
+    </div>
+  </div>
+  <!-- graphs -->
+</div>

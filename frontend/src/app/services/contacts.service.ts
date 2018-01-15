@@ -13,14 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Developer;
+import {Injectable} from '@angular/core'
+import {HttpClient} from '@angular/common/http'
+import {Observable} from 'rxjs/Observable'
 
-public interface DeveloperRepository extends CrudRepository<Developer, Long> {
+@Injectable()
+export class ContactsService {
 
-  public Developer findByUserId(AppUser userId);
+  constructor(private http: HttpClient) { }
+
+  getContacts(): Observable<Object> {
+    return this.http.get('/api/contacts')
+  }
+
+  setContacts(email: string, phone: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('email', email)
+    formData.append('phone', phone)
+    return this.http.post('/api/contacts', formData, {responseType: 'text'})
+  }
 
 }

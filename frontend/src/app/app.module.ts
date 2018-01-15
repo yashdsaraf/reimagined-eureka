@@ -32,10 +32,15 @@ import {FlashMessagesModule} from 'angular2-flash-messages'
 import {SuiModule} from 'ng2-semantic-ui'
 
 //COMPONENTS
+import {AboutUsComponent} from './components/about-us/about-us.component'
+import {AdminBlogComponent} from './components/admin-blog/admin-blog.component'
 import {AdminComponent} from './components/admin/admin.component'
+import {AdminDashComponent} from './components/admin-dash/admin-dash.component'
+import {AdminPluginsComponent} from './components/admin-plugins/admin-plugins.component'
+import {AdminUiElemsComponent} from './components/admin-ui-elems/admin-ui-elems.component'
+import {AdminUsersComponent} from './components/admin-users/admin-users.component'
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
-import {AboutUsComponent} from './components/about-us/about-us.component'
 import {BlogComponent} from './components/blog/blog.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
@@ -49,7 +54,9 @@ import {ProfileComponent} from './components/profile/profile.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
+import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
+import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
@@ -65,6 +72,7 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 import {ImagesService} from './services/images.service'
 //PIPES
+import {InitCapPipe} from './pipes/init-cap.pipe'
 import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
@@ -73,9 +81,14 @@ export function init(startupService: StartupService) {
 
 @NgModule({
   declarations: [
-    AdminComponent,
-    AppComponent,
     AboutUsComponent,
+    AdminBlogComponent,
+    AdminComponent,
+    AdminDashComponent,
+    AdminPluginsComponent,
+    AdminUiElemsComponent,
+    AdminUsersComponent,
+    AppComponent,
     BlogComponent,
     DocsComponent,
     FileExComponent,
@@ -89,6 +102,7 @@ export function init(startupService: StartupService) {
     RegisterComponent,
     ToolbarComponent,
     IdenticonDirective,
+    InitCapPipe,
     SanitizeHtmlPipe
   ],
   imports: [
@@ -106,6 +120,8 @@ export function init(startupService: StartupService) {
     {provide: APP_INITIALIZER, useFactory: init, deps: [StartupService], multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
+    AdminService,
+    ContactsService,
     CookieService,
     ImagesService,
     LoginService,
@@ -115,6 +131,12 @@ export function init(startupService: StartupService) {
     DeveloperGuard,
     GuestGuard,
     UserGuard
+  ],
+  entryComponents: [
+    AdminDashComponent,
+    AdminPluginsComponent,
+    AdminUiElemsComponent,
+    AdminUsersComponent
   ],
   bootstrap: [AppComponent]
 })

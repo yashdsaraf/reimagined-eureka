@@ -16,41 +16,50 @@
 
 import {
   Component,
-  ViewChild,
-  OnInit
+  EventEmitter,
+  Input,
+  Output
 } from '@angular/core'
 
-import {AdminService} from '../../services/admin.service'
 import {isMobile} from '../../app.component'
+import {AdminService} from '../../services/admin.service'
+import {Plugin} from '../../models/plugin'
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
-  styleUrls: ['./admin.component.sass']
+  selector: 'app-admin-plugins',
+  templateUrl: './admin-plugins.component.html',
+  styleUrls: ['./admin-plugins.component.sass']
 })
-export class AdminComponent implements OnInit {
+export class AdminPluginsComponent {
 
-  @ViewChild('sidebar') sidebar
-
-  heading: string
-  _isOpen = 'dash'
+  @Output('heading') heading = new EventEmitter()
+  _search: string
   isMobile: boolean
-  search: string
+  plugins: Plugin[]
 
   constructor(private adminService: AdminService) {
     this.isMobile = isMobile
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+    setTimeout(() => this.heading.emit('Plugins'))
   }
 
-  get isOpen(): string {
-    return this._isOpen
+  getPlugins(value?: string) {
+    this.adminService.getPlugins(value).
+      subscribe(
+        data => this.plugins = data
+      )
   }
 
-  set isOpen(value: string) {
-    this.sidebar.close()
-    this._isOpen = value
+  @Input('search')
+  set search(value: string) {
+    this._search = value
+    this.getPlugins(value)
+  }
+
+  get search(): string {
+    return this._search
   }
 
 }

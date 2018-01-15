@@ -85,9 +85,9 @@ public class Plugin implements Serializable {
     @JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
   @ManyToMany
   private Collection<AppUser> appUserCollection;
-  @JoinColumn(name = "ADMINID", referencedColumnName = "ID")
+  @JoinColumn(name = "ADMIN_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
-  private AppAdmin adminid;
+  private AppAdmin adminId;
   @JoinColumn(name = "DEVELOPER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
   private Developer developerId;
@@ -177,11 +177,11 @@ public class Plugin implements Serializable {
   }
 
   public AppAdmin getAdminid() {
-    return adminid;
+    return adminId;
   }
 
-  public void setAdminid(AppAdmin adminid) {
-    this.adminid = adminid;
+  public void setAdminid(AppAdmin adminId) {
+    this.adminId = adminId;
   }
 
   public Developer getDeveloperId() {

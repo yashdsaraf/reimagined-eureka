@@ -18,6 +18,7 @@ import {Component} from '@angular/core'
 import {Observable} from 'rxjs/Observable'
 
 import {AuthService} from '../../services/auth.service'
+import {ContactsService} from '../../services/contacts.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 
@@ -67,50 +68,45 @@ export class HomeComponent {
   environments: Object
   envKeys = []
   image: any
+  contacts: Object = {
+    email: '',
+    phone: ''
+  }
 
   constructor(
     private authService: AuthService,
-    private imagesServce: ImagesService
+    private contactsService: ContactsService,
+    private imagesService: ImagesService
   ) {
     this.isMobile = isMobile
-    this.imagesServce.getImage('home').subscribe(
+    this.imagesService.getImage('home').subscribe(
       data => {
         this.createImageFromBlob(data)
       }
     )
-    this.imagesServce.getPlugins().subscribe(
+    this.imagesService.getPlugins().subscribe(
       data => {
         this.environments = data
         this.envKeys = Object.keys(data)
       }
     )
-  }
-
-  toInitCap(value: string) {
-    return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+    this.contactsService.getContacts().
+      subscribe((data: Object) => this.contacts = data)
   }
 
   createImageFromBlob(image: Blob) {
-    let reader = new FileReader();
+    let reader = new FileReader()
     reader.addEventListener("load", () => {
-       this.image = `url(${reader.result})`;
-    }, false);
+       this.image = `url(${reader.result})`
+    }, false)
 
     if (image) {
-       reader.readAsDataURL(image);
+       reader.readAsDataURL(image)
     }
   }
 
   isNotLoggedIn(): boolean {
     return this.authService.getRole() == null
-  }
-
-  getIdenticon(value: string): string {
-    let size = this.isMobile ? 90 : 120
-    let obj = {
-      value, size
-    }
-    return JSON.stringify(obj)
   }
 
   dataUri(env: string) {

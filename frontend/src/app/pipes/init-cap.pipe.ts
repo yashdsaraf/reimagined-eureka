@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ * Copyright 2018 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Developer;
+import {
+  Pipe,
+  PipeTransform
+} from '@angular/core'
 
-public interface DeveloperRepository extends CrudRepository<Developer, Long> {
+@Pipe({
+  name: 'initCap'
+})
+export class InitCapPipe implements PipeTransform {
 
-  public Developer findByUserId(AppUser userId);
+  transform(value: any): any {
+    return value.charAt(0).toUpperCase() + value.toLowerCase().slice(1)
+  }
 
 }

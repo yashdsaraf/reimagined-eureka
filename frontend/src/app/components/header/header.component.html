@@ -30,6 +30,7 @@
           <div class="ui dropdown" suiDropdown>
             <div id="profile" [appIdenticon]="getIdenticonObject()">
             </div>
+            <i class="icon dropdown"></i>
             <div class="left menu" suiDropdownMenu>
               <div class="header">
                 <i class="icon user circle"></i>
@@ -46,6 +47,13 @@
                 </div>
                 <div class="divider"></div>
               </ng-container>
+              <!-- Guest -->
+              <ng-container *ngIf="getRole() == 'ADMIN'">
+                <div class="item" routerLink="/admin">
+                  Admin console
+                </div>
+              </ng-container>
+              <!-- Admin -->
               <div class="item" routerLink="/profile">
                 Profile
               </div>
@@ -58,7 +66,6 @@
               <!-- logout -->
             </div>
           </div>
-          <i class="icon dropdown"></i>
         </div>
       </ng-template>
     </div>
