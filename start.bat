@@ -12,7 +12,7 @@ if defined LIGHT (
 
 echo. & echo Starting the backend...
 
-start "BACKEND" cmd /c "cd server & mvn spring-boot:run & pause>nul"
+start "BACKEND" cmd /c "cd server & mvn clean & mvn spring-boot:run & pause>nul"
 
 echo. & echo You can close this window now...
 pause>nul

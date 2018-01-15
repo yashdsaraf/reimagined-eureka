@@ -31,9 +31,11 @@ export class AdminDashComponent {
 
   @Output('heading') heading = new EventEmitter()
   isMobile: boolean
+  pieSize: string
 
   constructor() {
     this.isMobile = isMobile
+    this.pieSize = this.isMobile ? '300px' : '600px'
   }
 
   ngAfterViewInit() {
@@ -68,96 +70,96 @@ export class AdminDashComponent {
   }
 
   usersChart() {
-      var data = new google.visualization.DataTable();
-      data.addColumn('date', 'Months');
-      data.addColumn('number', 'Users');
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Months');
+    data.addColumn('number', 'Users');
 
-      data.addRows([
-        [new Date(2014, 0), 6.3],
-        [new Date(2014, 1), 6.2],
-        [new Date(2014, 2), 7.6],
-        [new Date(2014, 3), 12.9],
-        [new Date(2014, 4), 18.3],
-        [new Date(2014, 5), 22.6],
-        [new Date(2014, 6), 25.6],
-        [new Date(2014, 7), 27.9],
-        [new Date(2014, 8), 29.2],
-        [new Date(2014, 9), 40.9],
-        [new Date(2014, 10), 61.0],
-        [new Date(2014, 11), 75.5]
-      ]);
+    data.addRows([
+      [new Date(2014, 0), 6.3],
+      [new Date(2014, 1), 6.2],
+      [new Date(2014, 2), 7.6],
+      [new Date(2014, 3), 12.9],
+      [new Date(2014, 4), 18.3],
+      [new Date(2014, 5), 22.6],
+      [new Date(2014, 6), 25.6],
+      [new Date(2014, 7), 27.9],
+      [new Date(2014, 8), 29.2],
+      [new Date(2014, 9), 40.9],
+      [new Date(2014, 10), 61.0],
+      [new Date(2014, 11), 75.5]
+    ]);
 
 
-      var options = {
-        backgroundColor: {
-          fill: 'transparent'
-        },
-        chart: {
-          title: 'Total Number of Users',
-        },
-        hAxis: {
-          title: 'in months'
-        },
-        vAxis: {
-          title: 'No. of users'
-        },
-        axes: {
-          x: {
-            0: {side: 'bottom'}
-          }
+    var options = {
+      backgroundColor: {
+        fill: 'transparent'
+      },
+      chart: {
+        title: 'Total Number of Users',
+      },
+      hAxis: {
+        title: 'in months'
+      },
+      vAxis: {
+        title: 'No. of users'
+      },
+      axes: {
+        x: {
+          0: {side: 'bottom'}
         }
-      };
-
-      var chart = new google.charts.Line(document.getElementById('line_top_x'));
-
-      chart.draw(data, google.charts.Line.convertOptions(options));
-    }
-
-
-    pluginsChart() {
-      var data = new google.visualization.DataTable();
-      data.addColumn('date', 'Months');
-      data.addColumn('number', 'Plugins');
-
-      data.addRows([
-        [new Date(2014, 0), 6.3],
-        [new Date(2014, 1), 6.2],
-        [new Date(2014, 2), 7.6],
-        [new Date(2014, 3), 12.9],
-        [new Date(2014, 4), 18.3],
-        [new Date(2014, 5), 22.6],
-        [new Date(2014, 6), 25.6],
-        [new Date(2014, 7), 27.9],
-        [new Date(2014, 8), 29.2],
-        [new Date(2014, 9), 40.9],
-        [new Date(2014, 10), 61.0],
-        [new Date(2014, 11), 75.5]
-      ]);
-
-
-      var options = {
-        backgroundColor: {
-          fill: 'transparent'
-        },
-        chart: {
-          title: 'Total Number of Plugins',
-        },
-        hAxis: {
-          title: 'in months'
-        },
-        vAxis: {
-          title: 'No. of Plugins'
-        },
-        axes: {
-          x: {
-            0: {side: 'bottom'}
-          }
-        }
-      };
-
-      var chart = new google.charts.Line(document.getElementById('line_down_x'));
-
-      chart.draw(data, google.charts.Line.convertOptions(options));
       }
+    };
+
+    var chart = new google.charts.Line(document.getElementById('line_top_x'));
+
+    chart.draw(data, google.charts.Line.convertOptions(options));
+  }
+
+
+  pluginsChart() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('date', 'Months');
+    data.addColumn('number', 'Plugins');
+
+    data.addRows([
+      [new Date(2014, 0), 6.3],
+      [new Date(2014, 1), 6.2],
+      [new Date(2014, 2), 7.6],
+      [new Date(2014, 3), 12.9],
+      [new Date(2014, 4), 18.3],
+      [new Date(2014, 5), 22.6],
+      [new Date(2014, 6), 25.6],
+      [new Date(2014, 7), 27.9],
+      [new Date(2014, 8), 29.2],
+      [new Date(2014, 9), 40.9],
+      [new Date(2014, 10), 61.0],
+      [new Date(2014, 11), 75.5]
+    ]);
+
+
+    var options = {
+      backgroundColor: {
+        fill: 'transparent'
+      },
+      chart: {
+        title: 'Total Number of Plugins',
+      },
+      hAxis: {
+        title: 'in months'
+      },
+      vAxis: {
+        title: 'No. of Plugins'
+      },
+      axes: {
+        x: {
+          0: {side: 'bottom'}
+        }
+      }
+    };
+
+    var chart = new google.charts.Line(document.getElementById('line_down_x'));
+
+    chart.draw(data, google.charts.Line.convertOptions(options));
+  }
 
 }
