@@ -40,7 +40,7 @@
               <ng-container *ngIf="isMobile"><strong>Role:</strong></ng-container> {{user.role}}
             </td>
             <td>
-              <button class="ui fluid negative button" (click)="deleteUsername = user.username">
+              <button class="ui fluid negative button" (click)="deleteUsername = user.username" [ngClass]="{disabled:user.role == 'ADMIN'}">
                 <i class="trash icon"></i> Delete
               </button>
             </td>
