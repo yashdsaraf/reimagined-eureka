@@ -15,7 +15,7 @@ INSERT INTO APP_ADMIN VALUES ('12', '3');
 INSERT INTO DEVELOPER VALUES ('13', '', '8');
 INSERT INTO DEVELOPER VALUES ('14', '', '9');
 
-INSERT INTO PLUGIN VALUES ('15', TO_DATE('15-17-08', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', 'Java', 'file', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
+INSERT INTO PLUGIN VALUES ('15', TO_DATE('15-17-08', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', 'Java', 'RlJPTSBvcGVuamRrOjgNCkNPUFkgLiAvdmFyL3d3dy9qYXZhDQpXT1JLRElSIC92YXIvd3d3L2phdmENCkNNRCBqYXZhYyBNYWluLmphdmEgJiYgamF2YSBNYWluDQo=', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
 INSERT INTO PLUGIN VALUES ('16', TO_DATE('21-17-09', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', 'Python', 'file', 'APP', TO_DATE('18-18-01', 'DD-RR-MM'), '12', '14');
 INSERT INTO PLUGIN VALUES ('17', TO_DATE('22-17-10', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Ruby', 'file', 'APP', TO_DATE('24-18-01', 'DD-RR-MM'), '11', '13');
 INSERT INTO PLUGIN VALUES ('18', TO_DATE('04-17-11', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'PHP', 'file', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
