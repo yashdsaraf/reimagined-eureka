@@ -35,19 +35,12 @@ import org.tyit.pnc.repository.AppUserRepository;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
-  private static final String EMPTY_PASSWORD = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-
   @Autowired
   private AppUserRepository userRepository;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     List<GrantedAuthority> authorities;
-    if (username.equalsIgnoreCase("guest")) {
-      authorities = Arrays.asList(
-              new SimpleGrantedAuthority("GUEST"));
-      return new org.springframework.security.core.userdetails.User(username, EMPTY_PASSWORD, authorities);
-    }
 
     AppUser user = userRepository.findByUsername(username);
 

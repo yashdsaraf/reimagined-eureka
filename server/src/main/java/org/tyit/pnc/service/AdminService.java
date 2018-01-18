@@ -48,7 +48,7 @@ public class AdminService {
     if (name != null && !name.isEmpty()) {
       users = appUserRepository.findAllByName(name);
     } else {
-      users = appUserRepository.findAll();
+      users = appUserRepository.findAllByName("");
     }
     return users;
   }
