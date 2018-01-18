@@ -15,18 +15,18 @@
  */
 package org.tyit.pnc.controller;
 
-import java.security.Principal;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.tyit.pnc.model.Output;
 import org.tyit.pnc.service.CoreService;
 
 /**
@@ -34,23 +34,21 @@ import org.tyit.pnc.service.CoreService;
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
-@RequestMapping("/setup")
-public class QuickSetupController {
+@RequestMapping("/core")
+public class CoreController {
 
   @Autowired
   private CoreService coreService;
 
-  @GetMapping("{language}")
-  public ResponseEntity<String> quickSetup(@PathVariable("language") String lang,
-          @RequestParam("project") String projectName,
-          Principal principal,
-          HttpServletRequest request) {
+  @PostMapping("/run")
+  public ResponseEntity<Output> runProject(@RequestParam Map<String, String> code, HttpServletRequest request) {
+    HttpSession session = request.getSession(false);
     try {
-      coreService.build(lang, projectName, request.getSession(true), principal.getName());
-      return ResponseEntity.ok().build();
+      Output output = coreService.execute(code, session);
+      return ResponseEntity.ok(output);
     } catch (Exception ex) {
-      Logger.getLogger(QuickSetupController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      Logger.getLogger(CoreController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
     }
   }
 

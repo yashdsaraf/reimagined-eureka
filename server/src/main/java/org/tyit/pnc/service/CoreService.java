@@ -53,8 +53,13 @@ public class CoreService {
   @Autowired
   private DockerService dockerService;
 
-  public Output execute(String code) {
-    return null;
+  public Output execute(Map<String, String> code, HttpSession session) throws Exception {
+    if (session == null || session.getAttribute("tmpDir") == null || session.getAttribute("docker") == null) {
+      throw new Exception("No project found in session.");
+    }
+    Path tmpDir = (Path) session.getAttribute("tmpDir");
+    Docker docker = (Docker) session.getAttribute("docker");
+    return dockerService.execute(code, tmpDir, docker);
   }
 
   public void build(String lang, String projectName, HttpSession session, String userName) throws Exception {

@@ -21,11 +21,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
 import java.util.Base64;
+import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Docker;
+import org.tyit.pnc.model.Output;
 import org.tyit.pnc.repository.DockerRepository;
+import org.tyit.pnc.utils.DockerUtils;
 
 /**
  *
@@ -37,12 +40,22 @@ public class DockerService {
   @Autowired
   private DockerRepository dockerRepository;
 
-  public Docker build(Path tempDir, String dockerFileContent, AppUser user) throws IOException {
+  public Output execute(Map<String, String> code, Path tmpDir, Docker docker) {
+    /*code.forEach((k, v) -> {
+
+    });*/
+    //TODO: Update files in tmpDir and run docker image
+    return new Output();
+  }
+
+  public Docker build(Path tempDir, String dockerFileContent, AppUser user) throws IOException, Exception {
     File dockerFile = new File(tempDir.toFile(), "Dockerfile");
     Files.write(dockerFile.toPath(), Base64.getDecoder().decode(dockerFileContent), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
     Docker docker = new Docker();
     docker.setSettings(dockerFileContent);
     docker.setUserId(user);
+    long imageId = DockerUtils.buildDockerImage(tempDir.toAbsolutePath());
+    docker.setImageId(imageId);
     dockerRepository.save(docker);
     return docker;
   }
