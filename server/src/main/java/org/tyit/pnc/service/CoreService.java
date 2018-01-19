@@ -16,11 +16,8 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Base64;
-import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +27,7 @@ import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.model.Project;
+import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.AppUserRepository;
 import org.tyit.pnc.repository.PluginRepository;
 import org.tyit.pnc.repository.ProjectRepository;
@@ -69,19 +67,15 @@ public class CoreService {
       throw new Exception("No such plugin found");
     }
     Path path = Files.createTempDirectory(projectName);
-    session.setAttribute("tmpdir", path.toAbsolutePath());
+    session.setAttribute("tmpDir", path.toAbsolutePath());
     AppUser user = appUserRepository.findByUsername(userName);
     Project project = new Project();
     project.setName(projectName);
     project.setUserId(user);
-    Map<String, String> map = new HashMap<>();
-    map.put("saveas", "none");
-    map.put("plugin", lang);
-    String settings = new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(map);
-    String encodedSettings = Base64.getEncoder().encodeToString(settings.getBytes(StandardCharsets.UTF_8));
-    project.setSettings(encodedSettings);
+    ProjectSettings settings = new ProjectSettings(new String[0], "Main", new String[0], lang);
+    project.setSettings(new ObjectMapper().writeValueAsString(settings));
     projectRepository.save(project);
-    Docker docker = dockerService.build(path, plugin.getPluginFile(), user);
+    Docker docker = dockerService.build(path, plugin.getPluginFile(), project.getSettings(), user);
     session.setAttribute("docker", docker);
   }
 

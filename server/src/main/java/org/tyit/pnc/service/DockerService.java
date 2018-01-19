@@ -15,18 +15,24 @@
  */
 package org.tyit.pnc.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.Base64;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
+import org.tyit.pnc.model.PluginFile;
+import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.utils.DockerUtils;
 
@@ -40,19 +46,30 @@ public class DockerService {
   @Autowired
   private DockerRepository dockerRepository;
 
-  public Output execute(Map<String, String> code, Path tmpDir, Docker docker) {
-    /*code.forEach((k, v) -> {
-
-    });*/
-    //TODO: Update files in tmpDir and run docker image
-    return new Output();
+  public Output execute(Map<String, String> code, Path tmpDir, Docker docker) throws Exception {
+    code.forEach((path, content) -> {
+      Path realPath = Paths.get(tmpDir.toString(), path);
+      try {
+        Files.write(realPath, content.getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+      } catch (IOException ex) {
+        Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    });
+    return DockerUtils.runDockerImage(tmpDir, docker);
   }
 
-  public Docker build(Path tempDir, String dockerFileContent, AppUser user) throws IOException, Exception {
+  public Docker build(Path tempDir, String pluginSettings, String projectSettings, AppUser user) throws IOException, Exception {
+    ObjectMapper mapper = new ObjectMapper();
+    PluginFile pluginFile = mapper.readValue(pluginSettings, PluginFile.class);
+    ProjectSettings settings = mapper.readValue(projectSettings, ProjectSettings.class);
     File dockerFile = new File(tempDir.toFile(), "Dockerfile");
-    Files.write(dockerFile.toPath(), Base64.getDecoder().decode(dockerFileContent), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+    Files.write(dockerFile.toPath(), pluginFile.getDockerfile()
+            .getBytes(StandardCharsets.UTF_8),
+            StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+    DockerUtils.writeStarterScript(tempDir, pluginFile, settings);
     Docker docker = new Docker();
-    docker.setSettings(dockerFileContent);
+    docker.setSettings(pluginSettings);
     docker.setUserId(user);
     long imageId = DockerUtils.buildDockerImage(tempDir.toAbsolutePath());
     docker.setImageId(imageId);

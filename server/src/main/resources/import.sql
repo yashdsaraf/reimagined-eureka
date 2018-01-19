@@ -16,7 +16,7 @@ INSERT INTO APP_ADMIN VALUES ('12', '3');
 INSERT INTO DEVELOPER VALUES ('13', '', '8');
 INSERT INTO DEVELOPER VALUES ('14', '', '9');
 
-INSERT INTO PLUGIN VALUES ('15', TO_DATE('15-17-08', 'DD-RR-MM'), 'Provides standard java utils included in OpenJDK image v8. Uses /usr/src/java for execution', 'Java', 'RlJPTSBvcGVuamRrOjgNCkNPUFkgLiAvdXNyL3NyYy9qYXZhDQpXT1JLRElSIC91c3Ivc3JjL2phdmENCkNNRCBqYXZhYyBNYWluLmphdmEgJiYgamF2YSBNYWluDQo=', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
+INSERT INTO PLUGIN VALUES ('15', TO_DATE('15-17-08', 'DD-RR-MM'), 'Provides standard java utils included in OpenJDK image v8', 'Java', '{"runCmd":["javac $file.java","errcode=$?","if [ $errcode -ne 0 ]; then exit $errcode; fi","java $file"],"dockerfile":"RlJPTSBvcGVuamRrOjgNCkNPUFkgLiAvdXNyL3NyYy9hcHANCldPUktESVIgL3Vzci9zcmMvYXBwDQpDTUQgc2ggc3RhcnQuc2gNCg=="}', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
 INSERT INTO PLUGIN VALUES ('16', TO_DATE('21-17-09', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', 'Python', 'file', 'APP', TO_DATE('18-18-01', 'DD-RR-MM'), '12', '14');
 INSERT INTO PLUGIN VALUES ('17', TO_DATE('22-17-10', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Ruby', 'file', 'APP', TO_DATE('24-18-01', 'DD-RR-MM'), '11', '13');
 INSERT INTO PLUGIN VALUES ('18', TO_DATE('04-17-11', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'PHP', 'file', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
