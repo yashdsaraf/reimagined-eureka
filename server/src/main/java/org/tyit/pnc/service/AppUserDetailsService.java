@@ -50,7 +50,7 @@ public class AppUserDetailsService implements UserDetailsService {
 
     authorities = Arrays.asList(
             new SimpleGrantedAuthority(user.getRole().toString()));
-    UserDetails userDetails = new User(user.getName(), user.getPassword(), authorities);
+    UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
     return userDetails;
   }
 

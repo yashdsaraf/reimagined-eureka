@@ -129,11 +129,4 @@ export class AuthService {
     return this.getUserDetails().authorities[0]
   }
 
-  public getUsername(): string {
-    if (this.getUserDetails() == null) {
-      return null
-    }
-    return this.getUserDetails().user_name
-  }
-
 }

@@ -58,9 +58,11 @@ import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
+import {ImagesService} from './services/images.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {StartupService} from './services/startup.service'
+import {UserNameService} from './services/user-name.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
@@ -70,7 +72,6 @@ import {GuestGuard} from './guards/guest.guard'
 import {UserGuard} from './guards/user.guard'
 //DIRECTIVES
 import {IdenticonDirective} from './directives/identicon.directive'
-import {ImagesService} from './services/images.service'
 //PIPES
 import {InitCapPipe} from './pipes/init-cap.pipe'
 import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
@@ -126,6 +127,7 @@ export function init(startupService: StartupService) {
     ImagesService,
     LoginService,
     LogoutService,
+    UserNameService,
     StartupService,
     AdminGuard,
     DeveloperGuard,

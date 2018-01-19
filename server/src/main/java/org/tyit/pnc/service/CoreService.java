@@ -70,7 +70,7 @@ public class CoreService {
     }
     Path path = Files.createTempDirectory(projectName);
     session.setAttribute("tmpdir", path.toAbsolutePath());
-    AppUser user = appUserRepository.findAllByName(userName).iterator().next();
+    AppUser user = appUserRepository.findByUsername(userName);
     Project project = new Project();
     project.setName(projectName);
     project.setUserId(user);
