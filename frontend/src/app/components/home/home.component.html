@@ -44,7 +44,7 @@
           <sui-dimmer transitionDuration=500 [isClickable]="false" #dimmer>
             <div class="content">
               <div class="center">
-                <div class="ui inverted button" routerLink="/index">Let's code</div>
+                <div class="ui inverted button" (click)="quickSetup(env)">Let's code</div>
               </div>
             </div>
           </sui-dimmer>

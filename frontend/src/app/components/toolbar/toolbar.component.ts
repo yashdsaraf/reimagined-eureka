@@ -33,6 +33,7 @@ export class ToolbarComponent {
 
   @Input() isNavOpen: boolean
   @Output() isNavOpenChange = new EventEmitter<boolean>()
+  @Output('executedTool') executedTool = new EventEmitter<string>()
   isMobile: boolean
   tools: Tool[] = [
     {name: 'Run', icon: 'play'},
@@ -48,9 +49,8 @@ export class ToolbarComponent {
     this.isMobile = isMobile
   }
 
-  onClick(event: any) {
-    let tool = this.getTool(event)
-    console.log('tool:', tool)
+  onClick(tool: string) {
+    this.executedTool.emit(tool)
   }
 
   /* Iterate through the given element's DOM hierarchy to

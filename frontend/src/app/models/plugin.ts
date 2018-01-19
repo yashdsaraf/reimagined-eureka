@@ -1,5 +1,3 @@
-import { User } from "./user";
-
 /*
  * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
  *
@@ -15,6 +13,8 @@ import { User } from "./user";
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+import {User} from "./user"
 
 export interface Plugin {
   name: string

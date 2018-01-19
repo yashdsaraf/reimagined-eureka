@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.model;
+package org.tyit.pnc.controller;
 
 import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
 
 /**
@@ -36,7 +37,6 @@ public class UserNameController {
 
   @GetMapping
   public ResponseEntity<String> getName(Principal principal) {
-    System.out.println(principal.getName());
     AppUser user = appUserRepository.findByUsername(principal.getName());
     return ResponseEntity.ok(user.getName());
   }

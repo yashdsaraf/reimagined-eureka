@@ -58,6 +58,7 @@ import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
+import {CoreService} from './services/core.service'
 import {ImagesService} from './services/images.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
@@ -124,6 +125,7 @@ export function init(startupService: StartupService) {
     AdminService,
     ContactsService,
     CookieService,
+    CoreService,
     ImagesService,
     LoginService,
     LogoutService,
