@@ -18,12 +18,15 @@ package org.tyit.pnc.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.ThreadLocalRandom;
 import org.tyit.pnc.model.Docker;
@@ -37,7 +40,24 @@ import org.tyit.pnc.model.ProjectSettings;
  */
 public class DockerUtils {
 
-  public static long buildDockerImage(Path tempDir) throws IOException, InterruptedException, Exception {
+  private static final String MACHINE_NAME = "plugncode";
+  private String[] envVars;
+
+  public DockerUtils() throws IOException, InterruptedException, Exception {
+    String command = "docker-machine env " + MACHINE_NAME;
+    Process process = Runtime.getRuntime().exec(command);
+    if (process.waitFor() != 0) {
+      throw new Exception(getStringFromBuffer(process.getErrorStream(), " "));
+    }
+    List<String> list = new ArrayList<>();
+    envVars = getBufferFromStream(process.getInputStream())
+            .lines()
+            .filter(i -> i.startsWith("SET "))
+            .map(i -> i.substring(4))
+            .toArray(String[]::new);
+  }
+
+  public long buildDockerImage(Path tempDir) throws IOException, InterruptedException, Exception {
     long imageId = ThreadLocalRandom.current().nextLong(100000000, 999999999); //Generates a 64 bit random number
     String[] commands = {
       "docker",
@@ -46,11 +66,10 @@ public class DockerUtils {
       String.valueOf(imageId),
       "."
     };
-    Process process = Runtime.getRuntime().exec(commands, null, tempDir.toFile());
+    Process process = Runtime.getRuntime().exec(commands, envVars, tempDir.toFile());
+    System.out.println(Arrays.toString(commands));
     if (process.waitFor() != 0) {
-      StringJoiner joiner = new StringJoiner(" ");
-      new BufferedReader(new InputStreamReader(process.getErrorStream())).lines().forEach(joiner::add);
-      throw new Exception(joiner.toString());
+      throw new Exception(getStringFromBuffer(process.getErrorStream(), " "));
     }
     return imageId;
   }
@@ -64,7 +83,7 @@ public class DockerUtils {
    * @param settings
    * @throws IOException
    */
-  public static void writeStarterScript(Path tmpDir, PluginFile pluginFile, ProjectSettings settings) throws IOException {
+  public void writeStarterScript(Path tmpDir, PluginFile pluginFile, ProjectSettings settings) throws IOException {
     StringJoiner stringJoiner = new StringJoiner("\n");
     stringJoiner.add("file=\"" + settings.getEntrypoint() + "\"");
     String[] lines;
@@ -82,25 +101,33 @@ public class DockerUtils {
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
-  public static Output runDockerImage(Path tmpDir, Docker docker) throws IOException, Exception {
+  public Output runDockerImage(Path tmpDir, Docker docker) throws IOException, Exception {
+    String mountDir = GeneralUtils.getInstance().getUnixPath(tmpDir.toString());
     String[] commands = {
       "docker",
       "run",
+      "--rm",
       "-v",
-      tmpDir.toString() + ":/usr/src/app",
+      mountDir + ":/usr/src/app",
       String.valueOf(docker.getImageId())
     };
-    Process process = Runtime.getRuntime().exec(commands, null, tmpDir.toFile());
-    BufferedReader errorStream = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-    BufferedReader inputStream = new BufferedReader(new InputStreamReader(process.getInputStream()));
+    Process process = Runtime.getRuntime().exec(commands, envVars, tmpDir.toFile());
+    System.out.println(Arrays.toString(commands));
     Output output = new Output();
-    StringJoiner joiner = new StringJoiner(System.lineSeparator());
-    errorStream.lines().forEach(joiner::add);
-    output.setStderr(joiner.toString());
-    joiner = new StringJoiner(System.lineSeparator());
-    inputStream.lines().forEach(joiner::add);
-    output.setStdout(joiner.toString());
+    String delimiter = System.lineSeparator();
+    output.setStderr(getStringFromBuffer(process.getErrorStream(), delimiter));
+    output.setStdout(getStringFromBuffer(process.getInputStream(), delimiter));
     return output;
+  }
+
+  private BufferedReader getBufferFromStream(InputStream inputStream) {
+    return new BufferedReader(new InputStreamReader(inputStream));
+  }
+
+  private String getStringFromBuffer(InputStream inputStream, String delimiter) {
+    StringJoiner joiner = new StringJoiner(delimiter);
+    getBufferFromStream(inputStream).lines().forEach(joiner::add);
+    return joiner.toString();
   }
 
 }

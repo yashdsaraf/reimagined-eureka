@@ -46,6 +46,16 @@ public class DockerService {
   @Autowired
   private DockerRepository dockerRepository;
 
+  private DockerUtils dockerUtils;
+
+  public DockerService() {
+    try {
+      dockerUtils = new DockerUtils();
+    } catch (Exception ex) {
+      Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
+    }
+  }
+
   public Output execute(Map<String, String> code, Path tmpDir, Docker docker) throws Exception {
     code.forEach((path, content) -> {
       Path realPath = Paths.get(tmpDir.toString(), path);
@@ -56,7 +66,7 @@ public class DockerService {
         Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
       }
     });
-    return DockerUtils.runDockerImage(tmpDir, docker);
+    return dockerUtils.runDockerImage(tmpDir, docker);
   }
 
   public Docker build(Path tempDir, String pluginSettings, String projectSettings, AppUser user) throws IOException, Exception {
@@ -67,11 +77,11 @@ public class DockerService {
     Files.write(dockerFile.toPath(), pluginFile.getDockerfile()
             .getBytes(StandardCharsets.UTF_8),
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
-    DockerUtils.writeStarterScript(tempDir, pluginFile, settings);
+    dockerUtils.writeStarterScript(tempDir, pluginFile, settings);
     Docker docker = new Docker();
     docker.setSettings(pluginSettings);
     docker.setUserId(user);
-    long imageId = DockerUtils.buildDockerImage(tempDir.toAbsolutePath());
+    long imageId = dockerUtils.buildDockerImage(tempDir.toAbsolutePath());
     docker.setImageId(imageId);
     dockerRepository.save(docker);
     return docker;
