@@ -18,11 +18,14 @@ import {Component} from '@angular/core'
 import {Observable} from 'rxjs/Observable'
 import {Router} from '@angular/router'
 
+import {SuiModalService} from 'ng2-semantic-ui'
+
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
+import {ProgressBarModal} from '../progress-bar-modal/progress-bar-modal.component'
 
 @Component({
   selector: 'app-home',
@@ -80,7 +83,8 @@ export class HomeComponent {
     private contactsService: ContactsService,
     private coreService: CoreService,
     private imagesService: ImagesService,
-    private router: Router
+    private router: Router,
+    private suiModalService: SuiModalService
   ) {
     this.isMobile = isMobile
     this.imagesService.getImage('home').subscribe(
@@ -96,6 +100,12 @@ export class HomeComponent {
     )
     this.contactsService.getContacts().
       subscribe((data: Object) => this.contacts = data)
+  }
+
+  ngAfterViewInit() {
+    // this.suiModalService.open(
+    //   new ProgressBarModal()
+    // )
   }
 
   createImageFromBlob(image: Blob) {

@@ -51,6 +51,7 @@ import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
 import {OutputComponent} from './components/output/output.component'
 import {ProfileComponent} from './components/profile/profile.component'
+import {ProgressBarModalComponent} from './components/progress-bar-modal/progress-bar-modal.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
@@ -105,7 +106,8 @@ export function init(startupService: StartupService) {
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    ProgressBarModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -136,12 +138,7 @@ export function init(startupService: StartupService) {
     GuestGuard,
     UserGuard
   ],
-  entryComponents: [
-    AdminDashComponent,
-    AdminPluginsComponent,
-    AdminUiElemsComponent,
-    AdminUsersComponent
-  ],
+  entryComponents: [ProgressBarModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
