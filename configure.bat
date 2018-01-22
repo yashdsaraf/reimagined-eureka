@@ -1,7 +1,79 @@
 @echo off
 
+REM Script control variables
+set required_dependencies=node npm mvn java javac docker docker-machine
+set machine_name=plugncode
+set images=openjdk:8
+
+net session >nul 2>&1
+if %ERRORLEVEL% EQU 0 (
+  goto docker_ran
+)
+
+echo.
+call :showLine
+echo Checking if dependencies are satisfied..
+call :showLine
+
+for %%I in (%required_dependencies%) do (
+  echo | set /p="%%I"
+  call :isInstalled %%I
+)
+
 set "NO_PROMPT=%1"
 setx NO_PROMPT "%NO_PROMPT%" >nul
+
+cd server
+
+echo.
+call :showLine
+echo Checking docker setup..
+call :showLine
+
+echo. & echo Checking if machine already exists
+docker-machine ls | findstr %machine_name% >nul
+if %ERRORLEVEL% NEQ 0 (
+  echo. & echo Creating new machine %machine_name%
+  docker-machine create plugncode
+  call :showErrorMsg
+)
+
+echo. & echo Checking if machine is running
+docker-machine ls | findstr %machine_name% | findstr /I "running" >nul
+if %ERRORLEVEL% NEQ 0 (
+  echo. & echo Starting machine %machine_name%
+  docker-machine start plugncode
+  call :showErrorMsg
+)
+
+REM Setting up environment for machine
+@FOR /f "tokens=*" %%i IN ('docker-machine env %machine_name%') DO @%%i
+call :showErrorMsg
+
+echo.
+call :showLine
+echo Pulling docker images..
+call :showLine
+
+for %%I in (%images%) do (
+  echo | set /p="%%I"
+  docker images --filter=reference=openjdk:8 -q | find /c /v "" | find /V "0" >nul
+  if %ERRORLEVEL% NEQ 0 (
+    echo  -- PULLING
+    docker pull %%I
+    call :showErrorMsg
+  ) else ( echo  -- PULLED )
+)
+
+cd ..
+
+echo. & echo Docker setup done!
+if "%NO_PROMPT%" == "" (
+  echo. & echo Press enter to continue..
+  pause >nul
+)
+
+:docker_ran
 
 :: BatchGotAdmin
 :-------------------------------------
@@ -31,18 +103,6 @@ if %ERRORLEVEL% NEQ 0 (
   pushd "%CD%"
   CD /D "%~dp0"
 :--------------------------------------
-
-Set required_dependencies=node npm mvn java javac
-
-echo.
-call :showLine
-echo Checking if dependencies are satisfied..
-call :showLine
-
-for %%I in (%required_dependencies%) do (
-  echo | set /p="%%I"
-  call :isInstalled %%I
-)
 
 echo.
 call :showLine
@@ -80,8 +140,6 @@ echo Building semantic dist files..
 call :showLine
 call gulp build --gulpfile src/semantic/gulpfile.js --cwd src/semantic
 call :showErrorMsg
-
-cd ..
 
 if defined NO_PROMPT (
   setx NO_PROMPT "" >nul
