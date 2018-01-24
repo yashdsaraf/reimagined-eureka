@@ -34,7 +34,7 @@ echo. & echo Checking if machine already exists
 docker-machine ls | findstr %machine_name% >nul
 if %ERRORLEVEL% NEQ 0 (
   echo. & echo Creating new machine %machine_name%
-  docker-machine create plugncode
+  docker-machine create plugncode --driver="virtualbox"
   call :showErrorMsg
 )
 
@@ -56,13 +56,9 @@ echo Pulling docker images..
 call :showLine
 
 for %%I in (%images%) do (
-  echo | set /p="%%I"
-  docker images --filter=reference=openjdk:8 -q | find /c /v "" | find /V "0" >nul
-  if %ERRORLEVEL% NEQ 0 (
-    echo  -- PULLING
-    docker pull %%I
-    call :showErrorMsg
-  ) else ( echo  -- PULLED )
+  echo "%%I -- PULLING"
+  docker pull %%I
+  call :showErrorMsg
 )
 
 cd ..
