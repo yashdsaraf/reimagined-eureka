@@ -48,6 +48,10 @@ public class Docker implements Serializable {
   @Lob
   @Column(name = "SETTINGS")
   private String settings;
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "IMAGE_ID")
+  private Long imageId;
   @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
   private AppUser userId;
@@ -59,8 +63,9 @@ public class Docker implements Serializable {
     this.id = id;
   }
 
-  public Docker(Long id, String settings) {
+  public Docker(Long id, Long imageId, String settings) {
     this.id = id;
+    this.imageId = imageId;
     this.settings = settings;
   }
 
@@ -86,6 +91,14 @@ public class Docker implements Serializable {
 
   public void setUserId(AppUser userId) {
     this.userId = userId;
+  }
+
+  public Long getImageId() {
+    return imageId;
+  }
+
+  public void setImageId(Long imageId) {
+    this.imageId = imageId;
   }
 
   @Override

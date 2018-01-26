@@ -1,3 +1,4 @@
+INSERT INTO APP_USER VALUES ('0', TO_DATE('01-70-01', 'DD-RR-MM'), 'guest@plugncode.com', 'Guest', 'e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855', 'GUEST', 'guest');
 INSERT INTO APP_USER VALUES ('1', TO_DATE('01-70-01', 'DD-RR-MM'), 'yashdsaraf@gmail.com', 'Yash D. Saraf', '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358', 'ADMIN', 'yashdsaraf');
 INSERT INTO APP_USER VALUES ('2', TO_DATE('01-70-01', 'DD-RR-MM'), 'raeesmulla97@gmail.com', 'Raees R. Mulla', '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358', 'ADMIN', 'raeesmulla97');
 INSERT INTO APP_USER VALUES ('3', TO_DATE('01-70-01', 'DD-RR-MM'), 'shaggi199712@gmail.com', 'Sachin S. Negi', '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358', 'ADMIN', 'shaggi199712');
@@ -15,7 +16,7 @@ INSERT INTO APP_ADMIN VALUES ('12', '3');
 INSERT INTO DEVELOPER VALUES ('13', '', '8');
 INSERT INTO DEVELOPER VALUES ('14', '', '9');
 
-INSERT INTO PLUGIN VALUES ('15', TO_DATE('15-17-08', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', 'Java', 'file', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
+INSERT INTO PLUGIN VALUES ('15', TO_DATE('15-17-08', 'DD-RR-MM'), 'Provides standard java utils included in OpenJDK image v8', 'Java', '{"runCmd":["javac $file.java","errcode=$?","if [ $errcode -ne 0 ]; then exit $errcode; fi","java $file"],"dockerfile":"RlJPTSBvcGVuamRrOjgNCkNPUFkgLiAvdXNyL3NyYy9hcHANCldPUktESVIgL3Vzci9zcmMvYXBwDQpDTUQgc2ggc3RhcnQuc2gNCg=="}', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');
 INSERT INTO PLUGIN VALUES ('16', TO_DATE('21-17-09', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit.', 'Python', 'file', 'APP', TO_DATE('18-18-01', 'DD-RR-MM'), '12', '14');
 INSERT INTO PLUGIN VALUES ('17', TO_DATE('22-17-10', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'Ruby', 'file', 'APP', TO_DATE('24-18-01', 'DD-RR-MM'), '11', '13');
 INSERT INTO PLUGIN VALUES ('18', TO_DATE('04-17-11', 'DD-RR-MM'), 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 'PHP', 'file', 'APP', TO_DATE('15-18-01', 'DD-RR-MM'), '10', '13');

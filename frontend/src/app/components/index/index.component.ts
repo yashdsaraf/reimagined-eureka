@@ -27,7 +27,11 @@ import {
   trigger
 } from '@angular/animations'
 
+import 'codemirror/mode/clike/clike'
+
+import {CoreService} from '../../services/core.service'
 import {isMobile} from '../../app.component'
+import {Output} from '../../models/output'
 
 @Component({
   selector: 'app-index',
@@ -56,10 +60,14 @@ export class IndexComponent implements OnInit {
   @ViewChild('editor') editorView
   isNavOpen = true
   isMobile: boolean
-  editorConfig = {lineNumbers: true}
+  editorConfig = {lineNumbers: true, mode: 'text/x-java'}
   editor: any
+  output: Output = {
+    stderr: '',
+    stdout: ''
+  }
 
-  constructor() {
+  constructor(private coreService: CoreService) {
     this.isMobile = isMobile
   }
 
@@ -70,6 +78,21 @@ export class IndexComponent implements OnInit {
   ngAfterViewInit() {
     this.editor = this.editorView.instance
     this.editor.setSize(null, '57vh')
+  }
+
+  executeTool(tool: string) {
+    switch(tool) {
+      case 'run':
+        let code = {
+          'Main.java': this.editor.getValue()
+        }
+        this.coreService.runProject(code).subscribe(
+          (data: Output) => {
+            this.output = data
+          }
+        )
+        break
+    }
   }
 
 }

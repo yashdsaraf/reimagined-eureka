@@ -48,7 +48,7 @@ public class AdminService {
     if (name != null && !name.isEmpty()) {
       users = appUserRepository.findAllByName(name);
     } else {
-      users = appUserRepository.findAll();
+      users = appUserRepository.findAllByName("");
     }
     return users;
   }
@@ -72,6 +72,7 @@ public class AdminService {
       if (user.getRole() == Role.DEVELOPER) {
         Developer developer = developerRepository.findByUserId(user);
         developer.getPluginCollection().forEach(System.out::println);
+        //TODO: Solve error when deleting developer
       }
       appUserRepository.delete(user);
     }

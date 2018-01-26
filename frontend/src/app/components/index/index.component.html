@@ -1,7 +1,7 @@
 <div id="container">
   <app-file-ex *ngIf="isNavOpen" id="file-ex" [(isNavOpen)]="isNavOpen" [@sidebarAnimation]></app-file-ex>
   <div id="wrapper-1">
-    <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen"></app-toolbar>
+    <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen" (executedTool)="executeTool($event)"></app-toolbar>
 
     <div id="wrapper-2">
       <div id="editor">
@@ -9,7 +9,7 @@
         </codemirror>
       </div>
       <!-- editor -->
-      <app-output id="output"></app-output>
+      <app-output id="output" [(stderr)]="output.stderr" [(stdout)]="output.stdout"></app-output>
     </div>
     <!-- wrapper-2 -->
   </div>

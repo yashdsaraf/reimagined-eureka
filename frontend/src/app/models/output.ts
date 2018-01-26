@@ -14,21 +14,7 @@
  * limitations under the License.
  */
 
-import {
-  Component,
-  Input
-} from '@angular/core'
-
-@Component({
-  selector: 'app-output',
-  templateUrl: './output.component.html',
-  styleUrls: ['./output.component.sass']
-})
-export class OutputComponent {
-
-  @Input('stdout') stdout: string
-  @Input('stderr') stderr: string
-
-  constructor() {}
-
+export interface Output {
+  stdout: string,
+  stderr: string
 }

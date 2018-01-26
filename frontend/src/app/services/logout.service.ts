@@ -14,29 +14,37 @@
  * limitations under the License.
  */
 
+// import {
+//   Headers,
+//   Http
+// } from '@angular/http'
 import {
-  Headers,
-  Http
-} from '@angular/http'
-import {Injectable} from '@angular/core'
+  Injectable,
+  Injector
+} from '@angular/core'
+import {
+  HttpClient,
+  HttpHeaders
+} from '@angular/common/http'
 import {Router} from '@angular/router'
 
 import {AuthService} from '../services/auth.service'
+import {DisplayNameService} from './display-name.service'
 
 @Injectable()
 export class LogoutService {
 
   constructor(
     private authService: AuthService,
-    private http: Http,
+    private injector: Injector,
     private router: Router
   ) {}
 
   logout(message?: string, error?: string) {
-    let access_token = this.authService.getSavedTokens().access_token
-    let headers = new Headers({'Authorization': `Bearer ${access_token}`})
+    let http = this.injector.get(HttpClient)
+    let displayNameService = this.injector.get(DisplayNameService)
     let params = {message, error}
-    this.http.get('/api/destroy', {headers}).subscribe(
+    http.get('/api/destroy', {responseType: 'text'}).subscribe(
       data => {
         if (data.hasOwnProperty('message')) {
           params.message = data['message']
@@ -44,12 +52,10 @@ export class LogoutService {
         if (data.hasOwnProperty('error')) {
           params.error = data['error']
         }
-      },
-      err => {
-        // DO NOT HANDLE ERRORS FOR LOGOUT
       }
     )
     this.authService.deleteTokens()
+    displayNameService.deleteName()
     this.router.navigate(['/logout', params])
   }
 

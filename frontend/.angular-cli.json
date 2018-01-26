@@ -28,6 +28,7 @@
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/codemirror/lib/codemirror.js",
         "../src/semantic/dist/semantic.min.js"
       ],
       "stylePreprocessorOptions": {

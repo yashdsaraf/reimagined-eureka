@@ -23,7 +23,7 @@ public interface AppUserRepository extends CrudRepository<AppUser, Integer> {
 
   public AppUser findByUsername(String username);
 
-  @Query("SELECT U FROM AppUser U WHERE LOWER(U.name) LIKE LOWER(CONCAT(?1, '%'))")
+  @Query("SELECT U FROM AppUser U WHERE LOWER(U.name) LIKE LOWER(CONCAT(?1, '%')) AND U.username != 'guest'")
   public Iterable<AppUser> findAllByName(String name);
 
   public AppUser findByEmail(String email);

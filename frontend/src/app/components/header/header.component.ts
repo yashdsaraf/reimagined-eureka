@@ -22,6 +22,7 @@ import {
 import {AuthService} from '../../services/auth.service'
 import {isMobile} from '../../app.component'
 import {LogoutService} from '../../services/logout.service'
+import {DisplayNameService} from '../../services/display-name.service'
 
 @Component({
   selector: 'app-header',
@@ -35,7 +36,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private logoutService: LogoutService
+    private logoutService: LogoutService,
+    private displayNameService: DisplayNameService
   ) {
     this.isMobile = isMobile
   }
@@ -44,9 +46,20 @@ export class HeaderComponent implements OnInit {
     this.isHeaderOpen = !this.isMobile
   }
 
+  get name(): string {
+    let name = this.displayNameService.getName()
+    if (name == null || name == undefined) {
+      return ' '
+    }
+    name = name.toLowerCase()
+    name = name.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
+                  .join(' ')
+    return name.length <= 20 ? name : name.split(' ')[0]
+  }
+
   getIdenticonObject() {
     let obj = {
-      value: this.getUsername(),
+      value: this.name,
       size: 60
     }
     return JSON.stringify(obj)
@@ -54,14 +67,6 @@ export class HeaderComponent implements OnInit {
 
   getRole(): string {
     return this.authService.getRole()
-  }
-
-  getUsername(): string {
-    let username = this.authService.getUsername()
-    username = username.toLowerCase()
-    username = username.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
-      .join(' ')
-    return username.length <= 20 ? username : username.split(' ')[0]
   }
 
   logout() {

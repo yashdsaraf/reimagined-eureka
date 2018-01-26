@@ -16,9 +16,11 @@
 
 import {Component} from '@angular/core'
 import {Observable} from 'rxjs/Observable'
+import {Router} from '@angular/router'
 
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
+import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 
@@ -76,7 +78,9 @@ export class HomeComponent {
   constructor(
     private authService: AuthService,
     private contactsService: ContactsService,
-    private imagesService: ImagesService
+    private coreService: CoreService,
+    private imagesService: ImagesService,
+    private router: Router
   ) {
     this.isMobile = isMobile
     this.imagesService.getImage('home').subscribe(
@@ -112,6 +116,21 @@ export class HomeComponent {
   dataUri(env: string) {
     let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
     return uri
+  }
+
+  quickSetup(lang: string) {
+    if (this.isNotLoggedIn) {
+      this.router.navigate(['/login'])
+      return
+    }
+    this.coreService.quickSetup(lang, 'boom').subscribe(
+      data => {
+        this.router.navigate(['/index'])
+      },
+      err => {
+        console.log(err)
+      }
+    )
   }
 
 }
