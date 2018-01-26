@@ -63,7 +63,7 @@ import {ImagesService} from './services/images.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {StartupService} from './services/startup.service'
-import {UserNameService} from './services/user-name.service'
+import {DisplayNameService} from './services/display-name.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
@@ -129,7 +129,7 @@ export function init(startupService: StartupService) {
     ImagesService,
     LoginService,
     LogoutService,
-    UserNameService,
+    DisplayNameService,
     StartupService,
     AdminGuard,
     DeveloperGuard,

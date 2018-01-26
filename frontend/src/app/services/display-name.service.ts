@@ -18,13 +18,29 @@ import {Injectable} from '@angular/core'
 import {HttpClient} from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
 
+const KEY = 'name'
+
 @Injectable()
-export class UserNameService {
+export class DisplayNameService {
 
   constructor(private http: HttpClient) { }
 
-  public getUsername(): Observable<any> {
-    return this.http.get('/api/name', {responseType: 'text'})
+  public getName(): string {
+    return localStorage.getItem(KEY)
+  }
+
+  public updateName() {
+    this.http.get('/api/name', {responseType: 'text'})
+      .subscribe(
+        (name: string) => {
+          console.log(name)
+          this.setName(name)
+        }
+      )
+  }
+
+  private setName(name: string) {
+    localStorage.setItem(KEY, name)
   }
 
 }

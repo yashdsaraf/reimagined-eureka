@@ -18,13 +18,17 @@ import {
   Http,
   Headers
 } from '@angular/http'
-import {Injectable} from '@angular/core'
+import {
+  Injectable,
+  Injector
+} from '@angular/core'
 import {Observable} from 'rxjs/Observable'
 import 'rxjs/add/operator/map'
 
 import {JwtHelper} from 'angular2-jwt'
 
 import {CookieService} from './cookie.service'
+import {DisplayNameService} from './display-name.service'
 import {environment} from '../../environments/environment'
 
 @Injectable()
@@ -34,7 +38,8 @@ export class AuthService {
 
   constructor(
     private cookie: CookieService,
-    private http: Http
+    private http: Http,
+    private injector: Injector
   ) {}
 
   /**
@@ -77,6 +82,8 @@ export class AuthService {
     if (refresh_token !== null && refresh_token !== undefined) {
       this.saveToken('refresh_token', refresh_token)
     }
+    let displayNameService: DisplayNameService = this.injector.get(DisplayNameService)
+    displayNameService.updateName()
   }
 
   /**

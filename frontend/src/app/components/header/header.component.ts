@@ -22,7 +22,7 @@ import {
 import {AuthService} from '../../services/auth.service'
 import {isMobile} from '../../app.component'
 import {LogoutService} from '../../services/logout.service'
-import {UserNameService} from '../../services/user-name.service'
+import {DisplayNameService} from '../../services/display-name.service'
 
 @Component({
   selector: 'app-header',
@@ -33,29 +33,28 @@ export class HeaderComponent implements OnInit {
 
   isHeaderOpen: boolean
   isMobile: boolean
-  name: string
 
   constructor(
     private authService: AuthService,
     private logoutService: LogoutService,
-    private userNameService: UserNameService
+    private displayNameService: DisplayNameService
   ) {
     this.isMobile = isMobile
   }
 
-  ngAfterViewInit() {
-    this.userNameService.getUsername().subscribe(
-      (name: string) => {
-        name = name.toLowerCase()
-        name = name.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
-                     .join(' ')
-        this.name = name.length <= 20 ? name : name.split(' ')[0]
-      }
-    )
-  }
-
   ngOnInit(): void {
     this.isHeaderOpen = !this.isMobile
+  }
+
+  get name(): string {
+    let name = this.displayNameService.getName()
+    if (name == null || name == undefined) {
+      return ' '
+    }
+    name = name.toLowerCase()
+    name = name.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
+                  .join(' ')
+    return name.length <= 20 ? name : name.split(' ')[0]
   }
 
   getIdenticonObject() {
