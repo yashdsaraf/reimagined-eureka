@@ -15,7 +15,10 @@
  */
 
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
+import {
+  Http,
+  Headers
+} from '@angular/http'
 import {Observable} from 'rxjs/Observable'
 
 const KEY = 'name'
@@ -23,24 +26,28 @@ const KEY = 'name'
 @Injectable()
 export class DisplayNameService {
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: Http) { }
 
   public getName(): string {
     return localStorage.getItem(KEY)
   }
 
-  public updateName() {
-    this.http.get('/api/name', {responseType: 'text'})
+  public updateName(access_token: string) {
+    let headers = new Headers({'Authorization': `Bearer ${access_token}`})
+    this.http.get('/api/name', {headers})
       .subscribe(
-        (name: string) => {
-          console.log(name)
-          this.setName(name)
+        data => {
+          this.setName(data.text())
         }
       )
   }
 
   private setName(name: string) {
     localStorage.setItem(KEY, name)
+  }
+
+  public deleteName() {
+    localStorage.removeItem(KEY)
   }
 
 }

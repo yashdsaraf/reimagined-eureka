@@ -21,6 +21,7 @@ import {
 import {Router} from '@angular/router'
 
 import {AuthService} from './auth.service'
+import {DisplayNameService} from './display-name.service'
 
 @Injectable()
 export class StartupService {
@@ -32,7 +33,11 @@ export class StartupService {
 
   init() {
     let router: Router = this.injector.get(Router)
+    let displayNameService = this.injector.get(DisplayNameService)
     let tokens = this.authService.getSavedTokens()
+    if (tokens.access_token != null && tokens.access_token != undefined) {
+      displayNameService.updateName(tokens.access_token)
+    }
     if (!this.authService.isTokenExpired(tokens.access_token)) {
       return
     }

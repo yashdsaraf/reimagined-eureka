@@ -76,14 +76,14 @@ export class AuthService {
 
   public updateTokens(access_token: string, refresh_token?: string) {
     this.deleteTokens()
+    let displayNameService = this.injector.get(DisplayNameService)
     if (access_token !== null && access_token !== undefined) {
       this.saveToken('access_token', access_token)
+      displayNameService.updateName(access_token)
     }
     if (refresh_token !== null && refresh_token !== undefined) {
       this.saveToken('refresh_token', refresh_token)
     }
-    let displayNameService: DisplayNameService = this.injector.get(DisplayNameService)
-    displayNameService.updateName()
   }
 
   /**
@@ -134,6 +134,13 @@ export class AuthService {
       return null
     }
     return this.getUserDetails().authorities[0]
+  }
+
+  public getUsername(): string {
+    if (this.getUserDetails() == null) {
+      return null
+    }
+    return this.getUserDetails().user_name
   }
 
 }
