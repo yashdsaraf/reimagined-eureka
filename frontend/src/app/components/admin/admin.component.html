@@ -1,5 +1,5 @@
 <sui-sidebar-container id="container" class="ui bottom attached segment">
-  <sui-sidebar class="inverted vertical" [isVisible]="false" #sidebar>
+  <sui-sidebar class="inverted vertical" [isVisible]="true" #sidebar>
     <a class="item" (click)="isOpen = 'dash'" [ngClass]="{highlighted: isOpen == 'dash', normal: isOpen != 'dash'}">Dashboard</a>
     <a class="item" (click)="isOpen = 'plugins'" [ngClass]="{highlighted: isOpen == 'plugins', normal: isOpen != 'plugins'}">Plugins</a>
     <a class="item" (click)="isOpen = 'users'" [ngClass]="{highlighted: isOpen == 'users', normal: isOpen != 'users'}">Users</a>

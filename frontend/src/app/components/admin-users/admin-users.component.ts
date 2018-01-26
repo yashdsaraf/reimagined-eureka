@@ -58,14 +58,16 @@ export class AdminUsersComponent {
   deleteUser(username: string) {
     this.adminService.deleteUser(username).
       subscribe(
-        data => this.userDeleted = true,
+        data => {
+          this.userDeleted = true
+          this.getUsers(this.search)
+        },
         err => {
           this.userDeleted = false
           this.userDeleteError = err.error
           console.log(err)
         }
       )
-    this.getUsers(this.search)
     this.deleteUsername = ''
   }
 

@@ -59,9 +59,9 @@
             </td>
             <td>
               <div class="ui fluid buttons">
-                <button class="ui positive disabled button" [ngClass]="{disabled:(plugin.status == 'APP') || (plugin.status == 'CAN'), active:plugin.status == 'PEN'}">Approve</button>
+                <button class="ui positive button" [ngClass]="{disabled: ['APP', 'CAN'].includes(plugin.status)}">Approve</button>
                 <div class="or"></div>
-                <button class="ui negative button" [ngClass]="{disabled:plugin.status == 'CAN'}">Delete</button>
+                <button class="ui negative button" [ngClass]="{disabled: plugin.status == 'CAN'}">Delete</button>
               </div>
             </td>
           </tr>

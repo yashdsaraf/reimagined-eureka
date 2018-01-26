@@ -31,7 +31,7 @@
               <ng-container *ngIf="isMobile"><strong>Created on:</strong></ng-container> {{user.createdOn | date}}
             </td>
             <td class="left aligned single line">
-              <ng-container *ngIf="isMobile"><strong>Email:</strong></ng-container> <a href="mailto:</strong>{{user.email}}">{{user.email}}</a>
+              <ng-container *ngIf="isMobile"><strong>Email:</strong></ng-container> <a href="mailto:{{user.email}}">{{user.email}}</a>
             </td>
             <td class="left aligned single line">
               <ng-container *ngIf="isMobile"><strong>Username:</strong></ng-container> {{user.username}}
@@ -40,7 +40,7 @@
               <ng-container *ngIf="isMobile"><strong>Role:</strong></ng-container> {{user.role}}
             </td>
             <td>
-              <button class="ui fluid negative button" (click)="deleteUsername = user.username" [ngClass]="{disabled:user.role == 'ADMIN'}">
+              <button class="ui fluid negative button" (click)="deleteUsername = user.username" [ngClass]="{disabled: user.role == 'ADMIN'}">
                 <i class="trash icon"></i> Delete
               </button>
             </td>
