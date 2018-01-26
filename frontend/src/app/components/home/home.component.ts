@@ -119,7 +119,7 @@ export class HomeComponent {
   }
 
   quickSetup(lang: string) {
-    if (this.isNotLoggedIn) {
+    if (this.isNotLoggedIn()) {
       this.router.navigate(['/login'])
       return
     }
