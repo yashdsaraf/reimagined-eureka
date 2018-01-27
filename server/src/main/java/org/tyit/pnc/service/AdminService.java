@@ -71,8 +71,8 @@ public class AdminService {
       }
       if (user.getRole() == Role.DEVELOPER) {
         Developer developer = developerRepository.findByUserId(user);
-        developer.getPluginCollection().forEach(System.out::println);
-        //TODO: Solve error when deleting developer
+        developer.getPluginCollection().forEach(pluginRepository::delete);
+        developerRepository.delete(developer);
       }
       appUserRepository.delete(user);
     }
