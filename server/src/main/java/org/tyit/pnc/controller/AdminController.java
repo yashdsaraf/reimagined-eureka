@@ -20,6 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,9 +51,19 @@ public class AdminController {
     return ResponseEntity.ok(adminService.getPlugins(name));
   }
 
+  @PutMapping("/plugin/{name}")
+  public ResponseEntity<String> approvePlugin(@PathVariable("name") String name) {
+    return adminService.approvePlugin(name);
+  }
+
   @DeleteMapping("/user")
   public ResponseEntity<String> deleteUser(@RequestParam("username") String username) {
     return adminService.deleteUser(username);
+  }
+
+  @DeleteMapping("/plugin/{name}")
+  public ResponseEntity<String> deletePlugin(@PathVariable("name") String name) {
+    return adminService.deletePlugin(name);
   }
 
 }

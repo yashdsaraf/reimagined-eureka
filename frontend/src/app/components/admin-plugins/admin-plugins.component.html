@@ -37,31 +37,43 @@
               <h2 class="ui center aligned header">{{plugin.name}}</h2>
             </td>
             <td class="single line">
-              <ng-container *ngIf="isMobile"><strong>Created on:</strong></ng-container> {{plugin.createdOn | date}}
+              <ng-container *ngIf="isMobile">
+                <strong>Created on:</strong>
+              </ng-container> {{plugin.createdOn | date}}
             </td>
             <td class="single line">
-              <ng-container *ngIf="isMobile"><strong>Updated on:</strong></ng-container> {{plugin.updatedOn | date}}
+              <ng-container *ngIf="isMobile">
+                <strong>Updated on:</strong>
+              </ng-container> {{plugin.updatedOn | date}}
             </td>
             <td class="plugin-description left aligned">
-              <ng-container *ngIf="isMobile"><strong>Description:</strong></ng-container> {{plugin.description}}
+              <ng-container *ngIf="isMobile">
+                <strong>Description:</strong>
+              </ng-container> {{plugin.description}}
             </td>
             <td class="left aligned single line">
               Dockerfile
             </td>
             <td class="left aligned single line">
-              <ng-container *ngIf="isMobile"><strong>Status:</strong></ng-container> {{plugin.status}}
+              <ng-container *ngIf="isMobile">
+                <strong>Status:</strong>
+              </ng-container> {{plugin.status}}
             </td>
             <td class="left aligned single line">
-              <ng-container *ngIf="isMobile"><strong>Developed by:</strong></ng-container> {{plugin.developerId.userId.name}}
+              <ng-container *ngIf="isMobile">
+                <strong>Developed by:</strong>
+              </ng-container> {{plugin.developerId.userId.name}}
             </td>
             <td class="left aligned single line">
-              <ng-container *ngIf="isMobile"><strong>Approved by:</strong></ng-container> {{plugin.adminid.userId.name}}
+              <ng-container *ngIf="isMobile">
+                <strong>Approved by:</strong>
+              </ng-container> {{plugin.adminid.userId.name}}
             </td>
             <td>
               <div class="ui fluid buttons">
-                <button class="ui positive button" [ngClass]="{disabled: ['APP', 'CAN'].includes(plugin.status)}">Approve</button>
+                <button class="ui positive button" [ngClass]="{disabled: plugin.status == 'APP'}" (click)="approvePluginName = plugin.name">Approve</button>
                 <div class="or"></div>
-                <button class="ui negative button" [ngClass]="{disabled: plugin.status == 'CAN'}">Delete</button>
+                <button class="ui negative button" (click)="deletePluginName = plugin.name">Delete</button>
               </div>
             </td>
           </tr>
@@ -73,3 +85,21 @@
     </div>
   </div>
 </div>
+
+<sui-modal *ngIf="deletePluginName !== ''" (approved)="deletePlugin(deletePluginName)" (denied)="deletePluginName = ''" [isBasic]="true"
+  [isClosable]="false" #deleteModal>
+  <div class="header">Are you sure you would like to delete this plugin?</div>
+  <div class="actions">
+    <button class="ui grey button" (click)="deleteModal.deny()">Cancel</button>
+    <button class="ui red button" (click)="deleteModal.approve()" autofocus>Delete</button>
+  </div>
+</sui-modal>
+
+<sui-modal *ngIf="approvePluginName !== ''" (approved)="approvePlugin(approvePluginName)" (denied)="approvePluginName = ''" [isBasic]="true"
+  [isClosable]="false" #approveModal>
+  <div class="header">Are you sure you would like to approve this plugin?</div>
+  <div class="actions">
+    <button class="ui grey button" (click)="approveModal.deny()">Cancel</button>
+    <button class="ui primary button" (click)="approveModal.approve()" autofocus>Approve</button>
+  </div>
+</sui-modal>

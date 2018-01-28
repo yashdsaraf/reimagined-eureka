@@ -23,6 +23,7 @@ import {
 
 import {isMobile} from '../../app.component'
 import {AdminService} from '../../services/admin.service'
+import {FlashMessagesService} from 'angular2-flash-messages'
 import {Plugin} from '../../models/plugin'
 
 @Component({
@@ -36,8 +37,13 @@ export class AdminPluginsComponent {
   _search: string
   isMobile: boolean
   plugins: Plugin[]
+  deletePluginName = ''
+  approvePluginName = ''
 
-  constructor(private adminService: AdminService) {
+  constructor(
+    private adminService: AdminService,
+    private flashMessagesService: FlashMessagesService
+  ) {
     this.isMobile = isMobile
   }
 
@@ -50,6 +56,44 @@ export class AdminPluginsComponent {
       subscribe(
         data => this.plugins = data
       )
+  }
+
+  approvePlugin(name: string) {
+    this.adminService.approvePlugin(name).
+      subscribe(
+        data => {
+          this.getPlugins(this._search)
+          this.flashMessagesService.show('Plugin approved!', {
+            cssClass: 'ui success message', timeout: 4000
+          })
+        },
+        err => {
+          this.flashMessagesService.show(err.error, {
+            cssClass: 'ui error message', timeout: 4000
+          })
+          console.log(err)
+        }
+      )
+    this.approvePluginName = ''
+  }
+
+  deletePlugin(name: string) {
+    this.adminService.deletePlugin(name).
+      subscribe(
+        data => {
+          this.getPlugins(this._search)
+          this.flashMessagesService.show('Plugin deleted!', {
+            cssClass: 'ui success message', timeout: 4000
+          })
+        },
+        err => {
+          this.flashMessagesService.show(err.error, {
+            cssClass: 'ui error message', timeout: 4000
+          })
+          console.log(err)
+        }
+      )
+    this.deletePluginName = ''
   }
 
   @Input('search')

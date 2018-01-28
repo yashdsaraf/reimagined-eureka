@@ -54,4 +54,12 @@ export class AdminService {
     return this.http.get<Plugin[]>('/api/admin/plugins', {params})
   }
 
+  deletePlugin(name: string): Observable<any> {
+    return this.http.delete(`/api/admin/plugin/${name}`, {responseType: 'text'})
+  }
+
+  approvePlugin(name: string): Observable<any> {
+    return this.http.put(`/api/admin/plugin/${name}`, '', {responseType: 'text'})
+  }
+
 }

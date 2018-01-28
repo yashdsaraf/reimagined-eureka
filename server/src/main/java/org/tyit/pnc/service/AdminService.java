@@ -79,4 +79,21 @@ public class AdminService {
     return ResponseEntity.ok().build();
   }
 
+  public ResponseEntity<String> deletePlugin(String name) {
+    Plugin plugin = pluginRepository.findByName(name);
+    if (plugin != null) {
+      pluginRepository.delete(plugin);
+    }
+    return ResponseEntity.ok().build();
+  }
+
+  public ResponseEntity<String> approvePlugin(String name) {
+    Plugin plugin = pluginRepository.findByName(name);
+    if (plugin != null && plugin.getStatus() == Plugin.Status.PEN) {
+      plugin.setStatus(Plugin.Status.APP);
+      pluginRepository.save(plugin);
+    }
+    return ResponseEntity.ok().build();
+  }
+
 }
