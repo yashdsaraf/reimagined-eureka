@@ -102,12 +102,6 @@ export class HomeComponent {
       subscribe((data: Object) => this.contacts = data)
   }
 
-  ngAfterViewInit() {
-    // this.suiModalService.open(
-    //   new ProgressBarModal()
-    // )
-  }
-
   createImageFromBlob(image: Blob) {
     let reader = new FileReader()
     reader.addEventListener("load", () => {

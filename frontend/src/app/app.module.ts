@@ -60,11 +60,12 @@ import {AuthService} from './services/auth.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
+import {DisplayNameService} from './services/display-name.service'
 import {ImagesService} from './services/images.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
+import {ProgressBarService} from './services/progress-bar.service'
 import {StartupService} from './services/startup.service'
-import {DisplayNameService} from './services/display-name.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
@@ -128,10 +129,11 @@ export function init(startupService: StartupService) {
     ContactsService,
     CookieService,
     CoreService,
+    DisplayNameService,
     ImagesService,
     LoginService,
     LogoutService,
-    DisplayNameService,
+    ProgressBarService,
     StartupService,
     AdminGuard,
     DeveloperGuard,
