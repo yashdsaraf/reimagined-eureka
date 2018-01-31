@@ -39,12 +39,17 @@ export class AdminDashComponent {
   }
 
   ngAfterViewInit() {
+    let loadCharts = () => {
+      google.charts.load("current", {packages:["corechart"]})
+      google.charts.load('current', {'packages':['line']})
+      google.charts.setOnLoadCallback(this.usersChart)
+      google.charts.setOnLoadCallback(this.pieChart)
+      google.charts.setOnLoadCallback(this.pluginsChart)
+    }
     setTimeout(() => this.heading.emit('Dashboard'))
-    google.charts.load("current", {packages:["corechart"]})
-    google.charts.load('current', {'packages':['line']})
-    google.charts.setOnLoadCallback(this.usersChart)
-    google.charts.setOnLoadCallback(this.pieChart)
-    google.charts.setOnLoadCallback(this.pluginsChart)
+    if (google != null && google != undefined) {
+      loadCharts()
+    }
   }
 
   pieChart() {
@@ -87,7 +92,7 @@ export class AdminDashComponent {
       [new Date(2014, 9), 40.9],
       [new Date(2014, 10), 61.0],
       [new Date(2014, 11), 75.5]
-    ]);
+    ])
 
 
     var options = {
@@ -108,18 +113,18 @@ export class AdminDashComponent {
           0: {side: 'bottom'}
         }
       }
-    };
+    }
 
-    var chart = new google.charts.Line(document.getElementById('line_top_x'));
+    var chart = new google.charts.Line(document.getElementById('line_top_x'))
 
-    chart.draw(data, google.charts.Line.convertOptions(options));
+    chart.draw(data, google.charts.Line.convertOptions(options))
   }
 
 
   pluginsChart() {
-    var data = new google.visualization.DataTable();
-    data.addColumn('date', 'Months');
-    data.addColumn('number', 'Plugins');
+    var data = new google.visualization.DataTable()
+    data.addColumn('date', 'Months')
+    data.addColumn('number', 'Plugins')
 
     data.addRows([
       [new Date(2014, 0), 6.3],
@@ -134,7 +139,7 @@ export class AdminDashComponent {
       [new Date(2014, 9), 40.9],
       [new Date(2014, 10), 61.0],
       [new Date(2014, 11), 75.5]
-    ]);
+    ])
 
 
     var options = {
@@ -155,11 +160,11 @@ export class AdminDashComponent {
           0: {side: 'bottom'}
         }
       }
-    };
+    }
 
-    var chart = new google.charts.Line(document.getElementById('line_down_x'));
+    var chart = new google.charts.Line(document.getElementById('line_down_x'))
 
-    chart.draw(data, google.charts.Line.convertOptions(options));
+    chart.draw(data, google.charts.Line.convertOptions(options))
   }
 
 }

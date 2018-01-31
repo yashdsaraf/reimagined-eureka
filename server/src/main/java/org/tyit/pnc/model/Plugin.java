@@ -93,7 +93,7 @@ public class Plugin implements Serializable {
   private Developer developerId;
 
   public enum Status {
-    PEN, APP, CAN
+    PEN, APP
   }
 
   public Plugin() {
