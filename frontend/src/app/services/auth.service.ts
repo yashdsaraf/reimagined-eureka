@@ -116,6 +116,8 @@ export class AuthService {
     for (let token of ['access', 'refresh']) {
       this.cookie.delete(token + '_token')
     }
+    let displayNameService = this.injector.get(DisplayNameService)
+    displayNameService.deleteName()
   }
 
   /**
