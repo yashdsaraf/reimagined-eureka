@@ -26,6 +26,7 @@ public class PluginFile {
 
   private String[] runCmd;
   private String dockerfile;
+  private String mode;
 
   public String[] getRunCmd() {
     return runCmd;
@@ -41,6 +42,14 @@ public class PluginFile {
 
   public void setDockerFile(String dockerfile) {
     this.dockerfile = Base64.getEncoder().encodeToString(dockerfile.getBytes(StandardCharsets.UTF_8));
+  }
+
+  public String getMode() {
+    return mode;
+  }
+
+  public void setMode(String mode) {
+    this.mode = mode;
   }
 
 }

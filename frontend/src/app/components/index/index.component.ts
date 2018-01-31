@@ -29,6 +29,9 @@ import {
 import {ActivatedRoute} from '@angular/router'
 
 import 'codemirror/mode/clike/clike'
+import 'codemirror/mode/python/python'
+import 'codemirror/mode/php/php'
+import 'codemirror/mode/ruby/ruby'
 import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {CoreService} from '../../services/core.service'
@@ -63,7 +66,7 @@ export class IndexComponent implements OnInit {
   @ViewChild('editor') editorView
   isNavOpen = true
   isMobile: boolean
-  editorConfig = {lineNumbers: true, mode: 'text/x-java'}
+  editorConfig = {lineNumbers: true, mode: ''}
   editor: any
   output: Output = {
     stderr: '',
@@ -79,6 +82,7 @@ export class IndexComponent implements OnInit {
   ) {
     this.isMobile = isMobile
     this.openFile = route.snapshot.params.openfile
+    this.editorConfig.mode = route.snapshot.params.mode
   }
 
   ngOnInit(): void {

@@ -86,7 +86,8 @@ public class DockerUtils {
    */
   public void writeStarterScript(Path tmpDir, PluginFile pluginFile, ProjectSettings settings) throws IOException {
     StringJoiner stringJoiner = new StringJoiner("\n");
-    stringJoiner.add("file=\"" + FilenameUtils.getBaseName(settings.getEntrypoint()) + "\"");
+    stringJoiner.add("filename=\"" + settings.getEntrypoint() + "\"");
+    stringJoiner.add("basename=\"" + FilenameUtils.getBaseName(settings.getEntrypoint()) + "\"");
     String[] lines;
     if (settings.getRunCmd().length > 0) {
       lines = settings.getRunCmd();

@@ -135,7 +135,7 @@ export class HomeComponent {
     this.coreService.quickSetup(this.quickSetupLang, this.projectName, this.fileName)
     .subscribe(
       data => {
-        this.router.navigate(['/index', {openfile: this.fileName}])
+        this.router.navigate(['/index', {openfile: this.fileName, mode: data.mode}])
         this.progressBarService.dismiss()
       },
       err => {

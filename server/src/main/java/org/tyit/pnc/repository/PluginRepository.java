@@ -24,6 +24,7 @@ public interface PluginRepository extends CrudRepository<Plugin, Integer> {
   @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) LIKE LOWER(CONCAT(?1, '%'))")
   public Iterable<Plugin> findAllByName(String name);
 
+  @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) = LOWER(?1)")
   public Plugin findByName(String name);
 
 }

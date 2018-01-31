@@ -61,7 +61,6 @@ public class CoreService {
   }
 
   public void build(String lang, String projectName, String entrypoint, HttpSession session, String userName) throws Exception {
-    lang = lang.toUpperCase().charAt(0) + lang.toLowerCase().substring(1);
     Plugin plugin = pluginRepository.findByName(lang);
     if (plugin == null) {
       throw new Exception("No such plugin found");

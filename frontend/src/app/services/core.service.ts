@@ -38,7 +38,7 @@ export class CoreService {
 
   public quickSetup(lang: string, projectName: string, entrypoint: string): Observable<any> {
     let params = new HttpParams().append('project', projectName).append('entrypoint', entrypoint)
-    return this.http.get(`/api/setup/${lang}`, {params, responseType: 'text'})
+    return this.http.get(`/api/setup/${lang}`, {params})
   }
 
 }
