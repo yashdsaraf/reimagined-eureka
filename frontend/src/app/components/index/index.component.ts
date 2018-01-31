@@ -28,12 +28,12 @@ import {
 } from '@angular/animations'
 
 import 'codemirror/mode/clike/clike'
+import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {CoreService} from '../../services/core.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
-import { FlashMessagesService } from 'angular2-flash-messages/module/flash-messages.service';
 
 @Component({
   selector: 'app-index',
@@ -87,21 +87,23 @@ export class IndexComponent implements OnInit {
   }
 
   executeTool(tool: string) {
-    this.progressBarService.show(null, "Executing the project")
     switch(tool) {
       case 'run':
+        this.output = {stderr:'', stdout:''}
+        this.progressBarService.show(null, "Executing the project")
         let code = {
           'Main.java': this.editor.getValue()
         }
         this.coreService.runProject(code).subscribe(
           (data: Output) => {
             this.output = data
-          },
-          err => this.flashMessagesService.show(err.error, {
-            cssClass: 'ui error message', timeout: 4000
-          }),
-          () => {
             this.progressBarService.dismiss()
+          },
+          err => {
+            this.progressBarService.dismiss()
+            this.flashMessagesService.show(err, {
+              cssClass: 'ui error message', timeout: 4000
+            })
           }
         )
         break

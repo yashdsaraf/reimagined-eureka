@@ -18,6 +18,8 @@ import {Component} from '@angular/core'
 import {Router} from '@angular/router'
 import {Observable} from 'rxjs/Observable'
 
+import {FlashMessagesService} from 'angular2-flash-messages'
+
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {CoreService} from '../../services/core.service'
@@ -80,6 +82,7 @@ export class HomeComponent {
     private authService: AuthService,
     private contactsService: ContactsService,
     private coreService: CoreService,
+    private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
     private progressBarService: ProgressBarService,
     private router: Router
@@ -130,12 +133,19 @@ export class HomeComponent {
     .subscribe(
       data => {
         this.router.navigate(['/index'])
+        this.progressBarService.dismiss()
       },
       err => {
-        console.log(err)
-      },
-      () => {
         this.progressBarService.dismiss()
+        let message: string
+        if (err.error == undefined  || err.error == null) {
+          message = 'An internal occurred'
+        } else {
+          message = err.error
+        }
+        this.flashMessagesService.show(message, {
+          cssClass: 'ui error message', timeout: 4000
+        })
       }
     )
   }
