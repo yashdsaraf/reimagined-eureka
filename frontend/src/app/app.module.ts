@@ -51,6 +51,7 @@ import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
 import {OutputComponent} from './components/output/output.component'
 import {ProfileComponent} from './components/profile/profile.component'
+import {ProgressBarModalComponent} from './components/progress-bar-modal/progress-bar-modal.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
@@ -59,11 +60,12 @@ import {AuthService} from './services/auth.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
+import {DisplayNameService} from './services/display-name.service'
 import {ImagesService} from './services/images.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
+import {ProgressBarService} from './services/progress-bar.service'
 import {StartupService} from './services/startup.service'
-import {DisplayNameService} from './services/display-name.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
@@ -105,7 +107,8 @@ export function init(startupService: StartupService) {
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    ProgressBarModalComponent
   ],
   imports: [
     AppRoutingModule,
@@ -126,22 +129,18 @@ export function init(startupService: StartupService) {
     ContactsService,
     CookieService,
     CoreService,
+    DisplayNameService,
     ImagesService,
     LoginService,
     LogoutService,
-    DisplayNameService,
+    ProgressBarService,
     StartupService,
     AdminGuard,
     DeveloperGuard,
     GuestGuard,
     UserGuard
   ],
-  entryComponents: [
-    AdminDashComponent,
-    AdminPluginsComponent,
-    AdminUiElemsComponent,
-    AdminUsersComponent
-  ],
+  entryComponents: [ProgressBarModalComponent],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

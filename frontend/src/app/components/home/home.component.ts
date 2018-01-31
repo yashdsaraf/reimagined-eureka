@@ -15,14 +15,17 @@
  */
 
 import {Component} from '@angular/core'
-import {Observable} from 'rxjs/Observable'
 import {Router} from '@angular/router'
+import {Observable} from 'rxjs/Observable'
+
+import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
+import {ProgressBarService} from '../../services/progress-bar.service';
 
 @Component({
   selector: 'app-home',
@@ -79,7 +82,9 @@ export class HomeComponent {
     private authService: AuthService,
     private contactsService: ContactsService,
     private coreService: CoreService,
+    private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
+    private progressBarService: ProgressBarService,
     private router: Router
   ) {
     this.isMobile = isMobile
@@ -123,12 +128,24 @@ export class HomeComponent {
       this.router.navigate(['/login'])
       return
     }
-    this.coreService.quickSetup(lang, 'boom').subscribe(
+    this.progressBarService.show(null, "Creating project")
+    this.coreService.quickSetup(lang, 'boom')
+    .subscribe(
       data => {
         this.router.navigate(['/index'])
+        this.progressBarService.dismiss()
       },
       err => {
-        console.log(err)
+        this.progressBarService.dismiss()
+        let message: string
+        if (err.error == undefined  || err.error == null) {
+          message = 'An internal occurred'
+        } else {
+          message = err.error
+        }
+        this.flashMessagesService.show(message, {
+          cssClass: 'ui error message', timeout: 4000
+        })
       }
     )
   }

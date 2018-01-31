@@ -29,7 +29,6 @@ import {
 import {Router} from '@angular/router'
 
 import {AuthService} from '../services/auth.service'
-import {DisplayNameService} from './display-name.service'
 
 @Injectable()
 export class LogoutService {
@@ -42,7 +41,6 @@ export class LogoutService {
 
   logout(message?: string, error?: string) {
     let http = this.injector.get(HttpClient)
-    let displayNameService = this.injector.get(DisplayNameService)
     let params = {message, error}
     http.get('/api/destroy', {responseType: 'text'}).subscribe(
       data => {
@@ -55,7 +53,6 @@ export class LogoutService {
       }
     )
     this.authService.deleteTokens()
-    displayNameService.deleteName()
     this.router.navigate(['/logout', params])
   }
 
