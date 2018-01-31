@@ -15,17 +15,15 @@
  */
 
 import {Component} from '@angular/core'
-import {Observable} from 'rxjs/Observable'
 import {Router} from '@angular/router'
-
-import {SuiModalService} from 'ng2-semantic-ui'
+import {Observable} from 'rxjs/Observable'
 
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
-import {ProgressBarModal} from '../progress-bar-modal/progress-bar-modal.component'
+import {ProgressBarService} from '../../services/progress-bar.service';
 
 @Component({
   selector: 'app-home',
@@ -83,8 +81,8 @@ export class HomeComponent {
     private contactsService: ContactsService,
     private coreService: CoreService,
     private imagesService: ImagesService,
-    private router: Router,
-    private suiModalService: SuiModalService
+    private progressBarService: ProgressBarService,
+    private router: Router
   ) {
     this.isMobile = isMobile
     this.imagesService.getImage('home').subscribe(
@@ -127,12 +125,17 @@ export class HomeComponent {
       this.router.navigate(['/login'])
       return
     }
-    this.coreService.quickSetup(lang, 'boom').subscribe(
+    this.progressBarService.show(null, "Creating project")
+    this.coreService.quickSetup(lang, 'boom')
+    .subscribe(
       data => {
         this.router.navigate(['/index'])
       },
       err => {
         console.log(err)
+      },
+      () => {
+        this.progressBarService.dismiss()
       }
     )
   }

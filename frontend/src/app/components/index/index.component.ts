@@ -30,8 +30,10 @@ import {
 import 'codemirror/mode/clike/clike'
 
 import {CoreService} from '../../services/core.service'
+import {ProgressBarService} from '../../services/progress-bar.service'
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
+import { FlashMessagesService } from 'angular2-flash-messages/module/flash-messages.service';
 
 @Component({
   selector: 'app-index',
@@ -67,7 +69,11 @@ export class IndexComponent implements OnInit {
     stdout: ''
   }
 
-  constructor(private coreService: CoreService) {
+  constructor(
+    private coreService: CoreService,
+    private flashMessagesService: FlashMessagesService,
+    private progressBarService: ProgressBarService
+  ) {
     this.isMobile = isMobile
   }
 
@@ -81,6 +87,7 @@ export class IndexComponent implements OnInit {
   }
 
   executeTool(tool: string) {
+    this.progressBarService.show(null, "Executing the project")
     switch(tool) {
       case 'run':
         let code = {
@@ -89,6 +96,12 @@ export class IndexComponent implements OnInit {
         this.coreService.runProject(code).subscribe(
           (data: Output) => {
             this.output = data
+          },
+          err => this.flashMessagesService.show(err.error, {
+            cssClass: 'ui error message', timeout: 4000
+          }),
+          () => {
+            this.progressBarService.dismiss()
           }
         )
         break

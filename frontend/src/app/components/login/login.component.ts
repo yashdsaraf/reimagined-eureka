@@ -24,6 +24,7 @@ import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {isMobile} from '../../app.component'
 import {LoginService} from '../../services/login.service'
+import {ProgressBarService} from '../../services/progress-bar.service'
 
 @Component({
   selector: 'app-login',
@@ -51,7 +52,8 @@ export class LoginComponent {
 
   constructor(
     private flashMessagesService: FlashMessagesService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private progressBarService: ProgressBarService
   ) {
     this.isMobile = isMobile
   }
@@ -64,12 +66,15 @@ export class LoginComponent {
   }
 
   onForgotPasswordEmail() {
+    this.progressBarService.show(null, 'Verifying email')
     this.loginService.forgotPasswordEmail(this.forgotPasswordEmail)
       .then(() => {
         this.otpPrompt = true
+        this.progressBarService.dismiss()
       })
       .catch(err => {
         this.error = err
+        this.progressBarService.dismiss()
       })
   }
 
@@ -125,5 +130,5 @@ export class LoginComponent {
     }
     return message
   }
-  
+
 }
