@@ -77,6 +77,9 @@ export class HomeComponent {
     email: '',
     phone: ''
   }
+  quickSetupLang = ''
+  projectName = ''
+  fileName = ''
 
   constructor(
     private authService: AuthService,
@@ -123,16 +126,16 @@ export class HomeComponent {
     return uri
   }
 
-  quickSetup(lang: string) {
+  quickSetup() {
     if (this.isNotLoggedIn()) {
       this.router.navigate(['/login'])
       return
     }
     this.progressBarService.show(null, "Creating project")
-    this.coreService.quickSetup(lang, 'boom')
+    this.coreService.quickSetup(this.quickSetupLang, this.projectName, this.fileName)
     .subscribe(
       data => {
-        this.router.navigate(['/index'])
+        this.router.navigate(['/index', {openfile: this.fileName}])
         this.progressBarService.dismiss()
       },
       err => {
@@ -148,6 +151,11 @@ export class HomeComponent {
         })
       }
     )
+    this.quickSetupLang = ''
+  }
+
+  isProjectDetailsEmpty() {
+    return this.projectName == '' || this.projectName == null || this.fileName == '' || this.fileName == null
   }
 
 }

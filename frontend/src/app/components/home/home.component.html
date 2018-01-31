@@ -44,7 +44,7 @@
           <sui-dimmer transitionDuration=500 [isClickable]="false" #dimmer>
             <div class="content">
               <div class="center">
-                <div class="ui inverted button" (click)="quickSetup(env)">Let's code</div>
+                <div class="ui inverted button" (click)="quickSetupLang = env">Let's code</div>
               </div>
             </div>
           </sui-dimmer>
@@ -102,3 +102,24 @@
   <!-- footer -->
 </div>
 <!-- container -->
+
+<sui-modal *ngIf="quickSetupLang != ''" [isClosable]="true" [isBasic]="true" (approved)="quickSetup()" (denied)="quickSetupLang = ''" #projectDetailsModal>
+  <div class="ui header">Enter project details</div>
+  <div class="content">
+    <div style="color: white" class="ui small header">Project name</div>
+    <div class="ui inverted input">
+      <input type="text" name="projectName" [(ngModel)]="projectName" placeholder="e.g My project">
+    </div>
+    <div style="color: white" class="ui small header">File name <small>(with extension)</small></div>
+    <div class="ui inverted input">
+      <input type="text" name="fileName" [(ngModel)]="fileName" placeholder="e.g Main.py">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button" (click)="projectDetailsModal.deny()">Cancel</div>
+    <div class="ui icon primary button" (click)="projectDetailsModal.approve()" [ngClass]="{disabled: isProjectDetailsEmpty()}">
+      <i class="icon thumbs up"></i>
+      Create
+    </div>
+  </div>
+</sui-modal>

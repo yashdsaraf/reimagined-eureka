@@ -43,10 +43,11 @@ public class QuickSetupController {
   @GetMapping("{language}")
   public ResponseEntity<String> quickSetup(@PathVariable("language") String lang,
           @RequestParam("project") String projectName,
+          @RequestParam("entrypoint") String entrypoint,
           Principal principal,
           HttpServletRequest request) {
     try {
-      coreService.build(lang, projectName, request.getSession(true), principal.getName());
+      coreService.build(lang, projectName, entrypoint, request.getSession(true), principal.getName());
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       Logger.getLogger(QuickSetupController.class.getName()).log(Level.SEVERE, null, ex);
