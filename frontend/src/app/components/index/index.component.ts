@@ -26,8 +26,12 @@ import {
   transition,
   trigger
 } from '@angular/animations'
+import {ActivatedRoute} from '@angular/router'
 
 import 'codemirror/mode/clike/clike'
+import 'codemirror/mode/python/python'
+import 'codemirror/mode/php/php'
+import 'codemirror/mode/ruby/ruby'
 import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {CoreService} from '../../services/core.service'
@@ -62,19 +66,23 @@ export class IndexComponent implements OnInit {
   @ViewChild('editor') editorView
   isNavOpen = true
   isMobile: boolean
-  editorConfig = {lineNumbers: true, mode: 'text/x-java'}
+  editorConfig = {lineNumbers: true, mode: ''}
   editor: any
   output: Output = {
     stderr: '',
     stdout: ''
   }
+  openFile: string
 
   constructor(
+    private route: ActivatedRoute,
     private coreService: CoreService,
     private flashMessagesService: FlashMessagesService,
     private progressBarService: ProgressBarService
   ) {
     this.isMobile = isMobile
+    this.openFile = route.snapshot.params.openfile
+    this.editorConfig.mode = route.snapshot.params.mode
   }
 
   ngOnInit(): void {
@@ -91,9 +99,8 @@ export class IndexComponent implements OnInit {
       case 'run':
         this.output = {stderr:'', stdout:''}
         this.progressBarService.show(null, "Executing the project")
-        let code = {
-          'Main.java': this.editor.getValue()
-        }
+        let code = {}
+        code[this.openFile] = this.editor.getValue()
         this.coreService.runProject(code).subscribe(
           (data: Output) => {
             this.output = data

@@ -29,6 +29,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.ThreadLocalRandom;
+import org.apache.commons.io.FilenameUtils;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.model.PluginFile;
@@ -85,7 +86,8 @@ public class DockerUtils {
    */
   public void writeStarterScript(Path tmpDir, PluginFile pluginFile, ProjectSettings settings) throws IOException {
     StringJoiner stringJoiner = new StringJoiner("\n");
-    stringJoiner.add("file=\"" + settings.getEntrypoint() + "\"");
+    stringJoiner.add("filename=\"" + settings.getEntrypoint() + "\"");
+    stringJoiner.add("basename=\"" + FilenameUtils.getBaseName(settings.getEntrypoint()) + "\"");
     String[] lines;
     if (settings.getRunCmd().length > 0) {
       lines = settings.getRunCmd();

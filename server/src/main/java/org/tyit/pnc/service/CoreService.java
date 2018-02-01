@@ -60,8 +60,7 @@ public class CoreService {
     return dockerService.execute(code, tmpDir, docker);
   }
 
-  public void build(String lang, String projectName, HttpSession session, String userName) throws Exception {
-    lang = lang.toUpperCase().charAt(0) + lang.toLowerCase().substring(1);
+  public void build(String lang, String projectName, String entrypoint, HttpSession session, String userName) throws Exception {
     Plugin plugin = pluginRepository.findByName(lang);
     if (plugin == null) {
       throw new Exception("No such plugin found");
@@ -72,7 +71,7 @@ public class CoreService {
     Project project = new Project();
     project.setName(projectName);
     project.setUserId(user);
-    ProjectSettings settings = new ProjectSettings(new String[0], "Main", new String[0], lang);
+    ProjectSettings settings = new ProjectSettings(new String[0], entrypoint, new String[0], lang);
     project.setSettings(new ObjectMapper().writeValueAsString(settings));
     projectRepository.save(project);
     Docker docker = dockerService.build(path, plugin.getPluginFile(), project.getSettings(), user);

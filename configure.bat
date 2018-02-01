@@ -3,7 +3,7 @@
 REM Script control variables
 set required_dependencies=node npm mvn java javac docker docker-machine
 set machine_name=plugncode
-set images=openjdk:8
+set images=openjdk:8 python:3 php:7.0-cli ruby:2
 
 net session >nul 2>&1
 if %ERRORLEVEL% EQU 0 (

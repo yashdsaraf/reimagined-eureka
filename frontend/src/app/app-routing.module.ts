@@ -44,6 +44,7 @@ const routes: Routes = [
   {path: 'blog', component: BlogComponent},
   {path: 'docs', component: DocsComponent},
   {path: 'index', component: IndexComponent, canActivate: [GuestGuard]},
+  {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'logout/:message', component: LogoutComponent},
   {path: 'logout/:message/:error', component: LogoutComponent},
