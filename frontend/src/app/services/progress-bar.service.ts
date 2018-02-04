@@ -24,7 +24,7 @@ import {SuiComponentFactory} from 'ng2-semantic-ui/dist/misc/util/index'
 
 import {ProgressBarModal} from '../components/progress-bar-modal/progress-bar-modal.component'
 
-declare var $: any
+declare const $: any
 
 @Injectable()
 export class ProgressBarService extends SuiModalService {
