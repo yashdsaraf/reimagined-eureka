@@ -4,7 +4,8 @@
   "license": "Apache-2.0",
   "scripts": {
     "ng": "ng",
-    "start": "concurrently \"npm run serve\" \"npm run gulp\"",
+    "start": "npm run serve",
+    "all": "concurrently \"npm run serve\" \"npm run gulp\"",
     "gulp": "gulp --gulpfile src/semantic/gulpfile.js --cwd src/semantic",
     "build": "ng build",
     "test": "ng test",
