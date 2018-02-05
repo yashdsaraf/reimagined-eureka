@@ -2,8 +2,6 @@
 
 REM Script control variables
 set required_dependencies=node npm mvn java javac docker docker-machine
-set machine_name=plugncode
-set images=openjdk:8 python:3 php:7.0-cli ruby:2
 
 net session >nul 2>&1
 if %ERRORLEVEL% EQU 0 (
@@ -23,47 +21,8 @@ for %%I in (%required_dependencies%) do (
 set "NO_PROMPT=%1"
 setx NO_PROMPT "%NO_PROMPT%" >nul
 
-cd server
+.\docker-config.bat
 
-echo.
-call :showLine
-echo Checking docker setup..
-call :showLine
-
-echo. & echo Checking if machine already exists
-docker-machine ls | findstr %machine_name% >nul
-if %ERRORLEVEL% NEQ 0 (
-  echo. & echo Creating new machine %machine_name%
-  docker-machine create plugncode --driver="virtualbox"
-  call :showErrorMsg
-)
-
-echo. & echo Checking if machine is running
-docker-machine ls | findstr %machine_name% | findstr /I "running" >nul
-if %ERRORLEVEL% NEQ 0 (
-  echo. & echo Starting machine %machine_name%
-  docker-machine start plugncode
-  call :showErrorMsg
-)
-
-REM Setting up environment for machine
-@FOR /f "tokens=*" %%i IN ('docker-machine env %machine_name%') DO @%%i
-call :showErrorMsg
-
-echo.
-call :showLine
-echo Pulling docker images..
-call :showLine
-
-for %%I in (%images%) do (
-  echo "%%I -- PULLING"
-  docker pull %%I
-  call :showErrorMsg
-)
-
-cd ..
-
-echo. & echo Docker setup done!
 if "%NO_PROMPT%" == "" (
   echo. & echo Press enter to continue..
   pause >nul

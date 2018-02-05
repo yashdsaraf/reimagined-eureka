@@ -9,10 +9,11 @@
 
 Required:
   - jdk 8 (latest available)
+  - docker (latest available)
   - nodejs (>= 8.3.0) & npm
   - maven (>= 3.5.0)
-  - oracle 11g XE
-  - Firefox, Chrome, Edge, IE (>v9) or any other modern browser with JS ES6 or cross browser polyfill support
+  - oracle 11g XE release 2
+  - Firefox, Chrome, Edge, IE (>v9) or any other modern browser with JS ES6 and cross browser polyfill support
 
 Optional:
   - Netbeans IDE Java EE (>=8.2)
@@ -24,11 +25,11 @@ Optional:
   - `cd` to  *\<oracle installation directory>\app\oracle\product\11.2.0\server\jdbc\lib*
   - Run the following command 
   ```shell
-  mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0 -Dpackaging=jar
+  mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar
   ```
   - Create a YAML file for database configuration properties at `reimagined-eureka\server\src\main\resources\application.yml` (You can refer to the `application.yml.stub` file in the same directory)
 
-### Netbeans specific setup instructions
+### Netbeans specific setup instructions (optional)
   - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases/latest).
   - Open `Tools > Plugins` and go to `Downloaded` tab.
   - Click on `Add plugins` and select the previously downloaded `.nbm` file.
