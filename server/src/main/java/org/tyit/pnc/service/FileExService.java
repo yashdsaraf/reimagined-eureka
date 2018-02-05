@@ -27,6 +27,7 @@ import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpSession;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
 
@@ -80,7 +81,7 @@ public class FileExService {
 
   private String getRealPath(HttpSession session, String parent) throws Exception {
     Path tmpDir = (Path) session.getAttribute("tmpDir");
-    String parent = FilenameUtils.separatorsToSystem(parent);
+    parent = FilenameUtils.separatorsToSystem(parent);
     String realPath = FilenameUtils.concat(tmpDir.toString(), parent);
     if (realPath == null) {
       throw new Exception("Invalid path specified");
@@ -98,9 +99,16 @@ public class FileExService {
     }
   }
 
-  public void delete(HttpSession session, String filename, String[] parents) throws Exception {
-    String realPath = getRealPath(session, parents);
-    Files.delete(Paths.get(realPath));
+  public void delete(HttpSession session, String filename, String parent) throws Exception {
+    String realPath = getRealPath(session, parent);
+    File file = new File(realPath, filename);
+    if (file.exists()) {
+      if (file.isDirectory()) {
+        FileUtils.deleteDirectory(file);
+      } else {
+        file.delete();
+      }
+    }
   }
 
   public void move(HttpSession session) {
@@ -111,12 +119,17 @@ public class FileExService {
 
   }
 
-  public void rename(HttpSession session) {
-
+  public void rename(HttpSession session, String filename, String parent, String newname) throws Exception {
+    String realPath = getRealPath(session, parent);
+    File file = new File(realPath, filename);
+    if (!file.exists()) {
+      throw new Exception("No such file exists");
+    }
+    file.renameTo(new File(realPath, newname));
   }
 
-  public String getFile(HttpSession session, String filename, String[] parents) throws Exception {
-    String realPath = getRealPath(session, filename, parents);
+  public String getFile(HttpSession session, String filename, String parent) throws Exception {
+    String realPath = getRealPath(session, parent);
     return new String(Files.readAllBytes(Paths.get(realPath)), StandardCharsets.UTF_8);
   }
 

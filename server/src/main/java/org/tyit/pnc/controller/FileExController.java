@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -49,13 +50,40 @@ public class FileExController {
     }
   }
 
-  @PostMapping("/create")
+  @PostMapping
   public ResponseEntity<String> create(HttpServletRequest request,
           @RequestParam("file") String fileName,
           @RequestParam("parent") String parent,
           @RequestParam("isDir") boolean isDir) {
     try {
       fileExService.create(request.getSession(), fileName, parent, isDir);
+    } catch (Exception ex) {
+      Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok().build();
+  }
+
+  @DeleteMapping
+  public ResponseEntity<String> delete(HttpServletRequest request,
+          @RequestParam("file") String fileName,
+          @RequestParam("parent") String parent) {
+    try {
+      fileExService.delete(request.getSession(), fileName, parent);
+    } catch (Exception ex) {
+      Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/rename")
+  public ResponseEntity<String> rename(HttpServletRequest request,
+          @RequestParam("file") String filename,
+          @RequestParam("parent") String parent,
+          @RequestParam("newname") String newname) {
+    try {
+      fileExService.rename(request.getSession(), filename, parent, newname);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);

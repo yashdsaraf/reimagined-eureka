@@ -15,8 +15,11 @@
  */
 
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
-import {Observable} from 'rxjs/Observable';
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http'
+import {Observable} from 'rxjs/Observable'
 
 @Injectable()
 export class FileExService {
@@ -32,7 +35,22 @@ export class FileExService {
     formData.append('file', file)
     formData.append('parent', parent)
     formData.append('isDir', isDir.toString())
-    return this.http.post('/api/file-ex/create', formData, {responseType: 'text'})
+    return this.http.post('/api/file-ex', formData, {responseType: 'text'})
+  }
+
+  public delete(file: string, parent: string): Observable<any> {
+    let params = new HttpParams()
+      .append('file', file)
+      .append('parent', parent)
+    return this.http.delete('/api/file-ex', {params, responseType: 'text'})
+  }
+
+  public rename(file: string, parent: string, newname: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('file', file)
+    formData.append('parent', parent)
+    formData.append('newname', newname)
+    return this.http.post('/api/file-ex/rename', formData, {responseType: 'text'})
   }
 
 }

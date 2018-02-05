@@ -48,10 +48,13 @@ export class FileExComponent {
 
   ngAfterViewInit() {
     let fileExService = this.fileExService
-    let error = (body: Object) => {
+    let error = (body: Object, data: any) => {
       let message
       if (body.hasOwnProperty('error')) {
         message = body['error']
+        if (typeof(message) === 'object' && message.hasOwnProperty('error')) {
+          message = message['error']
+        }
       } else if (body.hasOwnProperty('error_description')) {
         message = body['error_description']
       } else {
@@ -60,6 +63,17 @@ export class FileExComponent {
       this.flashMessagesService.show(message, {
         cssClass: 'ui error message', timeout: 4000
       })
+      data.instance.refresh()
+    }
+    let getParent = function (data): string {
+      let parent = ''
+      let parents: Array<string> = data.node.parents
+      parents = parents.slice(0, parents.length - 2)
+      for (let item of parents.reverse()) {
+        parent += data.instance.get_node(item).text + '/'
+      }
+      parent = parent.substr(0, parent.length - 1)
+      return parent
     }
     $('#file-list')
       .jstree({
@@ -76,6 +90,11 @@ export class FileExComponent {
                 return false
               }
               if (this.get_type(node_parent) === 'file') {
+                return false
+              }
+            }
+            if (operation === 'rename_node') {
+              if (this.get_node(node).original.text === node_position) {
                 return false
               }
             }
@@ -129,25 +148,36 @@ export class FileExComponent {
       .on('create_node.jstree', function (e, data) {
         let file = data.node.text
         let isDir = data.node.type === 'file' ? false : true
-        let parent = ''
-        let parents: Array<string> = data.node.parents
-        parents = parents.slice(0, parents.length - 2)
-        for (let item of parents.reverse()) {
-          parent += data.instance.get_node(item).text + '/'
-        }
-        parent = parent.substr(0, parent.length - 1)
+        let parent = getParent(data)
         fileExService.create(file, parent, isDir)
           .subscribe(response => {
             data.instance.refresh()
           }, err => {
-            error(err)
+            error(err, data)
           })
       })
       .on('rename_node.jstree', function (e, data) {
-        console.log('renam', data)
+        let file = data.node.original.text
+        let newname = data.node.text
+        let parent = getParent(data)
+        fileExService.rename(file, parent, newname)
+          .subscribe(response => {
+            data.instance.refresh()
+          }, err => {
+            error(err, data)
+          })
       })
       .on('delete_node.jstree', function (e, data) {
-        console.log('delet', data)
+        let file = data.node.text
+        let parent = getParent(data)
+        fileExService.delete(file, parent)
+          .subscribe(
+          response => {
+            data.instance.refresh()
+          }, err => {
+            error(err, data)
+          }
+          )
       })
       .on('copy_node.jstree', function (e, data) {
         console.log('copy_', data)
