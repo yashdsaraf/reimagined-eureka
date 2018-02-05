@@ -2,6 +2,32 @@
   <div class="ui inverted top attached tabular menu">
     <a class="item" suiTabHeader="1">STDOUT</a>
     <a class="item" suiTabHeader="2">STDERR</a>
+    <div class="right menu">
+      <a lass="item active" suiTabHeader="3" style="padding: 0.3em;">
+        <i class="blue big settings icon"></i>
+      </a>
+
+      <!-- <div class="ui floating dropdown icon item">
+        <i class="wrench icon"></i>
+        <div class="menu">
+          <div class="item">
+            <i class="dropdown icon"></i>
+            <span class="text">New</span>
+            <div class="menu">
+              <div class="item">Document</div>
+              <div class="item">Image</div>
+            </div>
+          </div>
+          <div class="item">
+            Open...
+          </div>
+          <div class="item">
+            Save...
+          </div>
+        </div>
+      </div> -->
+
+    </div>
   </div>
   <div id="output-tab-content">
     <div id="stdout" class="ui bottom attached segment" suiTabContent="1">
@@ -12,6 +38,10 @@
       {{stderr}}
     </div>
     <!-- stderr -->
+    <div id="project-settings-btn" class="ui bottom attached segment" suiTabContent="3">
+      <app-project-settings></app-project-settings>
+    </div>
+    <!-- project settings button -->
   </div>
 </sui-tabset>
 <!-- container -->

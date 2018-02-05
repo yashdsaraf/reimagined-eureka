@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="wrapper">
+    <div class="wrapper1">
+      <div class="ui compact left labeled button" tabindex="0" [ngClass]="{'mini': isMobile}">
+        <a class="ui compact basic right pointing label" [ngClass]="{'mini': isMobile}">
+          Plugin's Name
+        </a>
+        <div class="ui compact blue button" [ngClass]="{'mini': isMobile}" style="margin-bottom: 0px;">
+          <i class="edit icon"></i>
+          Change Plugins
+        </div>
+      </div>
+      <button class="ui blue compact button" name="button" id="edit-run" [ngClass]="{'mini': isMobile}">Edit run commands</button>
+      <div class="ui compact blue left pointing floating dropdown button" [ngClass]="{'mini': isMobile, 'left': !isMobile, 'down': isMobile}">
+        Editor theme
+        <div class="menu" >
+          <div class="item">
+            CodeMirror
+          </div>
+          <div class="item">
+            Github
+          </div>
+          <div class="item">
+            Eclipes
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ui fullscreen modal">
+    <div class="header">Run Commands</div>
+    <div class="scrolling content">
+      <p>Content goes here</p>
+    </div>
+    <div class="actions">
+      <div class="ui small compact button">Apply</div>
+      <div class="ui small compact positive approve button">Finish</div>
+      <div class="ui small compact negative cancel button">Cancel</div>
+    </div>
+  </div> <!-- run-command modal -->
+
+</div> <!-- container -->

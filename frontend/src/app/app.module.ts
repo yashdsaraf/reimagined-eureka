@@ -81,6 +81,7 @@ import {IdenticonDirective} from './directives/identicon.directive'
 import {InitCapPipe} from './pipes/init-cap.pipe'
 import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
 import { MarketPlaceComponent } from './components/market-place/market-place.component'
+import { ProjectSettingsComponent } from './components/project-settings/project-settings.component'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -113,7 +114,8 @@ export function init(startupService: StartupService) {
     InitCapPipe,
     SanitizeHtmlPipe,
     ProgressBarModalComponent,
-    MarketPlaceComponent
+    MarketPlaceComponent,
+    ProjectSettingsComponent
   ],
   imports: [
     AppRoutingModule,
