@@ -21,7 +21,7 @@ for %%I in (%required_dependencies%) do (
 set "NO_PROMPT=%1"
 setx NO_PROMPT "%NO_PROMPT%" >nul
 
-.\docker-config.bat
+call docker-config
 
 if "%NO_PROMPT%" == "" (
   echo. & echo Press enter to continue..
