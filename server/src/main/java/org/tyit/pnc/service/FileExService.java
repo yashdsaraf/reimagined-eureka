@@ -111,12 +111,14 @@ public class FileExService {
     }
   }
 
-  public void move(HttpSession session) {
-
-  }
-
-  public void copy(HttpSession session) {
-
+  public void copy(HttpSession session, String filename, String oldParent, String newParent, boolean isMove) throws Exception {
+    String realOldPath = getRealPath(session, oldParent);
+    String realNewPath = getRealPath(session, newParent);
+    File file = new File(realOldPath, filename);
+    FileUtils.copyToDirectory(file, new File(realNewPath));
+    if (isMove) {
+      delete(session, filename, oldParent);
+    }
   }
 
   public void rename(HttpSession session, String filename, String parent, String newname) throws Exception {

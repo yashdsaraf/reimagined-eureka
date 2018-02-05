@@ -53,4 +53,20 @@ export class FileExService {
     return this.http.post('/api/file-ex/rename', formData, {responseType: 'text'})
   }
 
+  public move(file: string, oldparent: string, newparent: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('file', file)
+    formData.append('oldparent', oldparent)
+    formData.append('newparent', newparent)
+    return this.http.post('/api/file-ex/move', formData, {responseType: 'text'})
+  }
+
+  public copy(file: string, oldparent: string, newparent: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('file', file)
+    formData.append('oldparent', oldparent)
+    formData.append('newparent', newparent)
+    return this.http.post('/api/file-ex/copy', formData, {responseType: 'text'})
+  }
+
 }

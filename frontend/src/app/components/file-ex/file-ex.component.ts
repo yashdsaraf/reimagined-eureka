@@ -52,7 +52,7 @@ export class FileExComponent {
       let message
       if (body.hasOwnProperty('error')) {
         message = body['error']
-        if (typeof(message) === 'object' && message.hasOwnProperty('error')) {
+        if (typeof (message) === 'object' && message.hasOwnProperty('error')) {
           message = message['error']
         }
       } else if (body.hasOwnProperty('error_description')) {
@@ -65,12 +65,11 @@ export class FileExComponent {
       })
       data.instance.refresh()
     }
-    let getParent = function (data): string {
+    let getParent = function (parents: Array<string>, instance: any): string {
       let parent = ''
-      let parents: Array<string> = data.node.parents
       parents = parents.slice(0, parents.length - 2)
       for (let item of parents.reverse()) {
-        parent += data.instance.get_node(item).text + '/'
+        parent += instance.get_node(item).text + '/'
       }
       parent = parent.substr(0, parent.length - 1)
       return parent
@@ -148,7 +147,7 @@ export class FileExComponent {
       .on('create_node.jstree', function (e, data) {
         let file = data.node.text
         let isDir = data.node.type === 'file' ? false : true
-        let parent = getParent(data)
+        let parent = getParent(data.node.parents, data.instance)
         fileExService.create(file, parent, isDir)
           .subscribe(response => {
             data.instance.refresh()
@@ -159,7 +158,7 @@ export class FileExComponent {
       .on('rename_node.jstree', function (e, data) {
         let file = data.node.original.text
         let newname = data.node.text
-        let parent = getParent(data)
+        let parent = getParent(data.node.parents, data.instance)
         fileExService.rename(file, parent, newname)
           .subscribe(response => {
             data.instance.refresh()
@@ -169,21 +168,38 @@ export class FileExComponent {
       })
       .on('delete_node.jstree', function (e, data) {
         let file = data.node.text
-        let parent = getParent(data)
+        let parent = getParent(data.node.parents, data.instance)
         fileExService.delete(file, parent)
           .subscribe(
           response => {
             data.instance.refresh()
           }, err => {
             error(err, data)
-          }
-          )
+          })
       })
       .on('copy_node.jstree', function (e, data) {
-        console.log('copy_', data)
+        let file = data.node.text
+        let oldParent = getParent(data.original.parents, data.instance)
+        let newParent = getParent(data.node.parents, data.instance)
+        fileExService.copy(file, oldParent, newParent)
+          .subscribe(
+          response => {
+            data.instance.refresh()
+          }, err => {
+            error(err, data)
+          })
       })
       .on('move_node.jstree', function (e, data) {
-        console.log('move_', data)
+        let file = data.node.text
+        let oldParent = getParent(data.instance.get_node(data.old_parent).parents, data.instance)
+        let newParent = getParent(data.node.parents, data.instance)
+        fileExService.move(file, oldParent, newParent)
+          .subscribe(
+          response => {
+            data.instance.refresh()
+          }, err => {
+            error(err, data)
+          })
       })
   }
 

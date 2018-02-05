@@ -91,4 +91,32 @@ public class FileExController {
     return ResponseEntity.ok().build();
   }
 
+  @PostMapping("/move")
+  public ResponseEntity<String> move(HttpServletRequest request,
+          @RequestParam("file") String filename,
+          @RequestParam("oldparent") String oldParent,
+          @RequestParam("newparent") String newParent) {
+    try {
+      fileExService.copy(request.getSession(), filename, oldParent, newParent, true);
+    } catch (Exception ex) {
+      Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok().build();
+  }
+
+  @PostMapping("/copy")
+  public ResponseEntity<String> copy(HttpServletRequest request,
+          @RequestParam("file") String filename,
+          @RequestParam("oldparent") String oldParent,
+          @RequestParam("newparent") String newParent) {
+    try {
+      fileExService.copy(request.getSession(), filename, oldParent, newParent, false);
+    } catch (Exception ex) {
+      Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+    return ResponseEntity.ok().build();
+  }
+
 }
