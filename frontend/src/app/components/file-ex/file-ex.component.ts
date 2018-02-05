@@ -21,6 +21,8 @@ import {
   Output
 } from '@angular/core'
 
+import {FlashMessagesService} from 'angular2-flash-messages/module/flash-messages.service'
+
 import {FileExService} from '../../services/file-ex.service'
 import {isMobile} from '../../app.component'
 
@@ -37,12 +39,28 @@ export class FileExComponent {
   @Output() isNavOpenChange = new EventEmitter<boolean>()
   isMobile: boolean
 
-  constructor(private fileExService: FileExService) {
+  constructor(
+    private fileExService: FileExService,
+    private flashMessagesService: FlashMessagesService
+  ) {
     this.isMobile = isMobile
   }
 
   ngAfterViewInit() {
     let fileExService = this.fileExService
+    let error = (body: Object) => {
+      let message
+      if (body.hasOwnProperty('error')) {
+        message = body['error']
+      } else if (body.hasOwnProperty('error_description')) {
+        message = body['error_description']
+      } else {
+        message = body
+      }
+      this.flashMessagesService.show(message, {
+        cssClass: 'ui error message', timeout: 4000
+      })
+    }
     $('#file-list')
       .jstree({
         core: {
@@ -57,7 +75,7 @@ export class FileExComponent {
               if (this.get_node(node).parent === this.get_node(node_parent).id) {
                 return false
               }
-              if (this.is_leaf(node_parent)) {
+              if (this.get_type(node_parent) === 'file') {
                 return false
               }
             }
@@ -106,10 +124,24 @@ export class FileExComponent {
         plugins: ['contextmenu', 'types', 'unique', 'search']
       })
       .on('changed.jstree', function (e, data) {
-        console.log(data.instance.get_type(data.node))
+
       })
       .on('create_node.jstree', function (e, data) {
-        console.log('creat', data)
+        let file = data.node.text
+        let isDir = data.node.type === 'file' ? false : true
+        let parent = ''
+        let parents: Array<string> = data.node.parents
+        parents = parents.slice(0, parents.length - 2)
+        for (let item of parents.reverse()) {
+          parent += data.instance.get_node(item).text + '/'
+        }
+        parent = parent.substr(0, parent.length - 1)
+        fileExService.create(file, parent, isDir)
+          .subscribe(response => {
+            data.instance.refresh()
+          }, err => {
+            error(err)
+          })
       })
       .on('rename_node.jstree', function (e, data) {
         console.log('renam', data)

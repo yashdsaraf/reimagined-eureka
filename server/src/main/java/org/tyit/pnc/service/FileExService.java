@@ -78,9 +78,9 @@ public class FileExService {
     return dir;
   }
 
-  private String getRealPath(HttpSession session, String fileName, String[] parents) throws Exception {
+  private String getRealPath(HttpSession session, String parent) throws Exception {
     Path tmpDir = (Path) session.getAttribute("tmpDir");
-    String parent = String.join(File.separator, parents);
+    String parent = FilenameUtils.separatorsToSystem(parent);
     String realPath = FilenameUtils.concat(tmpDir.toString(), parent);
     if (realPath == null) {
       throw new Exception("Invalid path specified");
@@ -88,8 +88,8 @@ public class FileExService {
     return realPath;
   }
 
-  public void create(HttpSession session, String fileName, String[] parents, boolean isDir) throws Exception {
-    String realPath = getRealPath(session, fileName, parents);
+  public void create(HttpSession session, String fileName, String parents, boolean isDir) throws Exception {
+    String realPath = getRealPath(session, parents);
     File toCreate = new File(realPath, fileName);
     if (isDir) {
       Files.createDirectory(toCreate.toPath());
@@ -99,7 +99,7 @@ public class FileExService {
   }
 
   public void delete(HttpSession session, String filename, String[] parents) throws Exception {
-    String realPath = getRealPath(session, filename, parents);
+    String realPath = getRealPath(session, parents);
     Files.delete(Paths.get(realPath));
   }
 
