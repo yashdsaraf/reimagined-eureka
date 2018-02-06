@@ -50,6 +50,18 @@ public class FileExController {
     }
   }
 
+  @GetMapping("/file")
+  public ResponseEntity<String> getFile(HttpServletRequest request,
+          @RequestParam("file") String fileName,
+          @RequestParam("parent") String parent) {
+    try {
+      return ResponseEntity.ok(fileExService.getFile(request.getSession(), fileName, parent));
+    } catch (Exception ex) {
+      Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
   @PostMapping
   public ResponseEntity<String> create(HttpServletRequest request,
           @RequestParam("file") String fileName,

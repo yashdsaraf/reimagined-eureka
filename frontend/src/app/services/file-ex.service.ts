@@ -30,6 +30,13 @@ export class FileExService {
     return this.http.get('/api/file-ex')
   }
 
+  public getFile(file: string, parent: string): Observable<any> {
+    let params = new HttpParams()
+      .append('file', file)
+      .append('parent', parent)
+    return this.http.get('/api/file-ex/file', {params, responseType: 'text'})
+  }
+
   public create(file: string, parent: string, isDir: boolean): Observable<any> {
     let formData = new FormData()
     formData.append('file', file)

@@ -68,6 +68,7 @@ export class FileExComponent {
     let getParent = function (parents: Array<string>, instance: any): string {
       let parent = ''
       parents = parents.slice(0, parents.length - 2)
+      // Build path from parents property of supplied node
       for (let item of parents.reverse()) {
         parent += instance.get_node(item).text + '/'
       }
@@ -96,6 +97,9 @@ export class FileExComponent {
               if (this.get_node(node).original.text === node_position) {
                 return false
               }
+            }
+            if (more && more.dnd && more.pos !== 'i') {
+              return false
             }
             return true
           }
@@ -139,10 +143,20 @@ export class FileExComponent {
           default: {icon: 'icon folder'},
           file: {valid_children: [], icon: 'icon file'}
         },
-        plugins: ['contextmenu', 'types', 'unique', 'search']
+        plugins: ['contextmenu', 'types', 'unique', 'search', 'dnd']
       })
-      .on('changed.jstree', function (e, data) {
-
+      .on('select_node.jstree', function (e, data) {
+        if (data.node.type !== 'file') {
+          return
+        }
+        let file = data.node.text
+        let parent = getParent(data.node.parents, data.instance)
+        fileExService.getFile(file, parent)
+          .subscribe(response => {
+            console.log(response)
+          }, err => {
+            error(err, data)
+          })
       })
       .on('create_node.jstree', function (e, data) {
         let file = data.node.text
@@ -201,6 +215,10 @@ export class FileExComponent {
             error(err, data)
           })
       })
+  }
+
+  refreshTree() {
+    $('#file-list').jstree(true).refresh()
   }
 
 }

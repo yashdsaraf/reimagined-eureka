@@ -132,7 +132,8 @@ public class FileExService {
 
   public String getFile(HttpSession session, String filename, String parent) throws Exception {
     String realPath = getRealPath(session, parent);
-    return new String(Files.readAllBytes(Paths.get(realPath)), StandardCharsets.UTF_8);
+    Path path = Paths.get(FilenameUtils.concat(realPath, filename));
+    return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
   }
 
 }

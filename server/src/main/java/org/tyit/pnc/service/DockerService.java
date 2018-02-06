@@ -77,6 +77,8 @@ public class DockerService {
     Files.write(dockerFile.toPath(), pluginFile.getDockerfile()
             .getBytes(StandardCharsets.UTF_8),
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+    File entryPoint = new File(tempDir.toFile(), settings.getEntrypoint());
+    Files.createFile(entryPoint.toPath());
     dockerUtils.writeStarterScript(tempDir, pluginFile, settings);
     Docker docker = new Docker();
     docker.setSettings(pluginSettings);
