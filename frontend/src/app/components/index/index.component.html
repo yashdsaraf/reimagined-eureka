@@ -4,10 +4,19 @@
     <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen" (executedTool)="executeTool($event)"></app-toolbar>
 
     <div id="wrapper-2">
-      <div id="editor">
-        <codemirror [config]="editorConfig" #editor>
-        </codemirror>
-      </div>
+        <sui-tabset *ngIf="openFiles !== undefined && openFiles.length > 0" id="editor">
+          <div class="ui top attached tabular menu overflow-menu">
+            <a class="item" *ngFor="let file of openFiles; let i = index" [suiTabHeader]="i" (activate)="refreshAfter(100)">{{file.name}} &nbsp;&nbsp;
+              <button class="ui button mini icon" (click)="removeTab(file.name)">
+                <i class="icon close"></i>
+              </button>
+            </a>
+          </div>
+          <div class="ui bottom attached segment margin-bottom-0" *ngFor="let file of openFiles; let i = index" [suiTabContent]="i">
+            <codemirror [ngModel]="file.content" [config]="editorConfig" #editor>
+            </codemirror>
+          </div>
+        </sui-tabset>
       <!-- editor -->
       <app-output id="output" [(stderr)]="output.stderr" [(stdout)]="output.stdout"></app-output>
     </div>

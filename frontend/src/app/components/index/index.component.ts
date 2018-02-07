@@ -15,9 +15,13 @@
  */
 
 import {
+  ChangeDetectorRef,
   Component,
+  OnChanges,
+  OnDestroy,
   OnInit,
-  ViewChild
+  QueryList,
+  ViewChildren
 } from '@angular/core'
 import {
   animate,
@@ -36,6 +40,10 @@ import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {CoreService} from '../../services/core.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
+import {
+  IndexService,
+  IndexTab
+} from '../../services/index.service'
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
 
@@ -61,46 +69,85 @@ import {Output} from '../../models/output'
     ])
   ])]
 })
-export class IndexComponent implements OnInit {
+export class IndexComponent implements OnChanges, OnDestroy, OnInit {
 
-  @ViewChild('editor') editorView
+  @ViewChildren('editor') editorView: QueryList<any>
   isNavOpen = true
   isMobile: boolean
-  editorConfig = {lineNumbers: true, mode: ''}
+  editorConfig = {
+    lineNumbers: true,
+    mode: ''
+  }
   editor: any
   output: Output = {
     stderr: '',
     stdout: ''
   }
-  openFile: string
+  openFiles: IndexTab[]
+  sub: any
 
   constructor(
     private route: ActivatedRoute,
     private coreService: CoreService,
     private flashMessagesService: FlashMessagesService,
-    private progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService,
+    private indexService: IndexService,
+    private cdr: ChangeDetectorRef
   ) {
     this.isMobile = isMobile
-    this.openFile = route.snapshot.params.openfile
+    let openFile = route.snapshot.params.openfile
+    if (openFile !== null && openFile !== undefined) {
+      this.indexService.addTab(openFile, '')
+    }
+    this.sub = indexService.emitter.subscribe(openFiles => {
+      this.openFiles = openFiles
+      this.cdr.detectChanges()
+    })
     this.editorConfig.mode = route.snapshot.params.mode
+  }
+
+  ngOnChanges() {
+    this.refresh()
   }
 
   ngOnInit(): void {
     this.isNavOpen = !this.isMobile
   }
 
+  ngOnDestroy() {
+    this.sub.unsubscribe()
+  }
+
   ngAfterViewInit() {
-    this.editor = this.editorView.instance
-    this.editor.setSize(null, '57vh')
+    this.refreshAfter(100)
+  }
+
+  removeTab(name: string) {
+    this.indexService.removeTab(name)
+    this.refresh()
+  }
+
+  refresh() {
+    this.editorView.forEach(i => {
+      let editor = i.instance
+      editor.setSize(null, '52vh')
+      editor.refresh()
+    })
+  }
+
+  refreshAfter(seconds: number) {
+    setTimeout(() => {
+      this.refresh()
+    }, seconds)
   }
 
   executeTool(tool: string) {
-    switch(tool) {
+    switch (tool) {
       case 'run':
-        this.output = {stderr:'', stdout:''}
+        this.output = {stderr: '', stdout: ''}
         this.progressBarService.show(null, "Executing the project")
         let code = {}
-        code[this.openFile] = this.editor.getValue()
+        // code[this.openFile] = this.editor.getValue()
         this.coreService.runProject(code).subscribe(
           (data: Output) => {
             this.output = data
