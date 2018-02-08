@@ -21,6 +21,7 @@ import {
 } from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
 
+import {IndexTab} from './index.service'
 import {Output} from '../models/output'
 
 @Injectable()
@@ -28,10 +29,10 @@ export class CoreService {
 
   constructor(private http: HttpClient) { }
 
-  public runProject(code: object): Observable<Output> {
+  public runProject(code: IndexTab[]): Observable<Output> {
     let formData = new FormData()
-    for (let file in code) {
-      formData.append(file, code[file])
+    for (let file of code) {
+      formData.append(file.name, file.content)
     }
     return this.http.post<Output>('/api/core/run', formData)
   }

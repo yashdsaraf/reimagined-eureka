@@ -47,6 +47,9 @@ export class IndexService {
     }
     let index = this.tabs.indexOf(tab)
     this.tabs.splice(index, 1)
+    if (this.tabs.length === 0) {
+      this.addTab('', '')
+    }
     this.countChanged.next(this.tabs)
   }
 

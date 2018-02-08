@@ -95,10 +95,6 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     private cdr: ChangeDetectorRef
   ) {
     this.isMobile = isMobile
-    let openFile = route.snapshot.params.openfile
-    if (openFile !== null && openFile !== undefined) {
-      this.indexService.addTab(openFile, '')
-    }
     this.sub = indexService.emitter.subscribe(openFiles => {
       this.openFiles = openFiles
       this.cdr.detectChanges()
@@ -119,6 +115,12 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngAfterViewInit() {
+    setTimeout(() => {
+      let openFile = this.route.snapshot.params.openfile
+      if (openFile !== null && openFile !== undefined) {
+        this.indexService.addTab(openFile, '')
+      }
+    })
     this.refreshAfter(100)
   }
 
@@ -135,10 +137,10 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     })
   }
 
-  refreshAfter(seconds: number) {
+  refreshAfter(ms: number) {
     setTimeout(() => {
       this.refresh()
-    }, seconds)
+    }, ms)
   }
 
   executeTool(tool: string) {
@@ -146,9 +148,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       case 'run':
         this.output = {stderr: '', stdout: ''}
         this.progressBarService.show(null, "Executing the project")
-        let code = {}
-        // code[this.openFile] = this.editor.getValue()
-        this.coreService.runProject(code).subscribe(
+        this.coreService.runProject(this.openFiles).subscribe(
           (data: Output) => {
             this.output = data
             this.progressBarService.dismiss()
