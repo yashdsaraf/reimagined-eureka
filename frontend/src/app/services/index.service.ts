@@ -33,9 +33,10 @@ export class IndexService {
   constructor() {}
 
   public addTab(name: string, content: string) {
-    if (this.search(name) !== undefined) {
-      return
-    }
+    // Only open tabs with *unique* names
+    // if (this.search(name) !== undefined) {
+    //   return
+    // }
     this.tabs.push({name, content})
     this.countChanged.next(this.tabs)
   }
@@ -47,6 +48,11 @@ export class IndexService {
     }
     let index = this.tabs.indexOf(tab)
     this.tabs.splice(index, 1)
+    this.countChanged.next(this.tabs)
+  }
+
+  public clearAll() {
+    this.tabs = []
     this.countChanged.next(this.tabs)
   }
 
