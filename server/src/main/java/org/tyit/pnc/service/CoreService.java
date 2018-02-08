@@ -16,6 +16,7 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
@@ -65,7 +66,9 @@ public class CoreService {
     if (plugin == null) {
       throw new Exception("No such plugin found");
     }
-    Path path = Files.createTempDirectory(projectName);
+    Path tmpPath = Files.createTempDirectory(projectName);
+    Path path = new File(tmpPath.toFile(), projectName).toPath();
+    Files.createDirectory(path);
     session.setAttribute("tmpDir", path.toAbsolutePath());
     AppUser user = appUserRepository.findByUsername(userName);
     Project project = new Project();

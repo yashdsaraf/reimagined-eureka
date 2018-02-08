@@ -21,7 +21,8 @@ import {
 } from '@angular/core'
 import {isMobile} from '../../app.component'
 
-declare var google:any
+declare const google: any
+
 @Component({
   selector: 'app-admin-dash',
   templateUrl: './admin-dash.component.html',

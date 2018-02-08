@@ -145,13 +145,18 @@ export class HomeComponent {
         this.router.navigate(['/index', {openfile: this.fileName, mode: data.mode}])
         this.progressBarService.dismiss()
       },
-      err => {
+      (err: Object) => {
         this.progressBarService.dismiss()
-        let message: string
-        if (err.error == undefined  || err.error == null) {
-          message = 'An internal occurred'
+        let message
+        if (err.hasOwnProperty('error_description')) {
+          message = err['error_description']
+        } else if (err.hasOwnProperty('error')) {
+          message = err['error']
         } else {
-          message = err.error
+          message = err
+        }
+        if (message == '' || message == null || message == undefined) {
+          message = 'An internal error occured'
         }
         this.flashMessagesService.show(message, {
           cssClass: 'ui error message', timeout: 4000
