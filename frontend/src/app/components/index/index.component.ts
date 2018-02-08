@@ -115,12 +115,6 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      let openFile = this.route.snapshot.params.openfile
-      if (openFile !== null && openFile !== undefined) {
-        this.indexService.addTab(openFile, '')
-      }
-    })
     this.refreshAfter(100)
   }
 

@@ -24,6 +24,7 @@ import {
 import {FlashMessagesService} from 'angular2-flash-messages/module/flash-messages.service'
 
 import {FileExService} from '../../services/file-ex.service'
+import {IndexService} from '../../services/index.service'
 import {isMobile} from '../../app.component'
 
 declare const $: any
@@ -41,13 +42,15 @@ export class FileExComponent {
 
   constructor(
     private fileExService: FileExService,
-    private flashMessagesService: FlashMessagesService
+    private flashMessagesService: FlashMessagesService,
+    private indexService: IndexService
   ) {
     this.isMobile = isMobile
   }
 
   ngAfterViewInit() {
     let fileExService = this.fileExService
+    let indexService = this.indexService
     let error = (body: Object, data: any) => {
       let message
       if (body.hasOwnProperty('error')) {
@@ -153,7 +156,7 @@ export class FileExComponent {
         let parent = getParent(data.node.parents, data.instance)
         fileExService.getFile(file, parent)
           .subscribe(response => {
-            console.log(response)
+            indexService.addTab(file, response)
           }, err => {
             error(err, data)
           })
