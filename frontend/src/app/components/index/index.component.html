@@ -4,10 +4,12 @@
     <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen" (executedTool)="executeTool($event)"></app-toolbar>
 
     <div id="wrapper-2">
-      <sui-tabset *ngIf="openFiles !== undefined && openFiles.length > 0" id="editor">
+      <sui-tabset *ngIf="openFiles !== undefined && openFiles.length > 0; else placeholder" id="editor">
         <div class="ui top attached tabular menu overflow-menu">
           <a class="item" *ngFor="let file of openFiles; let i = index" [suiTabHeader]="i" (activate)="refreshAfter(100)">{{file.name}} &nbsp;&nbsp;
-            <i class="icon close" (click)="removeTab(file.name)"></i>
+            <button class="ui inverted red circular icon button close-tab-button" (click)="removeTab(file.name)">
+              <i class="icon close"></i>
+            </button>
           </a>
         </div>
         <div class="ui bottom attached segment margin-bottom-0" *ngFor="let file of openFiles; let i = index" [suiTabContent]="i">
@@ -16,6 +18,9 @@
         </div>
       </sui-tabset>
       <!-- editor -->
+      <ng-template #placeholder>
+        <div style="height: 57vh"></div>
+      </ng-template>
       <app-output id="output" [(stderr)]="output.stderr" [(stdout)]="output.stdout"></app-output>
     </div>
     <!-- wrapper-2 -->
