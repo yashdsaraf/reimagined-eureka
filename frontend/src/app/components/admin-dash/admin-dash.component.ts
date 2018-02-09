@@ -41,16 +41,19 @@ export class AdminDashComponent {
 
   ngAfterViewInit() {
     let loadCharts = () => {
-      google.charts.load("current", {packages:["corechart"]})
+      if (google === null || google === undefined) {
+        return
+      }
+      google.charts.load('current', {packages:['corechart']})
       google.charts.load('current', {'packages':['line']})
       google.charts.setOnLoadCallback(this.usersChart)
       google.charts.setOnLoadCallback(this.pieChart)
       google.charts.setOnLoadCallback(this.pluginsChart)
     }
     setTimeout(() => this.heading.emit('Dashboard'))
-    if (google != null && google != undefined) {
+    setTimeout(() => {
       loadCharts()
-    }
+    }, 1000)
   }
 
   pieChart() {

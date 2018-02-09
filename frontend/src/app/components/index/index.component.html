@@ -7,9 +7,7 @@
       <sui-tabset *ngIf="openFiles !== undefined && openFiles.length > 0; else placeholder" id="editor">
         <div class="ui top attached tabular menu overflow-menu">
           <a class="item" *ngFor="let file of openFiles; let i = index" [suiTabHeader]="i" (activate)="refreshAfter(100)">{{file.name}} &nbsp;&nbsp;
-            <button class="ui inverted red circular icon button close-tab-button" (click)="removeTab(file.name)">
-              <i class="icon close"></i>
-            </button>
+            <i class="icon close close-tab-button" (click)="removeTab(file.name)"></i>
           </a>
         </div>
         <div class="ui bottom attached segment margin-bottom-0" *ngFor="let file of openFiles; let i = index" [suiTabContent]="i">
