@@ -156,7 +156,8 @@ export class FileExComponent {
         let parent = getParent(data.node.parents, data.instance)
         fileExService.getFile(file, parent)
           .subscribe(response => {
-            indexService.addTab(file, response)
+            indexService.addTab(data.node.id, file, response)
+            indexService.openTab(data.node.id)
           }, err => {
             error(err, data)
           })
@@ -174,6 +175,7 @@ export class FileExComponent {
       })
       .on('rename_node.jstree', function (e, data) {
         let file = data.node.original.text
+        indexService.removeTab(data.node.id)
         let newname = data.node.text
         let parent = getParent(data.node.parents, data.instance)
         fileExService.rename(file, parent, newname)

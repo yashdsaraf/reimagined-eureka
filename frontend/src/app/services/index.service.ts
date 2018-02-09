@@ -19,8 +19,10 @@ import {Subject} from 'rxjs/RX'
 import {Observable} from 'rxjs/Observable'
 
 export interface IndexTab {
+  id: string
   name: string
   content: string
+  isActive?: boolean
 }
 
 @Injectable()
@@ -32,22 +34,18 @@ export class IndexService {
 
   constructor() {}
 
-  public addTab(name: string, content: string) {
-    // Only open tabs with *unique* names
-    // if (this.search(name) !== undefined) {
-    //   return
-    // }
-    this.tabs.push({name, content})
+  public addTab(id: string, name: string, content: string) {
+    // Only open tabs with unique file ids
+    let tab = this.tabs.find(i => i.id == id)
+    if (tab !== undefined && tab !== null) {
+      return
+    }
+    this.tabs.push({id, name, content})
     this.countChanged.next(this.tabs)
   }
 
-  public removeTab(name: string) {
-    let tab = this.search(name)
-    if (tab === undefined) {
-      return
-    }
-    let index = this.tabs.indexOf(tab)
-    this.tabs.splice(index, 1)
+  public removeTab(id: string) {
+    this.tabs = this.tabs.filter(i => i.id != id)
     this.countChanged.next(this.tabs)
   }
 
@@ -56,13 +54,12 @@ export class IndexService {
     this.countChanged.next(this.tabs)
   }
 
-  public search(name: string): IndexTab {
-    for (let tab of this.tabs) {
-      if (tab.name == name) {
-        return tab
-      }
-    }
-    return undefined
+  public openTab(id: string) {
+    this.tabs = this.tabs.map((i: IndexTab) => {
+      i.isActive = i.id == id
+      return i
+    })
+    this.countChanged.next(this.tabs)
   }
 
 }
