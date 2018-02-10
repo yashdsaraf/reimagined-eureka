@@ -79,7 +79,8 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 //PIPES
 import {InitCapPipe} from './pipes/init-cap.pipe'
-import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
+import { MarketPlaceComponent } from './components/market-place/market-place.component'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -111,7 +112,8 @@ export function init(startupService: StartupService) {
     IdenticonDirective,
     InitCapPipe,
     SanitizeHtmlPipe,
-    ProgressBarModalComponent
+    ProgressBarModalComponent,
+    MarketPlaceComponent
   ],
   imports: [
     AppRoutingModule,
