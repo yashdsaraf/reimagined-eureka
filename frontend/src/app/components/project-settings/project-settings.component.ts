@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {isMobile} from '../../app.component'
+import {Themes} from '../../utils/themes';
 
-declare var $:any
+declare const $: any
 
 @Component({
   selector: 'app-project-settings',
@@ -11,16 +12,19 @@ declare var $:any
 export class ProjectSettingsComponent implements OnInit {
 
   isMobile: boolean
+  selectedTheme = 'github'
+  themes: string[]
 
   constructor() {
     this.isMobile = isMobile
+    this.themes = Themes
+    console.log(Themes)
   }
 
   ngOnInit() {
   }
 
   ngAfterViewInit(){
-
     $('.fullscreen.modal').modal('attach events', '#edit-run', 'show')
   }
 
