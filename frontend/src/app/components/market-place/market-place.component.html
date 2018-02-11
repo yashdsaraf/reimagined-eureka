@@ -2,153 +2,93 @@
   <div id="main">
     <div id="quote">
       <div id="quote-1">
-        <h1 class="ui huge left aligned header" style="font-size: 4em">
+        <h1 class="ui huge center aligned header"  >
           <span style="color: black; position: relative; left: 15px">MARKET</span>
           <span style="color: gray; position: relative; left: 15px">PLACE</span>
         </h1>
       </div>
       <div id="quote-2">
-        <div id="place" class="ui left aligned category search">
+        <!-- <div id="place" class="ui left aligned category search">
           <div class="ui icon input">
             <input class="prompt" placeholder="Search plugins..." type="text">
             <i class="search icon"></i>
           </div>
           <div class="results"></div>
-        </div>
+        </div> -->
       </div>
     </div>
-    <div id="segment">
-      <h4 class="ui horizontal divider header">
-        <i class="plug icon"></i>
-        Plugins
-      </h4>
-    </div>
     <div id="content">
-      <div id="plugins">
-        <div class="ui three centered raised cards">
-          <div class="ui card">
-            <div id="imagesize" class="ui small left spaced image">
-              <img src="/images/avatar2/large/kristy.png">
+        <div class="ui basic segment" id="featured-plugins">
+          <div class="ui top attached segment">
+            <h2 class="ui center aligned header">
+              Featured Plugins
+            </h2>
+          </div>
+          <div class="ui basic attached segment">
+            <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }">
+              <div class="card" *ngFor="let fplugin of fplugins">
+                <div class="ui blurring dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
+                  <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
+                    <div class="content">
+                      <div class="center">
+                        <div class="ui inverted button">
+                          <i class="download icon"></i>
+                          Install</div>
+                      </div>
+                    </div>
+                    </sui-dimmer>
+                  <img src="https://dummyimage.com/200x200/000/fff.jpg&text=Demo+image">
+                </div>
+                <div class="content">
+                  <a class="header">{{fplugin.name}}</a>
+                  <div class="meta">
+                    <span class="date">Created on {{fplugin.createdOn}}</span>
+                  </div>
+                  <p class="description">
+                    {{fplugin.description}}
+                  </p>
+                </div>
+                <div class="extra content">
+                  <a>
+                    <i class="download icon"></i>
+                    {{fplugin.installs}} Installs
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }" id="plugin-cards">
+          <div class="card" *ngFor="let plugin of plugins">
+            <div class="ui blurring dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
+              <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
+                <div class="content">
+                  <div class="center">
+                    <div class="ui inverted button">
+                      <i class="download icon"></i>
+                      Install</div>
+                  </div>
+                </div>
+                </sui-dimmer>
+              <img src="https://dummyimage.com/200x200/000/fff.jpg&text=Demo+image">
             </div>
             <div class="content">
-              <a class="header">JAVA</a>
+              <a class="header">{{plugin.name}}</a>
               <div class="meta">
-                <span class="date">Created on 2013</span>
+                <span class="date">Created on {{plugin.createdOn}}</span>
               </div>
-              <div class="description">
-                Java is made by yash saraf.
-              </div>
+              <p class="description">
+                {{plugin.description}}
+              </p>
             </div>
             <div class="extra content">
               <a>
-                <i class="user icon"></i>
-                1million install
+                <i class="download icon"></i>
+                {{plugin.installs}} Installs
               </a>
             </div>
           </div>
-<div class="ui card">
-  <div id="imagesize" class="image">
-    <img src="/images/avatar2/large/kristy.png">
-  </div>
-  <div class="content">
-    <a class="header">JAVA</a>
-    <div class="meta">
-      <span class="date">Created on 2013</span>
-    </div>
-    <div class="description">
-      Java is made by yash saraf.
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      1million install
-    </a>
-  </div>
-</div>
-<div class="ui card">
-  <div id="imagesize" class="image">
-    <img src="/images/avatar2/large/kristy.png">
-  </div>
-  <div class="content">
-    <a class="header">JAVA</a>
-    <div class="meta">
-      <span class="date">Created on 2013</span>
-    </div>
-    <div class="description">
-      Java is made by yash saraf.
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      1million install
-    </a>
-  </div>
-</div>
-<div class="ui card">
-  <div id="imagesize" class="image">
-    <img src="/images/avatar2/large/kristy.png">
-  </div>
-  <div class="content">
-    <a class="header">JAVA</a>
-    <div class="meta">
-      <span class="date">Created on 2013</span>
-    </div>
-    <div class="description">
-      Java is made by yash saraf.
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      1million install
-    </a>
-  </div>
-</div><div class="ui card">
-  <div id="imagesize" class="image">
-    <img src="/images/avatar2/large/kristy.png">
-  </div>
-  <div class="content">
-    <a class="header">JAVA</a>
-    <div class="meta">
-      <span class="date">Created on 2013</span>
-    </div>
-    <div class="description">
-      Java is made by yash saraf.
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      1million install
-    </a>
-  </div>
-</div><div class="ui card">
-  <div id="imagesize" class="image">
-    <img src="/images/avatar2/large/kristy.png">
-  </div>
-  <div class="content">
-    <a class="header">JAVA</a>
-    <div class="meta">
-      <span class="date">Created on 2013</span>
-    </div>
-    <div class="description">
-      Java is made by yash saraf.
-    </div>
-  </div>
-  <div class="extra content">
-    <a>
-      <i class="user icon"></i>
-      1million install
-    </a>
-  </div>
-</div>
         </div>
-      </div>
-      <div id="featured-plugins">
-
-      </div>
     </div>
   </div>
   <div class="ui black inverted vertical segment" id="footer">
