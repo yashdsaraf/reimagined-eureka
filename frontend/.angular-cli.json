@@ -24,12 +24,14 @@
         "../node_modules/devicon/devicon-colors.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/codemirror/lib/codemirror.css",
-        "../src/semantic/dist/semantic.min.css"
+        "../src/semantic/dist/semantic.min.css",
+        "../node_modules/jstree/dist/themes/default/style.min.css"
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
         "../node_modules/codemirror/lib/codemirror.js",
-        "../src/semantic/dist/semantic.min.js"
+        "../src/semantic/dist/semantic.min.js",
+        "../node_modules/jstree/dist/jstree.min.js"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [
