@@ -20,17 +20,29 @@
   width: 100%
   height: 100%
   display: flex
-  // justify-content: space-around
-  padding: 0px
+  padding: 0
   align-items: flex-start
   overflow: visible
 
-  .dropdown .menu
-    position: fixed
-    left: auto
-    width: inherit
+  .ui.dropdown .menu
+    height: 14vh
+    overflow: auto
+
+#modal-content
+  height: 70vh
+  overflow: auto
+
+  .list .item
+    display: flex
+    justify-content: center
 
 @media only screen and (max-width: 768px)
 
   .container
     flex-direction: column
+
+    .button
+      margin-bottom: 1em
+
+    .ui.dropdown .menu
+      height: 10vh

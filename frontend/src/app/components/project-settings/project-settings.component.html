@@ -1,80 +1,29 @@
 <div class="container">
-  <div class="ui compact left labeled button" tabindex="0" [ngClass]="{'mini': isMobile}">
-    <a class="ui compact basic right pointing label" [ngClass]="{'mini': isMobile}">
+  <div class="ui left labeled button" [ngClass]="{'mini': isMobile}">
+    <a class="ui basic right pointing label" [ngClass]="{'mini': isMobile}">
       Plugin's Name
     </a>
-    <div class="ui compact blue button" [ngClass]="{'mini': isMobile}" style="margin-bottom: 0px;">
+    <div class="ui blue button" [ngClass]="{'mini': isMobile}" style="margin-bottom: 0px;">
       <i class="edit icon"></i>
       Change Plugins
     </div>
   </div>
-  <button class="ui blue compact button" name="button" id="edit-run" [ngClass]="{'mini': isMobile}">Edit run commands</button>
-  <!-- <div class="ui compact blue left pointing floating dropdown button" [ngClass]="{'mini': isMobile, 'left': !isMobile, 'down': isMobile}">
-        Editor theme
-        <div class="upward menu" >
-          <div class="item">
-            CodeMirror
-          </div>
-          <div class="item">
-            Github
-          </div>
-          <div class="item">
-            Eclipes
-          </div>
-        </div>
-      </div> -->
-  <!-- <div class="ui floating labeled icon dropdown button" suiDropdown>
-    <i class="add user icon"></i>
-    <span class="text">Add User</span>
-    <div class="upward menu" suiDropdownMenu>
-      <div class="header">
-        People You Might Know
-      </div>
-      <div class="item">
-        Jenny Hess
-      </div>
-      <div class="item">
-        Elliot Fu
-      </div>
-      <div class="item">
-        Stevie Feliciano
-      </div>
-      <div class="header">
-        Your Friends' Friends
-      </div>
-      <div class="item">
-        Christian
-      </div>
-      <div class="item">
-        Matt
-      </div>
-      <div class="item">
-        Justen Kitsune
-      </div>
-    </div>
-  </div> -->
-
-  <div class="ui segment">
-    <ng-template let-option #optionTemplate>
-      Theme: {{option}}
-    </ng-template>
-    <sui-select class="selection" [(ngModel)]="selectedTheme" [options]="themes" [isSearchable]="true" [optionTemplate]="optionTemplate" #templated>
-      <sui-select-option *ngFor="let o of templated.filteredOptions" [value]="o"></sui-select-option>
-    </sui-select>
-  </div>
+  <button class="ui blue button" name="button" id="edit-run" [ngClass]="{'mini': isMobile}">Edit run commands</button>
+  <div class="ui button" (click)="showModal = true" [ngClass]="{'mini': isMobile}">Theme: {{selectedTheme | initCap}}</div>
 
 </div>
 <!-- container -->
 
-<div class="ui fullscreen modal">
-  <div class="header">Run Commands</div>
-  <div class="scrolling content">
-    <p>Content goes here</p>
+<sui-modal *ngIf="showModal" isBasic="true" (dismissed)="showModal = false">
+  <div class="header">Select a theme</div>
+  <div id="modal-content" class="content">
+    <div class="ui middle aligned selection animated relaxed divided inverted huge list">
+      <div *ngFor="let theme of themes" (click)="onClick(theme)" class="item">
+        <div class="content">
+          <div class="header">{{theme | initCap}}</div>
+        </div>
+      </div>
+    </div>
   </div>
-  <div class="actions">
-    <div class="ui small compact button">Apply</div>
-    <div class="ui small compact positive approve button">Finish</div>
-    <div class="ui small compact negative cancel button">Cancel</div>
-  </div>
-</div>
+</sui-modal>
 <!-- run-command modal -->

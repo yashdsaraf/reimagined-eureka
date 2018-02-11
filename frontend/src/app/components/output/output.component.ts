@@ -33,10 +33,7 @@ export class OutputComponent {
   constructor() {}
 
   ngAfterViewInit(){
-    $('.ui.dropdown')
-      .dropdown({
-        direction: 'downward'
-      })
+
   }
 
 }

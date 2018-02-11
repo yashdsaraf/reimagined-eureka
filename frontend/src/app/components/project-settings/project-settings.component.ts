@@ -1,31 +1,45 @@
-import { Component, OnInit } from '@angular/core';
-import {isMobile} from '../../app.component'
-import {Themes} from '../../utils/themes';
+import {
+  Component,
+  OnDestroy
+} from '@angular/core'
 
-declare const $: any
+import {isMobile} from '../../app.component'
+import {Themes} from '../../utils/themes'
+
+import {EditorConfigService} from '../../services/editor-config.service'
+import {Subscription} from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-project-settings',
   templateUrl: './project-settings.component.html',
   styleUrls: ['./project-settings.component.sass']
 })
-export class ProjectSettingsComponent implements OnInit {
+export class ProjectSettingsComponent implements OnDestroy {
 
   isMobile: boolean
-  selectedTheme = 'github'
   themes: string[]
+  selectedTheme: string
+  editorConfigSubscription: Subscription
+  showModal = false
 
-  constructor() {
+  constructor(private editorConfigService: EditorConfigService) {
     this.isMobile = isMobile
     this.themes = Themes
-    console.log(Themes)
+    this.selectedTheme = editorConfigService.getConfig()['theme']
   }
 
-  ngOnInit() {
+  ngAfterViewInit() {
+
   }
 
-  ngAfterViewInit(){
-    $('.fullscreen.modal').modal('attach events', '#edit-run', 'show')
+  ngOnDestroy() {
+    this.editorConfigSubscription.unsubscribe()
+  }
+
+  onClick(theme: string) {
+    this.selectedTheme = theme
+    this.editorConfigService.setOption('theme', this.selectedTheme)
+    this.showModal = false
   }
 
 }

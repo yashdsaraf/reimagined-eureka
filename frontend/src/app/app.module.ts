@@ -52,6 +52,7 @@ import {LogoutComponent} from './components/logout/logout.component'
 import {OutputComponent} from './components/output/output.component'
 import {ProfileComponent} from './components/profile/profile.component'
 import {ProgressBarModalComponent} from './components/progress-bar-modal/progress-bar-modal.component'
+import {ProjectSettingsComponent} from './components/project-settings/project-settings.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
@@ -61,6 +62,7 @@ import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
 import {DisplayNameService} from './services/display-name.service'
+import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
 import {ImagesService} from './services/images.service'
 import {IndexService} from './services/index.service'
@@ -81,7 +83,6 @@ import {IdenticonDirective} from './directives/identicon.directive'
 import {InitCapPipe} from './pipes/init-cap.pipe'
 import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
 import { MarketPlaceComponent } from './components/market-place/market-place.component'
-import { ProjectSettingsComponent } from './components/project-settings/project-settings.component'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -137,6 +138,7 @@ export function init(startupService: StartupService) {
     CookieService,
     CoreService,
     DisplayNameService,
+    EditorConfigService,
     FileExService,
     ImagesService,
     IndexService,

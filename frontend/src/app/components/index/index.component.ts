@@ -31,6 +31,7 @@ import {
   trigger
 } from '@angular/animations'
 import {ActivatedRoute} from '@angular/router'
+import {Subscription} from 'rxjs/Subscription'
 
 // CODEMIRROR Modes
 import 'codemirror/mode/apl/apl'
@@ -157,6 +158,7 @@ import 'codemirror/mode/z80/z80'
 import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {CoreService} from '../../services/core.service'
+import {EditorConfigService} from '../../services/editor-config.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
 import {
   IndexService,
@@ -192,33 +194,35 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   @ViewChildren('editor') editorView: QueryList<any>
   isNavOpen = true
   isMobile: boolean
-  editorConfig = {
-    lineNumbers: true,
-    mode: '',
-    theme: ''
-  }
+  editorConfig: Object
   editor: any
   output: Output = {
     stderr: '',
     stdout: ''
   }
   openFiles: IndexTab[]
-  sub: any
+  indexSubscription: any
+  openFile: string
+  editorConfigSubscription: Subscription
 
   constructor(
     private route: ActivatedRoute,
     private coreService: CoreService,
+    private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
     private progressBarService: ProgressBarService,
     private indexService: IndexService,
     private cdr: ChangeDetectorRef
   ) {
     this.isMobile = isMobile
-    this.sub = indexService.emitter.subscribe(openFiles => {
+    this.indexSubscription = indexService.emitter.subscribe(openFiles => {
       this.openFiles = openFiles
       this.cdr.detectChanges()
     })
-    this.editorConfig.mode = route.snapshot.params.mode
+    this.openFile = route.snapshot.params.openfile
+    this.editorConfigSubscription = this.editorConfigService.emitter
+      .subscribe(config => this.editorConfig = config)
+    this.editorConfigService.setOption('mode', route.snapshot.params.mode)
   }
 
   ngOnChanges() {
@@ -230,7 +234,8 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngOnDestroy() {
-    this.sub.unsubscribe()
+    this.indexSubscription.unsubscribe()
+    this.editorConfigSubscription.unsubscribe()
   }
 
   ngAfterViewInit() {
