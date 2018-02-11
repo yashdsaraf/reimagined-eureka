@@ -115,7 +115,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngAfterViewInit() {
-    this.refreshAfter(100)
+    this.refreshAfter(80)
   }
 
   removeTab(name: string) {

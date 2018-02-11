@@ -21,7 +21,7 @@ import {
   Output
 } from '@angular/core'
 
-import {FlashMessagesService} from 'angular2-flash-messages/module/flash-messages.service'
+import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {FileExService} from '../../services/file-ex.service'
 import {IndexService} from '../../services/index.service'
