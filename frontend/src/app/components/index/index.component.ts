@@ -220,9 +220,6 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       this.cdr.detectChanges()
     })
     this.openFile = route.snapshot.params.openfile
-    this.editorConfigSubscription = this.editorConfigService.emitter
-      .subscribe(config => this.editorConfig = config)
-    this.editorConfigService.setOption('mode', route.snapshot.params.mode)
   }
 
   ngOnChanges() {
@@ -239,6 +236,15 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   ngAfterViewInit() {
+    this.editorConfigSubscription = this.editorConfigService.emitter
+      .subscribe(config => {
+        this.editorConfig = config
+        this.editorView.forEach(i => {
+          let editor = i.instance
+          editor.setOption('theme', config['theme'])
+        })
+      })
+    this.editorConfigService.setOption('mode', this.route.snapshot.params.mode)
     this.refreshAfter(80)
   }
 
