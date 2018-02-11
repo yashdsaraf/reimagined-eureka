@@ -23,6 +23,10 @@
   padding: 0
   width: 100%
 
+  .close-tab-button
+    &:hover
+      color: #FF1919
+
   #file-ex
     background-color: $file-ex-light
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
@@ -50,8 +54,17 @@
       flex-basis: 93%
       flex-direction: column
 
+      .margin-bottom-0
+        margin-bottom: 0 !important
+        padding: 0
+
+      .overflow-menu
+        overflow-y: hidden
+        overflow-x: auto
+
       #editor
-        flex: 1 0 1em
+        overflow-y: auto
+        overflow-x: hidden
 
       #output
         flex: 1 0 1em

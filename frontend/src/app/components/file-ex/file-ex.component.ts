@@ -21,9 +21,10 @@ import {
   Output
 } from '@angular/core'
 
-import {FlashMessagesService} from 'angular2-flash-messages/module/flash-messages.service'
+import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {FileExService} from '../../services/file-ex.service'
+import {IndexService} from '../../services/index.service'
 import {isMobile} from '../../app.component'
 
 declare const $: any
@@ -41,13 +42,15 @@ export class FileExComponent {
 
   constructor(
     private fileExService: FileExService,
-    private flashMessagesService: FlashMessagesService
+    private flashMessagesService: FlashMessagesService,
+    private indexService: IndexService
   ) {
     this.isMobile = isMobile
   }
 
   ngAfterViewInit() {
     let fileExService = this.fileExService
+    let indexService = this.indexService
     let error = (body: Object, data: any) => {
       let message
       if (body.hasOwnProperty('error')) {
@@ -153,7 +156,8 @@ export class FileExComponent {
         let parent = getParent(data.node.parents, data.instance)
         fileExService.getFile(file, parent)
           .subscribe(response => {
-            console.log(response)
+            indexService.addTab(data.node.id, file, response)
+            indexService.openTab(data.node.id)
           }, err => {
             error(err, data)
           })
@@ -171,6 +175,7 @@ export class FileExComponent {
       })
       .on('rename_node.jstree', function (e, data) {
         let file = data.node.original.text
+        indexService.removeTab(data.node.id)
         let newname = data.node.text
         let parent = getParent(data.node.parents, data.instance)
         fileExService.rename(file, parent, newname)

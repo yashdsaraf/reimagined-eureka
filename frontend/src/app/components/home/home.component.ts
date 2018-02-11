@@ -24,8 +24,9 @@ import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
+import {IndexService} from '../../services/index.service'
+import {ProgressBarService} from '../../services/progress-bar.service'
 import {isMobile} from '../../app.component'
-import {ProgressBarService} from '../../services/progress-bar.service';
 
 @Component({
   selector: 'app-home',
@@ -87,6 +88,7 @@ export class HomeComponent {
     private coreService: CoreService,
     private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
+    private indexService: IndexService,
     private progressBarService: ProgressBarService,
     private router: Router
   ) {
@@ -126,16 +128,21 @@ export class HomeComponent {
     return uri
   }
 
-  quickSetup() {
+  quickSetupModalShow(env: string) {
     if (this.isNotLoggedIn()) {
       this.router.navigate(['/login'])
       return
     }
+    this.quickSetupLang = env
+  }
+
+  quickSetup() {
     this.progressBarService.show(null, "Creating project")
     this.coreService.quickSetup(this.quickSetupLang, this.projectName, this.fileName)
     .subscribe(
       data => {
-        this.router.navigate(['/index', {openfile: this.fileName, mode: data.mode}])
+        this.indexService.clearAll()
+        this.router.navigate(['/index', {mode: data.mode}])
         this.progressBarService.dismiss()
       },
       (err: Object) => {

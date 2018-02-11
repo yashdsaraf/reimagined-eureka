@@ -38,26 +38,23 @@ import {LogoutService} from '../services/logout.service'
 @Injectable()
 export class OAuthInterceptor implements HttpInterceptor {
 
-  access_token: string
-  refresh_token: string
-
   constructor(
     private authService: AuthService,
     private logoutService: LogoutService
-  ) {
-    let tokens = authService.getSavedTokens()
-    this.access_token = tokens.access_token
-    this.refresh_token = tokens.refresh_token
+  ) {}
+
+  get tokens() {
+    return this.authService.getSavedTokens()
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
 
-    if (this.access_token == null) {
+    if (this.tokens.access_token == null) {
       return next.handle(req)
     }
 
-    if (this.authService.isTokenExpired(this.access_token)) {
-      if (this.authService.isTokenExpired(this.refresh_token)) {
+    if (this.authService.isTokenExpired(this.tokens.access_token)) {
+      if (this.authService.isTokenExpired(this.tokens.refresh_token)) {
         this.error("Session expired")
       } else {
         this.authService.getTokensUsingRefreshToken()
@@ -72,7 +69,7 @@ export class OAuthInterceptor implements HttpInterceptor {
     }
 
     let duplicate = req.clone({
-      headers: req.headers.set('Authorization', `Bearer ${this.access_token}`)
+      headers: req.headers.set('Authorization', `Bearer ${this.tokens.access_token}`)
     })
 
     return next.handle(duplicate)
