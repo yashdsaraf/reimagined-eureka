@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {
+  Component,
+  ViewChild
+} from '@angular/core'
 
 import {isMobile} from '../../app.component'
 import {Themes} from '../../utils/themes'
@@ -31,22 +34,40 @@ export class ProjectSettingsComponent {
   isMobile: boolean
   themes: string[]
   selectedTheme: string
-  showModal = false
+  runCommandsModal = false
+  editorConfig: Object
+  _runCommands: string[]
+  @ViewChild('editor') editor
 
   constructor(private editorConfigService: EditorConfigService) {
     this.isMobile = isMobile
     this.themes = Themes
-    this.selectedTheme = editorConfigService.getConfig()['theme']
+    this.editorConfig = editorConfigService.getConfig()
+    this.selectedTheme = this.editorConfig['theme']
   }
 
   ngAfterViewInit() {
 
   }
 
+  get runCommands(): string {
+    return 'Hello'
+  }
+
+  set runCommands(value: string) {
+    console.log('set')
+  }
+
+  openRunCommandsModal() {
+    this.runCommandsModal = true
+    setTimeout(() => {
+      this.editor.instance.refresh()
+    }, 700)
+  }
+
   onClick(theme: string) {
     this.selectedTheme = theme
     this.editorConfigService.setOption('theme', this.selectedTheme)
-    this.showModal = false
   }
 
 }

@@ -8,7 +8,7 @@
       Change Plugins
     </div>
   </div>
-  <button class="ui blue button" name="button" id="edit-run" [ngClass]="{'mini': isMobile}">Edit run commands</button>
+  <button class="ui blue button" id="edit-run" [ngClass]="{'mini': isMobile}" (click)="openRunCommandsModal()">Edit run commands</button>
   <div class="ui left dropdown button" suiDropdown>
     <div class="text">Theme: {{selectedTheme | initCap}}</div>
     <div class="upward menu" suiDropdownMenu>
@@ -21,3 +21,13 @@
   <!-- dropdown -->
 </div>
 <!-- container -->
+
+<sui-modal *ngIf="runCommandsModal" isBasic="true" isInverted="true" [isClosable]="false" (dismissed)="runCommandsModal = false" (denied)="runCommandsModal = false" #modal>
+  <codemirror [config]="editorConfig" [(ngModel)]="runCommands" #editor>
+  </codemirror>
+  <div class="actions">
+    <button class="ui positive button" (click)="modal.approve()">Save</button>
+    <button class="ui negative button" (click)="modal.deny()">Cancel</button>
+    <button class="ui primary button" (click)="runCommands = defaultRunCommands">Reset</button>
+  </div>
+</sui-modal>
