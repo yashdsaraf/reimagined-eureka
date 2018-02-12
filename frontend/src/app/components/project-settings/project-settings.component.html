@@ -9,21 +9,15 @@
     </div>
   </div>
   <button class="ui blue button" name="button" id="edit-run" [ngClass]="{'mini': isMobile}">Edit run commands</button>
-  <div class="ui button" (click)="showModal = true" [ngClass]="{'mini': isMobile}">Theme: {{selectedTheme | initCap}}</div>
-
-</div>
-<!-- container -->
-
-<sui-modal *ngIf="showModal" isBasic="true" (dismissed)="showModal = false">
-  <div class="header">Select a theme</div>
-  <div id="modal-content" class="content">
-    <div class="ui middle aligned selection animated relaxed divided inverted huge list">
+  <div class="ui left dropdown button" suiDropdown>
+    <div class="text">Theme: {{selectedTheme | initCap}}</div>
+    <div class="upward menu" suiDropdownMenu>
       <div *ngFor="let theme of themes" (click)="onClick(theme)" class="item">
-        <div class="content">
-          <div class="header">{{theme | initCap}}</div>
-        </div>
+        {{theme | initCap}}
       </div>
     </div>
+    <!-- menu -->
   </div>
-</sui-modal>
-<!-- run-command modal -->
+  <!-- dropdown -->
+</div>
+<!-- container -->

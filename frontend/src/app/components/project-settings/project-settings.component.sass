@@ -25,16 +25,13 @@
   overflow: visible
 
   .ui.dropdown .menu
-    height: 14vh
-    overflow: auto
-
-#modal-content
-  height: 70vh
-  overflow: auto
-
-  .list .item
-    display: flex
-    justify-content: center
+    position: fixed
+    bottom: 10vh !important
+    left: auto
+    height: 60vh
+    overflow-y: auto
+    overflow-x: hidden
+    min-width: auto
 
 @media only screen and (max-width: 768px)
 
@@ -43,6 +40,3 @@
 
     .button
       margin-bottom: 1em
-
-    .ui.dropdown .menu
-      height: 10vh
