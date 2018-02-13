@@ -1,22 +1,13 @@
 <div class="container">
-  <div id="main">
-    <div id="quote">
-      <div id="quote-1">
-        <h1 class="ui huge center aligned header"  >
-          <span style="color: black; position: relative; left: 15px">MARKET</span>
-          <span style="color: gray; position: relative; left: 15px">PLACE</span>
-        </h1>
+    <header>
+      <div id="quote"><span>MARKET</span><span>PLACE</span></div>
+      <div id="search">
+        <div class="ui icon input">
+          <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
+          <i class="search icon"></i>
+        </div>
       </div>
-      <div id="quote-2">
-        <!-- <div id="place" class="ui left aligned category search">
-          <div class="ui icon input">
-            <input class="prompt" placeholder="Search plugins..." type="text">
-            <i class="search icon"></i>
-          </div>
-          <div class="results"></div>
-        </div> -->
-      </div>
-    </div>
+    </header>
     <div id="content">
         <div class="ui basic segment" id="featured-plugins">
           <div class="ui top attached segment">
@@ -26,8 +17,8 @@
           </div>
           <div class="ui basic attached segment">
             <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }">
-              <div class="card" *ngFor="let fplugin of fplugins">
-                <div class="ui blurring dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
+              <div class="card" *ngFor="let plugin of plugins">
+                <div *ngIf="!isMobile; else mobileImage" class="ui dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
                   <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
                     <div class="content">
                       <div class="center">
@@ -37,75 +28,35 @@
                       </div>
                     </div>
                     </sui-dimmer>
-                  <img src="https://dummyimage.com/200x200/000/fff.jpg&text=Demo+image">
+                  <div [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
                 </div>
+                <ng-template #mobileImage>
+                  <div class="ui image">
+                    <div [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
+                  </div>
+                </ng-template>
                 <div class="content">
-                  <a class="header">{{fplugin.name}}</a>
+                  <a class="header">{{plugin.name}}</a>
                   <div class="meta">
-                    <span class="date">Created on {{fplugin.createdOn}}</span>
+                    <span class="date">Created on {{plugin.createdOn}}</span>
                   </div>
                   <p class="description">
-                    {{fplugin.description}}
+                    {{plugin.description}}
                   </p>
                 </div>
                 <div class="extra content">
                   <a>
                     <i class="download icon"></i>
-                    {{fplugin.installs}} Installs
+                    {{plugin.installs}} Installs
                   </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }" id="plugin-cards">
-          <div class="card" *ngFor="let plugin of plugins">
-            <div class="ui blurring dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
-              <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
-                <div class="content">
-                  <div class="center">
-                    <div class="ui inverted button">
-                      <i class="download icon"></i>
-                      Install</div>
+                  <div *ngIf="isMobile">
+                    <div class="ui divider"></div>
+                    <button class="ui fluid primary button">Install</button>
                   </div>
                 </div>
-                </sui-dimmer>
-              <img src="https://dummyimage.com/200x200/000/fff.jpg&text=Demo+image">
-            </div>
-            <div class="content">
-              <a class="header">{{plugin.name}}</a>
-              <div class="meta">
-                <span class="date">Created on {{plugin.createdOn}}</span>
               </div>
-              <p class="description">
-                {{plugin.description}}
-              </p>
-            </div>
-            <div class="extra content">
-              <a>
-                <i class="download icon"></i>
-                {{plugin.installs}} Installs
-              </a>
             </div>
           </div>
         </div>
-    </div>
-  </div>
-  <div class="ui black inverted vertical segment" id="footer">
-    <div id="left-footer">
-      <strong>Contact us:</strong>
-    </div>
-    <div id="right-footer">
-      <p>
-        <i class="ui icon mail"></i>
-        <a href="mailto:help.plugncode@gmail.com">
-          <span class="footer-text">{{contacts.email}}</span>
-        </a>
-      </p>
-      <p>
-        <i class="ui icon text telephone"></i>
-        <span class="footer-text">{{contacts.phone}}</span>
-      </p>
-    </div>
-  </div> <!-- footer -->
+      </div>
 </div> <!-- container -->

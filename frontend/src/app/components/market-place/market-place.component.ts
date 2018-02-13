@@ -53,4 +53,9 @@ export class MarketPlaceComponent implements OnInit {
   ngOnInit() {
   }
 
+  getIdenticonObject(value: string, size: number) {
+    let obj = {value, size}
+    return JSON.stringify(obj)
+  }
+
 }
