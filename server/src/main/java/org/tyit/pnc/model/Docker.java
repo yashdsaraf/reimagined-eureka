@@ -19,8 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -38,16 +36,19 @@ public class Docker implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
   @Column(name = "ID")
-  private Long id;
+  private String id;
   @Basic(optional = false)
   @NotNull
   @Lob
   @Column(name = "SETTINGS")
   private String settings;
+  @Basic(optional = false)
+  @NotNull
+  @Column(name = "TMP_DIR")
+  private String tmpDir;
   @Basic(optional = false)
   @NotNull
   @Column(name = "IMAGE_ID")
@@ -59,21 +60,21 @@ public class Docker implements Serializable {
   public Docker() {
   }
 
-  public Docker(Long id) {
+  public Docker(String id) {
     this.id = id;
   }
 
-  public Docker(Long id, Long imageId, String settings) {
+  public Docker(String id, Long imageId, String settings) {
     this.id = id;
     this.imageId = imageId;
     this.settings = settings;
   }
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -83,6 +84,14 @@ public class Docker implements Serializable {
 
   public void setSettings(String settings) {
     this.settings = settings;
+  }
+
+  public String getTmpDir() {
+    return tmpDir;
+  }
+
+  public void setTmpDir(String tmpDir) {
+    this.tmpDir = tmpDir;
   }
 
   public AppUser getUserId() {

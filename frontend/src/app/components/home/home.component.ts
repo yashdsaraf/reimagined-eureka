@@ -142,7 +142,7 @@ export class HomeComponent {
     .subscribe(
       data => {
         this.indexService.clearAll()
-        this.router.navigate(['/index', {mode: data.mode}])
+        this.router.navigate(['/index', {mode: data}])
         this.progressBarService.dismiss()
       },
       (err: Object) => {

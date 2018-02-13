@@ -18,6 +18,6 @@ package org.tyit.pnc.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.tyit.pnc.model.Docker;
 
-public interface DockerRepository extends CrudRepository<Docker, Integer> {
+public interface DockerRepository extends CrudRepository<Docker, String> {
 
 }

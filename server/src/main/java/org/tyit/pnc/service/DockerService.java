@@ -56,9 +56,13 @@ public class DockerService {
     }
   }
 
-  public Output execute(Map<String, String> code, Path tmpDir, Docker docker) throws Exception {
+  public Output execute(String token, Map<String, String> code) throws Exception {
+    Docker docker = dockerRepository.findOne(token);
+    if (docker == null) {
+      throw new Exception("No project found in session");
+    }
     code.forEach((path, content) -> {
-      Path realPath = Paths.get(tmpDir.toString(), path);
+      Path realPath = Paths.get(docker.getTmpDir(), path);
       try {
         Files.write(realPath, content.getBytes(StandardCharsets.UTF_8),
                 StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
@@ -66,10 +70,10 @@ public class DockerService {
         Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
       }
     });
-    return dockerUtils.runDockerImage(tmpDir, docker);
+    return dockerUtils.runDockerImage(docker);
   }
 
-  public Docker build(Path tempDir, String pluginSettings, String projectSettings, AppUser user) throws IOException, Exception {
+  public Docker build(String token, Path tempDir, String pluginSettings, String projectSettings, AppUser user) throws IOException, Exception {
     ObjectMapper mapper = new ObjectMapper();
     PluginFile pluginFile = mapper.readValue(pluginSettings, PluginFile.class);
     ProjectSettings settings = mapper.readValue(projectSettings, ProjectSettings.class);
@@ -85,6 +89,8 @@ public class DockerService {
     docker.setUserId(user);
     long imageId = dockerUtils.buildDockerImage(tempDir.toAbsolutePath());
     docker.setImageId(imageId);
+    docker.setId(token);
+    docker.setTmpDir(tempDir.toAbsolutePath().toString());
     dockerRepository.save(docker);
     return docker;
   }

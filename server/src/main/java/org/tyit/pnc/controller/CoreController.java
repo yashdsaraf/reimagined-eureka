@@ -19,7 +19,6 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +27,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.service.CoreService;
+import org.tyit.pnc.utils.JwtUtils;
 
 /**
  *
@@ -42,9 +42,10 @@ public class CoreController {
 
   @PostMapping("/run")
   public ResponseEntity<Output> runProject(@RequestParam Map<String, String> code, HttpServletRequest request) {
-    HttpSession session = request.getSession(false);
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      Output output = coreService.execute(code, session);
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Output output = coreService.execute(jti, code);
       return ResponseEntity.ok(output);
     } catch (Exception ex) {
       Logger.getLogger(CoreController.class.getName()).log(Level.SEVERE, null, ex);
