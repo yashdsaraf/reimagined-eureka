@@ -61,6 +61,11 @@
               </div>
               <!-- profile -->
               <div class="divider"></div>
+              <div class="item" (click)="OpendevPrompt()">
+                Developer Access
+              </div>
+              <!-- dev-acess -->
+              <div class="divider"></div>
               <div id="logout" class="item" (click)="logout()">
                 <i class="icon power"></i>
                 Logout
@@ -74,5 +79,17 @@
     <!-- wrapper-2 -->
   </div>
   <!-- right-header -->
+  <sui-modal *ngIf="devPrompt" [isClosable]="true" (dismissed)="devPrompt = false"  size='tiny' #modal>
+      <h2 class="ui header">Developer Access</h2>
+      <div class="content">
+          <p>Paste you public key here, this will be used while verifying the plugins created by you.</p>
+          <div class="ui fluid input">
+            <input type="text" placeholder="Public key....">
+          </div>
+      </div>
+      <div class="actions">
+          <button class="ui compact green button" [ngClass]="" (click)="modal.approve('done')" autofocus>Submit</button>
+      </div>
+  </sui-modal>
 </div>
 <!-- container -->
