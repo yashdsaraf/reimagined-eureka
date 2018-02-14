@@ -16,13 +16,13 @@
 package org.tyit.pnc.controller;
 
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.repository.DockerRepository;
@@ -48,19 +48,33 @@ public class ProjectConfigController {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      Docker docker = dockerRepository.findOne(jti);
-      return ResponseEntity.ok().build();
+      Docker docker = getDockerFromJti(jti);
+      return ResponseEntity.ok(projectConfigService.getRunCommands(docker));
+    } catch (Exception ex) {
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @GetMapping("/default_runcmds")
+  public ResponseEntity<String> getPluginRunCommands(HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      return ResponseEntity.ok(projectConfigService.getPluginRunCommands(docker));
     } catch (Exception ex) {
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
   @PostMapping("/runcmds")
-  public ResponseEntity<String> setRunCommands(HttpServletRequest request) {
+  public ResponseEntity<String> setRunCommands(HttpServletRequest request,
+          @RequestParam("runcmds") String runcmds) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      Docker docker = dockerRepository.findOne(jti);
+      Docker docker = getDockerFromJti(jti);
+      projectConfigService.setRunCommands(docker, runcmds);
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -72,19 +86,21 @@ public class ProjectConfigController {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      Docker docker = dockerRepository.findOne(jti);
-      return ResponseEntity.ok().build();
+      Docker docker = getDockerFromJti(jti);
+      return ResponseEntity.ok(projectConfigService.getEntrypoint(docker));
     } catch (Exception ex) {
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
   @PostMapping("/entrypoint")
-  public ResponseEntity<String> setEntrypoint(HttpServletRequest request) {
+  public ResponseEntity<String> setEntrypoint(HttpServletRequest request,
+          @RequestParam("entrypoint") String entrypoint) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      Docker docker = dockerRepository.findOne(jti);
+      Docker docker = getDockerFromJti(jti);
+      projectConfigService.setEntrypoint(docker, entrypoint);
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);

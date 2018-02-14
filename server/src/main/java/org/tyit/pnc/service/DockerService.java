@@ -31,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
+import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.model.PluginFile;
+import org.tyit.pnc.model.Project;
 import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.utils.DockerUtils;
@@ -73,7 +75,9 @@ public class DockerService {
     return dockerUtils.runDockerImage(docker);
   }
 
-  public Docker build(String token, Path tempDir, String pluginSettings, String projectSettings, AppUser user) throws IOException, Exception {
+  public Docker build(String token, Path tempDir, Plugin plugin, Project project, AppUser user) throws IOException, Exception {
+    String pluginSettings = plugin.getPluginFile();
+    String projectSettings = project.getSettings();
     ObjectMapper mapper = new ObjectMapper();
     PluginFile pluginFile = mapper.readValue(pluginSettings, PluginFile.class);
     ProjectSettings settings = mapper.readValue(projectSettings, ProjectSettings.class);
@@ -91,6 +95,8 @@ public class DockerService {
     docker.setImageId(imageId);
     docker.setId(token);
     docker.setTmpDir(tempDir.toAbsolutePath().toString());
+    docker.setPluginId(plugin);
+    docker.setProjectId(project);
     dockerRepository.save(docker);
     return docker;
   }

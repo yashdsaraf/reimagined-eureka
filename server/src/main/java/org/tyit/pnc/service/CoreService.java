@@ -71,7 +71,7 @@ public class CoreService {
     ProjectSettings settings = new ProjectSettings(new String[0], entrypoint, new String[0], lang);
     project.setSettings(new ObjectMapper().writeValueAsString(settings));
     projectRepository.save(project);
-    Docker docker = dockerService.build(token, path, plugin.getPluginFile(), project.getSettings(), user);
+    Docker docker = dockerService.build(token, path, plugin, project, user);
     return new ObjectMapper().readValue(docker.getSettings(), PluginFile.class).getMode();
   }
 

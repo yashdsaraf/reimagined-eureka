@@ -56,6 +56,12 @@ public class Docker implements Serializable {
   @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
   private AppUser userId;
+  @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+  @ManyToOne(optional = false)
+  private Project projectId;
+  @JoinColumn(name = "PLUGIN_ID", referencedColumnName = "ID")
+  @ManyToOne(optional = false)
+  private Plugin pluginId;
 
   public Docker() {
   }
@@ -64,10 +70,14 @@ public class Docker implements Serializable {
     this.id = id;
   }
 
-  public Docker(String id, Long imageId, String settings) {
+  public Docker(String id, String settings, String tmpDir, Long imageId, AppUser userId, Project projectId, Plugin pluginId) {
     this.id = id;
-    this.imageId = imageId;
     this.settings = settings;
+    this.tmpDir = tmpDir;
+    this.imageId = imageId;
+    this.userId = userId;
+    this.projectId = projectId;
+    this.pluginId = pluginId;
   }
 
   public String getId() {
@@ -108,6 +118,22 @@ public class Docker implements Serializable {
 
   public void setImageId(Long imageId) {
     this.imageId = imageId;
+  }
+
+  public Project getProjectId() {
+    return projectId;
+  }
+
+  public void setProjectId(Project projectId) {
+    this.projectId = projectId;
+  }
+
+  public Plugin getPluginId() {
+    return pluginId;
+  }
+
+  public void setPluginId(Plugin pluginId) {
+    this.pluginId = pluginId;
   }
 
   @Override
