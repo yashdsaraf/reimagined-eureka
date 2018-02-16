@@ -1,62 +1,59 @@
 <div class="container">
-    <header>
-      <div id="quote"><span>MARKET</span><span>PLACE</span></div>
-      <div id="search">
-        <div class="ui icon input">
-          <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
-          <i class="search icon"></i>
-        </div>
+  <header>
+    <div id="quote">
+      <span>MARKET</span>
+      <span>PLACE</span>
+    </div>
+    <div id="search">
+      <div class="ui icon input">
+        <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
+        <i class="search icon"></i>
       </div>
-    </header>
-    <div id="content">
-        <div class="ui basic segment" id="featured-plugins">
-          <div class="ui top attached segment">
-            <h2 class="ui center aligned header">
-              Featured Plugins
-            </h2>
-          </div>
-          <div class="ui basic attached segment">
-            <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }">
-              <div class="card" *ngFor="let plugin of plugins">
-                <div *ngIf="!isMobile; else mobileImage" class="ui dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
-                  <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
-                    <div class="content">
-                      <div class="center">
-                        <div class="ui inverted button">
-                          <i class="download icon"></i>
-                          Install</div>
-                      </div>
-                    </div>
-                    </sui-dimmer>
-                  <div [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
-                </div>
-                <ng-template #mobileImage>
-                  <div class="ui image">
-                    <div [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
-                  </div>
-                </ng-template>
-                <div class="content">
-                  <a class="header">{{plugin.name}}</a>
-                  <div class="meta">
-                    <span class="date">Created on {{plugin.createdOn}}</span>
-                  </div>
-                  <p class="description">
-                    {{plugin.description}}
-                  </p>
-                </div>
-                <div class="extra content">
-                  <a>
+    </div>
+  </header>
+  <div id="content">
+    <div class="ui basic segment" id="featured-plugins">
+      <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }">
+        <div class="card" *ngFor="let plugin of plugins">
+          <div *ngIf="!isMobile; else mobileImage" class="ui dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
+            <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
+              <div class="content">
+                <div class="center">
+                  <div class="ui inverted button">
                     <i class="download icon"></i>
-                    {{plugin.installs}} Installs
-                  </a>
-                  <div *ngIf="isMobile">
-                    <div class="ui divider"></div>
-                    <button class="ui fluid primary button">Install</button>
-                  </div>
+                    Install</div>
                 </div>
               </div>
+            </sui-dimmer>
+            <div class="align-center" [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
+          </div>
+          <ng-template #mobileImage>
+            <div class="ui image">
+              <div class="align-center" [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
+            </div>
+          </ng-template>
+          <div class="content">
+            <a class="header">{{plugin.name}}</a>
+            <div class="meta">
+              <span class="date">Created on {{plugin.createdOn}}</span>
+            </div>
+            <p class="description">
+              {{plugin.description}}
+            </p>
+          </div>
+          <div class="extra content">
+            <a>
+              <i class="download icon"></i>
+              {{plugin.installs}} Installs
+            </a>
+            <div *ngIf="isMobile">
+              <div class="ui divider"></div>
+              <button class="ui fluid primary button">Install</button>
             </div>
           </div>
         </div>
       </div>
-</div> <!-- container -->
+    </div>
+  </div>
+</div>
+<!-- container -->
