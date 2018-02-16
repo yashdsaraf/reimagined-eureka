@@ -17,7 +17,6 @@ package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.Docker;
@@ -26,7 +25,6 @@ import org.tyit.pnc.model.PluginFile;
 import org.tyit.pnc.model.Project;
 import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.ProjectRepository;
-import org.tyit.pnc.utils.DockerUtils;
 
 /**
  *
@@ -65,13 +63,9 @@ public class ProjectConfigService {
     String[] runCmdsArr = mapper.readValue(runcmds, String[].class);
     Project project = docker.getProjectId();
     ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
-    Plugin plugin = docker.getPluginId();
-    PluginFile pluginFile = mapper.readValue(plugin.getPluginFile(), PluginFile.class);
     settings.setRunCmd(runCmdsArr);
     project.setSettings(mapper.writeValueAsString(settings));
     projectRepository.save(project);
-    DockerUtils dockerUtils = new DockerUtils();
-    dockerUtils.writeStarterScript(Paths.get(docker.getTmpDir()), pluginFile, settings);
   }
 
   public String getEntrypoint(Docker docker) throws IOException {
@@ -83,13 +77,9 @@ public class ProjectConfigService {
   public void setEntrypoint(Docker docker, String entrypoint) throws IOException, Exception {
     Project project = docker.getProjectId();
     ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
-    Plugin plugin = docker.getPluginId();
-    PluginFile pluginFile = mapper.readValue(plugin.getPluginFile(), PluginFile.class);
     settings.setEntrypoint(entrypoint);
     project.setSettings(mapper.writeValueAsString(settings));
     projectRepository.save(project);
-    DockerUtils dockerUtils = new DockerUtils();
-    dockerUtils.writeStarterScript(Paths.get(docker.getTmpDir()), pluginFile, settings);
   }
 
 }
