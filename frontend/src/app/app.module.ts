@@ -69,6 +69,7 @@ import {IndexService} from './services/index.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {ProgressBarService} from './services/progress-bar.service'
+import {ProjectSettingsService} from './services/project-settings.service'
 import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
@@ -145,6 +146,7 @@ export function init(startupService: StartupService) {
     LoginService,
     LogoutService,
     ProgressBarService,
+    ProjectSettingsService,
     StartupService,
     AdminGuard,
     DeveloperGuard,

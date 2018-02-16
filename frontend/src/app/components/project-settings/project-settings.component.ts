@@ -19,10 +19,12 @@ import {
   ViewChild
 } from '@angular/core'
 
+import {FlashMessagesService} from 'angular2-flash-messages/module/flash-messages.service'
+
 import {isMobile} from '../../app.component'
 import {Themes} from '../../utils/themes'
-
 import {EditorConfigService} from '../../services/editor-config.service'
+import {ProjectSettingsService} from '../../services/project-settings.service'
 
 @Component({
   selector: 'app-project-settings',
@@ -35,11 +37,17 @@ export class ProjectSettingsComponent {
   themes: string[]
   selectedTheme: string
   runCommandsModal = false
+  runCommands: string
+  entrypoint: string
   editorConfig: Object
-  _runCommands: string[]
+  resetLoading = false
   @ViewChild('editor') editor
 
-  constructor(private editorConfigService: EditorConfigService) {
+  constructor(
+    private editorConfigService: EditorConfigService,
+    private flashMessagesService: FlashMessagesService,
+    private projectSettingsService: ProjectSettingsService
+  ) {
     this.isMobile = isMobile
     this.themes = Themes
     this.editorConfig = editorConfigService.getConfig()
@@ -50,24 +58,78 @@ export class ProjectSettingsComponent {
 
   }
 
-  get runCommands(): string {
-    return 'Hello'
-  }
-
-  set runCommands(value: string) {
-    console.log('set')
-  }
-
   openRunCommandsModal() {
     this.runCommandsModal = true
     setTimeout(() => {
       this.editor.instance.refresh()
     }, 700)
+    this.projectSettingsService.getEntrypoint()
+      .subscribe(
+      data => this.entrypoint = data,
+      err => this.flashMessagesService.show(
+        this.decodeErr(err), {
+          cssClass: 'ui error message',
+          timeout: 4000
+        }
+      )
+      )
+    this.projectSettingsService.getRunCommands()
+      .subscribe(
+      data => {
+        this.runCommands = data.join('\n')
+        this.editor.instance.refresh()
+      },
+      err => this.flashMessagesService.show(
+        this.decodeErr(err), {
+          cssClass: 'ui error message',
+          timeout: 4000
+        }
+      )
+      )
+  }
+
+  resetRuncmds() {
+    this.resetLoading = true
+    this.projectSettingsService.getPluginRunCommands()
+      .subscribe(data => {
+        this.runCommands = data.join('\n')
+        this.editor.instance.refresh()
+        this.resetLoading = false
+      }, err => {
+        this.resetLoading = false
+      })
+  }
+
+  saveSettings() {
+    this.projectSettingsService.setEntryPoint(this.entrypoint)
+      .subscribe(data => this.flashMessagesService.show(
+        'Entrypoint updated successfully!', {
+          cssClass: 'ui success message',
+          timeout: 4000
+        }
+      ))
+    this.projectSettingsService.setRunCommands(this.runCommands.split('\n'))
+      .subscribe(data => this.flashMessagesService.show(
+        'Run commands updated successfully!', {
+          cssClass: 'ui success message',
+          timeout: 4000
+        }
+      ))
   }
 
   onClick(theme: string) {
     this.selectedTheme = theme
     this.editorConfigService.setOption('theme', this.selectedTheme)
+  }
+
+  decodeErr(err: any) {
+    if (err.hasOwnProperty("error_description")) {
+      return err['error_description']
+    }
+    if (err.hasOwnProperty('error')) {
+      return err['error']
+    }
+    return err
   }
 
 }

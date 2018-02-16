@@ -22,7 +22,8 @@
 </div>
 <!-- container -->
 
-<sui-modal *ngIf="runCommandsModal" isBasic="true" isInverted="true" [isClosable]="false" (dismissed)="runCommandsModal = false" (denied)="runCommandsModal = false" #modal>
+<sui-modal *ngIf="runCommandsModal" isBasic="true" isInverted="true" [isClosable]="false" (approved)="saveSettings()" (dismissed)="runCommandsModal = false"
+  (denied)="runCommandsModal = false" #modal>
   <div class="ui huge header">Project settings</div>
   <div class="ui mini header">Run commands:</div>
   <codemirror [config]="editorConfig" [(ngModel)]="runCommands" #editor>
@@ -30,12 +31,12 @@
   <br>
   <div class="ui mini header">Entrypoint:</div>
   <div class="ui fluid icon input">
-    <input type="text" placeholder="Type here...">
+    <input type="text" placeholder="Type here..." [(ngModel)]="entrypoint">
     <i class="icon sign in"></i>
   </div>
   <div class="actions">
     <button class="ui positive button" (click)="modal.approve()">Save</button>
     <button class="ui negative button" (click)="modal.deny()">Cancel</button>
-    <button class="ui primary button" (click)="runCommands = defaultRunCommands">Reset</button>
+    <button class="ui primary button" [ngClass]="{'loading disabled': resetLoading}" (click)="resetRuncmds()">Reset</button>
   </div>
 </sui-modal>
