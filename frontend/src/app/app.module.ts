@@ -49,6 +49,7 @@ import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
+import {MarketPlaceComponent} from './components/market-place/market-place.component'
 import {OutputComponent} from './components/output/output.component'
 import {ProfileComponent} from './components/profile/profile.component'
 import {ProgressBarModalComponent} from './components/progress-bar-modal/progress-bar-modal.component'
@@ -68,6 +69,7 @@ import {ImagesService} from './services/images.service'
 import {IndexService} from './services/index.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
+import {PluginsService} from './services/plugins.service'
 import {ProgressBarService} from './services/progress-bar.service'
 import {ProjectSettingsService} from './services/project-settings.service'
 import {StartupService} from './services/startup.service'
@@ -82,8 +84,7 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 //PIPES
 import {InitCapPipe} from './pipes/init-cap.pipe'
-import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
-import { MarketPlaceComponent } from './components/market-place/market-place.component'
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -145,6 +146,7 @@ export function init(startupService: StartupService) {
     IndexService,
     LoginService,
     LogoutService,
+    PluginsService,
     ProgressBarService,
     ProjectSettingsService,
     StartupService,

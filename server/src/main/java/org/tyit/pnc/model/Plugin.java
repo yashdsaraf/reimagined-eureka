@@ -15,6 +15,7 @@
  */
 package org.tyit.pnc.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
@@ -50,6 +51,7 @@ public class Plugin implements Serializable {
   @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
+  @JsonIgnore
   @Column(name = "ID")
   private Long id;
   @Basic(optional = false)

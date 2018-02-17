@@ -14,20 +14,27 @@
  * limitations under the License.
  */
 
-import {User} from "./user"
+import {Injectable} from '@angular/core'
+import {
+  HttpClient,
+  HttpParams
+} from '@angular/common/http'
+import {Observable} from 'rxjs/Observable'
+import {Plugin} from '../models/plugin'
 
-export interface Plugin {
-  name: string
-  description?: string
-  status: string
-  plugin_file: string
-  createdOn: Date
-  updatedOn: Date
-  developerId: {
-    userId: User
+@Injectable()
+export class PluginsService {
+
+  constructor(private http: HttpClient) {}
+
+  getPlugins(name?: string): Observable<Plugin[]> {
+    let params: HttpParams
+    if (name !== null && name !== undefined) {
+      params = new HttpParams().append('name', name)
+    } else {
+      params = new HttpParams()
+    }
+    return this.http.get<Plugin[]>('/api/plugins', {params})
   }
-  adminId: {
-    userId: User
-  }
-  appUserCollection: User[]
+
 }

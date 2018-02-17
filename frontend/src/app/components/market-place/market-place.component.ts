@@ -3,8 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import {ContactsService} from '../../services/contacts.service'
 import {ProgressBarService} from '../../services/progress-bar.service';
 import {isMobile} from '../../app.component'
-
-declare var $: any
+import {Plugin} from '../../models/plugin'
+import {PluginsService} from '../../services/plugins.service';
 
 @Component({
   selector: 'app-market-place',
@@ -18,31 +18,12 @@ export class MarketPlaceComponent implements OnInit {
     phone: ''
   }
   isMobile: boolean
-  plugins: any[] = [
-    {name: 'JAVA', createdOn: '2013', description: ' JAVA is made by yash saraf', installs: '1 million'},
-    {name: 'RUBY', createdOn: '2015', description: ' RUBY is made by yash saraf', installs: '2 million'},
-    {name: 'JAVA', createdOn: '2013', description: ' JAVA is made by yash saraf', installs: '1 million'},
-    {name: 'JAVA', createdOn: '2014', description: ' JAVA is made by yash saraf', installs: '1 million'},
-    {name: 'PHP', createdOn: '2015', description: ' PHP is made by yash saraf', installs: '1 million'},
-    {name: 'JAVA', createdOn: '2014', description: ' JAVA is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2013', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2013', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2013', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2013', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2013', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2013', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2017', description: ' PHYTHON is made by yash saraf', installs: '1 million'}
-  ]
-
-  fplugins: any[] = [
-    {name: 'JAVA', createdOn: '2013', description: ' JAVA is made by yash saraf', installs: '1 million'},
-    {name: 'PHP', createdOn: '2015', description: ' PHP is made by yash saraf', installs: '1 million'},
-    {name: 'PYTHON', createdOn: '2017', description: ' PHYTHON is made by yash saraf', installs: '1 million'},
-    {name: 'RUBY', createdOn: '2015', description: ' RUBY is made by yash saraf', installs: '2 million'}
-  ]
+  plugins: Plugin[] = []
+  _search: string
 
   constructor(
     private contactsService: ContactsService,
+    private pluginsService: PluginsService,
     private progressBarService: ProgressBarService
   ) {
     this.isMobile = isMobile
@@ -51,11 +32,28 @@ export class MarketPlaceComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getPlugins()
   }
 
   getIdenticonObject(value: string, size: number) {
     let obj = {value, size}
     return JSON.stringify(obj)
+  }
+
+  getPlugins(value?: string) {
+    this.pluginsService.getPlugins(value).
+      subscribe(
+        data => this.plugins = data
+      )
+  }
+
+  set search(value: string) {
+    this._search = value
+    this.getPlugins(value)
+  }
+
+  get search(): string {
+    return this._search
   }
 
 }

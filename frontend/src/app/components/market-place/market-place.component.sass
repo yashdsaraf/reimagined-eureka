@@ -36,16 +36,21 @@
     justify-content: space-between
 
     #quote
+      display: flex
+      align-items: center
       font-size: 2.5em
       padding: .4em
       font-weight: bold
       margin-top: 0.5em
 
-      & :first-child
+      span:first-child
         color: blue
 
-      & :nth-child(2)
+      span:nth-child(2)
         color: purple
+
+      .button
+        margin-left: 1em
 
     #search
       margin: 1.5em 1em auto auto

@@ -72,6 +72,9 @@ public class CoreService {
     project.setSettings(new ObjectMapper().writeValueAsString(settings));
     projectRepository.save(project);
     Docker docker = dockerService.build(token, path, plugin, project, user);
+    // Update user_plugin table
+    plugin.getAppUserCollection().add(user);
+    pluginRepository.save(plugin);
     return new ObjectMapper().readValue(docker.getSettings(), PluginFile.class).getMode();
   }
 
