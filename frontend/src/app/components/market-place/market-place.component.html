@@ -13,7 +13,7 @@
   </header>
   <div id="content">
     <div class="ui basic segment" id="featured-plugins">
-      <div class="ui centered link special cards" [ngClass]="{ 'one': isMobile , 'five': !isMobile }">
+      <div class="ui centered link special raised cards" [ngClass]="{ 'one': isMobile , 'seven': !isMobile }">
         <div class="card" *ngFor="let plugin of plugins">
           <div *ngIf="!isMobile; else mobileImage" class="ui dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
             <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
@@ -25,7 +25,7 @@
                 </div>
               </div>
             </sui-dimmer>
-            <div class="align-center" [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
+            <div class="align-center" [appIdenticon]="getIdenticonObject(plugin.name, 160)"></div>
           </div>
           <ng-template #mobileImage>
             <div class="ui image">
