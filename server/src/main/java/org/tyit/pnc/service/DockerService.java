@@ -58,11 +58,16 @@ public class DockerService {
     }
   }
 
-  public Output execute(String token, Map<String, String> code) throws Exception {
+  public Docker check(String token) throws Exception {
     Docker docker = dockerRepository.findOne(token);
     if (docker == null) {
       throw new Exception("No project found in session");
     }
+    return docker;
+  }
+
+  public Output execute(String token, Map<String, String> code) throws Exception {
+    Docker docker = check(token);
     ObjectMapper mapper = new ObjectMapper();
     Plugin plugin = docker.getPluginId();
     PluginFile pluginFile = mapper.readValue(plugin.getPluginFile(), PluginFile.class);
@@ -107,6 +112,12 @@ public class DockerService {
     docker.setProjectId(project);
     dockerRepository.save(docker);
     return docker;
+  }
+
+  public void delete(String token) throws Exception {
+    Docker docker = check(token);
+    dockerUtils.deleteDockerImage(docker);
+    dockerRepository.delete(docker);
   }
 
 }

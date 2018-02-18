@@ -1,11 +1,10 @@
 <div class="container">
   <div class="ui left labeled button" [ngClass]="{'mini': isMobile}">
-    <a class="ui basic right pointing label" [ngClass]="{'mini': isMobile}">
-      Plugin's Name
+    <a class="ui basic label" [ngClass]="{'mini': isMobile}">
+      Current plugin: &nbsp;&nbsp; <span style="color: green">{{currentPlugin}}</span>
     </a>
-    <div class="ui blue button" [ngClass]="{'mini': isMobile}" style="margin-bottom: 0px;">
+    <div class="ui primary icon button" [ngClass]="{'mini': isMobile}" style="margin-bottom: 0px;" routerLink="/marketplace">
       <i class="edit icon"></i>
-      Change Plugins
     </div>
   </div>
   <button class="ui blue button" id="edit-run" [ngClass]="{'mini': isMobile}" (click)="openRunCommandsModal()">Edit run commands</button>

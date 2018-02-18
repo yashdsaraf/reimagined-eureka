@@ -37,4 +37,10 @@ export class PluginsService {
     return this.http.get<Plugin[]>('/api/plugins', {params})
   }
 
+  installPlugin(name: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('name', name)
+    return this.http.post('/api/plugins', formData, {responseType: 'text'})
+  }
+
 }

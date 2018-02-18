@@ -52,10 +52,6 @@ public class CoreService {
   @Autowired
   private DockerService dockerService;
 
-  public Output execute(String token, Map<String, String> code) throws Exception {
-    return dockerService.execute(token, code);
-  }
-
   public String build(String token, String lang, String projectName, String entrypoint, String userName) throws Exception {
     Plugin plugin = pluginRepository.findByName(lang);
     if (plugin == null) {

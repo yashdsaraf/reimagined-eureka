@@ -15,14 +15,24 @@
  */
 package org.tyit.pnc.controller;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Plugin;
+import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.service.AdminService;
+import org.tyit.pnc.service.PluginService;
+import org.tyit.pnc.utils.JwtUtils;
 
 /**
  *
@@ -35,9 +45,39 @@ public class PluginController {
   @Autowired
   private AdminService adminService;
 
+  @Autowired
+  private DockerRepository dockerRepository;
+
+  @Autowired
+  private PluginService pluginService;
+
   @GetMapping
   public ResponseEntity<Iterable<Plugin>> getPlugins(@RequestParam(name = "name", required = false) String name) {
     return ResponseEntity.ok(adminService.getPlugins(name));
+  }
+
+  @PostMapping
+  public ResponseEntity<String> installPlugin(
+          @RequestParam("name") String name,
+          HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      pluginService.install(docker, name);
+      return ResponseEntity.ok().build();
+    } catch (Exception ex) {
+      Logger.getLogger(PluginController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  private Docker getDockerFromJti(String jti) throws Exception {
+    Docker docker = dockerRepository.findOne(jti);
+    if (docker == null) {
+      throw new Exception("No project found in session");
+    }
+    return docker;
   }
 
 }

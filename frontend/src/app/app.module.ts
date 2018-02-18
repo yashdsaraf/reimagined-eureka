@@ -42,6 +42,7 @@ import {AdminUsersComponent} from './components/admin-users/admin-users.componen
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {BlogComponent} from './components/blog/blog.component'
+import {CreateProjectComponent} from './components/create-project/create-project.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
@@ -79,6 +80,7 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 import {AdminGuard} from './guards/admin.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
+import {ProjectGuard} from './guards/project.guard'
 import {UserGuard} from './guards/user.guard'
 //DIRECTIVES
 import {IdenticonDirective} from './directives/identicon.directive'
@@ -101,6 +103,7 @@ export function init(startupService: StartupService) {
     AdminUsersComponent,
     AppComponent,
     BlogComponent,
+    CreateProjectComponent,
     DocsComponent,
     FileExComponent,
     HeaderComponent,
@@ -109,16 +112,15 @@ export function init(startupService: StartupService) {
     LoginComponent,
     LogoutComponent,
     OutputComponent,
+    MarketPlaceComponent,
     ProfileComponent,
     ProgressBarModalComponent,
+    ProjectSettingsComponent,
     RegisterComponent,
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe,
-    ProgressBarModalComponent,
-    MarketPlaceComponent,
-    ProjectSettingsComponent
+    SanitizeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
@@ -153,6 +155,7 @@ export function init(startupService: StartupService) {
     AdminGuard,
     DeveloperGuard,
     GuestGuard,
+    ProjectGuard,
     UserGuard
   ],
   entryComponents: [ProgressBarModalComponent],

@@ -1,6 +1,6 @@
 <div id="container">
   <div id="left-header">
-    <a class="ui logo icon image" routerLink="/">
+    <a class="ui logo icon image" routerLink="/home">
       <!-- <img id="logo" src="../../../assets/images/logo.png"> -->
       <div id="logo">Plug n' Code</div>
     </a>
@@ -27,6 +27,7 @@
       </div>
       <ng-template #loggedIn>
         <div id="logged-in">
+          <div id="editor-btn" class="ui secondary inverted button" routerLink="/index">Go to editor</div>
           <div id="username">Hi, {{name}}</div>
           <div class="ui dropdown" suiDropdown>
             <div id="profile" [appIdenticon]="getIdenticonObject()">

@@ -24,6 +24,7 @@ import {
 import {AboutUsComponent} from './components/about-us/about-us.component'
 import {AdminComponent} from './components/admin/admin.component'
 import {BlogComponent} from './components/blog/blog.component'
+import {CreateProjectComponent} from './components/create-project/create-project.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
@@ -37,23 +38,26 @@ import {MarketPlaceComponent} from './components/market-place/market-place.compo
 import {AdminGuard} from './guards/admin.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
+import {ProjectGuard} from './guards/project.guard'
 import {UserGuard} from './guards/user.guard'
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'aboutus', component: AboutUsComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AdminGuard]},
   {path: 'blog', component: BlogComponent},
+  {path: 'createproject', component: CreateProjectComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
   {path: 'docs', component: DocsComponent},
-  {path: 'index', component: IndexComponent, canActivate: [GuestGuard]},
-  {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard]},
+  {path: 'home', component: HomeComponent},
+  {path: 'index', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
+  {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'logout/:message', component: LogoutComponent},
   {path: 'logout/:message/:error', component: LogoutComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
   {path: 'register', component: RegisterComponent},
-  {path: 'marketplace', component: MarketPlaceComponent}
+  {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]}
 
 ]
 

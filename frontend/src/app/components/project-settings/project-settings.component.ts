@@ -23,6 +23,7 @@ import {FlashMessagesService} from 'angular2-flash-messages/module/flash-message
 
 import {isMobile} from '../../app.component'
 import {Themes} from '../../utils/themes'
+import {CoreService} from '../../services/core.service'
 import {EditorConfigService} from '../../services/editor-config.service'
 import {ProjectSettingsService} from '../../services/project-settings.service'
 
@@ -41,9 +42,11 @@ export class ProjectSettingsComponent {
   entrypoint: string
   editorConfig: Object
   resetLoading = false
+  currentPlugin = ''
   @ViewChild('editor') editor
 
   constructor(
+    private coreService: CoreService,
     private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
     private projectSettingsService: ProjectSettingsService
@@ -55,7 +58,9 @@ export class ProjectSettingsComponent {
   }
 
   ngAfterViewInit() {
-
+    this.coreService.check().subscribe(
+      data => this.currentPlugin = data
+    )
   }
 
   openRunCommandsModal() {
