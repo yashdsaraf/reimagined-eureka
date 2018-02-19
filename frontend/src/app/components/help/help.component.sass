@@ -16,40 +16,31 @@
 
 @import base
 
-#container
-  display: flex
-  height: 100%
-  width: 100%
+#help
+  position: absolute
+  right: 0
+  margin: 0
+  margin-top: 6em
+  border-top-right-radius: 0
+  border-bottom-right-radius: 0
+  width: 2.4em
+  padding: 0.5em
 
-  #menu
-    border: hidden
-    font-size: 1.3em
-    flex-basis: 21%
-    height: 100%
+  .icon
     margin: 0
-    overflow: auto
-    padding-left: 0.5em
-    width: 100%
+    padding: 0
+    font-size: 1.2em
 
-    .divider
-      margin: 0
+  &:hover
+    width: 10em
 
-    .item
-      font-weight: bold
-      margin: 0
-      padding: 0.3em 0
+  &:active
+    width: 10em
 
-      .item
-        color: grey
-        font-size: 0.8em
+  span
+    color: green
 
-        &:hover
-          color: blue
+@media only screen and (max-width: 768px)
 
-  #target-div
-    flex-basis: 80%
-    height: 100%
-    margin: 0
-    overflow: auto
-    padding: 1em
-    width: 100%
+  #help
+    margin-top: 6.7em
