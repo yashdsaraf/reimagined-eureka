@@ -15,13 +15,16 @@
  */
 
 import {Component, OnInit} from '@angular/core'
+import {Router} from '@angular/router'
 
+import {CoreService} from '../../services/core.service'
 import {FlashMessagesService} from 'angular2-flash-messages'
+import {IndexService} from '../../services/index.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
-import {isMobile} from '../../app.component'
 import {Plugin} from '../../models/plugin'
 import {PluginsService} from '../../services/plugins.service'
-import {decodeError} from '../../utils/general-utils';
+import {isMobile} from '../../app.component'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-market-place',
@@ -37,13 +40,27 @@ export class MarketPlaceComponent implements OnInit {
   isMobile: boolean
   plugins: Plugin[] = []
   _search: string
+  isProjectOpen: boolean
+  projectDetails = {
+    plugin: '',
+    project: '',
+    entrypoint: ''
+  }
+  createProjectModal: boolean
 
   constructor(
+    private coreService: CoreService,
     private flashMessagesService: FlashMessagesService,
+    private indexService: IndexService,
     private pluginsService: PluginsService,
-    private progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService,
+    private router: Router
   ) {
     this.isMobile = isMobile
+    coreService.check().subscribe(
+      data => this.isProjectOpen = true,
+      err => this.isProjectOpen = false
+    )
   }
 
   ngOnInit() {
@@ -60,6 +77,18 @@ export class MarketPlaceComponent implements OnInit {
       subscribe(
         data => this.plugins = data
       )
+  }
+
+  onClick(name: string) {
+    if (this.isProjectOpen) {
+      this.installPlugin(name)
+      return
+    }
+    this.projectDetails.plugin = name
+    // Reset project details
+    this.projectDetails.project = ''
+    this.projectDetails.entrypoint = ''
+    this.createProjectModal = true
   }
 
   installPlugin(name: string) {
@@ -79,6 +108,32 @@ export class MarketPlaceComponent implements OnInit {
       })
   }
 
+  createProject() {
+    this.createProjectModal = false
+    this.progressBarService.show(null, "Creating project")
+    this.coreService.create(
+      this.projectDetails.plugin,
+      this.projectDetails.project,
+      this.projectDetails.entrypoint
+    ).subscribe(
+      data => {
+        this.indexService.clearAll()
+        this.router.navigate(['/index', {mode: data}])
+        this.progressBarService.dismiss()
+      },
+      err => {
+        this.progressBarService.dismiss()
+        let message = decodeError(err)
+        if (message == '' || message == null || message == undefined) {
+          message = 'An internal error occured'
+        }
+        this.flashMessagesService.show(message, {
+          cssClass: 'ui error message', timeout: 4000
+        })
+      }
+    )
+  }
+
   set search(value: string) {
     this._search = value
     this.getPlugins(value)
@@ -86,6 +141,10 @@ export class MarketPlaceComponent implements OnInit {
 
   get search(): string {
     return this._search
+  }
+
+  isProjectDetailsEmpty() {
+    return this.projectDetails.project == '' || this.projectDetails.project == null || this.projectDetails.entrypoint == '' || this.projectDetails.entrypoint == null
   }
 
 }

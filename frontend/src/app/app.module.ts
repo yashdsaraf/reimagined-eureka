@@ -42,7 +42,6 @@ import {AdminUsersComponent} from './components/admin-users/admin-users.componen
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {BlogComponent} from './components/blog/blog.component'
-import {CreateProjectComponent} from './components/create-project/create-project.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
@@ -103,7 +102,6 @@ export function init(startupService: StartupService) {
     AdminUsersComponent,
     AppComponent,
     BlogComponent,
-    CreateProjectComponent,
     DocsComponent,
     FileExComponent,
     HeaderComponent,

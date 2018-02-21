@@ -22,7 +22,7 @@
             <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
               <div class="content">
                 <div class="center">
-                  <div class="ui inverted button" (click)="installPlugin(plugin.name)">
+                  <div class="ui inverted button" (click)="onClick(plugin.name)">
                     <i class="download icon"></i>
                     Install</div>
                 </div>
@@ -54,7 +54,7 @@
             </a>
             <div *ngIf="isMobile">
               <div class="ui divider"></div>
-              <button class="ui fluid primary button" (click)="installPlugin(plugin.name)">Install</button>
+              <button class="ui fluid primary button" (click)="onClick(plugin.name)">Install</button>
             </div>
           </div>
           <!-- extra content -->
@@ -73,3 +73,24 @@
   <!-- content -->
 </div>
 <!-- container -->
+
+<sui-modal *ngIf="createProjectModal" [isClosable]="true" [isBasic]="true" (approved)="createProject()" (denied)="createProjectModal = false" #projectDetailsModal>
+  <div class="ui header">Enter project details</div>
+  <div class="content">
+    <div style="color: white" class="ui small header">Project name</div>
+    <div class="ui inverted input">
+      <input type="text" name="project" [(ngModel)]="projectDetails.project" placeholder="e.g My project">
+    </div>
+    <div style="color: white" class="ui small header">File name <small>(with extension)</small></div>
+    <div class="ui inverted input">
+      <input type="text" name="entrypoint" [(ngModel)]="projectDetails.entrypoint" placeholder="e.g Main.py">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button" (click)="projectDetailsModal.deny()">Cancel</div>
+    <div class="ui icon primary button" (click)="projectDetailsModal.approve()" [ngClass]="{disabled: isProjectDetailsEmpty()}">
+      <i class="icon thumbs up"></i>
+      Create
+    </div>
+  </div>
+</sui-modal>

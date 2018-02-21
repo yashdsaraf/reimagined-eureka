@@ -27,6 +27,7 @@ import {ImagesService} from '../../services/images.service'
 import {IndexService} from '../../services/index.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
 import {isMobile} from '../../app.component'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-home',
@@ -138,23 +139,16 @@ export class HomeComponent {
 
   quickSetup() {
     this.progressBarService.show(null, "Creating project")
-    this.coreService.quickSetup(this.quickSetupLang, this.projectName, this.fileName)
+    this.coreService.create(this.quickSetupLang, this.projectName, this.fileName)
     .subscribe(
       data => {
         this.indexService.clearAll()
         this.router.navigate(['/index', {mode: data}])
         this.progressBarService.dismiss()
       },
-      (err: Object) => {
+      err => {
         this.progressBarService.dismiss()
-        let message
-        if (err.hasOwnProperty('error_description')) {
-          message = err['error_description']
-        } else if (err.hasOwnProperty('error')) {
-          message = err['error']
-        } else {
-          message = err
-        }
+        let message = decodeError(err)
         if (message == '' || message == null || message == undefined) {
           message = 'An internal error occured'
         }

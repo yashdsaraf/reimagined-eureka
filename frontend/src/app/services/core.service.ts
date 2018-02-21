@@ -37,9 +37,12 @@ export class CoreService {
     return this.http.post<Output>('/api/project/run', formData)
   }
 
-  public quickSetup(lang: string, projectName: string, entrypoint: string): Observable<any> {
-    let params = new HttpParams().append('project', projectName).append('entrypoint', entrypoint)
-    return this.http.get(`/api/project/setup/${lang}`, {params, responseType: 'text'})
+  public create(lang: string, projectName: string, entrypoint: string): Observable<any> {
+    let params = new HttpParams()
+      .append('project', projectName)
+      .append('entrypoint', entrypoint)
+      .append('plugin', lang)
+    return this.http.get('/api/project/create', {params, responseType: 'text'})
   }
 
   public delete(): Observable<any> {

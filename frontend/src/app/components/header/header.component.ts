@@ -20,9 +20,10 @@ import {
 } from '@angular/core'
 
 import {AuthService} from '../../services/auth.service'
-import {isMobile} from '../../app.component'
-import {LogoutService} from '../../services/logout.service'
 import {DisplayNameService} from '../../services/display-name.service'
+import {IndexService} from '../../services/index.service'
+import {LogoutService} from '../../services/logout.service'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-header',
@@ -36,8 +37,9 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private logoutService: LogoutService,
-    private displayNameService: DisplayNameService
+    private displayNameService: DisplayNameService,
+    private indexService: IndexService,
+    private logoutService: LogoutService
   ) {
     this.isMobile = isMobile
   }
