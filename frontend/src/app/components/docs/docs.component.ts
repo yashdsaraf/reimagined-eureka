@@ -16,6 +16,7 @@
 
 import {Component} from '@angular/core'
 import {Http} from '@angular/http'
+import {ActivatedRoute} from '@angular/router'
 
 import {DocItem, DOCS} from './docs-content'
 
@@ -29,9 +30,18 @@ export class DocsComponent {
   menu: DocItem[]
   content: string
 
-  constructor(private http: Http) {
+  constructor(
+    private route: ActivatedRoute,
+    private http: Http
+  ) {
     this.menu = DOCS
-    this.content = "<h1>Hello</h1>"
+    let page = route.snapshot.params['page']
+    if (page !== undefined && page !== null) {
+      page = page.split(',').join('/')
+      this.loadUrlIntoDiv('assets/docs/' + page)
+    } else {
+      this.loadUrlIntoDiv('assets/docs/index.html')
+    }
   }
 
   loadUrlIntoDiv(url: string) {

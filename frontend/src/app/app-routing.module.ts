@@ -50,18 +50,18 @@ const routes: Routes = [
   {path: 'createproject', component: MarketPlaceComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
   {path: 'createproject/:plugin', component: MarketPlaceComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
   {path: 'docs', component: DocsComponent},
+  {path: 'docs/:page', component: DocsComponent},
   {path: 'home', component: HomeComponent},
   {path: 'index', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
   {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
   {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
+  {path: 'logout', component: LogoutComponent},
   {path: 'logout/:message', component: LogoutComponent},
   {path: 'logout/:message/:error', component: LogoutComponent},
-  {path: 'logout', component: LogoutComponent},
+  {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
   {path: 'plugins', component: DeveloperPluginsComponent, canActivate: [DeveloperGuard]},
-  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
-  {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]}
-
+  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]}
 ]
 
 @NgModule({

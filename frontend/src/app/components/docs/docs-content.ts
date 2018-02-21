@@ -14,7 +14,7 @@ export const DOCS: DocItem[] = [
       },
       {
         title: 'How to open, save or import a project?',
-        url: 'assets/docs/projects/How_to_open,_save_or_import_a_project.html'
+        url: 'assets/docs/projects/How_to_open_save_or_import_a_project.html'
       }
     ]
   },
