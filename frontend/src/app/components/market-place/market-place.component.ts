@@ -15,7 +15,7 @@
  */
 
 import {Component, OnInit} from '@angular/core'
-import {Router} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 
 import {CoreService} from '../../services/core.service'
 import {FlashMessagesService} from 'angular2-flash-messages'
@@ -49,6 +49,7 @@ export class MarketPlaceComponent implements OnInit {
   createProjectModal: boolean
 
   constructor(
+    private route: ActivatedRoute,
     private coreService: CoreService,
     private flashMessagesService: FlashMessagesService,
     private indexService: IndexService,
@@ -61,6 +62,11 @@ export class MarketPlaceComponent implements OnInit {
       data => this.isProjectOpen = true,
       err => this.isProjectOpen = false
     )
+    let plugin = this.route.snapshot.params.plugin
+    if (plugin !== undefined && plugin !== null) {
+      this.projectDetails.plugin = plugin
+      this.createProjectModal = true
+    }
   }
 
   ngOnInit() {

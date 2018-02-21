@@ -16,18 +16,11 @@
 
 import {Component} from '@angular/core'
 import {Router} from '@angular/router'
-import {Observable} from 'rxjs/Observable'
-
-import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
-import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
-import {IndexService} from '../../services/index.service'
-import {ProgressBarService} from '../../services/progress-bar.service'
 import {isMobile} from '../../app.component'
-import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-home',
@@ -79,18 +72,11 @@ export class HomeComponent {
     email: '',
     phone: ''
   }
-  quickSetupLang = ''
-  projectName = ''
-  fileName = ''
 
   constructor(
     private authService: AuthService,
     private contactsService: ContactsService,
-    private coreService: CoreService,
-    private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
-    private indexService: IndexService,
-    private progressBarService: ProgressBarService,
     private router: Router
   ) {
     this.isMobile = isMobile
@@ -127,41 +113,6 @@ export class HomeComponent {
   dataUri(env: string) {
     let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
     return uri
-  }
-
-  quickSetupModalShow(env: string) {
-    if (this.isNotLoggedIn()) {
-      this.router.navigate(['/login'])
-      return
-    }
-    this.quickSetupLang = env
-  }
-
-  quickSetup() {
-    this.progressBarService.show(null, "Creating project")
-    this.coreService.create(this.quickSetupLang, this.projectName, this.fileName)
-    .subscribe(
-      data => {
-        this.indexService.clearAll()
-        this.router.navigate(['/index', {mode: data}])
-        this.progressBarService.dismiss()
-      },
-      err => {
-        this.progressBarService.dismiss()
-        let message = decodeError(err)
-        if (message == '' || message == null || message == undefined) {
-          message = 'An internal error occured'
-        }
-        this.flashMessagesService.show(message, {
-          cssClass: 'ui error message', timeout: 4000
-        })
-      }
-    )
-    this.quickSetupLang = ''
-  }
-
-  isProjectDetailsEmpty() {
-    return this.projectName == '' || this.projectName == null || this.fileName == '' || this.fileName == null
   }
 
 }

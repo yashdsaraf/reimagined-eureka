@@ -46,6 +46,7 @@ const routes: Routes = [
   {path: 'admin', component: AdminComponent, canActivate: [AdminGuard]},
   {path: 'blog', component: BlogComponent},
   {path: 'createproject', component: MarketPlaceComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
+  {path: 'createproject/:plugin', component: MarketPlaceComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
   {path: 'docs', component: DocsComponent},
   {path: 'home', component: HomeComponent},
   {path: 'index', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
