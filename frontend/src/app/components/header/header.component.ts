@@ -36,7 +36,9 @@ export class HeaderComponent implements OnInit {
   isHeaderOpen: boolean
   isMobile: boolean
   isEditorBtnVisible: boolean
-  devPrompt = false
+  devPrompt: boolean
+  isFormLoading: boolean
+  isFormError: boolean
 
   constructor(
     private authService: AuthService,
@@ -81,9 +83,12 @@ export class HeaderComponent implements OnInit {
     this.logoutService.logout()
   }
 
-  OpendevPrompt()
-  {
+  openDevPrompt() {
     this.devPrompt = true
+  }
+
+  submitKey() {
+    this.isFormError = true
   }
 
 }

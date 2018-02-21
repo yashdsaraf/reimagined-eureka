@@ -60,17 +60,20 @@
                 Profile
               </div>
               <!-- profile -->
-              <div class="divider"></div>
-              <div class="item" (click)="OpendevPrompt()">
-                Developer Access
-              </div>
-              <!-- dev-acess -->
+              <ng-container>
+                <div class="divider"></div>
+                <div id="dev-access" class="item" (click)="openDevPrompt()">
+                  Become a developer!
+                </div>
+              </ng-container>
+              <!-- dev-access -->
               <div class="divider"></div>
               <div id="logout" class="item" (click)="logout()">
                 <i class="icon power"></i>
                 Logout
               </div>
               <!-- logout -->
+              <div class="divider"></div>
             </div>
           </div>
         </div>
@@ -79,17 +82,21 @@
     <!-- wrapper-2 -->
   </div>
   <!-- right-header -->
-  <sui-modal *ngIf="devPrompt" [isClosable]="true" (dismissed)="devPrompt = false"  size='tiny' #modal>
-      <h2 class="ui header">Developer Access</h2>
-      <div class="content">
-          <p>Paste you public key here, this will be used while verifying the plugins created by you.</p>
-          <div class="ui fluid input">
-            <input type="text" placeholder="Public key....">
-          </div>
-      </div>
-      <div class="actions">
-          <button class="ui compact green button" [ngClass]="" (click)="modal.approve('done')" autofocus>Submit</button>
-      </div>
-  </sui-modal>
 </div>
 <!-- container -->
+
+<sui-modal *ngIf="devPrompt" (denied)="devPrompt = false" size="tiny" #devPromptModal>
+  <h2 class="ui header">Become a developer!</h2>
+  <div class="content">
+    <div class="ui error form" [ngClass]="{loading: isFormLoading}">
+      <div class="field" [ngClass]="{error: isFormError}">
+        <label>Paste you public key here, this will be used while verifying the plugins created by you.</label>
+        <textarea placeholder="Public key here..."></textarea>
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <button class="ui compact green button" [ngClass]="" (click)="submitKey()" autofocus>Submit</button>
+  </div>
+</sui-modal>
+<!-- Developer access prompt -->

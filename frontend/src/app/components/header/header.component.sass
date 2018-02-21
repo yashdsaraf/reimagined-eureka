@@ -16,6 +16,12 @@
 
 @import base
 
+$logout-hover-bg: #EF4F43
+$devaccess-hover-bg: #14a9e7
+$logout-hover-color: white
+$devaccess-hover-color: white
+$guest-hover-color: green
+
 #container
   align-items: center
   background: $header-dark
@@ -96,10 +102,15 @@
           font-size: 1em
 
         #logout:hover
-          color: red
+          background-color: $logout-hover-bg
+          color: $logout-hover-color
 
-        .guest-button, .item:hover
-          color: green
+        #dev-access:hover
+          background-color: $devaccess-hover-bg
+          color: $devaccess-hover-color
+
+        .guest-button
+          color: $guest-hover-color
 
         #username
           font-family: $sans-serif
