@@ -21,10 +21,12 @@ import {
 import {Router, NavigationEnd} from '@angular/router'
 
 import {AuthService} from '../../services/auth.service'
+import {DeveloperService} from '../../services/developer.service'
 import {DisplayNameService} from '../../services/display-name.service'
 import {IndexService} from '../../services/index.service'
 import {LogoutService} from '../../services/logout.service'
 import {isMobile} from '../../app.component'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-header',
@@ -39,9 +41,12 @@ export class HeaderComponent implements OnInit {
   devPrompt: boolean
   isFormLoading: boolean
   isFormError: boolean
+  formError: string
+  publicKey = ''
 
   constructor(
     private authService: AuthService,
+    private developerService: DeveloperService,
     private displayNameService: DisplayNameService,
     private indexService: IndexService,
     private logoutService: LogoutService,
@@ -49,6 +54,7 @@ export class HeaderComponent implements OnInit {
   ) {
     this.isMobile = isMobile
     this.isHeaderOpen = true
+    this.devPrompt = false
     router.events.subscribe((_: NavigationEnd) => this.isEditorBtnVisible = !_.url.startsWith('/index'))
   }
 
@@ -88,7 +94,19 @@ export class HeaderComponent implements OnInit {
   }
 
   submitKey() {
-    this.isFormError = true
+    this.isFormError = false
+    this.formError = ''
+    this.isFormLoading = true
+    this.developerService.getDeveloperAccess(this.publicKey)
+      .then(() => {
+        this.isFormLoading = false
+        this.devPrompt = false
+        this.logout()
+      }).catch(err => {
+        this.isFormLoading = false
+        this.isFormError = true
+        this.formError = decodeError(err)
+      })
   }
 
 }

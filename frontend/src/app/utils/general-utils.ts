@@ -19,6 +19,9 @@ export function decodeError(err: Object): any {
     return err['error_description']
   }
   if ('error' in err) {
+    if (typeof err['error'] === 'object' && 'error_description' in err['error']) {
+      return err['error']['error_description']
+    }
     return err['error']
   }
   return err

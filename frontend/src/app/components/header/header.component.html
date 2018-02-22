@@ -60,7 +60,7 @@
                 Profile
               </div>
               <!-- profile -->
-              <ng-container>
+              <ng-container *ngIf="getRole() == 'USER'">
                 <div class="divider"></div>
                 <div id="dev-access" class="item" (click)="openDevPrompt()">
                   Become a developer!
@@ -88,12 +88,26 @@
 <sui-modal *ngIf="devPrompt" (denied)="devPrompt = false" size="tiny" #devPromptModal>
   <h2 class="ui header">Become a developer!</h2>
   <div class="content">
+    <div class="ui header">Steps to generate your key pair:</div>
+    <div class="ui teal message">
+      <div id="key-commands" class="ui bulleted relaxed divided list">
+        <div class="item">openssl genrsa -out private_key.pem 2048</div>
+        <div class="item">openssl rsa -in private_key.pem -pubout -outform PEM -out public_key.pem</div>
+      </div>
+      <!-- list -->
+    </div>
+    <!-- message -->
     <div class="ui error form" [ngClass]="{loading: isFormLoading}">
       <div class="field" [ngClass]="{error: isFormError}">
-        <label>Paste you public key here, this will be used while verifying the plugins created by you.</label>
-        <textarea placeholder="Public key here..."></textarea>
+        <label>Paste the content of your public key <em>(public_key.pem)</em> here, this will be used for verification while creating a plugin.</label>
+        <textarea placeholder="Public key here..." [(ngModel)]="publicKey"></textarea>
       </div>
+      <!-- field -->
+      <div class="ui error message">{{formError}}</div>
     </div>
+    <!-- form -->
+    <br>
+    <small>You will be logged out automatically once developer access is granted.</small>
   </div>
   <div class="actions">
     <button class="ui compact green button" [ngClass]="" (click)="submitKey()" autofocus>Submit</button>

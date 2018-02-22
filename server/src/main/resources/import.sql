@@ -2,8 +2,8 @@ INSERT INTO APP_USER VALUES ('0', TO_DATE('01-70-01', 'DD-RR-MM'), 'guest@plugnc
 INSERT INTO APP_USER VALUES ('1', TO_DATE('01-70-01', 'DD-RR-MM'), 'yashdsaraf@gmail.com', 'Yash D. Saraf', '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358', 'ADMIN', 'yashdsaraf');
 INSERT INTO APP_USER VALUES ('2', TO_DATE('01-70-01', 'DD-RR-MM'), 'raeesmulla97@gmail.com', 'Raees R. Mulla', '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358', 'ADMIN', 'raeesmulla97');
 INSERT INTO APP_USER VALUES ('3', TO_DATE('01-70-01', 'DD-RR-MM'), 'shaggi199712@gmail.com', 'Sachin S. Negi', '7676aaafb027c825bd9abab78b234070e702752f625b752e55e55b48e607e358', 'ADMIN', 'shaggi199712');
-INSERT INTO APP_USER VALUES ('4', TO_DATE('24-17-11', 'DD-RR-MM'), 'johndoe123@gmail.com', 'John Doe', 'dcb694aa0322f143ed970e275c807bf123bd5db4f73140b94ccc757f42dc8043', 'USER', 'johndoe');
-INSERT INTO APP_USER VALUES ('5', TO_DATE('22-17-06', 'DD-RR-MM'), 'janedoe123@gmail.com', 'Jane Doe', 'dcb694aa0322f143ed970e275c807bf123bd5db4f73140b94ccc757f42dc8043', 'USER', 'janedoe');
+INSERT INTO APP_USER VALUES ('4', TO_DATE('24-17-11', 'DD-RR-MM'), 'johndoe123@gmail.com', 'John Doe', 'dcb694aa0322f143ed970e275c807bf123bd5db4f73140b94ccc757f42dc8043', 'USER', 'john.doe');
+INSERT INTO APP_USER VALUES ('5', TO_DATE('22-17-06', 'DD-RR-MM'), 'janedoe123@gmail.com', 'Jane Doe', 'dcb694aa0322f143ed970e275c807bf123bd5db4f73140b94ccc757f42dc8043', 'USER', 'jane.doe');
 INSERT INTO APP_USER VALUES ('6', TO_DATE('01-17-03', 'DD-RR-MM'), 'michaelt@gmail.com', 'Michael Thomas', 'dcb694aa0322f143ed970e275c807bf123bd5db4f73140b94ccc757f42dc8043', 'USER', 'michaelt');
 INSERT INTO APP_USER VALUES ('7', TO_DATE('04-17-09', 'DD-RR-MM'), 'dan.taylor@gmail.com', 'Dan Taylor', 'dcb694aa0322f143ed970e275c807bf123bd5db4f73140b94ccc757f42dc8043', 'USER', 'dantaylor123');
 INSERT INTO APP_USER VALUES ('8', TO_DATE('19-18-01', 'DD-RR-MM'), 'max.oliver@gmail.com', 'Max Oliver', '6a449eeeba4d6259c7035a0abc1a5ca52a2a568b362d514be033e4c6c49da7c2', 'DEVELOPER', 'maxoliver89');

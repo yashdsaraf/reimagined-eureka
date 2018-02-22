@@ -62,6 +62,7 @@ import {AuthService} from './services/auth.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
+import {DeveloperService} from './services/developer.service'
 import {DisplayNameService} from './services/display-name.service'
 import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
@@ -139,6 +140,7 @@ export function init(startupService: StartupService) {
     ContactsService,
     CookieService,
     CoreService,
+    DeveloperService,
     DisplayNameService,
     EditorConfigService,
     FileExService,
