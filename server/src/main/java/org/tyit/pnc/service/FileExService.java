@@ -15,6 +15,7 @@
  */
 package org.tyit.pnc.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -45,7 +46,7 @@ public class FileExService {
       throw new Exception("No project found in tmpDirStr");
     }
     ArrayNode files = factory.arrayNode().add(traverseTreeToJson(tmpDir, true));
-    return files.toString();
+    return new ObjectMapper().writeValueAsString(files);
   }
 
   private ObjectNode traverseTreeToJson(Path root, boolean isRoot) throws IOException {
@@ -57,7 +58,7 @@ public class FileExService {
       state.set("opened", factory.booleanNode(true));
       dir.set("state", state);
     }
-    Files.walk(root, 1).forEachOrdered(i -> {
+    Files.walk(root, 1).forEach(i -> {
       if (root.equals(i)) {
         return;
       }

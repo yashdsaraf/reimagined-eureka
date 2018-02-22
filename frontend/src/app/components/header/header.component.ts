@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit {
   ) {
     this.isMobile = isMobile
     this.isHeaderOpen = true
-    router.events.subscribe((_: NavigationEnd) => this.isEditorBtnVisible = _.url != '/index')
+    router.events.subscribe((_: NavigationEnd) => this.isEditorBtnVisible = !_.url.startsWith('/index'))
   }
 
   ngOnInit(): void {
@@ -60,7 +60,7 @@ export class HeaderComponent implements OnInit {
     }
     name = name.toLowerCase()
     name = name.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
-                  .join(' ')
+      .join(' ')
     return name.length <= 20 ? name : name.split(' ')[0]
   }
 
