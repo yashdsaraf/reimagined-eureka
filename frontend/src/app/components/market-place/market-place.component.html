@@ -1,0 +1,101 @@
+<div class="container">
+  <header>
+    <div id="quote">
+      <span>MARKET</span>
+      <span>PLACE</span>
+      <div class="ui circular primary icon button" (click)="getPlugins(search)">
+        <i class="icon refresh"></i>
+      </div>
+    </div>
+    <div id="search">
+      <div class="ui icon input">
+        <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
+        <i class="search icon"></i>
+      </div>
+    </div>
+  </header>
+  <div class="ui info message">
+    <div class="ui header">
+      Select a plugin to install...
+    </div>
+  </div>
+  <div id="content">
+    <div class="ui basic segment" id="featured-plugins">
+      <div *ngIf="plugins.length > 0; else noPlugins" class="ui centered link special raised cards" [ngClass]="{ 'one': isMobile , 'six': !isMobile }">
+        <div class="card" *ngFor="let plugin of plugins">
+          <div *ngIf="!isMobile; else mobileImage" class="ui dimmable image" (mouseenter)="dimmer.isDimmed = true" (mouseleave)="dimmer.isDimmed = false">
+            <sui-dimmer [transitionDuration]=500 [isClickable]="false" #dimmer>
+              <div class="content">
+                <div class="center">
+                  <div class="ui inverted button" (click)="onClick(plugin.name)">
+                    <i class="download icon"></i>
+                    Install</div>
+                </div>
+              </div>
+            </sui-dimmer>
+            <div class="align-center" [appIdenticon]="getIdenticonObject(plugin.name, 180)"></div>
+          </div>
+          <!-- image -->
+          <ng-template #mobileImage>
+            <div class="ui image">
+              <div class="align-center" [appIdenticon]="getIdenticonObject(plugin.name, 250)"></div>
+            </div>
+          </ng-template>
+          <div class="content">
+            <a class="header">{{plugin.name}}</a>
+            <div class="meta">
+              <span class="date">Created on {{plugin.createdOn | date}}</span>
+              <span class="date">Updated on {{plugin.updatedOn | date}}</span>
+            </div>
+            <p class="description">
+              {{plugin.description}}
+            </p>
+          </div>
+          <!-- content -->
+          <div class="extra content">
+            <a>
+              <i class="download icon"></i>
+              Installs: {{plugin.appUserCollection.length}}
+            </a>
+            <div *ngIf="isMobile">
+              <div class="ui divider"></div>
+              <button class="ui fluid primary button" (click)="onClick(plugin.name)">Install</button>
+            </div>
+          </div>
+          <!-- extra content -->
+        </div>
+        <!-- card -->
+      </div>
+      <!-- cards -->
+      <ng-template #noPlugins>
+        <div class="ui info message">
+          <div class="ui header">No plugins found</div>
+        </div>
+      </ng-template>
+    </div>
+    <!-- featured-plugins -->
+  </div>
+  <!-- content -->
+</div>
+<!-- container -->
+
+<sui-modal *ngIf="createProjectModal" [isClosable]="true" [isBasic]="true" (approved)="createProject()" (denied)="createProjectModal = false" #projectDetailsModal>
+  <div class="ui header">Enter project details</div>
+  <div class="content">
+    <div style="color: white" class="ui small header">Project name</div>
+    <div class="ui inverted input">
+      <input type="text" name="project" [(ngModel)]="projectDetails.project" placeholder="e.g My project">
+    </div>
+    <div style="color: white" class="ui small header">File name <small>(with extension)</small></div>
+    <div class="ui inverted input">
+      <input type="text" name="entrypoint" [(ngModel)]="projectDetails.entrypoint" placeholder="e.g Main.py">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button" (click)="projectDetailsModal.deny()">Cancel</div>
+    <div class="ui icon primary button" (click)="projectDetailsModal.approve()" [ngClass]="{disabled: isProjectDetailsEmpty()}">
+      <i class="icon thumbs up"></i>
+      Create
+    </div>
+  </div>
+</sui-modal>

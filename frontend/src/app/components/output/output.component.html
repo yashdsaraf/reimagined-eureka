@@ -1,7 +1,13 @@
 <sui-tabset id="container">
-  <div class="ui inverted top attached tabular menu">
+  <div class="ui secondary pointing top attached tabular menu">
     <a class="item" suiTabHeader="1">STDOUT</a>
     <a class="item" suiTabHeader="2">STDERR</a>
+    <div class="right menu">
+      <a class="item" suiTabHeader="3" style="padding: 0.3em" [isActive]="true">
+        <i class="blue big settings icon"></i>
+      </a>
+
+    </div>
   </div>
   <div id="output-tab-content">
     <div id="stdout" class="ui bottom attached segment" suiTabContent="1">
@@ -12,6 +18,10 @@
       {{stderr}}
     </div>
     <!-- stderr -->
+    <div id="project-settings-btn" class="ui bottom attached segment" suiTabContent="3">
+      <app-project-settings></app-project-settings>
+    </div>
+    <!-- project settings button -->
   </div>
 </sui-tabset>
 <!-- container -->

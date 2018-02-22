@@ -15,6 +15,7 @@
  */
 package org.tyit.pnc.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -26,7 +27,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.http.HttpSession;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
@@ -40,13 +40,13 @@ public class FileExService {
 
   private final JsonNodeFactory factory = JsonNodeFactory.instance;
 
-  public String getFileTree(HttpSession session) throws IOException, Exception {
-    Path tmpDir = (Path) session.getAttribute("tmpDir");
+  public String getFileTree(String tmpDirStr) throws IOException, Exception {
+    Path tmpDir = Paths.get(tmpDirStr);
     if (tmpDir == null) {
-      throw new Exception("No project found in session");
+      throw new Exception("No project found in tmpDirStr");
     }
     ArrayNode files = factory.arrayNode().add(traverseTreeToJson(tmpDir, true));
-    return files.toString();
+    return new ObjectMapper().writeValueAsString(files);
   }
 
   private ObjectNode traverseTreeToJson(Path root, boolean isRoot) throws IOException {
@@ -58,7 +58,7 @@ public class FileExService {
       state.set("opened", factory.booleanNode(true));
       dir.set("state", state);
     }
-    Files.walk(root, 1).forEachOrdered(i -> {
+    Files.walk(root, 1).forEach(i -> {
       if (root.equals(i)) {
         return;
       }
@@ -79,8 +79,8 @@ public class FileExService {
     return dir;
   }
 
-  private String getRealPath(HttpSession session, String parent) throws Exception {
-    Path tmpDir = (Path) session.getAttribute("tmpDir");
+  private String getRealPath(String tmpDirStr, String parent) throws Exception {
+    Path tmpDir = Paths.get(tmpDirStr);
     parent = FilenameUtils.separatorsToSystem(parent);
     String realPath = FilenameUtils.concat(tmpDir.toString(), parent);
     if (realPath == null) {
@@ -89,8 +89,8 @@ public class FileExService {
     return realPath;
   }
 
-  public void create(HttpSession session, String fileName, String parents, boolean isDir) throws Exception {
-    String realPath = getRealPath(session, parents);
+  public void create(String tmpDirStr, String fileName, String parents, boolean isDir) throws Exception {
+    String realPath = getRealPath(tmpDirStr, parents);
     File toCreate = new File(realPath, fileName);
     if (isDir) {
       Files.createDirectory(toCreate.toPath());
@@ -99,8 +99,8 @@ public class FileExService {
     }
   }
 
-  public void delete(HttpSession session, String filename, String parent) throws Exception {
-    String realPath = getRealPath(session, parent);
+  public void delete(String tmpDirStr, String filename, String parent) throws Exception {
+    String realPath = getRealPath(tmpDirStr, parent);
     File file = new File(realPath, filename);
     if (file.exists()) {
       if (file.isDirectory()) {
@@ -111,18 +111,18 @@ public class FileExService {
     }
   }
 
-  public void copy(HttpSession session, String filename, String oldParent, String newParent, boolean isMove) throws Exception {
-    String realOldPath = getRealPath(session, oldParent);
-    String realNewPath = getRealPath(session, newParent);
+  public void copy(String tmpDirStr, String filename, String oldParent, String newParent, boolean isMove) throws Exception {
+    String realOldPath = getRealPath(tmpDirStr, oldParent);
+    String realNewPath = getRealPath(tmpDirStr, newParent);
     File file = new File(realOldPath, filename);
     FileUtils.copyToDirectory(file, new File(realNewPath));
     if (isMove) {
-      delete(session, filename, oldParent);
+      delete(tmpDirStr, filename, oldParent);
     }
   }
 
-  public void rename(HttpSession session, String filename, String parent, String newname) throws Exception {
-    String realPath = getRealPath(session, parent);
+  public void rename(String tmpDirStr, String filename, String parent, String newname) throws Exception {
+    String realPath = getRealPath(tmpDirStr, parent);
     File file = new File(realPath, filename);
     if (!file.exists()) {
       throw new Exception("No such file exists");
@@ -130,8 +130,8 @@ public class FileExService {
     file.renameTo(new File(realPath, newname));
   }
 
-  public String getFile(HttpSession session, String filename, String parent) throws Exception {
-    String realPath = getRealPath(session, parent);
+  public String getFile(String tmpDirStr, String filename, String parent) throws Exception {
+    String realPath = getRealPath(tmpDirStr, parent);
     Path path = Paths.get(FilenameUtils.concat(realPath, filename));
     return new String(Files.readAllBytes(path), StandardCharsets.UTF_8);
   }

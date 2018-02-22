@@ -27,7 +27,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.tyit.pnc.model.Docker;
+import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.service.FileExService;
+import org.tyit.pnc.utils.JwtUtils;
 
 /**
  *
@@ -40,10 +43,16 @@ public class FileExController {
   @Autowired
   private FileExService fileExService;
 
+  @Autowired
+  private DockerRepository dockerRepository;
+
   @GetMapping
   public ResponseEntity<String> getFileTree(HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      return ResponseEntity.ok(fileExService.getFileTree(request.getSession()));
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      return ResponseEntity.ok(fileExService.getFileTree(docker.getTmpDir()));
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -54,8 +63,11 @@ public class FileExController {
   public ResponseEntity<String> getFile(HttpServletRequest request,
           @RequestParam("file") String fileName,
           @RequestParam("parent") String parent) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      return ResponseEntity.ok(fileExService.getFile(request.getSession(), fileName, parent));
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      return ResponseEntity.ok(fileExService.getFile(docker.getTmpDir(), fileName, parent));
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -67,8 +79,11 @@ public class FileExController {
           @RequestParam("file") String fileName,
           @RequestParam("parent") String parent,
           @RequestParam("isDir") boolean isDir) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      fileExService.create(request.getSession(), fileName, parent, isDir);
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      fileExService.create(docker.getTmpDir(), fileName, parent, isDir);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -80,8 +95,11 @@ public class FileExController {
   public ResponseEntity<String> delete(HttpServletRequest request,
           @RequestParam("file") String fileName,
           @RequestParam("parent") String parent) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      fileExService.delete(request.getSession(), fileName, parent);
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      fileExService.delete(docker.getTmpDir(), fileName, parent);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -94,8 +112,11 @@ public class FileExController {
           @RequestParam("file") String filename,
           @RequestParam("parent") String parent,
           @RequestParam("newname") String newname) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      fileExService.rename(request.getSession(), filename, parent, newname);
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      fileExService.rename(docker.getTmpDir(), filename, parent, newname);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -108,8 +129,11 @@ public class FileExController {
           @RequestParam("file") String filename,
           @RequestParam("oldparent") String oldParent,
           @RequestParam("newparent") String newParent) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      fileExService.copy(request.getSession(), filename, oldParent, newParent, true);
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      fileExService.copy(docker.getTmpDir(), filename, oldParent, newParent, true);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
@@ -122,13 +146,24 @@ public class FileExController {
           @RequestParam("file") String filename,
           @RequestParam("oldparent") String oldParent,
           @RequestParam("newparent") String newParent) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      fileExService.copy(request.getSession(), filename, oldParent, newParent, false);
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      fileExService.copy(docker.getTmpDir(), filename, oldParent, newParent, false);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
+  }
+
+  private Docker getDockerFromJti(String jti) throws Exception {
+    Docker docker = dockerRepository.findOne(jti);
+    if (docker == null) {
+      throw new Exception("No project found in session");
+    }
+    return docker;
   }
 
 }

@@ -20,13 +20,13 @@ import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Map;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.model.Plugin;
+import org.tyit.pnc.model.PluginFile;
 import org.tyit.pnc.model.Project;
 import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.AppUserRepository;
@@ -52,16 +52,7 @@ public class CoreService {
   @Autowired
   private DockerService dockerService;
 
-  public Output execute(Map<String, String> code, HttpSession session) throws Exception {
-    if (session == null || session.getAttribute("tmpDir") == null || session.getAttribute("docker") == null) {
-      throw new Exception("No project found in session.");
-    }
-    Path tmpDir = (Path) session.getAttribute("tmpDir");
-    Docker docker = (Docker) session.getAttribute("docker");
-    return dockerService.execute(code, tmpDir, docker);
-  }
-
-  public void build(String lang, String projectName, String entrypoint, HttpSession session, String userName) throws Exception {
+  public String build(String token, String lang, String projectName, String entrypoint, String userName) throws Exception {
     Plugin plugin = pluginRepository.findByName(lang);
     if (plugin == null) {
       throw new Exception("No such plugin found");
@@ -69,7 +60,6 @@ public class CoreService {
     Path tmpPath = Files.createTempDirectory(projectName);
     Path path = new File(tmpPath.toFile(), projectName).toPath();
     Files.createDirectory(path);
-    session.setAttribute("tmpDir", path.toAbsolutePath());
     AppUser user = appUserRepository.findByUsername(userName);
     Project project = new Project();
     project.setName(projectName);
@@ -77,8 +67,11 @@ public class CoreService {
     ProjectSettings settings = new ProjectSettings(new String[0], entrypoint, new String[0], lang);
     project.setSettings(new ObjectMapper().writeValueAsString(settings));
     projectRepository.save(project);
-    Docker docker = dockerService.build(path, plugin.getPluginFile(), project.getSettings(), user);
-    session.setAttribute("docker", docker);
+    Docker docker = dockerService.build(token, path, plugin, project, user);
+    // Update user_plugin table
+    plugin.getAppUserCollection().add(user);
+    pluginRepository.save(plugin);
+    return new ObjectMapper().readValue(docker.getSettings(), PluginFile.class).getMode();
   }
 
 }

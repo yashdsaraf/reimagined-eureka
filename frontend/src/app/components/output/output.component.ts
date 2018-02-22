@@ -19,6 +19,7 @@ import {
   Input
 } from '@angular/core'
 
+declare var $:any
 @Component({
   selector: 'app-output',
   templateUrl: './output.component.html',
@@ -30,5 +31,9 @@ export class OutputComponent {
   @Input('stderr') stderr: string
 
   constructor() {}
+
+  ngAfterViewInit(){
+
+  }
 
 }

@@ -28,8 +28,8 @@ export interface IndexTab {
 @Injectable()
 export class IndexService {
 
-  private countChanged: Subject<IndexTab[]> = new Subject()
-  emitter: Observable<IndexTab[]> = this.countChanged.asObservable()
+  private tabsChanged: Subject<IndexTab[]> = new Subject()
+  emitter: Observable<IndexTab[]> = this.tabsChanged.asObservable()
   private tabs: IndexTab[] = []
 
   constructor() {}
@@ -37,21 +37,20 @@ export class IndexService {
   public addTab(id: string, name: string, content: string) {
     // Only open tabs with unique file ids
     let tab = this.tabs.find(i => i.id == id)
-    if (tab !== undefined && tab !== null) {
-      return
+    if (tab == null) {
+      this.tabs.push({id, name, content})
+      this.tabsChanged.next(this.tabs)
     }
-    this.tabs.push({id, name, content})
-    this.countChanged.next(this.tabs)
   }
 
   public removeTab(id: string) {
     this.tabs = this.tabs.filter(i => i.id != id)
-    this.countChanged.next(this.tabs)
+    this.tabsChanged.next(this.tabs)
   }
 
   public clearAll() {
     this.tabs = []
-    this.countChanged.next(this.tabs)
+    this.tabsChanged.next(this.tabs)
   }
 
   public openTab(id: string) {
@@ -59,7 +58,7 @@ export class IndexService {
       i.isActive = i.id == id
       return i
     })
-    this.countChanged.next(this.tabs)
+    this.tabsChanged.next(this.tabs)
   }
 
 }

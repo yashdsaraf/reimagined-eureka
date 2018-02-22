@@ -1,6 +1,6 @@
 <div id="container">
   <div id="left-header">
-    <a class="ui logo icon image" routerLink="/">
+    <a class="ui logo icon image" routerLink="/home">
       <!-- <img id="logo" src="../../../assets/images/logo.png"> -->
       <div id="logo">Plug n' Code</div>
     </a>
@@ -15,7 +15,8 @@
       <a routerLink="/aboutus">About us</a>
       <a routerLink="/docs">Docs</a>
       <a routerLink="/blog">Blog</a>
-      <a href="https://www.apache.org/licenses/LICENSE-2.0">License</a>
+      <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">License</a>
+      <a routerLink="/marketplace">Marketplace</a>
     </div>
     <!-- wrapper-1 -->
     <div id="wrapper-2">
@@ -26,6 +27,7 @@
       </div>
       <ng-template #loggedIn>
         <div id="logged-in">
+          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui secondary inverted button" (click)="indexService.clearAll()" routerLink="/index">Go to editor</div>
           <div id="username">Hi, {{name}}</div>
           <div class="ui dropdown" suiDropdown>
             <div id="profile" [appIdenticon]="getIdenticonObject()">

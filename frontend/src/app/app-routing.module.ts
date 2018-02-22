@@ -31,26 +31,34 @@ import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
 import {ProfileComponent} from './components/profile/profile.component'
 import {RegisterComponent} from './components/register/register.component'
+import {MarketPlaceComponent} from './components/market-place/market-place.component'
+
 //GUARDS
 import {AdminGuard} from './guards/admin.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
+import {ProjectGuard} from './guards/project.guard'
 import {UserGuard} from './guards/user.guard'
 
 const routes: Routes = [
-  {path: '', component: HomeComponent},
+  {path: '', redirectTo: '/home', pathMatch: 'full'},
   {path: 'aboutus', component: AboutUsComponent},
   {path: 'admin', component: AdminComponent, canActivate: [AdminGuard]},
   {path: 'blog', component: BlogComponent},
+  {path: 'createproject', component: MarketPlaceComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
+  {path: 'createproject/:plugin', component: MarketPlaceComponent, canActivate: [GuestGuard, ProjectGuard], data: {inverse: true}},
   {path: 'docs', component: DocsComponent},
-  {path: 'index', component: IndexComponent, canActivate: [GuestGuard]},
-  {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard]},
+  {path: 'home', component: HomeComponent},
+  {path: 'index', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
+  {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
   {path: 'login', component: LoginComponent},
   {path: 'logout/:message', component: LogoutComponent},
   {path: 'logout/:message/:error', component: LogoutComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
-  {path: 'register', component: RegisterComponent}
+  {path: 'register', component: RegisterComponent},
+  {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]}
+
 ]
 
 @NgModule({

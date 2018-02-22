@@ -14,33 +14,12 @@
  * limitations under the License.
  */
 
-import {
-  Directive,
-  ElementRef,
-  Input
-} from '@angular/core'
-
-import * as jdenticon from 'jdenticon'
-
-@Directive({
-  selector: '[appIdenticon]'
-})
-export class IdenticonDirective {
-
-  hostElement: HTMLElement
-
-  constructor(private el: ElementRef) {
-    this.hostElement = el.nativeElement
+export function decodeError(err: Object): any {
+  if ('error_description' in err) {
+    return err['error_description']
   }
-
-  @Input('appIdenticon') set templateHtml(value) {
-    let vals = JSON.parse(value)
-    let identicon = this.generateIdenticon(vals['value'], vals['size'])
-    this.hostElement.innerHTML = identicon
+  if ('error' in err) {
+    return err['error']
   }
-
-  private generateIdenticon(value: string, width: number): string {
-    return jdenticon.toSvg(value, width)
-  }
-
+  return err
 }

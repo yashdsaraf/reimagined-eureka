@@ -1,0 +1,41 @@
+<div class="container">
+  <div class="ui left labeled button" [ngClass]="{'mini': isMobile}">
+    <a class="ui basic label" [ngClass]="{'mini': isMobile}">
+      Current plugin: &nbsp;&nbsp; <span style="color: green">{{currentPlugin}}</span>
+    </a>
+    <div class="ui primary icon button" [ngClass]="{'mini': isMobile}" style="margin-bottom: 0px;" routerLink="/marketplace">
+      <i class="edit icon"></i>
+    </div>
+  </div>
+  <button class="ui blue button" id="edit-run" [ngClass]="{'mini': isMobile}" (click)="openRunCommandsModal()">Edit run commands</button>
+  <div class="ui left dropdown button" suiDropdown>
+    <div class="text">Theme: {{selectedTheme | initCap}}</div>
+    <div class="upward menu" suiDropdownMenu>
+      <div *ngFor="let theme of themes" (click)="onClick(theme)" class="item">
+        {{theme | initCap}}
+      </div>
+    </div>
+    <!-- menu -->
+  </div>
+  <!-- dropdown -->
+</div>
+<!-- container -->
+
+<sui-modal *ngIf="runCommandsModal" isBasic="true" isInverted="true" [isClosable]="false" (approved)="saveSettings()" (dismissed)="runCommandsModal = false"
+  (denied)="runCommandsModal = false" #modal>
+  <div class="ui huge header">Project settings</div>
+  <div class="ui mini header">Run commands:</div>
+  <codemirror [config]="editorConfig" [(ngModel)]="runCommands" #editor>
+  </codemirror>
+  <br>
+  <div class="ui mini header">Entrypoint:</div>
+  <div class="ui fluid icon input">
+    <input type="text" placeholder="Type here..." [(ngModel)]="entrypoint">
+    <i class="icon sign in"></i>
+  </div>
+  <div class="actions">
+    <button class="ui positive button" (click)="modal.approve()">Save</button>
+    <button class="ui negative button" (click)="modal.deny()">Cancel</button>
+    <button class="ui primary button" [ngClass]="{'loading disabled': resetLoading}" (click)="resetRuncmds()">Reset</button>
+  </div>
+</sui-modal>

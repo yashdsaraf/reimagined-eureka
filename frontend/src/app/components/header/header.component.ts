@@ -18,11 +18,13 @@ import {
   Component,
   OnInit
 } from '@angular/core'
+import {Router, NavigationEnd} from '@angular/router'
 
 import {AuthService} from '../../services/auth.service'
-import {isMobile} from '../../app.component'
-import {LogoutService} from '../../services/logout.service'
 import {DisplayNameService} from '../../services/display-name.service'
+import {IndexService} from '../../services/index.service'
+import {LogoutService} from '../../services/logout.service'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-header',
@@ -33,13 +35,18 @@ export class HeaderComponent implements OnInit {
 
   isHeaderOpen: boolean
   isMobile: boolean
+  isEditorBtnVisible: boolean
 
   constructor(
     private authService: AuthService,
+    private displayNameService: DisplayNameService,
+    private indexService: IndexService,
     private logoutService: LogoutService,
-    private displayNameService: DisplayNameService
+    private router: Router
   ) {
     this.isMobile = isMobile
+    this.isHeaderOpen = true
+    router.events.subscribe((_: NavigationEnd) => this.isEditorBtnVisible = !_.url.startsWith('/index'))
   }
 
   ngOnInit(): void {
@@ -53,7 +60,7 @@ export class HeaderComponent implements OnInit {
     }
     name = name.toLowerCase()
     name = name.split(' ').map((e) => e.charAt(0).toUpperCase() + e.slice(1))
-                  .join(' ')
+      .join(' ')
     return name.length <= 20 ? name : name.split(' ')[0]
   }
 

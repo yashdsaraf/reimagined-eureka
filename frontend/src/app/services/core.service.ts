@@ -34,12 +34,23 @@ export class CoreService {
     for (let file of code) {
       formData.append(file.name, file.content)
     }
-    return this.http.post<Output>('/api/core/run', formData)
+    return this.http.post<Output>('/api/project/run', formData)
   }
 
-  public quickSetup(lang: string, projectName: string, entrypoint: string): Observable<any> {
-    let params = new HttpParams().append('project', projectName).append('entrypoint', entrypoint)
-    return this.http.get(`/api/setup/${lang}`, {params})
+  public create(lang: string, projectName: string, entrypoint: string): Observable<any> {
+    let params = new HttpParams()
+      .append('project', projectName)
+      .append('entrypoint', entrypoint)
+      .append('plugin', lang)
+    return this.http.get('/api/project/create', {params, responseType: 'text'})
+  }
+
+  public delete(): Observable<any> {
+    return this.http.delete('/api/project/delete', {responseType: 'text'})
+  }
+
+  public check(): Observable<any> {
+    return this.http.get('/api/project', {responseType: 'text'})
   }
 
 }

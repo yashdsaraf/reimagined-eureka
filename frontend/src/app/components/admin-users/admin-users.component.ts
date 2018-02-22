@@ -23,6 +23,7 @@ import {
 import {isMobile} from '../../app.component'
 import {User} from '../../models/user'
 import {AdminService} from '../../services/admin.service'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-admin-users',
@@ -64,8 +65,7 @@ export class AdminUsersComponent {
         },
         err => {
           this.userDeleted = false
-          this.userDeleteError = err.error
-          console.log(err)
+          this.userDeleteError = decodeError(err)
         }
       )
     this.deleteUsername = ''

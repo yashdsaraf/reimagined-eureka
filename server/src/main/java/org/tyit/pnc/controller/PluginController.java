@@ -15,56 +15,65 @@
  */
 package org.tyit.pnc.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.model.Docker;
-import org.tyit.pnc.model.PluginFile;
-import org.tyit.pnc.service.CoreService;
+import org.tyit.pnc.model.Plugin;
+import org.tyit.pnc.repository.DockerRepository;
+import org.tyit.pnc.service.PluginService;
+import org.tyit.pnc.utils.JwtUtils;
 
 /**
  *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
-@RequestMapping("/setup")
-public class QuickSetupController {
+@RequestMapping("/plugins")
+public class PluginController {
 
   @Autowired
-  private CoreService coreService;
+  private DockerRepository dockerRepository;
 
-  @GetMapping("{language}")
-  public ResponseEntity<String> quickSetup(@PathVariable("language") String lang,
-          @RequestParam("project") String projectName,
-          @RequestParam("entrypoint") String entrypoint,
-          Principal principal,
+  @Autowired
+  private PluginService pluginService;
+
+  @GetMapping
+  public ResponseEntity<Iterable<Plugin>> getPlugins(@RequestParam(name = "name", required = false) String name) {
+    return ResponseEntity.ok(pluginService.getPlugins(name));
+  }
+
+  @PostMapping
+  public ResponseEntity<String> installPlugin(
+          @RequestParam("name") String name,
           HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
-      HttpSession session = request.getSession(true);
-      coreService.build(lang, projectName, entrypoint, session, principal.getName());
-      Docker docker = (Docker) session.getAttribute("docker");
-      ObjectMapper mapper = new ObjectMapper();
-      String mode = mapper.readValue(docker.getSettings(), PluginFile.class).getMode();
-      Map map = new HashMap();
-      map.put("mode", mode);
-      return ResponseEntity.ok(mapper.writeValueAsString(map));
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Docker docker = getDockerFromJti(jti);
+      pluginService.install(docker, name);
+      return ResponseEntity.ok().build();
     } catch (Exception ex) {
-      Logger.getLogger(QuickSetupController.class.getName()).log(Level.SEVERE, null, ex);
+      Logger.getLogger(PluginController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+  }
+
+  private Docker getDockerFromJti(String jti) throws Exception {
+    Docker docker = dockerRepository.findOne(jti);
+    if (docker == null) {
+      throw new Exception("No project found in session");
+    }
+    return docker;
   }
 
 }

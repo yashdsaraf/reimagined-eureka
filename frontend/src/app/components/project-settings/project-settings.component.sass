@@ -14,20 +14,32 @@
  * limitations under the License.
  */
 
-import {User} from "./user"
+@import base
 
-export interface Plugin {
-  name: string
-  description?: string
-  status: string
-  plugin_file: string
-  createdOn: Date
-  updatedOn: Date
-  developerId: {
-    userId: User
-  }
-  adminId: {
-    userId: User
-  }
-  appUserCollection: User[]
-}
+.ui.header
+  color: black !important
+
+.container
+  width: 100%
+  height: 100%
+  display: flex
+  padding: 0
+  align-items: flex-start
+  overflow: visible
+
+  .ui.dropdown .menu
+    position: fixed
+    bottom: 10vh !important
+    left: auto
+    height: 60vh
+    overflow-y: auto
+    overflow-x: hidden
+    min-width: auto
+
+@media only screen and (max-width: 768px)
+
+  .container
+    flex-direction: column
+
+    .button
+      margin-bottom: 1em

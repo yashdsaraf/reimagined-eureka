@@ -25,6 +25,7 @@ import {isMobile} from '../../app.component'
 import {AdminService} from '../../services/admin.service'
 import {FlashMessagesService} from 'angular2-flash-messages'
 import {Plugin} from '../../models/plugin'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-admin-plugins',
@@ -68,10 +69,9 @@ export class AdminPluginsComponent {
           })
         },
         err => {
-          this.flashMessagesService.show(err.error, {
+          this.flashMessagesService.show(decodeError(err), {
             cssClass: 'ui error message', timeout: 4000
           })
-          console.log(err)
         }
       )
     this.approvePluginName = ''
@@ -87,10 +87,9 @@ export class AdminPluginsComponent {
           })
         },
         err => {
-          this.flashMessagesService.show(err.error, {
+          this.flashMessagesService.show(decodeError(err), {
             cssClass: 'ui error message', timeout: 4000
           })
-          console.log(err)
         }
       )
     this.deletePluginName = ''

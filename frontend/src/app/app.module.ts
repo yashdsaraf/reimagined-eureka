@@ -49,9 +49,11 @@ import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
+import {MarketPlaceComponent} from './components/market-place/market-place.component'
 import {OutputComponent} from './components/output/output.component'
 import {ProfileComponent} from './components/profile/profile.component'
 import {ProgressBarModalComponent} from './components/progress-bar-modal/progress-bar-modal.component'
+import {ProjectSettingsComponent} from './components/project-settings/project-settings.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
@@ -61,12 +63,15 @@ import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
 import {DisplayNameService} from './services/display-name.service'
+import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
 import {ImagesService} from './services/images.service'
 import {IndexService} from './services/index.service'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
+import {PluginsService} from './services/plugins.service'
 import {ProgressBarService} from './services/progress-bar.service'
+import {ProjectSettingsService} from './services/project-settings.service'
 import {StartupService} from './services/startup.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
@@ -74,6 +79,7 @@ import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 import {AdminGuard} from './guards/admin.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
+import {ProjectGuard} from './guards/project.guard'
 import {UserGuard} from './guards/user.guard'
 //DIRECTIVES
 import {IdenticonDirective} from './directives/identicon.directive'
@@ -104,14 +110,15 @@ export function init(startupService: StartupService) {
     LoginComponent,
     LogoutComponent,
     OutputComponent,
+    MarketPlaceComponent,
     ProfileComponent,
     ProgressBarModalComponent,
+    ProjectSettingsComponent,
     RegisterComponent,
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe,
-    ProgressBarModalComponent
+    SanitizeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
@@ -133,16 +140,20 @@ export function init(startupService: StartupService) {
     CookieService,
     CoreService,
     DisplayNameService,
+    EditorConfigService,
     FileExService,
     ImagesService,
     IndexService,
     LoginService,
     LogoutService,
+    PluginsService,
     ProgressBarService,
+    ProjectSettingsService,
     StartupService,
     AdminGuard,
     DeveloperGuard,
     GuestGuard,
+    ProjectGuard,
     UserGuard
   ],
   entryComponents: [ProgressBarModalComponent],

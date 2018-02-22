@@ -31,7 +31,9 @@ import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
+import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.model.PluginFile;
+import org.tyit.pnc.model.Project;
 import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.utils.DockerUtils;
@@ -56,9 +58,23 @@ public class DockerService {
     }
   }
 
-  public Output execute(Map<String, String> code, Path tmpDir, Docker docker) throws Exception {
+  public Docker check(String token) throws Exception {
+    Docker docker = dockerRepository.findOne(token);
+    if (docker == null) {
+      throw new Exception("No project found in session");
+    }
+    return docker;
+  }
+
+  public Output execute(String token, Map<String, String> code) throws Exception {
+    Docker docker = check(token);
+    ObjectMapper mapper = new ObjectMapper();
+    Plugin plugin = docker.getPluginId();
+    PluginFile pluginFile = mapper.readValue(plugin.getPluginFile(), PluginFile.class);
+    Project project = docker.getProjectId();
+    ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
     code.forEach((path, content) -> {
-      Path realPath = Paths.get(tmpDir.toString(), path);
+      Path realPath = Paths.get(docker.getTmpDir(), path);
       try {
         Files.write(realPath, content.getBytes(StandardCharsets.UTF_8),
                 StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
@@ -66,10 +82,15 @@ public class DockerService {
         Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
       }
     });
-    return dockerUtils.runDockerImage(tmpDir, docker);
+    // IMPORTANT: Do not write the starter script before updating the files.
+    // If the updated files contain "start.sh", we might get EOL errors.
+    dockerUtils.writeStarterScript(Paths.get(docker.getTmpDir()), pluginFile, settings);
+    return dockerUtils.runDockerImage(docker);
   }
 
-  public Docker build(Path tempDir, String pluginSettings, String projectSettings, AppUser user) throws IOException, Exception {
+  public Docker build(String token, Path tempDir, Plugin plugin, Project project, AppUser user) throws IOException, Exception {
+    String pluginSettings = plugin.getPluginFile();
+    String projectSettings = project.getSettings();
     ObjectMapper mapper = new ObjectMapper();
     PluginFile pluginFile = mapper.readValue(pluginSettings, PluginFile.class);
     ProjectSettings settings = mapper.readValue(projectSettings, ProjectSettings.class);
@@ -85,8 +106,18 @@ public class DockerService {
     docker.setUserId(user);
     long imageId = dockerUtils.buildDockerImage(tempDir.toAbsolutePath());
     docker.setImageId(imageId);
+    docker.setId(token);
+    docker.setTmpDir(tempDir.toAbsolutePath().toString());
+    docker.setPluginId(plugin);
+    docker.setProjectId(project);
     dockerRepository.save(docker);
     return docker;
+  }
+
+  public void delete(String token) throws Exception {
+    Docker docker = check(token);
+    dockerUtils.deleteDockerImage(docker);
+    dockerRepository.delete(docker);
   }
 
 }

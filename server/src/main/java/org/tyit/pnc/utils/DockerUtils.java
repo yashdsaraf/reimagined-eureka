@@ -23,12 +23,13 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.StringJoiner;
 import java.util.concurrent.ThreadLocalRandom;
+
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
@@ -50,7 +51,6 @@ public class DockerUtils {
     if (process.waitFor() != 0) {
       throw new Exception(getStringFromBuffer(process.getErrorStream(), " "));
     }
-    List<String> list = new ArrayList<>();
     envVars = getBufferFromStream(process.getInputStream())
             .lines()
             .filter(i -> i.startsWith("SET "))
@@ -103,8 +103,8 @@ public class DockerUtils {
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
-  public Output runDockerImage(Path tmpDir, Docker docker) throws IOException, Exception {
-    String mountDir = GeneralUtils.getInstance().getUnixPath(tmpDir.toString());
+  public Output runDockerImage(Docker docker) throws IOException, Exception {
+    String mountDir = GeneralUtils.getInstance().getUnixPath(docker.getTmpDir());
     String[] commands = {
       "docker",
       "run",
@@ -113,13 +113,29 @@ public class DockerUtils {
       mountDir + ":/usr/src/app",
       String.valueOf(docker.getImageId())
     };
-    Process process = Runtime.getRuntime().exec(commands, envVars, tmpDir.toFile());
+    Process process = Runtime.getRuntime().exec(commands, envVars, new File(docker.getTmpDir()));
     System.out.println(Arrays.toString(commands));
     Output output = new Output();
     String delimiter = System.lineSeparator();
     output.setStderr(getStringFromBuffer(process.getErrorStream(), delimiter));
     output.setStdout(getStringFromBuffer(process.getInputStream(), delimiter));
     return output;
+  }
+
+  public void deleteDockerImage(Docker docker) throws Exception {
+    File tmpDir = new File(docker.getTmpDir());
+    FileUtils.deleteDirectory(tmpDir);
+    String[] commands = {
+      "docker",
+      "rmi",
+      "-f",
+      String.valueOf(docker.getImageId())
+    };
+    Process process = Runtime.getRuntime().exec(commands, envVars);
+    System.out.println(Arrays.toString(commands));
+    if (process.waitFor() != 0) {
+      throw new Exception(getStringFromBuffer(process.getErrorStream(), " "));
+    }
   }
 
   private BufferedReader getBufferFromStream(InputStream inputStream) {

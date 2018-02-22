@@ -19,8 +19,6 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -38,11 +36,10 @@ public class Docker implements Serializable {
 
   private static final long serialVersionUID = 1L;
   @Id
-  @GeneratedValue(strategy = GenerationType.SEQUENCE)
   @Basic(optional = false)
   @NotNull
   @Column(name = "ID")
-  private Long id;
+  private String id;
   @Basic(optional = false)
   @NotNull
   @Lob
@@ -50,30 +47,44 @@ public class Docker implements Serializable {
   private String settings;
   @Basic(optional = false)
   @NotNull
+  @Column(name = "TMP_DIR")
+  private String tmpDir;
+  @Basic(optional = false)
+  @NotNull
   @Column(name = "IMAGE_ID")
   private Long imageId;
   @JoinColumn(name = "USER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
   private AppUser userId;
+  @JoinColumn(name = "PROJECT_ID", referencedColumnName = "ID")
+  @ManyToOne(optional = false)
+  private Project projectId;
+  @JoinColumn(name = "PLUGIN_ID", referencedColumnName = "ID")
+  @ManyToOne(optional = false)
+  private Plugin pluginId;
 
   public Docker() {
   }
 
-  public Docker(Long id) {
+  public Docker(String id) {
     this.id = id;
   }
 
-  public Docker(Long id, Long imageId, String settings) {
+  public Docker(String id, String settings, String tmpDir, Long imageId, AppUser userId, Project projectId, Plugin pluginId) {
     this.id = id;
-    this.imageId = imageId;
     this.settings = settings;
+    this.tmpDir = tmpDir;
+    this.imageId = imageId;
+    this.userId = userId;
+    this.projectId = projectId;
+    this.pluginId = pluginId;
   }
 
-  public Long getId() {
+  public String getId() {
     return id;
   }
 
-  public void setId(Long id) {
+  public void setId(String id) {
     this.id = id;
   }
 
@@ -83,6 +94,14 @@ public class Docker implements Serializable {
 
   public void setSettings(String settings) {
     this.settings = settings;
+  }
+
+  public String getTmpDir() {
+    return tmpDir;
+  }
+
+  public void setTmpDir(String tmpDir) {
+    this.tmpDir = tmpDir;
   }
 
   public AppUser getUserId() {
@@ -99,6 +118,22 @@ public class Docker implements Serializable {
 
   public void setImageId(Long imageId) {
     this.imageId = imageId;
+  }
+
+  public Project getProjectId() {
+    return projectId;
+  }
+
+  public void setProjectId(Project projectId) {
+    this.projectId = projectId;
+  }
+
+  public Plugin getPluginId() {
+    return pluginId;
+  }
+
+  public void setPluginId(Plugin pluginId) {
+    this.pluginId = pluginId;
   }
 
   @Override
