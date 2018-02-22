@@ -27,7 +27,7 @@
       </div>
       <ng-template #loggedIn>
         <div id="logged-in">
-          <div id="editor-btn" class="ui secondary inverted button" (click)="indexService.clearAll()" routerLink="/index">Go to editor</div>
+          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui secondary inverted button" (click)="indexService.clearAll()" routerLink="/index">Go to editor</div>
           <div id="username">Hi, {{name}}</div>
           <div class="ui dropdown" suiDropdown>
             <div id="profile" [appIdenticon]="getIdenticonObject()">

@@ -18,6 +18,7 @@ import {
   Component,
   OnInit
 } from '@angular/core'
+import {Router, NavigationEnd} from '@angular/router'
 
 import {AuthService} from '../../services/auth.service'
 import {DisplayNameService} from '../../services/display-name.service'
@@ -34,14 +35,18 @@ export class HeaderComponent implements OnInit {
 
   isHeaderOpen: boolean
   isMobile: boolean
+  isEditorBtnVisible: boolean
 
   constructor(
     private authService: AuthService,
     private displayNameService: DisplayNameService,
     private indexService: IndexService,
-    private logoutService: LogoutService
+    private logoutService: LogoutService,
+    private router: Router
   ) {
     this.isMobile = isMobile
+    this.isHeaderOpen = true
+    router.events.subscribe((_: NavigationEnd) => this.isEditorBtnVisible = _.url != '/index')
   }
 
   ngOnInit(): void {

@@ -68,4 +68,14 @@ public class PluginService {
     coreService.build(docker.getId(), pluginName, project.getName(), settings.getEntrypoint(), docker.getUserId().getUsername());
   }
 
+  public Iterable<Plugin> getPlugins(String name) {
+    Iterable<Plugin> plugins;
+    if (name != null && !name.isEmpty()) {
+      plugins = pluginRepository.findAllApprovedByName(name);
+    } else {
+      plugins = pluginRepository.findAllApproved();
+    }
+    return plugins;
+  }
+
 }

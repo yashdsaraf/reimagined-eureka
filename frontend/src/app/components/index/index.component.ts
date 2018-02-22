@@ -167,6 +167,8 @@ import {
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
 
+declare const $: any
+
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
@@ -276,9 +278,11 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
           (data: Output) => {
             this.output = data
             this.progressBarService.dismiss()
+            $('#file-list').jstree(true).refresh()
           },
           err => {
             this.progressBarService.dismiss()
+            $('#file-list').jstree(true).refresh()
             this.flashMessagesService.show(err, {
               cssClass: 'ui error message', timeout: 4000
             })

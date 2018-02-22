@@ -14,6 +14,11 @@
       </div>
     </div>
   </header>
+  <div class="ui info message">
+    <div class="ui header">
+      Select a plugin to install...
+    </div>
+  </div>
   <div id="content">
     <div class="ui basic segment" id="featured-plugins">
       <div *ngIf="plugins.length > 0; else noPlugins" class="ui centered link special raised cards" [ngClass]="{ 'one': isMobile , 'six': !isMobile }">

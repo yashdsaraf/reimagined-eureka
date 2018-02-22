@@ -30,7 +30,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.repository.DockerRepository;
-import org.tyit.pnc.service.AdminService;
 import org.tyit.pnc.service.PluginService;
 import org.tyit.pnc.utils.JwtUtils;
 
@@ -43,9 +42,6 @@ import org.tyit.pnc.utils.JwtUtils;
 public class PluginController {
 
   @Autowired
-  private AdminService adminService;
-
-  @Autowired
   private DockerRepository dockerRepository;
 
   @Autowired
@@ -53,7 +49,7 @@ public class PluginController {
 
   @GetMapping
   public ResponseEntity<Iterable<Plugin>> getPlugins(@RequestParam(name = "name", required = false) String name) {
-    return ResponseEntity.ok(adminService.getPlugins(name));
+    return ResponseEntity.ok(pluginService.getPlugins(name));
   }
 
   @PostMapping
