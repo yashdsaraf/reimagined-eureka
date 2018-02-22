@@ -1,6 +1,6 @@
-<div class="container">
-  <div class="ui raised padded text container segment" id="main">
-    <h1 class="ui huge header">Plug n’ Code</h1>
+<div class="container" id="container">
+  <div class="ui center aligned text container" id="main">
+    <h1 class="ui header" [ngClass]="{ huge: !isMobile }" style="margin-bottom: 2we">About Plug n’Code</h1>
     <p style="font-size: 1.1em;">
       <span style="font-weight: bold;">Plug n’ Code</span> is a web application which aims to provide a pluggable and dynamic development environment with a clean and easy to use and user interface.
     </p>
@@ -8,16 +8,16 @@
     <h2 class="ui horizontal divider center aligned header">
       Why Plug n’ Code?
     </h2>
-
       <p>
         There are many solutions out there which enable the users to run simple or slightly advanced projects online, but all of them run short when it comes to these issues,
       </p>
 
-      <div class="ui segment">
-        <h3 class="ui left aligned header">
-          No support for user built plugins, thus rendering the project non-extensible
+      <div class="ui top attached segment">
+        <h3 class="ui center aligned header">
+          Support for user built plugins, thus rendering the project non-extensible
         </h3>
-        <div class="ui divider"></div>
+      </div>
+      <div class="ui attached segment">
         <p>
           In Plug n’ Code, any user after going through a minimal authentication process, can create and publish a plugin in the marketplace to add support for a specific language. This enables the users to go beyond the pre-defined capabilities of the application.
         </p>
@@ -25,21 +25,23 @@
         </p>
       </div>
 
-      <div class="ui segment">
-        <h3 class="ui left aligned header">
-          No support for complex execution environments with multiple languages
+      <div class="ui top attached segment">
+        <h3 class="ui center aligned header">
+          Support for complex execution environments with multiple languages
         </h3>
-        <div class="ui divider"></div>
+      </div>
+      <div class="ui attached segment">
         <p>
           In Plug n’ Code the goal is to provide pre-defined environments as well as the option to tailor the execution environment specific to the project’s needs.
         </p>
       </div>
 
-      <div class="ui segment">
-        <h3 class="ui left aligned header">
-          No support for secure execution of code
+      <div class="ui top attached segment">
+        <h3 class="ui center aligned header">
+          Support for secure execution of code
         </h3>
-        <div class="ui divider"></div>
+      </div>
+      <div class="ui attached segment">
         <p>
           Each build of a project in Plug n’ Code runs on a separate isolated docker instance to make sure no system specific issues interfere with the job. This also ensures safety of the project data and all kinds of output or logs are directly forwarded to the user’s browser window without being persisted in any kind of data storage medium.
         </p>
@@ -50,29 +52,29 @@
       What we offer
     </h2>
 
-      <div class="ui segment">
+      <div class="ui top attached segment">
         <h3 class="ui center aligned header">
           <u>Users</u>
         </h3>
-        <div class="ui divider"></div>
-        <p style="text-align: center;">We support multiple types of users each serving their own roles <br>
-          Say you want to execute something quickly without logging in <br>
+      </div>
+      <div class="ui attached segment">
+        <p style="text-align: center;">We support multiple types of users each serving their own roles Say you want to execute something quickly without logging in
           <span style="font-weight: bold;">
             Guest user
           </span>
-          Maybe you like us now and want to create an account <br>
-          You are a normal user now <br>
-          Just using the services isn't enough for you, want to give something back to the community <br>
-          Become a developer! <br>
-          We'd love to make you an admin, but, we won't... <br>
+          Maybe you like us now and want to create an account You are a normal user now
+          Just using the services isn't enough for you, want to give something back to the community
+          Become a developer!
+          We'd love to make you an admin, but, we won't...
         </p>
       </div>
 
-      <div class="ui segment">
+      <div class="ui top attached segment">
         <h3 class="ui center aligned header">
           <u>Execution environment</u>
         </h3>
-        <div class="ui divider"></div>
+      </div>
+      <div class="ui attached segment">
         <p style="text-align: center;">
           By default the users will be provided a set of languages to be set as an execution environment for their current project. <br>
           Complex execution environments with multiple languages and custom build scripts can be created by the user. <br>
@@ -80,73 +82,76 @@
         </p>
       </div>
 
-        <div class="ui segment">
-          <h3 class="ui center aligned header">
-            <u>Plugins</u>
-          </h3>
-          <div class="ui divider"></div>
-          <p style="text-align: center;">
-              Plugins will be used to add new languages to a user’s workspace <br>
-              Plugins can be installed from the marketplace by any user, and details of the plugins will be saved in the user’s project directory itself.
-          </p>
-        </div>
+      <div class="ui top attached segment">
+        <h3 class="ui center aligned header">
+          <u>Plugins</u>
+        </h3>
+      </div>
+      <div class="ui attached segment">
+        <p style="text-align: center;">
+            Plugins will be used to add new languages to a user’s workspace <br>
+            Plugins can be installed from the marketplace by any user, and details of the plugins will be saved in the user’s project directory itself.
+        </p>
+      </div>
 
+      <div class="ui top attached segment">
+        <h3 class="ui center aligned header">
+          <u>Marketplace</u>
+        </h3>
+      </div>
+      <div class="ui attached segment">
+        <p style="text-align: center;">
+          Here all the published plugins will be available for installation. <br>
+          Each plugin will have its developer’s name and a unique developer signature. <br>
+          Plugins can be published only if they are approved by the admin, and can be deleted by the plugin’s developer or admin. <br>
+        </p>
+      </div>
+      <div class="ui divider"></div>
 
-        <div class="ui segment">
-          <h3 class="ui center aligned header">
-            <u>Marketplace</u>
-          </h3>
-          <div class="ui divider"></div>
-          <p style="text-align: center;">
-            Here all the published plugins will be available for installation. <br>
-            Each plugin will have its developer’s name and a unique developer signature. <br>
-            Plugins can be published only if they are approved by the admin, and can be deleted by the plugin’s developer or admin. <br>
-          </p>
-        </div>
-        <div class="ui divider"></div>
+      <h2 class="ui horizontal divider center aligned header" *ngIf="!isMobile; else moblieTools">
+        <i class="circular users icon"></i>
+        Meet Our Team
+      </h2>
 
-        <h2 class="ui horizontal divider center aligned header" *ngIf="!isMobile; else moblieTools">
+      <ng-template #moblieTools>
+        <h3 class="ui horizontal divider center aligned header">
           <i class="circular users icon"></i>
           Meet Our Team
-        </h2>
+        </h3>
+      </ng-template>
 
-        <ng-template #moblieTools>
-          <h3 class="ui horizontal divider center aligned header">
-            <i class="circular users icon"></i>
-            Meet Our Team
-          </h3>
-        </ng-template>
-
-        <div class="ui segment">
-          <div class="ui piled segment" style="margin: 0px;">
-            <p>
-              Each and every one of our team represent the spirit of our company: driven, committed, and acutely aware of how limitless Plug n' Code’s potential is to grow. We go to great lengths to identify self-starters with diverse experience and skill sets to produce not just an effective workforce, but a well-rounded, talented and complementary team.
-            </p>
+      <div class="ui segment">
+        <div class="ui piled segment" style="margin: 0px;">
+          <p>
+            Each and every one of our team represent the spirit of our company: driven, committed, and acutely aware of how limitless Plug n' Code’s potential is to grow. We go to great lengths to identify self-starters with diverse experience and skill sets to produce not just an effective workforce, but a well-rounded, talented and complementary team.
+          </p>
+        </div>
+      <div class="ui big very relaxed list" [ngClass]="{ horizontal: !isMobile , vertical: isMobile}">
+        <div class="item">
+          <div class="middle aligned content">
+            <h3 class="header"><i>
+              Yash D. Saraf
+            </i></h3>
           </div>
-        <div class="ui big very relaxed horizontal list" [ngClass]="{'horizontal': !isMobile , 'vertical': isMobile}">
-          <div class="item">
-            <div class="middle aligned content">
-              <h3 class="header">
-                Yash D. Saraf
-              </h3>
-            </div>
+        </div>
+        <div class="item">
+          <div class="middle aligned content">
+            <h3 class="header"><i>
+              Raees R. Mulla
+            </i></h3>
           </div>
-          <div class="item">
-            <div class="middle aligned content">
-              <h3 class="header">
-                Raees R. Mulla
-              </h3>
-            </div>
-          </div>
-          <div class="item">
-            <div class="middle aligned content">
-              <h3 class="header">
-                Sachin S. Negi
-              </h3>
-            </div>
+        </div>
+        <div class="item">
+          <div class="middle aligned content">
+            <h3 class="header"><i>
+              Sachin S. Negi
+            </i></h3>
           </div>
         </div>
       </div>
+    </div>
     <div class="ui divider"></div>
   </div>
+  <!-- main -->
 </div>
+<!-- container -->

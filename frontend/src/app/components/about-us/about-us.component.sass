@@ -16,11 +16,32 @@
 
 @import base
 
-.container
-  margin-top: 1em
-  margin-bottom: 1em
+#container
+  padding-top: 1em
   overflow: auto
-  overflow: hidden
+  background-color: #f8f9fa
 
   #main
     text-align: center
+    background-color: white
+    font-family: sans-serif
+    font-weight: 300
+
+    .header
+      font-family: sans-serif
+      font-weight: 500
+
+    .top.segment
+      background-color: #f8f9fa
+
+  @media only screen and (max-width: 768px)
+    #main
+      padding: 1em 0.5em 0 0.5em
+
+  @media only screen and (min-width: 769px)
+    #main
+      padding: 3em 4em 0 4em
+      max-width: 80vw !important
+
+      p
+        margin-bottom: 1.5em
