@@ -18,8 +18,7 @@ import {Injectable} from '@angular/core'
 import {
   ActivatedRouteSnapshot,
   CanActivate,
-  Router,
-  RouterStateSnapshot
+  Router
 } from '@angular/router'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
@@ -37,7 +36,7 @@ export class ProjectGuard implements CanActivate {
 
   }
 
-  canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+  canActivate(next: ActivatedRouteSnapshot): Promise<boolean> {
     let inverse = next.data["inverse"] as boolean
     inverse = !!inverse
     return new Promise<boolean>((resolve, reject) => {

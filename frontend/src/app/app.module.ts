@@ -78,6 +78,7 @@ import {StartupService} from './services/startup.service'
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
 import {AdminGuard} from './guards/admin.guard'
+import {AuthGuard} from './guards/auth.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
 import {ProjectGuard} from './guards/project.guard'
@@ -153,6 +154,7 @@ export function init(startupService: StartupService) {
     ProjectSettingsService,
     StartupService,
     AdminGuard,
+    AuthGuard,
     DeveloperGuard,
     GuestGuard,
     ProjectGuard,

@@ -35,6 +35,7 @@ import {MarketPlaceComponent} from './components/market-place/market-place.compo
 
 //GUARDS
 import {AdminGuard} from './guards/admin.guard'
+import {AuthGuard} from './guards/auth.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
 import {ProjectGuard} from './guards/project.guard'
@@ -51,12 +52,12 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'index', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
   {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
-  {path: 'login', component: LoginComponent},
-  {path: 'logout/:message', component: LogoutComponent},
-  {path: 'logout/:message/:error', component: LogoutComponent},
-  {path: 'logout', component: LogoutComponent},
+  {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
+  {path: 'logout/:message', component: LogoutComponent, canActivate: [GuestGuard]},
+  {path: 'logout/:message/:error', component: LogoutComponent, canActivate: [GuestGuard]},
+  {path: 'logout', component: LogoutComponent, canActivate: [GuestGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
-  {path: 'register', component: RegisterComponent},
+  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
   {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]}
 
 ]
