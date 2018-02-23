@@ -24,6 +24,7 @@ import {
 import {AboutUsComponent} from './components/about-us/about-us.component'
 import {AdminComponent} from './components/admin/admin.component'
 import {BlogComponent} from './components/blog/blog.component'
+import {DeveloperPluginsComponent} from './components/developer-plugins/developer-plugins.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
@@ -57,6 +58,7 @@ const routes: Routes = [
   {path: 'logout/:message/:error', component: LogoutComponent, canActivate: [GuestGuard]},
   {path: 'logout', component: LogoutComponent, canActivate: [GuestGuard]},
   {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
+  {path: 'plugins', component: DeveloperPluginsComponent, canActivate: [DeveloperGuard]},
   {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
   {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]}
 
