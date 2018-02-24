@@ -19,7 +19,10 @@
 #container
   flex-direction: column
   display: flex
-  padding: 1em
+  padding: 0.5em
+  height: 100%
+  width: 100%
+  background-color: #f8f9fa
 
   label
     font-family: $sans-serif
@@ -31,3 +34,8 @@
   .icon,
   .label
     user-select: none
+
+  @media only screen and (min-width: 769px)
+
+    #main
+      max-width: 30vw !important

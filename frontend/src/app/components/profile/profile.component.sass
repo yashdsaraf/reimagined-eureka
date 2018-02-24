@@ -21,6 +21,14 @@
   display: flex
   padding: 1em
   align-items: center
+  font-family: $sans-serif
+  background-color: #f8f9fa
+
+  *
+    font-weight: 500
+
+  .divider
+    color: grey
 
   label
     font-family: $sans-serif
@@ -36,9 +44,12 @@
   .label
     user-select: none
 
+  #user-details
+    padding: 1em
+
   @media only screen and (min-width: 769px)
 
-    .container.segment
+    #main
       max-width: 40vw !important
 
     // .icon.input

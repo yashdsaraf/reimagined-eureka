@@ -1,174 +1,178 @@
 <div id="container">
-  <div class="ui raised padded container segment">
+  <div class="ui raised padded container segment" id="main">
     <h1 class="ui header">
       Profile
     </h1>
     <div class="ui divider"></div>
-  <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
-    <div class="fields">
-      <div class="field">
-        <div id="profile-img" [appIdenticon]="getIdenticonObject()">
+    <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <div class="fields">
+        <div class="field">
+          <div id="profile-img" [appIdenticon]="getIdenticonObject()">
+          </div>
+        </div>
+        <div class="field" id="user-details">
+          <h2 class="ui header">Sachin S. Negi</h2>
+          <h4 class="ui header"><span style="color: grey;">Role: &nbsp;</span>Admin</h4>
+          <h4 class="ui header"><span style="color: grey;">Created on: &nbsp;</span>15-02-18</h4>
         </div>
       </div>
-      <div class="field" style="padding: 1em;">
-        <h4 class="ui header">Sachin S. Negi</h4>
-        <h4 class="ui header"><span style="color: grey;">Role: </span>Admin</h4>
-        <h4 class="ui header"><span style="color: grey;">Created on: </span>15-02-18</h4>
+      <div class="inline field" [ngClass]="{error: Name.errors && Name.touched, 'fluid': isMobile}">
+        <label>Name</label>
+        <br>
+        <br>
+        <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
+          <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name" #Name="ngModel" required pattern="^[a-zA-Z]+(\s|\.\s)?([a-zA-Z](\s|\.\s)?)*[a-zA-Z]+$">
+          <i class="user circle icon"></i>
+        </div>
+        <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
+          Name is required
+        </div>
+        <div *ngIf="Name.errors?.pattern && Name.touched" class="ui error message">
+          Invalid name
+        </div>
       </div>
-    </div>
-    <div class="inline field" [ngClass]="{error: Name.errors && Name.touched, 'fluid': isMobile}">
-      <label>Name</label>
-      <br>
-      <br>
-      <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
-        <input type="text" placeholder="John Doe" [(ngModel)]="user.name" name="name" #Name="ngModel" required pattern="^[a-zA-Z]+(\s|\.\s)?([a-zA-Z](\s|\.\s)?)*[a-zA-Z]+$">
-        <i class="user circle icon"></i>
-      </div>
-      <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
-        Name is required
-      </div>
-      <div *ngIf="Name.errors?.pattern && Name.touched" class="ui error message">
-        Invalid name
-      </div>
-    </div>
-    <!-- Name field -->
+      <!-- Name field -->
 
-    <div class="inline field" [ngClass]="{error: Email.errors && Email.touched, 'fluid': isMobile}">
-      <label>Email address</label>
-      <br>
-      <br>
-      <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
-        <input type="email" placeholder="johndoe@example.com" [(ngModel)]="user.email" name="email" #Email="ngModel" (change)="onEmailChange()" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
-        <i class="mail icon"></i>
+      <div class="inline field" [ngClass]="{error: Email.errors && Email.touched, 'fluid': isMobile}">
+        <label>Email address</label>
+        <br>
+        <br>
+        <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
+          <input type="email" placeholder="johndoe@example.com" [(ngModel)]="user.email" name="email" #Email="ngModel" (change)="onEmailChange()" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+          <i class="mail icon"></i>
+        </div>
+        <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
+          Email address is required
+        </div>
+        <div *ngIf="Email.errors?.pattern && Email.touched" class="ui error message">
+          Invalid email address
+        </div>
       </div>
-      <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
-        Email address is required
-      </div>
-      <div *ngIf="Email.errors?.pattern && Email.touched" class="ui error message">
-        Invalid email address
-      </div>
-    </div>
-    <!-- Email id field -->
+      <!-- Email id field -->
 
-    <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'fluid': isMobile}">
-      <label>Login ID</label>
-      <br>
-      <br>
-      <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
-        <input type="text" placeholder="johndoe123" [(ngModel)]="user.username" name="username"  #Username="ngModel"
-          minlength="8" required pattern="^\S*$">
-        <i class="id badge icon"></i>
+      <div class="inline field" [ngClass]="{error: Username.errors && Username.touched, 'fluid': isMobile}">
+        <label>Login ID</label>
+        <br>
+        <br>
+        <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
+          <input type="text" placeholder="johndoe123" [(ngModel)]="user.username" name="username"  #Username="ngModel"
+            minlength="8" required pattern="^\S*$">
+          <i class="id badge icon"></i>
+        </div>
+        <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
+          Username is required
+        </div>
+        <div *ngIf="Username.errors?.minlength && Username.touched" class="ui error message">
+          Must be at least 8 characters
+        </div>
+        <div *ngIf="Username.errors?.pattern && Username.touched" class="ui error message">
+          Username can't have spaces
+        </div>
       </div>
-      <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
-        Username is required
-      </div>
-      <div *ngIf="Username.errors?.minlength && Username.touched" class="ui error message">
-        Must be at least 8 characters
-      </div>
-      <div *ngIf="Username.errors?.pattern && Username.touched" class="ui error message">
-        Username can't have spaces
-      </div>
-    </div>
-    <!-- Username field -->
+      <!-- Username field -->
 
-    <div class="inline field" [ngClass]="{error: Password.errors && Password.touched, 'fluid': isMobile}">
-      <label>Password</label>
-      <br>
-      <br>
-      <div class="ui right labeled fluid left icon input" [ngClass]="{ disabled: !editable }">
-        <i class="icon lock"></i>
-        <input type="password" placeholder="strongestpassword" [(ngModel)]="user.password" name="password" #Password="ngModel" minlength="8"
-          pattern="^\S*$" required #passwordField>
-        <a class="ui label" (click)="onPasswordChange()">
-          &nbsp;&nbsp;
-          <i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
-        </a>
+      <div class="inline field" [ngClass]="{error: Password.errors && Password.touched, 'fluid': isMobile}">
+        <label>Password</label>
+        <br>
+        <br>
+        <div class="ui right labeled fluid left icon input" [ngClass]="{ disabled: !editable }">
+          <i class="icon lock"></i>
+          <input type="password" placeholder="strongestpassword" [(ngModel)]="user.password" name="password" #Password="ngModel" minlength="8"
+            pattern="^\S*$" required #passwordField>
+          <a class="ui label" (click)="onPasswordChange()">
+            &nbsp;&nbsp;
+            <i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
+          </a>
+        </div>
+        <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+          Password is required
+        </div>
+        <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
+          Must be at least 8 characters
+        </div>
+        <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
+          Password can't have spaces
+        </div>
       </div>
-      <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
-        Password is required
-      </div>
-      <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
-        Must be at least 8 characters
-      </div>
-      <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
-        Password can't have spaces
-      </div>
-    </div>
-    <!-- Password field -->
+      <!-- Password field -->
 
-    <div class="inline field" [ngClass]="{error: cPassword.errors && cPassword.touched, 'fluid': isMobile}">
-      <label>Confirm password</label>
-      <br>
-      <br>
-      <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
-        <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Retype password" #cPassword="ngModel"
-          required pattern="^\S*$">
-        <i class="lock icon"></i>
+      <div class="inline field" [ngClass]="{error: cPassword.errors && cPassword.touched, 'fluid': isMobile}">
+        <label>Confirm password</label>
+        <br>
+        <br>
+        <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
+          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Retype password" #cPassword="ngModel"
+            required pattern="^\S*$">
+          <i class="lock icon"></i>
+        </div>
+        <div *ngIf="cPassword.errors?.required && cPassword.touched" class="ui error message">
+          Please retype your password
+        </div>
+        <div *ngIf="user.password!=confirmPassword && cPassword.touched" class="ui error message">
+          These passwords don't match. Try again?
+        </div>
       </div>
-      <div *ngIf="cPassword.errors?.required && cPassword.touched" class="ui error message">
-        Please retype your password
-      </div>
-      <div *ngIf="user.password!=confirmPassword && cPassword.touched" class="ui error message">
-        These passwords don't match. Try again?
-      </div>
-    </div>
-    <!-- Confirm password field -->
+      <!-- Confirm password field -->
 
-    <button class="ui blue animated button" [ngClass]="{loading: loading}" (click)="editable = !editable">
-      <div class="visible content">Edit</div>
-      <div class="hidden content">
-        <i class="icon edit"></i>
-      </div>
-    </button>
-    <ng-container *ngIf="isMobile">
-      <br><br>
-    </ng-container>
-    <button id="clear" class="ui animated button" (click)="openModal()" [ngClass]="{ disabled: !editable }">
-      <div class="visible content">Save</div>
-      <div class="hidden content">
-        <i class="icon save"></i>
-      </div>
-    </button>
-  </form>
-
-  <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true" (dismissed)="error = false">
-    <div class="ui huge header">Oops!</div>
-    <div class="content">
-      <h3>{{error}}</h3>
-    </div>
-  </sui-modal>
-
-  <sui-modal *ngIf="passModal" [isClosable]="true" (denied)="closeModal()" size="mini">
-    <h4 class="ui small header">Enter your password to continue</h4>
-    <div class="content">
-      <label>Password</label>
-      <br>
-      <br>
-      <div class="ui right fluid labeled left icon input" [ngClass]="{ disabled: !editable }">
-        <i class="icon lock"></i>
-        <input type="password" placeholder="" [(ngModel)]="user.password" name="password" #Password="ngModel" minlength="8"
-          pattern="^\S*$" required #passwordField>
-        <a class="ui label" (click)="onPasswordChange()">
-          &nbsp;&nbsp;
-          <i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
-        </a>
-      </div>
-      <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
-        Password is required
-      </div>
-      <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
-        Must be at least 8 characters
-      </div>
-      <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
-        Password can't have spaces
-      </div>
-    </div>
-    <div class="actions">
-      <button class="ui positive right labeled icon button" autofocus>
-        Approve
-        <i class="check icon"></i>
+      <button class="ui blue animated button" [ngClass]="{loading: loading, tiny: isMobile }" (click)="editable = !editable">
+        <div class="visible content">Edit</div>
+        <div class="hidden content">
+          <i class="icon edit"></i>
+        </div>
       </button>
-    </div>
-  </sui-modal>
+
+      <button id="clear" class="ui animated button" (click)="openModal()" [ngClass]="{ disabled: !editable, tiny: isMobile }">
+        <div class="visible content">Save</div>
+        <div class="hidden content">
+          <i class="icon save"></i>
+        </div>
+      </button>
+    </form>
+
+    <sui-modal *ngIf="error != ''" [isClosable]="true" [isBasic]="true" (dismissed)="error = false">
+      <div class="ui huge header">Oops!</div>
+      <div class="content">
+        <h3>{{error}}</h3>
+      </div>
+    </sui-modal>
+
+    <sui-modal *ngIf="passModal" [isClosable]="true" (denied)="closeModal()" size="mini">
+      <h4 class="ui small header">Enter your password to continue</h4>
+      <div class="content">
+        <label>Password</label>
+        <br>
+        <br>
+        <div class="ui right fluid labeled left icon input" [ngClass]="{ disabled: !editable }">
+          <i class="icon lock"></i>
+          <input type="password" placeholder="" [(ngModel)]="user.password" name="password" #Password="ngModel" minlength="8"
+            pattern="^\S*$" required #passwordField>
+          <a class="ui label" (click)="onPasswordChange()">
+            &nbsp;&nbsp;
+            <i class="icon" [ngClass]="{unhide: isHidden, hide: !isHidden}"></i>
+          </a>
+        </div>
+        <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+          Password is required
+        </div>
+        <div *ngIf="Password.errors?.minlength && Password.touched" class="ui error message">
+          Must be at least 8 characters
+        </div>
+        <div *ngIf="Password.errors?.pattern && Password.touched" class="ui error message">
+          Password can't have spaces
+        </div>
+      </div>
+      <div class="actions">
+        <button class="ui positive right labeled icon button" autofocus>
+          Approve
+          <i class="check icon"></i>
+        </button>
+      </div>
+    </sui-modal>
+    <!-- passwordModal -->
+
+    <div class="ui divider"></div>
   </div>
+  <!-- main -->
+
 </div>
+<!-- container -->
