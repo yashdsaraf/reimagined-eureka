@@ -14,7 +14,10 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {Component, ViewChild, ElementRef, OnInit} from '@angular/core'
+import {User} from '../../models/user'
+import {isMobile} from '../../app.component'
+import {NgForm} from '@angular/forms'
 
 @Component({
   selector: 'app-profile',
@@ -23,6 +26,49 @@ import {Component} from '@angular/core'
 })
 export class ProfileComponent {
 
-  constructor() { }
+  isMobile: boolean
+  editable: boolean
+  passModal: boolean
+  user: User = {
+    name: '',
+    email: '',
+    username: '',
+    password: ''
+  }
+  confirmPassword = ''
+  isHidden = true
+  useEmailAsPass = false
+  error = ''
+  loading = false
+  @ViewChild('passwordField') passwordField: ElementRef
+
+  constructor() {
+    this.isMobile = isMobile
+    this.editable = false
+    this.passModal = false
+  }
+
+  openModal(){
+    this.passModal = true
+  }
+
+  closeModal(){
+    this.passModal = false
+  }
+
+  onPasswordChange() {
+    this.isHidden = !this.isHidden
+    let element = this.passwordField.nativeElement
+    element.type = this.isHidden ? 'password' : 'text'
+    element.focus()
+  }
+
+  getIdenticonObject() {
+    let obj = {
+      value: this.user.name,
+      size: 150
+    }
+    return JSON.stringify(obj)
+  }
 
 }
