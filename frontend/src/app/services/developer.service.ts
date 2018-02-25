@@ -15,8 +15,10 @@
  */
 
 import {Injectable} from '@angular/core'
-import {HttpClient} from '@angular/common/http'
+import {HttpClient, HttpParams} from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
+
+import {Plugin} from '../models/plugin'
 
 @Injectable()
 export class DeveloperService {
@@ -41,6 +43,29 @@ export class DeveloperService {
           }
         )
     })
+  }
+
+  getPlugins(name?: string): Observable<Plugin[]> {
+    let params: HttpParams
+    if (name !== null && name !== undefined) {
+      params = new HttpParams().append('name', name)
+    } else {
+      params = new HttpParams()
+    }
+    return this.http.get<Plugin[]>('/api/developer/plugins', {params})
+  }
+
+  createPlugin(plugin: Plugin): Observable<any> {
+    return this.http.post('/api/developer/plugin/create', plugin, {responseType: 'text'})
+  }
+
+  updatePlugin(plugin: Plugin): Observable<any> {
+    return this.http.post('/api/developer/plugin/update', plugin, {responseType: 'text'})
+  }
+
+  deletePlugin(pluginName: string): Observable<any> {
+    let params = new HttpParams().append('name', pluginName)
+    return this.http.delete('/api/developer/plugin', {params, responseType: 'text'})
   }
 
 }

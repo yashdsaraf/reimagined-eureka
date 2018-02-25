@@ -1,3 +1,128 @@
-<p>
-  developer-plugins works!
-</p>
+<div id="container">
+  <div class="ui large fluid menu">
+    <div class="header item">Plugins</div>
+    <div class="right menu">
+      <div class="ui icon transparent input">
+        <input type="text" [(ngModel)]="search" placeholder="Search...">
+        <i class="icon inverted circular search link"></i>
+      </div>
+      <!-- input -->
+    </div>
+    <!-- right menu -->
+  </div>
+  <!-- menu -->
+  <div class="add-button">
+    <div class="ui positive fluid labeled icon button">
+      <i class="icon add"></i>
+      Add plugin
+    </div>
+  </div>
+  <div class="ui segments">
+    <div class="ui raised segment">
+      <table *ngIf="plugins != undefined && plugins.length > 0; else notFound" class="ui striped small compact padded selectable table">
+        <thead *ngIf="!isMobile">
+          <tr>
+            <th>
+              <h3 class="ui center aligned header">Name</h3>
+            </th>
+            <th class="single line">
+              <h3 class="ui left aligned header single line">Created on</h3>
+            </th>
+            <th class="single line">
+              <h3 class="ui left aligned header single line">Updated on</h3>
+            </th>
+            <th class="single line">
+              <h3 class="ui left aligned header">Description</h3>
+            </th>
+            <th>
+              <h3 class="ui left aligned header single line">Plugin file</h3>
+            </th>
+            <th>
+              <h3 class="ui left aligned header">Status</h3>
+            </th>
+            <th>
+              <h3 class="ui left aligned header single line">Approved by</h3>
+            </th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let plugin of plugins">
+            <td class="single line">
+              <h2 class="ui center aligned header">{{plugin.name}}</h2>
+            </td>
+            <td class="single line">
+              <ng-container *ngIf="isMobile">
+                <strong>Created on:</strong>
+              </ng-container> {{plugin.createdOn | date}}
+            </td>
+            <td class="single line">
+              <ng-container *ngIf="isMobile">
+                <strong>Updated on:</strong>
+              </ng-container> {{plugin.updatedOn | date}}
+            </td>
+            <td class="plugin-description left aligned">
+              <ng-container *ngIf="isMobile">
+                <strong>Description:</strong>
+              </ng-container> {{plugin.description}}
+            </td>
+            <td class="left aligned single line">
+              Dockerfile
+            </td>
+            <td class="left aligned single line">
+              <ng-container *ngIf="isMobile">
+                <strong>Status:</strong>
+              </ng-container> {{plugin.status}}
+            </td>
+            <td class="left aligned single line">
+              <ng-container *ngIf="isMobile">
+                <strong>Approved by:</strong>
+              </ng-container> {{plugin.adminid.userId.name}}
+            </td>
+            <td>
+              <div class="ui fluid buttons">
+                <button class="ui primary labeled icon button" (click)="approvePluginName = plugin.name">
+                  <i class="icon edit"></i>
+                  Edit
+                </button>
+                <div class="or"></div>
+                <button class="ui negative right labeled icon button" (click)="deleteModal(plugin)">
+                  <i class="icon trash"></i>
+                  Delete
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <ng-template #notFound>
+        No plugins found
+      </ng-template>
+    </div>
+    <!-- segment -->
+  </div>
+  <!-- segments -->
+</div>
+<!-- container -->
+
+<sui-modal *ngIf="_authModal" (approved)="deletePlugin()" (denied)="_authModal = false" [isBasic]="true"
+  #authModal></sui-modal>
+<!-- Auth modal -->
+
+<sui-modal *ngIf="_createModal" (approved)="deletePlugin(deletePluginName)" (denied)="_createModal = false" [isBasic]="true"
+  #createModal></sui-modal>
+<!-- Create modal -->
+
+<sui-modal *ngIf="_deleteModal" (approved)="deletePlugin()" (denied)="_deleteModal = false" [isBasic]="true"
+  #deleteModal>
+  <div class="header">Are you sure you would like to delete this plugin?</div>
+  <div class="actions">
+    <button class="ui grey button" (click)="deleteModal.deny()">Cancel</button>
+    <button class="ui red button" (click)="deleteModal.approve()" autofocus>Delete</button>
+  </div>
+</sui-modal>
+<!-- Delete modal -->
+
+<sui-modal *ngIf="_editModal" (approved)="deletePlugin(deletePluginName)" (denied)="_editModal = false" [isBasic]="true"
+  #editModal></sui-modal>
+<!-- Edit modal -->

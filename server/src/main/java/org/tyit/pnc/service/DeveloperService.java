@@ -15,12 +15,17 @@
  */
 package org.tyit.pnc.service;
 
+import java.time.Instant;
+import java.util.Date;
+import java.util.Iterator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Developer;
+import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.repository.AppUserRepository;
 import org.tyit.pnc.repository.DeveloperRepository;
+import org.tyit.pnc.repository.PluginRepository;
 import org.tyit.pnc.utils.RSAUtils;
 
 /**
@@ -36,6 +41,9 @@ public class DeveloperService {
   @Autowired
   private AppUserRepository appUserRepository;
 
+  @Autowired
+  private PluginRepository pluginRepository;
+
   public void getDeveloperAccess(String publicKey, String username) throws Exception {
     RSAUtils utils = RSAUtils.getInstance();
     utils.verify(publicKey);
@@ -46,6 +54,45 @@ public class DeveloperService {
     developer.setUserId(appUser);
     appUserRepository.save(appUser);
     developerRepository.save(developer);
+  }
+
+  public Iterator<Plugin> getPlugins(String name, String userName) {
+    AppUser appUser = appUserRepository.findByUsername(userName);
+    Developer developer = developerRepository.findByUserId(appUser);
+    if (name != null && !name.isEmpty()) {
+      return developer.getPluginCollection().stream().filter(plugin -> plugin.getName().startsWith(name)).iterator();
+    }
+    return developer.getPluginCollection().iterator();
+  }
+
+  public void storePlugin(Plugin plugin, String userName, boolean isUpdate) throws Exception {
+    if (plugin == null) {
+      throw new Exception("Invalid plugin");
+    }
+    AppUser appUser = appUserRepository.findByUsername(userName);
+    Developer developer = developerRepository.findByUserId(appUser);
+    Date now = Date.from(Instant.now());
+    plugin.setStatus(Plugin.Status.PEN);
+    plugin.setDeveloperId(developer);
+    if (isUpdate) {
+      Plugin testPlugin = pluginRepository.findByName(plugin.getName());
+      if (testPlugin == null) {
+        throw new Exception("No such plugin found");
+      }
+      plugin.setId(testPlugin.getId());
+      plugin.setUpdatedOn(now);
+    } else {
+      plugin.setCreatedOn(now);
+    }
+    pluginRepository.save(plugin);
+  }
+
+  public void deletePlugin(String pluginName) throws Exception {
+    Plugin plugin = pluginRepository.findByName(pluginName);
+    if (plugin == null) {
+      throw new Exception("No such plugin found");
+    }
+    pluginRepository.delete(plugin);
   }
 
 }

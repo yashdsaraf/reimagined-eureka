@@ -19,10 +19,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.tyit.pnc.model.AppAdmin;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.AppUser.Role;
 import org.tyit.pnc.model.Developer;
 import org.tyit.pnc.model.Plugin;
+import org.tyit.pnc.repository.AppAdminRepository;
 import org.tyit.pnc.repository.AppUserRepository;
 import org.tyit.pnc.repository.DeveloperRepository;
 import org.tyit.pnc.repository.PluginRepository;
@@ -42,6 +44,9 @@ public class AdminService {
 
   @Autowired
   private DeveloperRepository developerRepository;
+
+  @Autowired
+  private AppAdminRepository appAdminRepository;
 
   public Iterable<AppUser> getUsers(String name) {
     Iterable<AppUser> users;
@@ -87,10 +92,13 @@ public class AdminService {
     return ResponseEntity.ok().build();
   }
 
-  public ResponseEntity<String> approvePlugin(String name) {
+  public ResponseEntity<String> approvePlugin(String name, String userName) {
     Plugin plugin = pluginRepository.findByName(name);
+    AppUser user = appUserRepository.findByUsername(userName);
+    AppAdmin admin = appAdminRepository.findByUserId(user);
     if (plugin != null && plugin.getStatus() == Plugin.Status.PEN) {
       plugin.setStatus(Plugin.Status.APP);
+      plugin.setAdminid(admin);
       pluginRepository.save(plugin);
     }
     return ResponseEntity.ok().build();
