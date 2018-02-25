@@ -39,10 +39,6 @@ import {decodeError} from '../../utils/general-utils'
 })
 export class MarketPlaceComponent implements OnInit {
 
-  contacts: Object = {
-    email: '',
-    phone: ''
-  }
   isMobile: boolean
   plugins: Plugin[] = []
   _search: string

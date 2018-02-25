@@ -1,3 +1,52 @@
-<p>
-  blog works!
-</p>
+<div class="container" id="container">
+  <header>
+    <div id="quote">
+      <span>Blog</span>
+      <div class="ui circular primary icon button" (click)="getPlugins(search)">
+        <i class="icon refresh"></i>
+      </div>
+    </div>
+    <div id="search">
+      <div class="ui icon input">
+        <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
+        <i class="search icon"></i>
+      </div>
+    </div>
+  </header>
+
+  <div class="ui info message">
+    <div class="ui header">
+      Users can share code here..
+    </div>
+  </div>
+
+  <div id="content">
+    <!-- <div *ngIf="sharedCode.length > 0; else noSharedCode" class="ui fluid centered link special raised cards"> -->
+    <div class="ui fluid one centered link special raised cards">
+      <div class="card">
+        <div class="content">
+          <div class="header">Code title</div>
+          <div class="description">
+            <codemirror [config]="editorConfig" [(ngModel)]="runCommands" #editor>
+            </codemirror>
+          </div>
+        </div>
+        <div class="extra content">
+          <span class="left floated like">
+            Created by Bla Bla
+          </span>
+          <i class="right floated copy icon"></i>
+        </div>
+      </div>
+    </div>
+    <!-- card group -->
+
+      <ng-template >
+        <div class="ui info message">
+          <div class="ui header">No shared code found</div>
+        </div>
+      </ng-template>
+
+  </div>
+</div>
+<!-- container -->
