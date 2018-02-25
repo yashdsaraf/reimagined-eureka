@@ -12,7 +12,7 @@
   </div>
   <!-- menu -->
   <div class="add-button">
-    <div class="ui positive fluid labeled icon button">
+    <div class="ui positive fluid labeled icon button" (click)="createModal()">
       <i class="icon add"></i>
       Add plugin
     </div>
@@ -77,11 +77,17 @@
             <td class="left aligned single line">
               <ng-container *ngIf="isMobile">
                 <strong>Approved by:</strong>
-              </ng-container> {{plugin.adminid.userId.name}}
+              </ng-container>
+              <ng-container *ngIf="plugin.adminid != null; else noAdmin">
+                {{plugin.adminid.userId.name}}
+              </ng-container>
+              <ng-template #noAdmin>
+                NIL
+              </ng-template>
             </td>
             <td>
               <div class="ui fluid buttons">
-                <button class="ui primary labeled icon button" (click)="approvePluginName = plugin.name">
+                <button class="ui primary labeled icon button" (click)="editModal(plugin)">
                   <i class="icon edit"></i>
                   Edit
                 </button>
@@ -105,16 +111,45 @@
 </div>
 <!-- container -->
 
-<sui-modal *ngIf="_authModal" (approved)="deletePlugin()" (denied)="_authModal = false" [isBasic]="true"
-  #authModal></sui-modal>
+<sui-modal *ngIf="_authModal" (approved)="approveAuthModal()" (denied)="_authModal = false" #authModal>
+  <div class="content">
+    <div class="ui info message">
+      <div class="ui header">Steps to decrypt the otp file</div>
+      <p>Enter the following in your
+        <strong>local terminal</strong> or
+        <strong>cmd</strong>
+      </p>
+      <ul>
+        <li>
+          <strong>openssl rsautl -decrypt -inkey &lt;your_private_key&gt; -in pnc_otp.txt.enc -out pnc_otp.txt</strong>
+        </li>
+      </ul>
+    </div>
+    <!-- message -->
+    <a class="ui primary button" [attr.href]="otpDownloadLink" download="pnc_otp.txt.enc">
+      Download encrypted otp
+    </a>
+    <br>
+    <br>
+    <div class="ui form">
+      <div class="ui inline field">
+        <label>Enter the contents decrypted otp file here: </label>
+        <input type="number" [(ngModel)]="otp" placeholder="">
+      </div>
+    </div>
+  </div>
+  <!-- content -->
+  <div class="actions">
+    <button class="ui positive right labeled icon button" [ngClass]="{disabled: !isOtpValid()}" (click)="authModal.approve()">
+      Approve
+      <i class="icon check"></i>
+    </button>
+  </div>
+  <!-- actions -->
+</sui-modal>
 <!-- Auth modal -->
 
-<sui-modal *ngIf="_createModal" (approved)="deletePlugin(deletePluginName)" (denied)="_createModal = false" [isBasic]="true"
-  #createModal></sui-modal>
-<!-- Create modal -->
-
-<sui-modal *ngIf="_deleteModal" (approved)="deletePlugin()" (denied)="_deleteModal = false" [isBasic]="true"
-  #deleteModal>
+<sui-modal *ngIf="_deleteModal" (approved)="deletePlugin()" (denied)="_deleteModal = false" [isBasic]="true" #deleteModal>
   <div class="header">Are you sure you would like to delete this plugin?</div>
   <div class="actions">
     <button class="ui grey button" (click)="deleteModal.deny()">Cancel</button>
@@ -123,6 +158,47 @@
 </sui-modal>
 <!-- Delete modal -->
 
-<sui-modal *ngIf="_editModal" (approved)="deletePlugin(deletePluginName)" (denied)="_editModal = false" [isBasic]="true"
-  #editModal></sui-modal>
+<sui-modal *ngIf="_editModal" (approved)="authModal()" (denied)="_editModal = false" #editModal>
+  <div class="header">{{currentOperation | initCap}} plugin</div>
+  <div class="content">
+    <div class="ui form">
+      <div class="ui field" [ngClass]="{disabled: currentOperation == 'update'}">
+        <label>Name:</label>
+        <input type="text" name="name" [(ngModel)]="currentPlugin.name">
+      </div>
+      <!-- name -->
+      <div class="ui field">
+        <label>Description:</label>
+        <textarea rows="3" name="description" [(ngModel)]="currentPlugin.description"></textarea>
+      </div>
+      <!-- description -->
+      <div class="ui field">
+        <label>Mode:</label>
+        <input type="text" name="mode" [(ngModel)]="_plugin_file.mode">
+      </div>
+      <!-- mode -->
+      <div class="ui field">
+        <label>Run commands:</label>
+        <!-- <input type="text" name="runcmd" [(ngModel)]="_runcmd"> -->
+        <codemirror [(ngModel)]="_runcmd" #editor></codemirror>
+      </div>
+      <!-- run commands -->
+      <div class="ui field">
+        <label>Dockerfile:</label>
+        <!-- <input type="text" name="dockerfile" [(ngModel)]="_dockerfile"> -->
+        <codemirror [(ngModel)]="_dockerfile" #editor></codemirror>
+      </div>
+      <!-- dockerfile -->
+    </div>
+  </div>
+  <!-- content -->
+  <div class="actions">
+    <button class="ui negative button" (click)="editModal.deny()">Cancel</button>
+    <button class="ui positive icon right labeled button" (click)="editModal.approve()">
+      Done
+      <i class="arrow right icon"></i>
+    </button>
+  </div>
+  <!-- actions -->
+</sui-modal>
 <!-- Edit modal -->

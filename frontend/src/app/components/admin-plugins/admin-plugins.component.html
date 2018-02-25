@@ -67,7 +67,13 @@
             <td class="left aligned single line">
               <ng-container *ngIf="isMobile">
                 <strong>Approved by:</strong>
-              </ng-container> {{plugin.adminid.userId.name}}
+              </ng-container>
+              <ng-container *ngIf="plugin.adminid != null; else noAdmin">
+                {{plugin.adminid.userId.name}}
+              </ng-container>
+              <ng-template #noAdmin>
+                NIL
+              </ng-template>
             </td>
             <td>
               <div class="ui fluid buttons">
@@ -95,8 +101,8 @@
   </div>
 </sui-modal>
 
-<sui-modal *ngIf="approvePluginName !== ''" (approved)="approvePlugin(approvePluginName)" (denied)="approvePluginName = ''" [isBasic]="true"
-  [isClosable]="false" #approveModal>
+<sui-modal *ngIf="approvePluginName !== ''" (approved)="approvePlugin(approvePluginName)" (denied)="approvePluginName = ''"
+  [isBasic]="true" [isClosable]="false" #approveModal>
   <div class="header">Are you sure you would like to approve this plugin?</div>
   <div class="actions">
     <button class="ui grey button" (click)="approveModal.deny()">Cancel</button>

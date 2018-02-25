@@ -15,6 +15,7 @@
  */
 package org.tyit.pnc.controller;
 
+import java.security.Principal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -52,8 +53,8 @@ public class AdminController {
   }
 
   @PutMapping("/plugin/{name}")
-  public ResponseEntity<String> approvePlugin(@PathVariable("name") String name) {
-    return adminService.approvePlugin(name);
+  public ResponseEntity<String> approvePlugin(@PathVariable("name") String name, Principal principal) {
+    return adminService.approvePlugin(name, principal.getName());
   }
 
   @DeleteMapping("/user")

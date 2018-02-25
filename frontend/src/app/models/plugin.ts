@@ -19,8 +19,8 @@ import {User} from "./user"
 export interface Plugin {
   name: string
   description?: string
-  status: string
-  plugin_file: string
+  status?: string
+  pluginFile: string
   createdOn?: Date
   updatedOn?: Date
   developerId?: {

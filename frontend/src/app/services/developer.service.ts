@@ -55,12 +55,16 @@ export class DeveloperService {
     return this.http.get<Plugin[]>('/api/developer/plugins', {params})
   }
 
-  createPlugin(plugin: Plugin): Observable<any> {
-    return this.http.post('/api/developer/plugin/create', plugin, {responseType: 'text'})
+  getOtp(): Observable<Blob> {
+    return this.http.get('/api/developer/auth', {responseType: 'blob'})
   }
 
-  updatePlugin(plugin: Plugin): Observable<any> {
-    return this.http.post('/api/developer/plugin/update', plugin, {responseType: 'text'})
+  createPlugin(plugin: Plugin, otp: string): Observable<any> {
+    return this.http.post(`/api/developer/plugin/create/${otp}`, plugin, {responseType: 'text'})
+  }
+
+  updatePlugin(plugin: Plugin, otp: string): Observable<any> {
+    return this.http.post(`/api/developer/plugin/update/${otp}`, plugin, {responseType: 'text'})
   }
 
   deletePlugin(pluginName: string): Observable<any> {

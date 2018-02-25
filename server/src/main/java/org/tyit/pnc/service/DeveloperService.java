@@ -16,8 +16,10 @@
 package org.tyit.pnc.service;
 
 import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Iterator;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
@@ -50,6 +52,9 @@ public class DeveloperService {
     AppUser appUser = appUserRepository.findByUsername(username);
     Developer developer = new Developer();
     appUser.setRole(AppUser.Role.DEVELOPER);
+    publicKey = publicKey.replaceAll("(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)", "");
+    publicKey = publicKey.replaceAll("\\n", "");
+    publicKey = publicKey.replaceAll("\\r", "");
     developer.setPublicKey(publicKey);
     developer.setUserId(appUser);
     appUserRepository.save(appUser);
@@ -82,7 +87,12 @@ public class DeveloperService {
       plugin.setId(testPlugin.getId());
       plugin.setUpdatedOn(now);
     } else {
+      Plugin testPlugin = pluginRepository.findByName(plugin.getName());
+      if (testPlugin != null) {
+        throw new Exception("A plugin with same name already exists");
+      }
       plugin.setCreatedOn(now);
+      plugin.setUpdatedOn(now);
     }
     pluginRepository.save(plugin);
   }
@@ -93,6 +103,35 @@ public class DeveloperService {
       throw new Exception("No such plugin found");
     }
     pluginRepository.delete(plugin);
+  }
+
+  public byte[] getEncryptedOtp(HttpSession session, String userName) throws Exception {
+    AppUser appUser = appUserRepository.findByUsername(userName);
+    Developer developer = developerRepository.findByUserId(appUser);
+    int randomPin = (int) (Math.random() * 9000) + 1000;
+    String otp = String.valueOf(randomPin);
+    session.setAttribute("devOtp", otp);
+    session.setAttribute("devOtpExpire", LocalDateTime.now().plusMinutes(10));
+    return RSAUtils.getInstance().encrypt(otp, developer.getPublicKey());
+  }
+
+  public void checkOtp(HttpSession session, String otp) throws Exception {
+    String sessionOtp = (String) session.getAttribute("devOtp");
+    LocalDateTime sessionOtpExpire = (LocalDateTime) session.getAttribute("devOtpExpire");
+    LocalDateTime now = LocalDateTime.now();
+    if (now.isEqual(sessionOtpExpire) || now.isAfter(sessionOtpExpire)) {
+      deleteOtp(session);
+      throw new Exception("OTP has expired");
+    }
+    if (!otp.equals(sessionOtp)) {
+      deleteOtp(session);
+      throw new Exception("OTPs do not match");
+    }
+  }
+
+  private void deleteOtp(HttpSession session) {
+    session.removeAttribute("devOtp");
+    session.removeAttribute("devOtpExpire");
   }
 
 }

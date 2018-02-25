@@ -88,7 +88,7 @@ public class Plugin implements Serializable {
   @ManyToMany
   private Collection<AppUser> appUserCollection;
   @JoinColumn(name = "ADMIN_ID", referencedColumnName = "ID")
-  @ManyToOne(optional = false)
+  @ManyToOne(optional = true)
   private AppAdmin adminId;
   @JoinColumn(name = "DEVELOPER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)

@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import {Component, OnInit} from '@angular/core'
+import {
+  Component,
+  OnInit,
+  QueryList,
+  ViewChildren
+} from '@angular/core'
+import {DomSanitizer} from '@angular/platform-browser'
 
 import {isMobile} from '../../app.component'
 import {DeveloperService} from '../../services/developer.service'
@@ -30,17 +36,25 @@ import {decodeError} from '../../utils/general-utils'
 })
 export class DeveloperPluginsComponent implements OnInit {
 
+  @ViewChildren('editor') editor: QueryList<any>
   _search: string
   isMobile: boolean
   plugins: Plugin[]
   currentPlugin: Plugin = {
     name: '',
     description: '',
-    status: '',
-    plugin_file: ''
+    pluginFile: ''
+  }
+  _plugin_file =  {
+    mode: '',
+    dockerfile: '',
+    runCmd: []
   }
   successOptions = {cssClass: 'ui success message', timeout: 4000}
   errorOptions = {cssClass: 'ui error message', timeout: 4000}
+  otp: number
+  currentOperation: string
+  otpDownloadLink: any
   _authModal: boolean
   _createModal: boolean
   _deleteModal: boolean
@@ -49,8 +63,10 @@ export class DeveloperPluginsComponent implements OnInit {
   constructor(
     private developerService: DeveloperService,
     private flashMessagesService: FlashMessagesService,
-    private progressBarService: ProgressBarService
+    private progressBarService: ProgressBarService,
+    private sanitizer: DomSanitizer
   ) {
+    this.isMobile = isMobile
     this._authModal = false
     this._createModal = false
     this._deleteModal = false
@@ -69,11 +85,14 @@ export class DeveloperPluginsComponent implements OnInit {
   }
 
   updatePlugin() {
-    this.developerService.updatePlugin(this.currentPlugin)
+    this.progressBarService.show(null, 'Updating plugin')
+    this.developerService.updatePlugin(this.currentPlugin, this.otp.toString())
       .subscribe(data => {
+        this.progressBarService.dismiss()
         this.flashMessagesService.show('Plugin updated successfully', this.successOptions)
         this.refresh()
       }, err => {
+        this.progressBarService.dismiss()
         this.flashMessagesService.show(decodeError(err), this.errorOptions)
       })
   }
@@ -90,13 +109,26 @@ export class DeveloperPluginsComponent implements OnInit {
   }
 
   createPlugin() {
-    this.developerService.createPlugin(this.currentPlugin)
+    this.progressBarService.show(null, 'Creating plugin')
+    this.developerService.createPlugin(this.currentPlugin, this.otp.toString())
       .subscribe(data => {
+        this.progressBarService.dismiss()
         this.flashMessagesService.show('Plugin created successfully', this.successOptions)
         this.refresh()
       }, err => {
+        this.progressBarService.dismiss()
         this.flashMessagesService.show(decodeError(err), this.errorOptions)
       })
+  }
+
+  authModal() {
+    this.currentPlugin.pluginFile = JSON.stringify(this._plugin_file)
+    this._editModal = false
+    this.otpDownloadLink = null
+    this._authModal = true
+    this.developerService.getOtp().subscribe(
+      (data: Blob) => this.otpDownloadLink = this.sanitizer.bypassSecurityTrustResourceUrl(window.URL.createObjectURL(data))
+    )
   }
 
   deleteModal(plugin: Plugin) {
@@ -104,16 +136,72 @@ export class DeveloperPluginsComponent implements OnInit {
     this.currentPlugin = plugin
   }
 
-  editModal() {
+  editModal(plugin: Plugin) {
+    this.refresh()
+    this.currentOperation = 'update'
+    this.currentPlugin = plugin
+    this._plugin_file = JSON.parse(plugin.pluginFile)
     this._editModal = true
   }
 
   createModal() {
-    this._createModal = true
+    this.refresh()
+    this.resetCurrentPlugin()
+    this.currentOperation = 'create'
+    this._editModal = true
+  }
+
+  approveAuthModal() {
+    this._authModal = false
+    switch(this.currentOperation) {
+      case 'create':
+        this.createPlugin()
+        break
+      case 'update':
+        this.updatePlugin()
+        break
+    }
   }
 
   refresh() {
+    setTimeout(() => {
+      this.editor.forEach(i => i.instance.refresh())
+    }, 100)
     this.getPlugins(this.search)
+  }
+
+  resetCurrentPlugin() {
+    this.currentPlugin = {
+      name: '',
+      description: '',
+      status: 'PEN',
+      pluginFile: ''
+    }
+    this._plugin_file =  {
+      mode: '',
+      dockerfile: '',
+      runCmd: []
+    }
+  }
+
+  isOtpValid(): boolean {
+    return this.otp != null && this.otp >= 1000 && this.otp <= 9999
+  }
+
+  get _dockerfile(): string {
+    return atob(this._plugin_file.dockerfile)
+  }
+
+  set _dockerfile(value: string) {
+    this._plugin_file.dockerfile = btoa(value)
+  }
+
+  get _runcmd(): string {
+    return this._plugin_file.runCmd.join('\n')
+  }
+
+  set _runcmd(value: string) {
+    this._plugin_file.runCmd = value.split('\n')
   }
 
   set search(value: string) {

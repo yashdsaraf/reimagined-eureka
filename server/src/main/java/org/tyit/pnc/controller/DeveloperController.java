@@ -19,12 +19,15 @@ import java.security.Principal;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -47,9 +50,7 @@ public class DeveloperController {
 
   @PreAuthorize("hasAuthority('USER')")
   @PostMapping("/getaccess")
-  public ResponseEntity<String> getDeveloperAccess(
-          @RequestParam("publicKey") String publicKey,
-          Principal principal) {
+  public ResponseEntity<String> getDeveloperAccess(@RequestParam("publicKey") String publicKey, Principal principal) {
     try {
       developerService.getDeveloperAccess(publicKey, principal.getName());
       return ResponseEntity.ok().build();
@@ -60,16 +61,19 @@ public class DeveloperController {
   }
 
   @GetMapping("/plugins")
-  public ResponseEntity<Iterator<Plugin>> getPlugins(
-          @RequestParam(name = "name", required = false) String name,
-          Principal principal
-  ) {
+  public ResponseEntity<Iterator<Plugin>> getPlugins(@RequestParam(name = "name", required = false) String name,
+          Principal principal) {
     return ResponseEntity.ok(developerService.getPlugins(name, principal.getName()));
   }
 
-  @PostMapping("/plugin/create")
-  public ResponseEntity<String> createPlugin(@RequestBody Plugin plugin, Principal principal) {
+  @PostMapping("/plugin/create/{otp}")
+  public ResponseEntity<String> createPlugin(@PathVariable("otp") String otp,
+          @RequestBody Plugin plugin,
+          Principal principal,
+          HttpServletRequest request) {
+    HttpSession session = request.getSession();
     try {
+      developerService.checkOtp(session, otp);
       developerService.storePlugin(plugin, principal.getName(), false);
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
@@ -78,13 +82,18 @@ public class DeveloperController {
     }
   }
 
-  @PostMapping("/plugin/update")
-  public ResponseEntity<String> updatePlugin(@RequestBody Plugin plugin, Principal principal) {
+  @PostMapping("/plugin/update/{otp}")
+  public ResponseEntity<String> updatePlugin(@PathVariable("otp") String otp,
+          @RequestBody Plugin plugin,
+          Principal principal,
+          HttpServletRequest request) {
+    HttpSession session = request.getSession();
     try {
+      developerService.checkOtp(session, otp);
       developerService.storePlugin(plugin, principal.getName(), true);
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
-//      Logger.getLogger(DeveloperController.class.getName()).log(Level.SEVERE, null, ex);
+      //      Logger.getLogger(DeveloperController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
@@ -94,6 +103,17 @@ public class DeveloperController {
     try {
       developerService.deletePlugin(pluginName);
       return ResponseEntity.ok().build();
+    } catch (Exception ex) {
+      //      Logger.getLogger(DeveloperController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @GetMapping("/auth")
+  public ResponseEntity<byte[]> getOtp(HttpServletRequest request, Principal principal) {
+    HttpSession session = request.getSession(true);
+    try {
+      return ResponseEntity.ok(developerService.getEncryptedOtp(session, principal.getName()));
     } catch (Exception ex) {
 //      Logger.getLogger(DeveloperController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);

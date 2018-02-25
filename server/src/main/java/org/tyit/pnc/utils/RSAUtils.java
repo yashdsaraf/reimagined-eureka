@@ -16,6 +16,8 @@
 package org.tyit.pnc.utils;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
@@ -24,6 +26,10 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Base64;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  *
@@ -52,9 +58,14 @@ public final class RSAUtils {
     }
   }
 
+  public byte[] encrypt(String content, String publicKeyStr) throws NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException, InvalidKeySpecException, IOException, IllegalBlockSizeException, BadPaddingException {
+    Cipher encryptCipher = Cipher.getInstance("RSA");
+    encryptCipher.init(Cipher.ENCRYPT_MODE, getPublicKeyFromString(publicKeyStr));
+    byte[] text = encryptCipher.doFinal(content.getBytes(StandardCharsets.UTF_8));
+    return text;
+  }
+
   private PublicKey getPublicKeyFromString(String publicKey) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-    publicKey = publicKey.replaceAll("(-+BEGIN PUBLIC KEY-+\\r?\\n|-+END PUBLIC KEY-+\\r?\\n?)", "");
-    publicKey = publicKey.replaceAll("\\n", "");
     byte[] keyBytes = Base64.getDecoder().decode(publicKey.getBytes());
     X509EncodedKeySpec spec = new X509EncodedKeySpec(keyBytes);
     KeyFactory factory = KeyFactory.getInstance("RSA");
