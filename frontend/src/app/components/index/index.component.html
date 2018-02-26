@@ -11,7 +11,7 @@
           </a>
         </div>
         <div class="ui bottom attached segment margin-bottom-0" *ngFor="let file of openFiles; let i = index" [suiTabContent]="i">
-          <codemirror [config]="editorConfig" [(ngModel)]="file.content" #editor>
+          <codemirror [config]="editorConfig" [(ngModel)]="file.content" [style.font-size.em]="editorFontSize" [style.line-height.em]="1.2" #editor>
           </codemirror>
         </div>
       </sui-tabset>

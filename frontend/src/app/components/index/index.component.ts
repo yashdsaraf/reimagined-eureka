@@ -166,6 +166,7 @@ import {
 } from '../../services/index.service'
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
+import {KLOUDLESS_APP_ID} from '../../utils/application'
 
 declare const $: any
 
@@ -206,6 +207,8 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   indexSubscription: any
   openFile: string
   editorConfigSubscription: Subscription
+  editorFontSize: number
+  explorer: any
 
   constructor(
     private route: ActivatedRoute,
@@ -222,6 +225,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       this.cdr.detectChanges()
     })
     this.openFile = route.snapshot.params.openfile
+    this.editorFontSize = 1
   }
 
   ngOnChanges() {
@@ -248,6 +252,12 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       })
     this.editorConfigService.setOption('mode', this.route.snapshot.params.mode)
     this.refreshAfter(80)
+    let _window: any = window
+    this.explorer = _window.Kloudless.explorer({
+      app_id: KLOUDLESS_APP_ID,
+      multiselect: true,
+      computer: true
+    })
   }
 
   removeTab(name: string) {
@@ -288,6 +298,27 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
             })
           }
         )
+        break
+      case 'zoom-in':
+        if (this.editorFontSize >= 10) {
+          break
+        }
+        this.editorFontSize += .3
+        this.refreshAfter(50)
+        break
+      case 'zoom-out':
+        if (this.editorFontSize <= .1) {
+          break
+        }
+        this.editorFontSize -= .3
+        this.refreshAfter(50)
+        break
+      case 'save':
+        var files = [{
+          url: "http://localhost:8181/images/jpg/home",
+          name: "home.jpg"
+        }];
+        this.explorer.save(files);
         break
     }
   }

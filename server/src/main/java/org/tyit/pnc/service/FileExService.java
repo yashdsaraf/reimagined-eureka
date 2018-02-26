@@ -43,7 +43,7 @@ public class FileExService {
   public String getFileTree(String tmpDirStr) throws IOException, Exception {
     Path tmpDir = Paths.get(tmpDirStr);
     if (tmpDir == null) {
-      throw new Exception("No project found in tmpDirStr");
+      throw new Exception("No project found in " + tmpDirStr);
     }
     ArrayNode files = factory.arrayNode().add(traverseTreeToJson(tmpDir, true));
     return new ObjectMapper().writeValueAsString(files);
@@ -71,6 +71,9 @@ public class FileExService {
           Logger.getLogger(FileExService.class.getName()).log(Level.SEVERE, null, ex);
         }
       } else {
+        if (isRoot && file.get("text").textValue().equalsIgnoreCase("start.sh")) {
+          return;
+        }
         file.set("type", factory.textNode("file"));
         files.add(file);
       }

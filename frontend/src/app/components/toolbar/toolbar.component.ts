@@ -37,8 +37,6 @@ export class ToolbarComponent {
   isMobile: boolean
   tools: Tool[] = [
     {name: 'Run', icon: 'play'},
-    {name: 'Stop', icon: 'stop'},
-    {name: 'New', icon: 'file outline'},
     {name: 'Save', icon: 'save'},
     {name: 'Zoom-in', icon: 'zoom'},
     {name: 'Zoom-out', icon: 'zoom out'},
@@ -51,23 +49,6 @@ export class ToolbarComponent {
 
   onClick(tool: string) {
     this.executedTool.emit(tool)
-  }
-
-  /* Iterate through the given element's DOM hierarchy to
-  *  find the correct tool id e.g tool-save, and return the
-  *  tool with the matching name from "tools" array.
-  *  This is needed in case user clicks the icon rather than the button
-  */
-  getTool(event: any): Tool {
-    let tool: Tool
-    for (let node of event.path) {
-      if (node.id !== undefined && node.id.startsWith('tool-')) {
-        tool = this.tools
-          .find(item => 'tool-' + item.name.toLowerCase() == node.id)
-        break
-      }
-    }
-    return tool
   }
 
 }

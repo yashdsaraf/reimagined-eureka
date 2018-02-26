@@ -59,12 +59,4 @@ describe('ToolbarComponent', () => {
     expect(element).not.toBe(null)
   })
 
-  it('getTool should get the tool from event', async () => {
-    fixture.detectChanges()
-    let expected: Tool = component.tools[0]
-    let event = {path: [{id: 'tool-' + expected.name.toLowerCase()}]}
-    let result: Tool = component.getTool(event)
-    expect(result).toBe(expected)
-  })
-
 })
