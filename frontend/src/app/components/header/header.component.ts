@@ -101,6 +101,7 @@ export class HeaderComponent implements OnInit {
       .then(() => {
         this.isFormLoading = false
         this.devPrompt = false
+        this.publicKey = ''
         this.logout()
       }).catch(err => {
         this.isFormLoading = false
