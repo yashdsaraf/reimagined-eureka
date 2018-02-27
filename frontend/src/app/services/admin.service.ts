@@ -59,6 +59,7 @@ export class AdminService {
   }
 
   approvePlugin(name: string): Observable<any> {
+    name = btoa(name)
     return this.http.put(`/api/admin/plugin/${name}`, '', {responseType: 'text'})
   }
 

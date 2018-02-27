@@ -13,19 +13,27 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppUser;
+@import base
 
-public interface AppUserRepository extends CrudRepository<AppUser, Long> {
+#container
+  width: 100%
+  height: 100%
 
-  public AppUser findByUsername(String username);
+  .ui.menu
+    border-radius: 0
 
-  @Query("SELECT U FROM AppUser U WHERE LOWER(U.name) LIKE LOWER(CONCAT(?1, '%')) AND U.username != 'guest'")
-  public Iterable<AppUser> findAllByName(String name);
+    .ui.input input
+      border-radius: 0
 
-  public AppUser findByEmail(String email);
+  .add-button
+    margin-left: 1em
+    margin-right: 1em
 
-}
+  .segments,
+  .segment
+    border: none
+
+  .segments
+    margin: 0
+    padding: 0

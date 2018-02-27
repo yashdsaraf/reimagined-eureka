@@ -62,6 +62,7 @@ import {AuthService} from './services/auth.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
+import {DeveloperService} from './services/developer.service'
 import {DisplayNameService} from './services/display-name.service'
 import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
@@ -77,6 +78,7 @@ import {StartupService} from './services/startup.service'
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
 import {AdminGuard} from './guards/admin.guard'
+import {AuthGuard} from './guards/auth.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
 import {ProjectGuard} from './guards/project.guard'
@@ -85,7 +87,8 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 //PIPES
 import {InitCapPipe} from './pipes/init-cap.pipe'
-import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
+import { DeveloperPluginsComponent } from './components/developer-plugins/developer-plugins.component'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -118,7 +121,8 @@ export function init(startupService: StartupService) {
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe
+    SanitizeHtmlPipe,
+    DeveloperPluginsComponent
   ],
   imports: [
     AppRoutingModule,
@@ -139,6 +143,7 @@ export function init(startupService: StartupService) {
     ContactsService,
     CookieService,
     CoreService,
+    DeveloperService,
     DisplayNameService,
     EditorConfigService,
     FileExService,
@@ -151,6 +156,7 @@ export function init(startupService: StartupService) {
     ProjectSettingsService,
     StartupService,
     AdminGuard,
+    AuthGuard,
     DeveloperGuard,
     GuestGuard,
     ProjectGuard,

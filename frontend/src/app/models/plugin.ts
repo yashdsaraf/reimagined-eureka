@@ -19,15 +19,15 @@ import {User} from "./user"
 export interface Plugin {
   name: string
   description?: string
-  status: string
-  plugin_file: string
-  createdOn: Date
-  updatedOn: Date
-  developerId: {
+  status?: string
+  pluginFile: string
+  createdOn?: Date
+  updatedOn?: Date
+  developerId?: {
     userId: User
   }
-  adminId: {
+  adminId?: {
     userId: User
   }
-  appUserCollection: User[]
+  appUserCollection?: User[]
 }

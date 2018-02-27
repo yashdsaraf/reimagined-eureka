@@ -24,6 +24,7 @@ import {
 import {AboutUsComponent} from './components/about-us/about-us.component'
 import {AdminComponent} from './components/admin/admin.component'
 import {BlogComponent} from './components/blog/blog.component'
+import {DeveloperPluginsComponent} from './components/developer-plugins/developer-plugins.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
@@ -35,6 +36,7 @@ import {MarketPlaceComponent} from './components/market-place/market-place.compo
 
 //GUARDS
 import {AdminGuard} from './guards/admin.guard'
+import {AuthGuard} from './guards/auth.guard'
 import {DeveloperGuard} from './guards/developer.guard'
 import {GuestGuard} from './guards/guest.guard'
 import {ProjectGuard} from './guards/project.guard'
@@ -51,12 +53,13 @@ const routes: Routes = [
   {path: 'home', component: HomeComponent},
   {path: 'index', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
   {path: 'index/:openfile/:mode', component: IndexComponent, canActivate: [GuestGuard, ProjectGuard]},
-  {path: 'login', component: LoginComponent},
+  {path: 'login', component: LoginComponent, canActivate: [AuthGuard]},
   {path: 'logout/:message', component: LogoutComponent},
   {path: 'logout/:message/:error', component: LogoutComponent},
   {path: 'logout', component: LogoutComponent},
   {path: 'profile', component: ProfileComponent, canActivate: [GuestGuard]},
-  {path: 'register', component: RegisterComponent},
+  {path: 'plugins', component: DeveloperPluginsComponent, canActivate: [DeveloperGuard]},
+  {path: 'register', component: RegisterComponent, canActivate: [AuthGuard]},
   {path: 'marketplace', component: MarketPlaceComponent, canActivate: [GuestGuard]}
 
 ]

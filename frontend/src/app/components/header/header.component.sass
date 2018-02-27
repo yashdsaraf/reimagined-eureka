@@ -16,6 +16,12 @@
 
 @import base
 
+$logout-hover-bg: #EF4F43
+$devaccess-hover-bg: #14a9e7
+$logout-hover-color: white
+$devaccess-hover-color: white
+$guest-hover-color: green
+
 #container
   align-items: center
   background: $header-dark
@@ -96,10 +102,15 @@
           font-size: 1em
 
         #logout:hover
-          color: red
+          background-color: $logout-hover-bg
+          color: $logout-hover-color
+
+        #dev-access:hover
+          background-color: $devaccess-hover-bg
+          color: $devaccess-hover-color
 
         .guest-button:hover
-          color: green
+          color: $guest-hover-color
 
         #username
           font-family: $sans-serif
@@ -109,6 +120,11 @@
         #profile
           display: inline-flex
           align-items: center
+
+#key-commands
+  .item
+    font-family: $sans-serif
+    font-weight: bold
 
 @media only screen and (max-width: 768px)
 
@@ -154,8 +170,22 @@
         flex-direction: column
         justify-content: center
 
-        .ui.dropdown
-          padding-right: 1em
+        #logged-in
+
+          #username
+            font-size: 1.1em
+            max-width: 7em
+            overflow-x: auto
+
+          #editor-btn
+            padding: .5em
+
+          .ui.dropdown
+            padding-right: 1em
 
         .button
           width: 7.5em
+
+  #key-commands
+    .item
+      font-size: .85em

@@ -25,6 +25,7 @@ export class EditorConfigService {
   emitter: Observable<Object> = this.subject.asObservable()
   defaultEditorConfig = {
     lineNumbers: true,
+    theme: 'monokai'
   }
   editorConfig = {}
 

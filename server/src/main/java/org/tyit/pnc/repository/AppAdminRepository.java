@@ -15,17 +15,12 @@
  */
 package org.tyit.pnc.repository;
 
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.tyit.pnc.model.AppAdmin;
 import org.tyit.pnc.model.AppUser;
 
-public interface AppUserRepository extends CrudRepository<AppUser, Long> {
+public interface AppAdminRepository extends CrudRepository<AppAdmin, Long> {
 
-  public AppUser findByUsername(String username);
-
-  @Query("SELECT U FROM AppUser U WHERE LOWER(U.name) LIKE LOWER(CONCAT(?1, '%')) AND U.username != 'guest'")
-  public Iterable<AppUser> findAllByName(String name);
-
-  public AppUser findByEmail(String email);
+  public AppAdmin findByUserId(AppUser userId);
 
 }

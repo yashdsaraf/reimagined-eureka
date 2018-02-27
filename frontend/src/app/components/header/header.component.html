@@ -27,7 +27,8 @@
       </div>
       <ng-template #loggedIn>
         <div id="logged-in">
-          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui secondary inverted button" (click)="indexService.clearAll()" routerLink="/index">Go to editor</div>
+          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui compact secondary inverted button" [ngClass]="{small: isMobile}"
+            (click)="indexService.clearAll()" routerLink="/index">Go to editor</div>
           <div id="username">Hi, {{name}}</div>
           <div class="ui dropdown" suiDropdown>
             <div id="profile" [appIdenticon]="getIdenticonObject()">
@@ -50,6 +51,12 @@
                 <div class="divider"></div>
               </ng-container>
               <!-- Guest -->
+              <ng-container *ngIf="getRole() == 'DEVELOPER'">
+                <div class="item" routerLink="/plugins">
+                  Developer console
+                </div>
+              </ng-container>
+              <!-- Developer -->
               <ng-container *ngIf="getRole() == 'ADMIN'">
                 <div class="item" routerLink="/admin">
                   Admin console
@@ -60,12 +67,20 @@
                 Profile
               </div>
               <!-- profile -->
+              <ng-container *ngIf="getRole() == 'USER'">
+                <div class="divider"></div>
+                <div id="dev-access" class="item" (click)="openDevPrompt()">
+                  Become a developer!
+                </div>
+              </ng-container>
+              <!-- dev-access -->
               <div class="divider"></div>
               <div id="logout" class="item" (click)="logout()">
                 <i class="icon power"></i>
                 Logout
               </div>
               <!-- logout -->
+              <div class="divider"></div>
             </div>
           </div>
         </div>
@@ -76,3 +91,46 @@
   <!-- right-header -->
 </div>
 <!-- container -->
+
+<sui-modal *ngIf="devPrompt" (denied)="devPrompt = false" size="tiny" #devPromptModal>
+  <h2 class="ui header">Become a developer!</h2>
+  <div class="content">
+    <div class="ui header">Steps to generate your key pair:</div>
+    <div class="ui info message">
+      <p>Copy the following commands in your
+        <strong>local terminal</strong> or
+        <strong>cmd</strong>
+      </p>
+      <div id="key-commands" class="ui bulleted relaxed divided list">
+        <div class="item">openssl genrsa -out private_key.pem 2048</div>
+        <div class="item">openssl rsa -in private_key.pem -pubout -outform PEM -out public_key.pem</div>
+      </div>
+      <!-- list -->
+    </div>
+    <!-- message -->
+    <div class="ui error form" [ngClass]="{loading: isFormLoading}">
+      <div class="field" [ngClass]="{error: isFormError}">
+        <label>Paste the content of your public key
+          <em>(public_key.pem)</em> here, this will be used for verification while creating a plugin.</label>
+        <textarea placeholder="Public key here..." [(ngModel)]="publicKey"></textarea>
+      </div>
+      <!-- field -->
+      <div class="required field">
+        <label>
+          <small>Always keep your keys in a secure place.</small>
+        </label>
+      </div>
+      <div class="required field">
+        <label>
+          <small>You will be logged out automatically once developer access is granted.</small>
+        </label>
+      </div>
+      <div class="ui error message">{{formError}}</div>
+    </div>
+    <!-- form -->
+  </div>
+  <div class="actions">
+    <button class="ui compact green button" [ngClass]="" (click)="submitKey()" autofocus>Submit</button>
+  </div>
+</sui-modal>
+<!-- Developer access prompt -->

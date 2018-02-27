@@ -18,6 +18,6 @@ package org.tyit.pnc.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.tyit.pnc.model.Project;
 
-public interface ProjectRepository extends CrudRepository<Project, Integer> {
+public interface ProjectRepository extends CrudRepository<Project, Long> {
 
 }
