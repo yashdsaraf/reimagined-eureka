@@ -21,6 +21,7 @@ import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
+import {KLOUDLESS_APP_ID} from '../../utils/application'
 
 @Component({
   selector: 'app-home',
@@ -72,6 +73,7 @@ export class HomeComponent {
     email: '',
     phone: ''
   }
+  explorer: any
 
   constructor(
     private authService: AuthService,
@@ -93,6 +95,33 @@ export class HomeComponent {
     )
     this.contactsService.getContacts().
       subscribe((data: Object) => this.contacts = data)
+  }
+
+  ngAfterViewInit() {
+    let _window: any = window
+    this.explorer = _window.Kloudless.explorer({
+      app_id: KLOUDLESS_APP_ID,
+      computer: true,
+      persist: 'session'
+    })
+  }
+
+  openProject() {
+    this.explorer.choose({
+      types: ['tgz', 'tar.gz']
+    })
+    this.explorer.on('success', function(files) {
+      console.log(files)
+    })
+  }
+
+  importProject() {
+    this.explorer.choose({
+      types: ['tgz', 'tar.gz']
+    })
+    this.explorer.on('success', function(files) {
+      console.log(files)
+    })
   }
 
   createImageFromBlob(image: Blob) {

@@ -21,6 +21,7 @@ package org.tyit.pnc.model;
  */
 public class ProjectSettings {
 
+  private String uuid;
   private String[] runCmd;
   private String entrypoint;
   private String[] saveas;
@@ -29,11 +30,20 @@ public class ProjectSettings {
   public ProjectSettings() {
   }
 
-  public ProjectSettings(String[] runCmd, String entrypoint, String[] saveas, String plugin) {
+  public ProjectSettings(String uuid, String[] runCmd, String entrypoint, String[] saveas, String plugin) {
+    this.uuid = uuid;
     this.runCmd = runCmd;
     this.entrypoint = entrypoint;
     this.saveas = saveas;
     this.plugin = plugin;
+  }
+
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
   public String[] getRunCmd() {

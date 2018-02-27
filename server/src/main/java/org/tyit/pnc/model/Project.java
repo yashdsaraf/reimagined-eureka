@@ -46,6 +46,10 @@ public class Project implements Serializable {
   private Long id;
   @Basic(optional = false)
   @NotNull
+  @Column(name = "UUID")
+  private String uuid;
+  @Basic(optional = false)
+  @NotNull
   @Size(min = 1, max = 255)
   @Column(name = "NAME")
   private String name;
@@ -65,10 +69,12 @@ public class Project implements Serializable {
     this.id = id;
   }
 
-  public Project(Long id, String name, String settings) {
+  public Project(Long id, String uuid, String name, String settings, AppUser userId) {
     this.id = id;
+    this.uuid = uuid;
     this.name = name;
     this.settings = settings;
+    this.userId = userId;
   }
 
   public Long getId() {
@@ -85,6 +91,14 @@ public class Project implements Serializable {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getUuid() {
+    return uuid;
+  }
+
+  public void setUuid(String uuid) {
+    this.uuid = uuid;
   }
 
   public String getSettings() {

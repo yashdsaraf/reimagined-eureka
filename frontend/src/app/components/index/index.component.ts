@@ -256,8 +256,8 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     let _window: any = window
     this.explorer = _window.Kloudless.explorer({
       app_id: KLOUDLESS_APP_ID,
-      multiselect: true,
-      computer: true
+      computer: true,
+      persist: 'session'
     })
   }
 
