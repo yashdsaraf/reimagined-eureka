@@ -167,6 +167,7 @@ import {
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
+import {decodeError} from '../../utils/general-utils'
 
 declare const $: any
 
@@ -293,7 +294,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
           err => {
             this.progressBarService.dismiss()
             $('#file-list').jstree(true).refresh()
-            this.flashMessagesService.show(err, {
+            this.flashMessagesService.show(decodeError(err), {
               cssClass: 'ui error message', timeout: 4000
             })
           }
@@ -314,11 +315,17 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
         this.refreshAfter(50)
         break
       case 'save':
-        var files = [{
-          url: "http://localhost:8181/images/jpg/home",
-          name: "home.jpg"
-        }];
-        this.explorer.save(files);
+        this.coreService.save().subscribe(
+          data => {
+            let files = [data]
+            this.explorer.save(files);
+          },
+          err => {
+            this.flashMessagesService.show(decodeError(err), {
+              cssClass: 'ui error message', timeout: 4000
+            })
+          }
+        )
         break
     }
   }

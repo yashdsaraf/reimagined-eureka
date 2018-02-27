@@ -64,7 +64,7 @@ public class ProjectController {
   }
 
   @GetMapping("/create")
-  public ResponseEntity<String> quickSetup(@RequestParam("plugin") String lang,
+  public ResponseEntity<String> createProject(@RequestParam("plugin") String lang,
           @RequestParam("project") String projectName,
           @RequestParam("entrypoint") String entrypoint,
           Principal principal,
@@ -101,6 +101,18 @@ public class ProjectController {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       dockerService.delete(jti);
       return ResponseEntity.ok().build();
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @GetMapping("/save")
+  public ResponseEntity<Map> saveProject(HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      return ResponseEntity.ok(coreService.save(dockerService.check(jti)));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();

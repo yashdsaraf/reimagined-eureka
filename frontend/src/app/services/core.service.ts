@@ -53,4 +53,8 @@ export class CoreService {
     return this.http.get('/api/project', {responseType: 'text'})
   }
 
+  public save(): Observable<any> {
+    return this.http.get('/api/project/save')
+  }
+
 }
