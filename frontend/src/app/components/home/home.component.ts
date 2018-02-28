@@ -19,6 +19,7 @@ import {Router} from '@angular/router'
 
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
+import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
@@ -78,6 +79,7 @@ export class HomeComponent {
   constructor(
     private authService: AuthService,
     private contactsService: ContactsService,
+    private coreService: CoreService,
     private imagesService: ImagesService,
     private router: Router
   ) {
@@ -110,8 +112,8 @@ export class HomeComponent {
     this.explorer.choose({
       types: ['tgz', 'tar.gz']
     })
-    this.explorer.on('success', function(files) {
-      console.log(files)
+    this.explorer.on('success', function (files) {
+      this.coreService.open(files[0].link)
     })
   }
 
@@ -119,19 +121,19 @@ export class HomeComponent {
     this.explorer.choose({
       types: ['tgz', 'tar.gz']
     })
-    this.explorer.on('success', function(files) {
-      console.log(files)
+    this.explorer.on('success', function (files) {
+      this.coreService.import(files[0].link)
     })
   }
 
   createImageFromBlob(image: Blob) {
     let reader = new FileReader()
     reader.addEventListener("load", () => {
-       this.image = `url(${reader.result})`
+      this.image = `url(${reader.result})`
     }, false)
 
     if (image) {
-       reader.readAsDataURL(image)
+      reader.readAsDataURL(image)
     }
   }
 

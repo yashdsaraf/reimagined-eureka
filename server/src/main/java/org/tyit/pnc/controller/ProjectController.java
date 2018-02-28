@@ -15,15 +15,17 @@
  */
 package org.tyit.pnc.controller;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
+import org.apache.commons.compress.archivers.ArchiveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -68,8 +70,7 @@ public class ProjectController {
           @RequestParam("project") String projectName,
           @RequestParam("entrypoint") String entrypoint,
           Principal principal,
-          HttpServletRequest request,
-          Authentication authentication) {
+          HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -108,11 +109,68 @@ public class ProjectController {
   }
 
   @GetMapping("/save")
+  @PreAuthorize("hasAuthority('USER')")
   public ResponseEntity<Map> saveProject(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       return ResponseEntity.ok(coreService.save(dockerService.check(jti)));
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @PostMapping("/validate")
+  @PreAuthorize("hasAuthority('USER')")
+  public ResponseEntity<String> validateProject(
+          HttpServletRequest request,
+          @RequestParam("link") String link
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      coreService.validateAndExtract(jti, link);
+      return ResponseEntity.ok().build();
+    } catch (IOException | ArchiveException ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @PostMapping("/open")
+  @PreAuthorize("hasAuthority('USER')")
+  public ResponseEntity<String> openProject(
+          HttpServletRequest request,
+          @RequestParam("link") String link,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      coreService.open(jti, link, principal.getName());
+      return ResponseEntity.ok().build();
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @PostMapping("/import")
+  @PreAuthorize("hasAuthority('USER')")
+  public ResponseEntity<String> importProject(
+          HttpServletRequest request,
+          @RequestParam("link") String link,
+          @RequestParam("plugin") String lang,
+          @RequestParam("project") String projectName,
+          @RequestParam("entrypoint") String entrypoint,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      coreService.createProjectFromTgz(jti, link, lang, projectName, entrypoint, principal.getName());
+      return ResponseEntity.ok().build();
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();

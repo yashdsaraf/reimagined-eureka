@@ -16,19 +16,24 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.zip.GZIPInputStream;
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
+import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 import org.apache.commons.io.FileUtils;
@@ -118,8 +123,7 @@ public class CoreService {
     try (TarArchiveOutputStream stream
             = new TarArchiveOutputStream(
                     new GzipCompressorOutputStream(
-                            new BufferedOutputStream(
-                                    new FileOutputStream(file))))) {
+                            new FileOutputStream(file)))) {
       addToArchive(stream, docker.getTmpDir(), "");
     }
     String url = new AmazonAWSUtils(ACCESS_KEY, SECRET_KEY)
@@ -157,6 +161,64 @@ public class CoreService {
         addToArchive(stream, child.getAbsolutePath(), entryName + "/");
       }
     }
+  }
+
+  public void open(String jti, String link, String userName) throws IOException, ArchiveException, Exception {
+    Path projectDir = Paths.get(validateAndExtract(jti, link));
+    File[] files = projectDir.toFile().listFiles((File dir, String name) -> name.equalsIgnoreCase(".plugncode"));
+    if (files.length < 1) {
+      throw new IOException("No settings file found in project");
+    }
+    File settingsFile = files[0];
+    byte[] content = Files.readAllBytes(settingsFile.toPath());
+    ProjectSettings settings = mapper.readValue(content, ProjectSettings.class);
+    Project project = projectRepository.findByUuid(settings.getUuid());
+    if (project == null) {
+      throw new Exception("No such project found in database");
+    }
+    Plugin plugin = pluginRepository.findByName(settings.getPlugin());
+    if (plugin == null) {
+      throw new Exception("Invalid plugin found in project");
+    }
+    Path tmpPath = Files.createTempDirectory(project.getName());
+    Path path = new File(tmpPath.toFile(), project.getName()).toPath();
+    AppUser user = appUserRepository.findByUsername(userName);
+    Files.createDirectory(path);
+    dockerService.build(jti, path, plugin, project, user);
+  }
+
+  public String validateAndExtract(String jti, String link) throws IOException, ArchiveException {
+    Path tmpDir = Files.createTempDirectory(jti);
+    File inputFile = new File(tmpDir.toFile(), "project.tgz");
+    File outputTar = new File(tmpDir.toFile(), "project.tar");
+    FileUtils.copyURLToFile(new URL(link), inputFile);
+    try (GZIPInputStream gzipIn = new GZIPInputStream(new FileInputStream(inputFile));
+            FileOutputStream outStream = new FileOutputStream(outputTar)) {
+      IOUtils.copy(gzipIn, outStream);
+    }
+    try (TarArchiveInputStream tarIn = (TarArchiveInputStream) new ArchiveStreamFactory()
+            .createArchiveInputStream(new FileInputStream(outputTar))) {
+      TarArchiveEntry entry;
+      while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
+        final File outputFile = new File(tmpDir.toFile(), entry.getName());
+        if (entry.isDirectory()) {
+          if (!outputFile.exists()) {
+            if (!outputFile.mkdirs()) {
+              throw new IllegalStateException(String.format("Couldn't create directory %s.", outputFile.getAbsolutePath()));
+            }
+          }
+        } else {
+          try (FileOutputStream outputFileStream = new FileOutputStream(outputFile)) {
+            IOUtils.copy(tarIn, outputFileStream);
+          }
+        }
+      }
+    }
+    return tmpDir.toAbsolutePath().toString();
+  }
+
+  public void createProjectFromTgz(String jti, String link, String lang, String projectName, String entrypoint, String name) {
+    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
 }

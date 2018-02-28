@@ -57,4 +57,16 @@ export class CoreService {
     return this.http.get('/api/project/save')
   }
 
+  public open(link: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('link', link)
+    return this.http.post('/api/project/open', formData, {responseType: 'text'})
+  }
+
+  public import(link: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('link', link)
+    return this.http.post('/api/project/import', formData, {responseType: 'text'})
+  }
+
 }

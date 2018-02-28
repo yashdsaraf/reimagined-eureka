@@ -20,4 +20,6 @@ import org.tyit.pnc.model.Project;
 
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
+  public Project findByUuid(String uuid);
+
 }
