@@ -10,7 +10,7 @@
             <!-- header -->
             <div class="ui statistic" [ngClass]="{small: isMobile}">
               <div class="value">
-                5,550
+                {{users}}
               </div>
             </div>
             <!-- statistic -->
@@ -37,7 +37,7 @@
             <!-- header -->
             <div class="ui statistic" [ngClass]="{small: isMobile}">
               <div class="value">
-                5,550
+                {{plugins}}
               </div>
             </div>
             <!-- statistic -->
@@ -64,7 +64,7 @@
             <!-- header -->
             <div class="ui statistic" [ngClass]="{small: isMobile}">
               <div class="value">
-                5,550
+                {{developers}}
               </div>
             </div>
             <!-- statistic -->
@@ -84,15 +84,15 @@
   <!-- stats -->
 
   <div id="graphs">
-    <div class="" id="left-graph">
+    <div class="ui raised segment" id="left-graph">
       <div id="piechart_3d" [style.height]="pieSize"></div>
     </div>
     <div class="" id="right-graph">
       <div class="" id="users-graph">
-        <div id="line_top_x" style="padding:1em; height: 300px;"></div>
+        <div class="ui raised segment" id="line_top_x" style="padding:1em; height: 300px;"></div>
       </div>
       <div class="" id="plugins-graph">
-        <div id="line_down_x" style="padding:1em; height: 300px;"></div>
+        <div class="ui raised segment" id="line_down_x" style="padding:1em; height: 300px;"></div>
       </div>
     </div>
   </div>
