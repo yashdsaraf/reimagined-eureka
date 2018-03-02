@@ -32,5 +32,8 @@ public interface PluginRepository extends CrudRepository<Plugin, Long> {
 
   @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) = LOWER(?1)")
   public Plugin findByName(String name);
+  
+  @Query(value = "SELECT TO_CHAR(CREATED_ON, 'Month') AS MONTH, COUNT(*) AS COUNT from PLUGIN GROUP BY TO_CHAR(CREATED_ON, 'Month')", nativeQuery = true)
+  public Iterable<Object[]> findCountPerMonths();
 
 }

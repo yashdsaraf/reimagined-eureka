@@ -43,11 +43,13 @@ public class StatsController {
     }
 
     @GetMapping("/users")
-    public void getUserPerMonth() {
+    public ResponseEntity<List<List<String>>> getUserPerMonth() {
+        return ResponseEntity.ok(statsService.getUserPerMonth());
     }
 
     @GetMapping("/plugins")
-    public void getPluginsPerMonth() {
+    public ResponseEntity<List<List<String>>> getPluginsPerMonth() {
+        return ResponseEntity.ok(statsService.getPluginsPerMonth());
     }
 
     @GetMapping("/installs")

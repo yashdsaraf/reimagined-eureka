@@ -50,8 +50,8 @@ export class AdminDashComponent {
     let statsService = this.statsService
     let loadCharts = () => {
       statsService.getPluginsPerInstalls().subscribe(data => this.pieChart(data))
-      // statsService.getPluginsPerInstalls().subscribe(data => this.usersChart(data))
-      // statsService.getPluginsPerInstalls().subscribe(data => this.pluginsChart(data))
+      statsService.getUserPerMonth().subscribe(data => this.usersChart(data))
+      statsService.getPluginsPerMonth().subscribe(data => this.pluginsChart(data))
 
       // Any calls to the backend or for loading any chart should be made here.
     }
@@ -97,7 +97,7 @@ export class AdminDashComponent {
       totalUsers[i][1] = parseInt(totalUsers[i][1])
     }
     var data = new google.visualization.DataTable();
-    data.addColumn('date', 'Months');
+    data.addColumn('string', 'Months');
     data.addColumn('number', 'Users');
 
     data.addRows(totalUsers)
@@ -132,7 +132,7 @@ export class AdminDashComponent {
       totalPlugins[i][1] = parseInt(totalPlugins[i][1])
     }
     var data = new google.visualization.DataTable()
-    data.addColumn('date', 'Months')
+    data.addColumn('string', 'Months')
     data.addColumn('number', 'Plugins')
 
     data.addRows(totalPlugins)
