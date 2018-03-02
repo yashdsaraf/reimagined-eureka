@@ -45,8 +45,8 @@ export class CoreService {
     return this.http.get('/api/project/create', {params, responseType: 'text'})
   }
 
-  public delete(): Observable<any> {
-    return this.http.delete('/api/project/delete', {responseType: 'text'})
+  public close(): Observable<any> {
+    return this.http.delete('/api/project/close', {responseType: 'text'})
   }
 
   public check(): Observable<any> {

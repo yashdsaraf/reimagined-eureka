@@ -40,7 +40,8 @@ export class ToolbarComponent {
     {name: 'Save', icon: 'save'},
     {name: 'Zoom-in', icon: 'zoom'},
     {name: 'Zoom-out', icon: 'zoom out'},
-    {name: 'Share', icon: 'share'}
+    {name: 'Share', icon: 'share'},
+    {name: 'Close', icon: 'red window close'}
   ]
 
   constructor() {

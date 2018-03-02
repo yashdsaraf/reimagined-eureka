@@ -30,7 +30,7 @@ import {
   transition,
   trigger
 } from '@angular/animations'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 import {Subscription} from 'rxjs/Subscription'
 
 // CODEMIRROR Modes
@@ -218,7 +218,8 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     private flashMessagesService: FlashMessagesService,
     private progressBarService: ProgressBarService,
     private indexService: IndexService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
     this.isMobile = isMobile
     this.indexSubscription = indexService.emitter.subscribe(openFiles => {
@@ -283,51 +284,80 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   executeTool(tool: string) {
     switch (tool) {
       case 'run':
-        this.output = {stderr: '', stdout: ''}
-        this.progressBarService.show(null, "Executing the project")
-        this.coreService.runProject(this.openFiles).subscribe(
-          (data: Output) => {
-            this.output = data
-            this.progressBarService.dismiss()
-            $('#file-list').jstree(true).refresh()
-          },
-          err => {
-            this.progressBarService.dismiss()
-            $('#file-list').jstree(true).refresh()
-            this.flashMessagesService.show(decodeError(err), {
-              cssClass: 'ui error message', timeout: 4000
-            })
-          }
-        )
+        this.runProject()
         break
       case 'zoom-in':
-        if (this.editorFontSize >= 10) {
-          break
-        }
-        this.editorFontSize += .3
-        this.refreshAfter(50)
+        this.adjustEditorZoom(.3)
         break
       case 'zoom-out':
-        if (this.editorFontSize <= .1) {
-          break
-        }
-        this.editorFontSize -= .3
-        this.refreshAfter(50)
+        this.adjustEditorZoom(.3, true)
         break
       case 'save':
-        this.coreService.save().subscribe(
-          data => {
-            let files = [data]
-            this.explorer.save(files);
-          },
-          err => {
-            this.flashMessagesService.show(decodeError(err), {
-              cssClass: 'ui error message', timeout: 4000
-            })
-          }
-        )
+        this.saveProject()
+        break
+      case 'close':
+        this.closeProject()
         break
     }
+  }
+
+  adjustEditorZoom(value: number, isNegative = false) {
+    if (!isNegative) {
+      if (this.editorFontSize < 10) {
+        this.editorFontSize += .3
+      }
+    } else {
+      if (this.editorFontSize > .1) {
+        this.editorFontSize -= .3
+      }
+    }
+    this.refreshAfter(50)
+  }
+
+  runProject() {
+    this.output = {stderr: '', stdout: ''}
+    this.progressBarService.show(null, "Executing the project")
+    this.coreService.runProject(this.openFiles).subscribe(
+      (data: Output) => {
+        this.output = data
+        this.progressBarService.dismiss()
+        $('#file-list').jstree(true).refresh()
+      },
+      err => {
+        this.progressBarService.dismiss()
+        $('#file-list').jstree(true).refresh()
+        this.errorHandler(err)
+      }
+    )
+  }
+
+  saveProject() {
+    this.coreService.save().subscribe(
+      data => {
+        let files = [data]
+        this.explorer.save(files);
+      },
+      this.errorHandler
+    )
+  }
+
+  closeProject() {
+    this.coreService.close().subscribe(
+      data => {
+        this.router.navigate(['/home'])
+        this.flashMessagesService.show('Project closed successfully. Get started with a new one!', {
+          cssClass: 'ui success message',
+          timeout: 4000
+        })
+      },
+      this.errorHandler
+    )
+  }
+
+  errorHandler(err) {
+    this.flashMessagesService.show(decodeError(err), {
+      cssClass: 'ui error message', timeout: 4000
+    })
   }
 
 }

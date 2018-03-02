@@ -95,7 +95,7 @@ public class ProjectController {
     }
   }
 
-  @DeleteMapping("/delete")
+  @DeleteMapping("/close")
   public ResponseEntity<String> deleteProjectFromSession(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
@@ -109,7 +109,7 @@ public class ProjectController {
   }
 
   @GetMapping("/save")
-  @PreAuthorize("hasAuthority('USER')")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<Map> saveProject(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
@@ -122,7 +122,7 @@ public class ProjectController {
   }
 
   @PostMapping("/validate")
-  @PreAuthorize("hasAuthority('USER')")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<String> validateProject(
           HttpServletRequest request,
           @RequestParam("link") String link
@@ -139,7 +139,7 @@ public class ProjectController {
   }
 
   @PostMapping("/open")
-  @PreAuthorize("hasAuthority('USER')")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<String> openProject(
           HttpServletRequest request,
           @RequestParam("link") String link,
@@ -157,7 +157,7 @@ public class ProjectController {
   }
 
   @PostMapping("/import")
-  @PreAuthorize("hasAuthority('USER')")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<String> importProject(
           HttpServletRequest request,
           @RequestParam("link") String link,
