@@ -42,6 +42,7 @@ import {AdminUsersComponent} from './components/admin-users/admin-users.componen
 import {AppComponent} from './app.component'
 import {AppRoutingModule} from './app-routing.module'
 import {BlogComponent} from './components/blog/blog.component'
+import {DeveloperPluginsComponent} from './components/developer-plugins/developer-plugins.component'
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
@@ -87,8 +88,7 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 //PIPES
 import {InitCapPipe} from './pipes/init-cap.pipe'
-import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
-import { DeveloperPluginsComponent } from './components/developer-plugins/developer-plugins.component'
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -105,6 +105,7 @@ export function init(startupService: StartupService) {
     AdminUsersComponent,
     AppComponent,
     BlogComponent,
+    DeveloperPluginsComponent,
     DocsComponent,
     FileExComponent,
     HeaderComponent,
@@ -121,8 +122,7 @@ export function init(startupService: StartupService) {
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe,
-    DeveloperPluginsComponent
+    SanitizeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
