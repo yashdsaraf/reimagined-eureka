@@ -47,3 +47,5 @@ Thumbs.db
 *.css
 *.css.map
 src/semantic/dist
+
+application.ts
