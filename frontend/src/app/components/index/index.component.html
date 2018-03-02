@@ -11,7 +11,8 @@
           </a>
         </div>
         <div class="ui bottom attached segment margin-bottom-0" *ngFor="let file of openFiles; let i = index" [suiTabContent]="i">
-          <codemirror [config]="editorConfig" [(ngModel)]="file.content" [style.font-size.em]="editorFontSize" [style.line-height.em]="1.2" #editor>
+          <codemirror [config]="editorConfig" [(ngModel)]="file.content" [style.font-size.em]="editorFontSize" [style.line-height.em]="1.2"
+            #editor>
           </codemirror>
         </div>
       </sui-tabset>
@@ -26,3 +27,50 @@
   <!-- wrapper-1 -->
 </div>
 <!-- container -->
+
+<a #downloadLink></a>
+
+<sui-modal *ngIf="saveAsModal" [isClosable]="false" [isBasic]="true" #saveAsModal>
+  <div class="header">Where to save?</div>
+  <div class="content">
+    <div class="ui centered two column grid">
+      <div class="column">
+        <div class="ui massive fluid inverted secondary button" (click)="closeSaveAsModal('offline')" [class.animated]="!isMobile">
+          <div class="visible content">
+            <i class="icons" [ngClass]="{huge: !isMobile, large: isMobile}">
+              <i class="inverted desktop icon"></i>
+              <i class="inverted bottom left corner blue download icon"></i>
+            </i>
+          </div>
+          <div class="hidden content">
+            Offline
+          </div>
+        </div>
+        <!-- offline button -->
+      </div>
+      <!-- column -->
+      <div class="column">
+        <div class="ui massive fluid inverted secondary button" (click)="closeSaveAsModal('cloud')" [class.animated]="!isMobile">
+          <div class="visible content">
+            <i class="icons" [ngClass]="{huge: !isMobile, large: isMobile}">
+              <i class="inverted cloud icon"></i>
+              <i class="inverted bottom left corner blue download icon"></i>
+            </i>
+          </div>
+          <div class="hidden content">
+            Cloud
+          </div>
+        </div>
+        <!-- cloud button -->
+      </div>
+      <!-- column -->
+    </div>
+    <!-- grid -->
+    <div class="ui segment">
+      <div class="field">
+        <sui-checkbox [(ngModel)]="dontAskAgain">Don't ask me again</sui-checkbox>
+      </div>
+    </div>
+  </div>
+  <!-- content -->
+</sui-modal>

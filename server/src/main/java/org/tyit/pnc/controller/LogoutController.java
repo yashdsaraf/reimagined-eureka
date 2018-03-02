@@ -15,12 +15,16 @@
  */
 package org.tyit.pnc.controller;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.http.HttpServletRequest;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.tyit.pnc.service.DockerService;
+import org.tyit.pnc.utils.JwtUtils;
 
 /**
  *
@@ -30,13 +34,20 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/destroy")
 public class LogoutController {
 
+  @Autowired
+  private DockerService dockerService;
+
   @GetMapping
-  public Map<String, String> destroy(Principal principal) {
-//    TODO: Destroy docker session
-    Map<String, String> map = new HashMap<>();
-//    map.put("message", "2");
-//    map.put("error", "1");
-    return map;
+  public ResponseEntity<String> destroy(HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      dockerService.delete(jti);
+      return ResponseEntity.ok().build();
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
   }
 
 }

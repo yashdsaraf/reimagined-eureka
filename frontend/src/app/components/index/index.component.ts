@@ -17,11 +17,14 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnChanges,
   OnDestroy,
   OnInit,
   QueryList,
-  ViewChildren
+  ViewChild,
+  ViewChildren,
+  Renderer2
 } from '@angular/core'
 import {
   animate,
@@ -157,6 +160,7 @@ import 'codemirror/mode/z80/z80'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
+import {ConfigService} from '../../services/config.service'
 import {CoreService} from '../../services/core.service'
 import {EditorConfigService} from '../../services/editor-config.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
@@ -196,6 +200,7 @@ declare const $: any
 export class IndexComponent implements OnChanges, OnDestroy, OnInit {
 
   @ViewChildren('editor') editorView: QueryList<any>
+  @ViewChild('downloadLink') downloadLink: ElementRef
   isNavOpen = true
   isMobile: boolean
   editorConfig: Object
@@ -210,15 +215,19 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   editorConfigSubscription: Subscription
   editorFontSize: number
   explorer: any
+  saveAsModal: boolean
+  dontAskAgain: boolean
 
   constructor(
     private route: ActivatedRoute,
+    private configService: ConfigService,
     private coreService: CoreService,
     private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
     private progressBarService: ProgressBarService,
     private indexService: IndexService,
     private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
     private router: Router
   ) {
     this.isMobile = isMobile
@@ -228,6 +237,8 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     })
     this.openFile = route.snapshot.params.openfile
     this.editorFontSize = 1
+    this.saveAsModal = false
+    this.dontAskAgain = true
   }
 
   ngOnChanges() {
@@ -332,12 +343,30 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   saveProject() {
+    if (this.configService.getSaveAs() == null) {
+      this.saveAsModal = true
+      return
+    }
+    let saveAs = this.configService.getSaveAs(true)
+    if (!this.dontAskAgain) {
+      this.configService.deleteSaveAs()
+    }
+    this.progressBarService.show(null, 'Saving project')
     this.coreService.save().subscribe(
       data => {
+        this.progressBarService.dismiss()
+        if (saveAs == 'offline') {
+          this.renderer.setAttribute(this.downloadLink.nativeElement, 'href', data.url)
+          this.downloadLink.nativeElement.click()
+          return
+        }
         let files = [data]
-        this.explorer.save(files);
+        this.explorer.save(files)
       },
-      this.errorHandler
+      err => {
+        this.progressBarService.dismiss()
+        this.errorHandler(err)
+      }
     )
   }
 
@@ -350,8 +379,14 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
           timeout: 4000
         })
       },
-      this.errorHandler
+      err => this.errorHandler(err)
     )
+  }
+
+  closeSaveAsModal(value: string) {
+    this.saveAsModal = false
+    this.configService.setSaveAs(value)
+    this.saveProject()
   }
 
   errorHandler(err) {

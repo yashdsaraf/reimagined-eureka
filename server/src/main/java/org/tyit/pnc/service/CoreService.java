@@ -25,6 +25,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -188,7 +189,7 @@ public class CoreService {
   }
 
   public String validateAndExtract(String jti, String link) throws IOException, ArchiveException {
-    Path tmpDir = Files.createTempDirectory(jti);
+    Path tmpDir = Files.createTempDirectory(Base64.getEncoder().encodeToString(jti.getBytes()));
     File inputFile = new File(tmpDir.toFile(), "project.tgz");
     File outputTar = new File(tmpDir.toFile(), "project.tar");
     FileUtils.copyURLToFile(new URL(link), inputFile);

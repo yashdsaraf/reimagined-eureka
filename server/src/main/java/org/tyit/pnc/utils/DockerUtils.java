@@ -23,13 +23,11 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Arrays;
 import java.util.StringJoiner;
 import java.util.concurrent.ThreadLocalRandom;
-
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FilenameUtils;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
@@ -122,9 +120,19 @@ public class DockerUtils {
     return output;
   }
 
-  public void deleteDockerImage(Docker docker) throws Exception {
+  public void deleteDockerImage(Docker docker) throws IOException, Exception {
     File tmpDir = new File(docker.getTmpDir());
-    FileUtils.deleteDirectory(tmpDir);
+    new Thread(() -> {
+      while (tmpDir.exists()) {
+        try {
+          Thread.sleep(15000);
+          FileDeleteStrategy.FORCE.delete(tmpDir);
+        } catch (IOException | InterruptedException ex) {
+          continue;
+        }
+        break;
+      }
+    }).start();
     String[] commands = {
       "docker",
       "rmi",

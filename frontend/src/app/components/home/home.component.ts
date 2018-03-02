@@ -112,8 +112,8 @@ export class HomeComponent {
     this.explorer.choose({
       types: ['tgz', 'tar.gz']
     })
-    this.explorer.on('success', function (files) {
-      this.coreService.open(files[0].link)
+    this.explorer.on('success', files => {
+      this.coreService.open(files[0].link).subscribe()
     })
   }
 
@@ -121,8 +121,8 @@ export class HomeComponent {
     this.explorer.choose({
       types: ['tgz', 'tar.gz']
     })
-    this.explorer.on('success', function (files) {
-      this.coreService.import(files[0].link)
+    this.explorer.on('success', files => {
+      this.coreService.import(files[0].link).subscribe()
     })
   }
 
