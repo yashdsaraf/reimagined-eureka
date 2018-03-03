@@ -15,8 +15,6 @@
  */
 package org.tyit.pnc.controller;
 
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,8 +24,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.service.ForgotPasswordService;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController

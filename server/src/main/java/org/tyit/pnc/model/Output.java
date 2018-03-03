@@ -16,7 +16,6 @@
 package org.tyit.pnc.model;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 public class Output {

@@ -15,12 +15,6 @@
  */
 package org.tyit.pnc.controller;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,8 +26,14 @@ import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.service.RegisterService;
 
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController

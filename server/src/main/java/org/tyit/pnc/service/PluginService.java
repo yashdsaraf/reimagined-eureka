@@ -27,26 +27,22 @@ import org.tyit.pnc.repository.ProjectRepository;
 import org.tyit.pnc.utils.DockerUtils;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service
 public class PluginService {
 
   ObjectMapper mapper;
+  @Autowired
+  private CoreService coreService;
+  @Autowired
+  private ProjectRepository projectRepository;
+  @Autowired
+  private PluginRepository pluginRepository;
 
   public PluginService() {
     mapper = new ObjectMapper();
   }
-
-  @Autowired
-  private CoreService coreService;
-
-  @Autowired
-  private ProjectRepository projectRepository;
-
-  @Autowired
-  private PluginRepository pluginRepository;
 
   public void install(Docker docker, String pluginName) throws Exception {
     Project project = docker.getProjectId();

@@ -19,7 +19,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 public class PluginFile {

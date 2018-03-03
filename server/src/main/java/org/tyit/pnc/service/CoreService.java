@@ -16,21 +16,6 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.ExecutionException;
-import java.util.zip.GZIPInputStream;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -42,19 +27,29 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Docker;
-import org.tyit.pnc.model.Plugin;
-import org.tyit.pnc.model.PluginFile;
-import org.tyit.pnc.model.Project;
-import org.tyit.pnc.model.ProjectSettings;
+import org.springframework.web.multipart.MultipartFile;
+import org.tyit.pnc.model.*;
 import org.tyit.pnc.repository.AppUserRepository;
 import org.tyit.pnc.repository.PluginRepository;
 import org.tyit.pnc.repository.ProjectRepository;
 import org.tyit.pnc.utils.AmazonAWSUtils;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Base64;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.zip.GZIPInputStream;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service
@@ -122,9 +117,9 @@ public class CoreService {
     File tmpDir = Files.createTempDirectory(projectName).toFile();
     File file = new File(tmpDir, projectName + ".tgz");
     try (TarArchiveOutputStream stream
-            = new TarArchiveOutputStream(
-                    new GzipCompressorOutputStream(
-                            new FileOutputStream(file)))) {
+                 = new TarArchiveOutputStream(
+            new GzipCompressorOutputStream(
+                    new FileOutputStream(file)))) {
       addToArchive(stream, docker.getTmpDir(), "");
     }
     String url = new AmazonAWSUtils(ACCESS_KEY, SECRET_KEY)
@@ -164,8 +159,7 @@ public class CoreService {
     }
   }
 
-  public void open(String jti, String link, String userName) throws IOException, ArchiveException, Exception {
-    Path projectDir = Paths.get(validateAndExtract(jti, link));
+  public void open(String jti, Path projectDir, String userName) throws IOException, ArchiveException, Exception {
     File[] files = projectDir.toFile().listFiles((File dir, String name) -> name.equalsIgnoreCase(".plugncode"));
     if (files.length < 1) {
       throw new IOException("No settings file found in project");
@@ -188,13 +182,24 @@ public class CoreService {
     dockerService.build(jti, path, plugin, project, user);
   }
 
-  public String validateAndExtract(String jti, String link) throws IOException, ArchiveException {
+  public Path validateAndExtractFromLink(String jti, String link) throws IOException, ArchiveException {
     Path tmpDir = Files.createTempDirectory(Base64.getEncoder().encodeToString(jti.getBytes()));
     File inputFile = new File(tmpDir.toFile(), "project.tgz");
-    File outputTar = new File(tmpDir.toFile(), "project.tar");
     FileUtils.copyURLToFile(new URL(link), inputFile);
+    return validateAndExtract(jti, inputFile, tmpDir);
+  }
+
+  public Path validateAndExtractFromFile(String jti, MultipartFile file) throws IOException, ArchiveException {
+    Path tmpDir = Files.createTempDirectory(Base64.getEncoder().encodeToString(jti.getBytes()));
+    File inputFile = new File(tmpDir.toFile(), "project.tgz");
+    Files.write(inputFile.toPath(), file.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
+    return validateAndExtract(jti, inputFile, tmpDir);
+  }
+
+  public Path validateAndExtract(String jti, File inputFile, Path tmpDir) throws IOException, ArchiveException {
+    File outputTar = new File(tmpDir.toFile(), "project.tar");
     try (GZIPInputStream gzipIn = new GZIPInputStream(new FileInputStream(inputFile));
-            FileOutputStream outStream = new FileOutputStream(outputTar)) {
+         FileOutputStream outStream = new FileOutputStream(outputTar)) {
       IOUtils.copy(gzipIn, outStream);
     }
     try (TarArchiveInputStream tarIn = (TarArchiveInputStream) new ArchiveStreamFactory()
@@ -215,7 +220,7 @@ public class CoreService {
         }
       }
     }
-    return tmpDir.toAbsolutePath().toString();
+    return tmpDir.toAbsolutePath();
   }
 
   public void createProjectFromTgz(String jti, String link, String lang, String projectName, String entrypoint, String name) {

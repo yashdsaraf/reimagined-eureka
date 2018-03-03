@@ -16,6 +16,12 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.tyit.pnc.model.*;
+import org.tyit.pnc.repository.DockerRepository;
+import org.tyit.pnc.utils.DockerUtils;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -26,20 +32,8 @@ import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.tyit.pnc.model.AppUser;
-import org.tyit.pnc.model.Docker;
-import org.tyit.pnc.model.Output;
-import org.tyit.pnc.model.Plugin;
-import org.tyit.pnc.model.PluginFile;
-import org.tyit.pnc.model.Project;
-import org.tyit.pnc.model.ProjectSettings;
-import org.tyit.pnc.repository.DockerRepository;
-import org.tyit.pnc.utils.DockerUtils;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service
@@ -96,7 +90,7 @@ public class DockerService {
     ProjectSettings settings = mapper.readValue(projectSettings, ProjectSettings.class);
     File dockerFile = new File(tempDir.toFile(), "Dockerfile");
     Files.write(dockerFile.toPath(), pluginFile.getDockerfile()
-            .getBytes(StandardCharsets.UTF_8),
+                    .getBytes(StandardCharsets.UTF_8),
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
     File entryPoint = new File(tempDir.toFile(), settings.getEntrypoint());
     Files.createFile(entryPoint.toPath());

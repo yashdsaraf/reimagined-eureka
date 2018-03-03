@@ -15,25 +15,20 @@
  */
 package org.tyit.pnc.controller;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.service.FileExService;
 import org.tyit.pnc.utils.JwtUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
@@ -61,8 +56,8 @@ public class FileExController {
 
   @GetMapping("/file")
   public ResponseEntity<String> getFile(HttpServletRequest request,
-          @RequestParam("file") String fileName,
-          @RequestParam("parent") String parent) {
+                                        @RequestParam("file") String fileName,
+                                        @RequestParam("parent") String parent) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -76,9 +71,9 @@ public class FileExController {
 
   @PostMapping
   public ResponseEntity<String> create(HttpServletRequest request,
-          @RequestParam("file") String fileName,
-          @RequestParam("parent") String parent,
-          @RequestParam("isDir") boolean isDir) {
+                                       @RequestParam("file") String fileName,
+                                       @RequestParam("parent") String parent,
+                                       @RequestParam("isDir") boolean isDir) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -93,8 +88,8 @@ public class FileExController {
 
   @DeleteMapping
   public ResponseEntity<String> delete(HttpServletRequest request,
-          @RequestParam("file") String fileName,
-          @RequestParam("parent") String parent) {
+                                       @RequestParam("file") String fileName,
+                                       @RequestParam("parent") String parent) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -109,9 +104,9 @@ public class FileExController {
 
   @PostMapping("/rename")
   public ResponseEntity<String> rename(HttpServletRequest request,
-          @RequestParam("file") String filename,
-          @RequestParam("parent") String parent,
-          @RequestParam("newname") String newname) {
+                                       @RequestParam("file") String filename,
+                                       @RequestParam("parent") String parent,
+                                       @RequestParam("newname") String newname) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -126,9 +121,9 @@ public class FileExController {
 
   @PostMapping("/move")
   public ResponseEntity<String> move(HttpServletRequest request,
-          @RequestParam("file") String filename,
-          @RequestParam("oldparent") String oldParent,
-          @RequestParam("newparent") String newParent) {
+                                     @RequestParam("file") String filename,
+                                     @RequestParam("oldparent") String oldParent,
+                                     @RequestParam("newparent") String newParent) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -143,9 +138,9 @@ public class FileExController {
 
   @PostMapping("/copy")
   public ResponseEntity<String> copy(HttpServletRequest request,
-          @RequestParam("file") String filename,
-          @RequestParam("oldparent") String oldParent,
-          @RequestParam("newparent") String newParent) {
+                                     @RequestParam("file") String filename,
+                                     @RequestParam("oldparent") String oldParent,
+                                     @RequestParam("newparent") String newParent) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);

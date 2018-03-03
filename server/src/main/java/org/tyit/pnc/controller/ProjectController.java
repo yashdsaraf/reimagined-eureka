@@ -15,31 +15,26 @@
  */
 package org.tyit.pnc.controller;
 
-import java.io.IOException;
-import java.security.Principal;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
-import org.apache.commons.compress.archivers.ArchiveException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.service.CoreService;
 import org.tyit.pnc.service.DockerService;
 import org.tyit.pnc.utils.JwtUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Path;
+import java.security.Principal;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
@@ -67,10 +62,10 @@ public class ProjectController {
 
   @GetMapping("/create")
   public ResponseEntity<String> createProject(@RequestParam("plugin") String lang,
-          @RequestParam("project") String projectName,
-          @RequestParam("entrypoint") String entrypoint,
-          Principal principal,
-          HttpServletRequest request) {
+                                              @RequestParam("project") String projectName,
+                                              @RequestParam("entrypoint") String entrypoint,
+                                              Principal principal,
+                                              HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -121,24 +116,26 @@ public class ProjectController {
     }
   }
 
-  @PostMapping("/validate")
+  @PostMapping("/open/file")
   @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
-  public ResponseEntity<String> validateProject(
+  public ResponseEntity<String> openProject(
           HttpServletRequest request,
-          @RequestParam("link") String link
+          @RequestParam("file") MultipartFile file,
+          Principal principal
   ) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      coreService.validateAndExtract(jti, link);
+      Path projectDir = coreService.validateAndExtractFromFile(jti, file);
+      coreService.open(jti, projectDir, principal.getName());
       return ResponseEntity.ok().build();
-    } catch (IOException | ArchiveException ex) {
+    } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();
     }
   }
 
-  @PostMapping("/open")
+  @PostMapping("/open/link")
   @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<String> openProject(
           HttpServletRequest request,
@@ -148,7 +145,8 @@ public class ProjectController {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      coreService.open(jti, link, principal.getName());
+      Path projectDir = coreService.validateAndExtractFromLink(jti, link);
+      coreService.open(jti, projectDir, principal.getName());
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);

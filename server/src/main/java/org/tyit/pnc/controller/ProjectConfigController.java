@@ -15,22 +15,18 @@
  */
 package org.tyit.pnc.controller;
 
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.service.ProjectConfigService;
 import org.tyit.pnc.utils.JwtUtils;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
@@ -69,7 +65,7 @@ public class ProjectConfigController {
 
   @PostMapping("/runcmds")
   public ResponseEntity<String> setRunCommands(HttpServletRequest request,
-          @RequestParam("runcmds") String runcmds) {
+                                               @RequestParam("runcmds") String runcmds) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -95,7 +91,7 @@ public class ProjectConfigController {
 
   @PostMapping("/entrypoint")
   public ResponseEntity<String> setEntrypoint(HttpServletRequest request,
-          @RequestParam("entrypoint") String entrypoint) {
+                                              @RequestParam("entrypoint") String entrypoint) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);

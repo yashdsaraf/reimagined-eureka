@@ -30,7 +30,6 @@ import org.tyit.pnc.repository.DeveloperRepository;
 import org.tyit.pnc.repository.PluginRepository;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service

@@ -16,27 +16,22 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.tyit.pnc.model.Docker;
-import org.tyit.pnc.model.Plugin;
-import org.tyit.pnc.model.PluginFile;
-import org.tyit.pnc.model.Project;
-import org.tyit.pnc.model.ProjectSettings;
+import org.tyit.pnc.model.*;
 import org.tyit.pnc.repository.ProjectRepository;
 
+import java.io.IOException;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service
 public class ProjectConfigService {
 
+  ObjectMapper mapper;
   @Autowired
   private ProjectRepository projectRepository;
-
-  ObjectMapper mapper;
 
   public ProjectConfigService() {
     mapper = new ObjectMapper();

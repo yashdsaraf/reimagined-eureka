@@ -15,11 +15,6 @@
  */
 package org.tyit.pnc.service;
 
-import java.time.Instant;
-import java.util.Date;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.validation.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +23,13 @@ import org.springframework.transaction.TransactionSystemException;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
 
+import javax.validation.ConstraintViolationException;
+import java.time.Instant;
+import java.util.Date;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service

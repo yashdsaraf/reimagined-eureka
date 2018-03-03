@@ -15,8 +15,6 @@
  */
 package org.tyit.pnc.service;
 
-import java.util.Arrays;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -28,8 +26,10 @@ import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service

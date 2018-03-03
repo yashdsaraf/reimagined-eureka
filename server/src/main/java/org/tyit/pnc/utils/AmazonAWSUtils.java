@@ -26,6 +26,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.TransferManagerBuilder;
 import com.amazonaws.services.s3.transfer.Upload;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
@@ -33,7 +34,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
  * @author Yash D. Saraf, Raees R. Mulla and Sachin S. Negi
  */
 public final class AmazonAWSUtils {

@@ -15,28 +15,21 @@
  */
 package org.tyit.pnc.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.tyit.pnc.service.ImageService;
+
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import org.tyit.pnc.service.ImageService;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
@@ -100,8 +93,8 @@ public class ImagesController {
   @PreAuthorize("hasAuthority('ADMIN')")
   @PostMapping("/plugin/{name}")
   public ResponseEntity<String> storePlugin(@PathVariable("name") String name,
-          @RequestParam("replace") String replace,
-          @RequestParam("content") String content) {
+                                            @RequestParam("replace") String replace,
+                                            @RequestParam("content") String content) {
     try {
       String decoded = URLDecoder.decode(content, "UTF-8");
       imageService.storePlugin(name, decoded, replace);
