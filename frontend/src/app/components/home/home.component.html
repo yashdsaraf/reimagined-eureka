@@ -9,14 +9,14 @@
           </div>
         </button>
 
-        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}" (click)="importProject()">
+        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}" (click)="showOpenProjectModal('import')">
           <div class="visible content">Import project</div>
           <div class="hidden content">
             <i class="icon cloud download "></i>
           </div>
         </button>
 
-        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}" (click)="openProjectModal = true">
+        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}" (click)="showOpenProjectModal('open')">
           <div class="visible content">Open project</div>
           <div class="hidden content">
             <i class="icon folder open"></i>
@@ -154,4 +154,21 @@
   <div class="actions">
     <div class="ui button primary" [class.disabled]="openFile == null" (click)="openOfflineProject()">{{currentOperation | initCap}}</div>
   </div>
+</sui-modal>
+
+<ng-template #actions>
+  <div class="actions">
+    <div class="ui negative right labeled icon button" (click)="importModal.deny()">
+      <i class="close icon"></i>
+      Cancel
+    </div>
+  </div>
+</ng-template>
+
+<sui-modal *ngIf="importMarketPlaceModal" [isFullScreen]="true" [isClosable]="false" [size]="large" [mustScroll]="true" (denied)="importMarketPlaceModal = false" #importModal>
+  <ng-template [ngTemplateOutlet]="actions"></ng-template>
+  <div class="content">
+    <app-market-place isImport="true" (importDetails)="importDetails = $event" style="overflow-y: auto"></app-market-place>
+  </div>
+  <ng-template [ngTemplateOutlet]="actions"></ng-template>
 </sui-modal>

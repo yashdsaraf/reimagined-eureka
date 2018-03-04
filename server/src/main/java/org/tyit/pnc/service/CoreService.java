@@ -76,11 +76,15 @@ public class CoreService {
   }
 
   public String build(String token, String lang, String projectName, String entrypoint, String userName) throws Exception {
+    return buildProject(token, lang, projectName, entrypoint, userName, null);
+  }
+
+  private String buildProject(String token, String lang, String projectName, String entrypoint, String userName, Path basePath) throws Exception {
     Plugin plugin = pluginRepository.findByName(lang);
     if (plugin == null) {
       throw new Exception("No such plugin found");
     }
-    Path tmpPath = Files.createTempDirectory(projectName);
+    Path tmpPath = basePath == null ? Files.createTempDirectory(projectName) : basePath;
     Path path = new File(tmpPath.toFile(), projectName).toPath();
     Files.createDirectory(path);
     AppUser user = appUserRepository.findByUsername(userName);
@@ -90,13 +94,13 @@ public class CoreService {
     project.setUuid(uuid.toString());
     project.setUserId(user);
     ProjectSettings settings = new ProjectSettings(uuid.toString(), new String[0], entrypoint, new String[0], lang);
-    project.setSettings(new ObjectMapper().writeValueAsString(settings));
+    project.setSettings(mapper.writeValueAsString(settings));
     projectRepository.save(project);
     Docker docker = dockerService.build(token, path, plugin, project, user);
     // Update user_plugin table
     plugin.getAppUserCollection().add(user);
     pluginRepository.save(plugin);
-    return new ObjectMapper().readValue(docker.getSettings(), PluginFile.class).getMode();
+    return mapper.readValue(docker.getSettings(), PluginFile.class).getMode();
   }
 
   public Map<String, String> save(Docker docker) throws IOException {
@@ -151,7 +155,7 @@ public class CoreService {
     }
   }
 
-  public void open(String jti, Path projectDir, String userName) throws IOException, ArchiveException, Exception {
+  public String open(String jti, Path projectDir, String userName) throws IOException, ArchiveException, Exception {
     Optional<Path> first = Files.find(projectDir, 2, (path, basicFileAttributes) -> path.getFileName()
             .toString()
             .equalsIgnoreCase(".plugncode"))
@@ -174,24 +178,29 @@ public class CoreService {
     Path path = new File(tmpPath.toFile(), project.getName()).toPath();
     AppUser user = appUserRepository.findByUsername(userName);
     Files.createDirectory(path);
-    dockerService.build(jti, path, plugin, project, user);
+    Docker docker = dockerService.build(jti, path, plugin, project, user);
+    return mapper.readValue(docker.getSettings(), PluginFile.class).getMode();
+  }
+
+  public String createProjectFromExistingSources(String jti, Path projectDir, String lang, String projectName, String entrypoint, String userName) throws Exception {
+    return buildProject(jti, lang, projectName, entrypoint, userName, projectDir);
   }
 
   public Path validateAndExtractFromLink(String jti, String link) throws IOException, ArchiveException {
     Path tmpDir = Files.createTempDirectory(Base64.getEncoder().encodeToString(jti.getBytes()));
     File inputFile = new File(tmpDir.toFile(), "project.tgz");
     FileUtils.copyURLToFile(new URL(link), inputFile);
-    return validateAndExtract(jti, inputFile, tmpDir);
+    return validateAndExtract(inputFile, tmpDir);
   }
 
   public Path validateAndExtractFromFile(String jti, MultipartFile file) throws IOException, ArchiveException {
     Path tmpDir = Files.createTempDirectory(Base64.getEncoder().encodeToString(jti.getBytes()));
     File inputFile = new File(tmpDir.toFile(), "project.tgz");
     Files.write(inputFile.toPath(), file.getBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
-    return validateAndExtract(jti, inputFile, tmpDir);
+    return validateAndExtract(inputFile, tmpDir);
   }
 
-  public Path validateAndExtract(String jti, File inputFile, Path tmpDir) throws IOException, ArchiveException {
+  private Path validateAndExtract(File inputFile, Path tmpDir) throws IOException, ArchiveException {
     File outputTar = new File(tmpDir.toFile(), "project.tar");
     try (GZIPInputStream gzipIn = new GZIPInputStream(new FileInputStream(inputFile));
          FileOutputStream outStream = new FileOutputStream(outputTar)) {
@@ -216,10 +225,6 @@ public class CoreService {
       }
     }
     return tmpDir.toAbsolutePath();
-  }
-
-  public void createProjectFromTgz(String jti, String link, String lang, String projectName, String entrypoint, String name) {
-    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
   }
 
 }

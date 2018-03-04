@@ -25,7 +25,7 @@ import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
-import {decodeError} from '../../utils/general-utils';
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-home',
@@ -80,8 +80,11 @@ export class HomeComponent {
   explorer: any
   openProjectModal: boolean
   offlineOpenModal: boolean
+  importMarketPlaceModal: boolean
   currentOperation: string = 'open'
   openFile: File
+  openLink: string
+  _importDetails: string[] = []
 
   constructor(
     private authService: AuthService,
@@ -120,20 +123,22 @@ export class HomeComponent {
 
   openOnlineProject() {
     this.openProjectModal = false
-    this.isProjectInSession().then(() => {
-      this.explorer.choose({
-        types: ['tgz', 'tar.gz']
-      })
-      this.explorer.on('success', files => {
-        this.coreService.openFromLink(files[0].link).subscribe(
-          data => this.router.navigate(['/index']),
-          err => {
-            this.flashMessagesService.show(decodeError(err), {
-              cssClass: 'ui error message', timeout: 4000
-            })
-          }
-        )
-      })
+    this.explorer.choose({
+      types: ['tgz', 'tar.gz']
+    })
+    this.explorer.on('success', files => {
+      if (this.currentOperation == 'import') {
+        this.importMarketPlaceModal = true
+        this.currentOperation = 'importOnline'
+        this.openLink = files[0].link
+        return
+      }
+      this.coreService.openFromLink(files[0].link).subscribe(
+        data => this.router.navigate(['/index', {mode: data}]),
+        err => {
+          this.errorHandler(err)
+        }
+      )
     })
   }
 
@@ -145,27 +150,39 @@ export class HomeComponent {
 
   openOfflineProject() {
     this.offlineOpenModal = false
-    this.isProjectInSession().then(() => {
-      this.coreService.openFromFile(this.openFile).subscribe(
-        data => this.router.navigate(['/index']),
-        err => {
-          this.flashMessagesService.show(decodeError(err), {
-            cssClass: 'ui error message', timeout: 4000
-          })
-        }
-      )
-    })
+    if (this.currentOperation == 'import') {
+      this.importMarketPlaceModal = true
+      this.currentOperation = 'importOffline'
+      return
+    }
+    this.coreService.openFromFile(this.openFile).subscribe(
+      data => this.router.navigate(['/index', {mode: data}]),
+      err => {
+        this.errorHandler(err)
+      }
+    )
   }
 
   importProject() {
-    this.isProjectInSession().then(() => {
-      this.explorer.choose({
-        types: ['tgz', 'tar.gz']
-      })
-      this.explorer.on('success', files => {
-        this.coreService.import(files[0].link).subscribe()
-      })
-    })
+    let [entrypoint, plugin, project] = this.importDetails
+    switch (this.currentOperation) {
+      case 'importOffline':
+        this.coreService.importFromFile(this.openFile, plugin, project, entrypoint).subscribe(
+          data => this.router.navigate(['/index', {mode: data}]),
+          err => {
+            this.errorHandler(err)
+          }
+        )
+        break
+      case 'importOnline':
+        this.coreService.importFromLink(this.openLink, plugin, project, entrypoint).subscribe(
+          data => this.router.navigate(['/index', {mode: data}]),
+          err => {
+            this.errorHandler(err)
+          }
+        )
+        break
+    }
   }
 
   isProjectInSession(): Promise<any> {
@@ -199,6 +216,13 @@ export class HomeComponent {
     }
   }
 
+  showOpenProjectModal(operation: string) {
+    this.isProjectInSession().then(() => {
+      this.openProjectModal = true
+      this.currentOperation = operation
+    }).catch(() => {})
+  }
+
   isNotLoggedIn(): boolean {
     return this.authService.getRole() == null
   }
@@ -206,6 +230,22 @@ export class HomeComponent {
   dataUri(env: string) {
     let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
     return uri
+  }
+
+  errorHandler(err) {
+    this.flashMessagesService.show(decodeError(err), {
+      cssClass: 'ui error message', timeout: 4000
+    })
+  }
+
+  get importDetails(): string[] {
+    return this._importDetails
+  }
+
+  set importDetails(value: string[]) {
+    this._importDetails = value
+    this.importMarketPlaceModal = false
+    this.importProject()
   }
 
 }

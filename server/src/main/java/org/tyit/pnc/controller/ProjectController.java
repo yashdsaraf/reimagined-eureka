@@ -127,8 +127,7 @@ public class ProjectController {
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       Path projectDir = coreService.validateAndExtractFromFile(jti, file);
-      coreService.open(jti, projectDir, principal.getName());
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok((coreService.open(jti, projectDir, principal.getName())));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();
@@ -146,15 +145,14 @@ public class ProjectController {
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       Path projectDir = coreService.validateAndExtractFromLink(jti, link);
-      coreService.open(jti, projectDir, principal.getName());
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok((coreService.open(jti, projectDir, principal.getName())));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();
     }
   }
 
-  @PostMapping("/import")
+  @PostMapping("/import/link")
   @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<String> importProject(
           HttpServletRequest request,
@@ -167,8 +165,31 @@ public class ProjectController {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      coreService.createProjectFromTgz(jti, link, lang, projectName, entrypoint, principal.getName());
-      return ResponseEntity.ok().build();
+      Path projectDir = coreService.validateAndExtractFromLink(jti, link);
+      String mode = coreService.createProjectFromExistingSources(jti, projectDir, lang, projectName, entrypoint, principal.getName());
+      return ResponseEntity.ok(mode);
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().build();
+    }
+  }
+
+  @PostMapping("/import/file")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+  public ResponseEntity<String> importProject(
+          HttpServletRequest request,
+          @RequestParam("file") MultipartFile file,
+          @RequestParam("plugin") String lang,
+          @RequestParam("project") String projectName,
+          @RequestParam("entrypoint") String entrypoint,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Path projectDir = coreService.validateAndExtractFromFile(jti, file);
+      String mode = coreService.createProjectFromExistingSources(jti, projectDir, lang, projectName, entrypoint, principal.getName());
+      return ResponseEntity.ok(mode);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
       return ResponseEntity.badRequest().build();

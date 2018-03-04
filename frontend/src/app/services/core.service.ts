@@ -69,10 +69,24 @@ export class CoreService {
     return this.http.post('/api/project/open/file', formData, {responseType: 'text'})
   }
 
-  public import(link: string): Observable<any> {
-    let formData = new FormData()
+  public importFromLink(link: string, lang: string, projectName: string, entrypoint: string): Observable<any> {
+    let formData = this.getImportFormData(lang, projectName, entrypoint)
     formData.append('link', link)
-    return this.http.post('/api/project/import', formData, {responseType: 'text'})
+    return this.http.post('/api/project/import/link', formData, {responseType: 'text'})
+  }
+
+  public importFromFile(file: File, lang: string, projectName: string, entrypoint: string): Observable<any> {
+    let formData = this.getImportFormData(lang, projectName, entrypoint)
+    formData.append('file', file)
+    return this.http.post('/api/project/import/file', formData, {responseType: 'text'})
+  }
+
+  private getImportFormData(lang: string, projectName: string, entrypoint: string): FormData {
+    let formData = new FormData()
+    formData.append('project', projectName)
+    formData.append('entrypoint', entrypoint)
+    formData.append('plugin', lang)
+    return formData
   }
 
 }
