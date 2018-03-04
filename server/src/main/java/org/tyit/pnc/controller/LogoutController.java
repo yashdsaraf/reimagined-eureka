@@ -20,12 +20,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.tyit.pnc.service.DockerService;
-import org.tyit.pnc.utils.JwtUtils;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
@@ -35,19 +31,11 @@ import java.util.logging.Logger;
 public class LogoutController {
 
   @Autowired
-  private DockerService dockerService;
+  private ProjectController projectController;
 
   @GetMapping
   public ResponseEntity<String> destroy(HttpServletRequest request) {
-    String accessToken = request.getHeader("Authorization").split(" ")[1];
-    try {
-      String jti = JwtUtils.getInstance().getJti(accessToken);
-      dockerService.delete(jti);
-      return ResponseEntity.ok().build();
-    } catch (Exception ex) {
-      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
-    }
+    return projectController.deleteProjectFromSession(request);
   }
 
 }

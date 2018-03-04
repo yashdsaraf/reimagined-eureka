@@ -59,7 +59,7 @@ public class PluginController {
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       Logger.getLogger(PluginController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

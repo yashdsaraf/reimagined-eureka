@@ -49,7 +49,7 @@ public class ForgotPasswordController {
         String email = params.get("email");
         return forgotPasswordService.checkEmail(email, request);
       } catch (NullPointerException ex) {
-        return new ResponseEntity("Invalid request structure", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Invalid request structure", HttpStatus.BAD_REQUEST);
       }
     }
   }

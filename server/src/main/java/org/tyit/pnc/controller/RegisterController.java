@@ -60,9 +60,9 @@ public class RegisterController {
     } catch (NoSuchAlgorithmException ex) {
       Logger.getLogger(RegisterController.class.getName()).log(Level.SEVERE, null, ex);
     } catch (NullPointerException ex) {
-      return new ResponseEntity("Invalid request structure", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Invalid request structure", HttpStatus.BAD_REQUEST);
     }
-    return new ResponseEntity("An internal error occured", HttpStatus.NO_CONTENT);
+    return new ResponseEntity<>("An internal error occured", HttpStatus.NO_CONTENT);
   }
 
 }

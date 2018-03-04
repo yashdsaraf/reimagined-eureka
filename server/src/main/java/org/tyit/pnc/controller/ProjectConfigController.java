@@ -47,7 +47,7 @@ public class ProjectConfigController {
       Docker docker = getDockerFromJti(jti);
       return ResponseEntity.ok(projectConfigService.getRunCommands(docker));
     } catch (Exception ex) {
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -59,7 +59,7 @@ public class ProjectConfigController {
       Docker docker = getDockerFromJti(jti);
       return ResponseEntity.ok(projectConfigService.getPluginRunCommands(docker));
     } catch (Exception ex) {
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -73,7 +73,7 @@ public class ProjectConfigController {
       projectConfigService.setRunCommands(docker, runcmds);
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -85,7 +85,7 @@ public class ProjectConfigController {
       Docker docker = getDockerFromJti(jti);
       return ResponseEntity.ok(projectConfigService.getEntrypoint(docker));
     } catch (Exception ex) {
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -99,7 +99,7 @@ public class ProjectConfigController {
       projectConfigService.setEntrypoint(docker, entrypoint);
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

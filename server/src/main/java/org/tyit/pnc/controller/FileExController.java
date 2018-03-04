@@ -50,7 +50,7 @@ public class FileExController {
       return ResponseEntity.ok(fileExService.getFileTree(docker.getTmpDir()));
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -65,7 +65,7 @@ public class FileExController {
       return ResponseEntity.ok(fileExService.getFile(docker.getTmpDir(), fileName, parent));
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -81,7 +81,7 @@ public class FileExController {
       fileExService.create(docker.getTmpDir(), fileName, parent, isDir);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
   }
@@ -97,7 +97,7 @@ public class FileExController {
       fileExService.delete(docker.getTmpDir(), fileName, parent);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
   }
@@ -114,7 +114,7 @@ public class FileExController {
       fileExService.rename(docker.getTmpDir(), filename, parent, newname);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
   }
@@ -131,7 +131,7 @@ public class FileExController {
       fileExService.copy(docker.getTmpDir(), filename, oldParent, newParent, true);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
   }
@@ -148,7 +148,7 @@ public class FileExController {
       fileExService.copy(docker.getTmpDir(), filename, oldParent, newParent, false);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
   }

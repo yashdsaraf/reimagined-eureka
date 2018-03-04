@@ -71,7 +71,7 @@ public class AdminService {
     AppUser user = appUserRepository.findByUsername(username);
     if (user != null) {
       if (user.getRole() == Role.ADMIN) {
-        return new ResponseEntity("Cannot delete admin user", HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>("Cannot delete admin user", HttpStatus.BAD_REQUEST);
       }
       if (user.getRole() == Role.DEVELOPER) {
         Developer developer = developerRepository.findByUserId(user);

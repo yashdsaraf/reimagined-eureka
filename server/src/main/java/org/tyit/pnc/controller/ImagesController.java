@@ -58,7 +58,7 @@ public class ImagesController {
   }
 
   @GetMapping(value = "/plugins", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  public ResponseEntity<Map> getAllPlugins() {
+  public ResponseEntity<Map<String, String>> getAllPlugins() {
     try {
       return ResponseEntity.ok(imageService.loadPlugins());
     } catch (IOException ex) {

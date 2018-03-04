@@ -42,11 +42,11 @@ public class RegisterService {
     AppUser checkUser;
     checkUser = appUserRepository.findByUsername(user.getUsername());
     if (checkUser != null) {
-      return new ResponseEntity("Username already exists", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Username already exists", HttpStatus.BAD_REQUEST);
     }
     checkUser = appUserRepository.findByEmail(user.getEmail());
     if (checkUser != null) {
-      return new ResponseEntity("Email already exists", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Email already exists", HttpStatus.BAD_REQUEST);
     }
     user.setCreatedOn(Date.from(Instant.now()));
     user.setRole(AppUser.Role.USER);
@@ -61,10 +61,10 @@ public class RegisterService {
           sb.append(sb.length() > 0 ? ", " : "Invalid ");
           sb.append(t.getPropertyPath().toString());
         });
-        return new ResponseEntity(sb.toString(), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(sb.toString(), HttpStatus.BAD_REQUEST);
       }
       Logger.getLogger(RegisterService.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

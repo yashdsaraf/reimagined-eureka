@@ -78,7 +78,7 @@ public class ImageService {
 
   public Map<String, String> loadPlugins() throws IOException {
     File[] images = getResource("images/plugins").getFile().listFiles();
-    Map imageMap = new TreeMap();
+    Map<String, String> imageMap = new TreeMap<>();
     StringBuilder stringBuilder;
     for (File image : images) {
       stringBuilder = new StringBuilder();

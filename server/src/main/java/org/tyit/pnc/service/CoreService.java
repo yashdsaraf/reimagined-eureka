@@ -46,7 +46,6 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -106,8 +105,7 @@ public class CoreService {
     return new ObjectMapper().readValue(docker.getSettings(), PluginFile.class).getMode();
   }
 
-  @SuppressWarnings("ConvertToTryWithResources")
-  public Map<String, String> save(Docker docker) throws IOException, InterruptedException, ExecutionException {
+  public Map<String, String> save(Docker docker) throws IOException {
     ProjectSettings settings = mapper.readValue(docker.getProjectId().getSettings(), ProjectSettings.class);
     byte[] settingsBytes = mapper.writerWithDefaultPrettyPrinter().writeValueAsBytes(settings);
     Files.write(new File(docker.getTmpDir(), ".plugncode").toPath(),

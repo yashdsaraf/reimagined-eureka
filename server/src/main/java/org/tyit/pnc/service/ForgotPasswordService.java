@@ -60,7 +60,7 @@ public class ForgotPasswordService {
   public ResponseEntity<String> checkEmail(String email, HttpServletRequest req) {
     AppUser checkUser = appUserRepository.findByEmail(email);
     if (checkUser == null) {
-      return new ResponseEntity("Email not found", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Email not found", HttpStatus.BAD_REQUEST);
     }
     HttpSession session = req.getSession();
     int randomPin = (int) (Math.random() * 9000) + 1000;
@@ -74,7 +74,7 @@ public class ForgotPasswordService {
               + "Cheers!";
       new SendEmail(username, password, server, port).send(email, subject, body);
     } catch (MessagingException | NamingException ex) {
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
     return ResponseEntity.ok().build();
   }
@@ -83,23 +83,23 @@ public class ForgotPasswordService {
     HttpSession session = req.getSession();
     if (session.getAttribute("otp") == null || session.getAttribute("otpExpire") == null) {
       deleteOtp(session);
-      return new ResponseEntity("OTP not found", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("OTP not found", HttpStatus.BAD_REQUEST);
     }
     String otpSession = (String) session.getAttribute("otp");
     LocalDateTime otpExpire = (LocalDateTime) session.getAttribute("otpExpire");
     LocalDateTime now = LocalDateTime.now();
     if (now.isEqual(otpExpire) || now.isAfter(otpExpire)) {
       deleteOtp(session);
-      return new ResponseEntity("OTP has expired", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("OTP has expired", HttpStatus.BAD_REQUEST);
     }
     if (!otp.equals(otpSession)) {
       deleteOtp(session);
-      return new ResponseEntity("OTPs do not match", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("OTPs do not match", HttpStatus.BAD_REQUEST);
     }
     AppUser user = appUserRepository.findByEmail(email);
     if (user == null) {
       deleteOtp(session);
-      return new ResponseEntity("Email does not exist", HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>("Email does not exist", HttpStatus.BAD_REQUEST);
     }
     try {
       String passwordDigest = new String(
@@ -111,7 +111,7 @@ public class ForgotPasswordService {
       appUserRepository.save(user);
     } catch (NoSuchAlgorithmException ex) {
       Logger.getLogger(ForgotPasswordService.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity("An internal error occured", HttpStatus.NO_CONTENT);
+      return new ResponseEntity<>("An internal error occured", HttpStatus.NO_CONTENT);
     }
     deleteOtp(session);
     return ResponseEntity.ok().build();

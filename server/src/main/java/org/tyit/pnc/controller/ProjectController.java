@@ -56,7 +56,7 @@ public class ProjectController {
       return ResponseEntity.ok(docker.getPluginId().getName());
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -73,7 +73,7 @@ public class ProjectController {
       return ResponseEntity.ok(mode);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -105,7 +105,7 @@ public class ProjectController {
 
   @GetMapping("/save")
   @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
-  public ResponseEntity<Map> saveProject(HttpServletRequest request) {
+  public ResponseEntity<Map<String, String>> saveProject(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
