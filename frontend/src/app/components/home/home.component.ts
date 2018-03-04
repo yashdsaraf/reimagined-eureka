@@ -17,12 +17,15 @@
 import {Component} from '@angular/core'
 import {Router} from '@angular/router'
 
+import {FlashMessagesService} from 'angular2-flash-messages'
+
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
 import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
+import {decodeError} from '../../utils/general-utils';
 
 @Component({
   selector: 'app-home',
@@ -75,11 +78,16 @@ export class HomeComponent {
     phone: ''
   }
   explorer: any
+  openProjectModal: boolean
+  offlineOpenModal: boolean
+  currentOperation: string = 'open'
+  openFile: File
 
   constructor(
     private authService: AuthService,
     private contactsService: ContactsService,
     private coreService: CoreService,
+    private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
     private router: Router
   ) {
@@ -97,6 +105,8 @@ export class HomeComponent {
     )
     this.contactsService.getContacts().
       subscribe((data: Object) => this.contacts = data)
+    this.openProjectModal = false
+    this.offlineOpenModal = false
   }
 
   ngAfterViewInit() {
@@ -108,22 +118,74 @@ export class HomeComponent {
     })
   }
 
-  openProject() {
-    this.explorer.choose({
-      types: ['tgz', 'tar.gz']
+  openOnlineProject() {
+    this.openProjectModal = false
+    this.isProjectInSession().then(() => {
+      this.explorer.choose({
+        types: ['tgz', 'tar.gz']
+      })
+      this.explorer.on('success', files => {
+        this.coreService.openFromLink(files[0].link).subscribe(
+          data => this.router.navigate(['/index']),
+          err => {
+            this.flashMessagesService.show(decodeError(err), {
+              cssClass: 'ui error message', timeout: 4000
+            })
+          }
+        )
+      })
     })
-    this.explorer.on('success', files => {
-      this.coreService.open(files[0].link).subscribe()
+  }
+
+  openOfflineModal() {
+    this.openProjectModal = false
+    this.openFile = null
+    this.offlineOpenModal = true
+  }
+
+  openOfflineProject() {
+    this.offlineOpenModal = false
+    this.isProjectInSession().then(() => {
+      this.coreService.openFromFile(this.openFile).subscribe(
+        data => this.router.navigate(['/index']),
+        err => {
+          this.flashMessagesService.show(decodeError(err), {
+            cssClass: 'ui error message', timeout: 4000
+          })
+        }
+      )
     })
   }
 
   importProject() {
-    this.explorer.choose({
-      types: ['tgz', 'tar.gz']
+    this.isProjectInSession().then(() => {
+      this.explorer.choose({
+        types: ['tgz', 'tar.gz']
+      })
+      this.explorer.on('success', files => {
+        this.coreService.import(files[0].link).subscribe()
+      })
     })
-    this.explorer.on('success', files => {
-      this.coreService.import(files[0].link).subscribe()
+  }
+
+  isProjectInSession(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.coreService.check().subscribe(
+        data => {
+          this.flashMessagesService.show('A project already exists in the session!', {
+            cssClass: 'ui error message', timeout: 4000
+          })
+          reject()
+        },
+        err => {
+          resolve()
+        }
+      )
     })
+  }
+
+  onFileChange(event: any) {
+    this.openFile = event.target.files[0]
   }
 
   createImageFromBlob(image: Blob) {

@@ -16,7 +16,7 @@
           </div>
         </button>
 
-        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}" (click)="openProject()">
+        <button class="ui compact orange animated fade button" [ngClass]="{big: !isMobile, small: isMobile}" (click)="openProjectModal = true">
           <div class="visible content">Open project</div>
           <div class="hidden content">
             <i class="icon folder open"></i>
@@ -102,3 +102,56 @@
   <!-- footer -->
 </div>
 <!-- container -->
+
+<sui-modal *ngIf="openProjectModal" (dismissed)="openProjectModal = false" [isBasic]="true" #openModal>
+  <div class="header">Where to load the file from?</div>
+  <div class="content">
+    <div class="ui centered two column grid">
+      <div class="column">
+        <div class="ui massive fluid inverted secondary button" (click)="openOfflineModal()" [class.animated]="!isMobile">
+          <div class="visible content">
+            <i class="icons" [ngClass]="{huge: !isMobile, large: isMobile}">
+              <i class="inverted desktop icon"></i>
+              <i class="inverted bottom left corner blue upload icon"></i>
+            </i>
+          </div>
+          <div class="hidden content">
+            Offline
+          </div>
+        </div>
+        <!-- offline button -->
+      </div>
+      <!-- column -->
+      <div class="column">
+        <div class="ui massive fluid inverted secondary button" (click)="openOnlineProject()" [class.animated]="!isMobile">
+          <div class="visible content">
+            <i class="icons" [ngClass]="{huge: !isMobile, large: isMobile}">
+              <i class="inverted cloud icon"></i>
+              <i class="inverted bottom left corner blue upload icon"></i>
+            </i>
+          </div>
+          <div class="hidden content">
+            Cloud
+          </div>
+        </div>
+        <!-- cloud button -->
+      </div>
+      <!-- column -->
+    </div>
+    <!-- grid -->
+  </div>
+  <!-- content -->
+</sui-modal>
+<!-- open project modal -->
+
+<sui-modal *ngIf="offlineOpenModal" (dismissed)="offlineOpenModal = false">
+  <div class="header">Choose a file to {{currentOperation}}:</div>
+  <div class="content">
+    <div class="ui input">
+      <input type="file" accept=".tgz, .tar.gz" (change)="onFileChange($event)">
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui button primary" [class.disabled]="openFile == null" (click)="openOfflineProject()">{{currentOperation | initCap}}</div>
+  </div>
+</sui-modal>

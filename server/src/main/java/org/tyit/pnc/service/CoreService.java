@@ -34,18 +34,12 @@ import org.tyit.pnc.repository.PluginRepository;
 import org.tyit.pnc.repository.ProjectRepository;
 import org.tyit.pnc.utils.AmazonAWSUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.zip.GZIPInputStream;
 
 /**
@@ -158,11 +152,14 @@ public class CoreService {
   }
 
   public void open(String jti, Path projectDir, String userName) throws IOException, ArchiveException, Exception {
-    File[] files = projectDir.toFile().listFiles((File dir, String name) -> name.equalsIgnoreCase(".plugncode"));
-    if (files.length < 1) {
+    Optional<Path> first = Files.find(projectDir, 2, (path, basicFileAttributes) -> path.getFileName()
+            .toString()
+            .equalsIgnoreCase(".plugncode"))
+            .findFirst();
+    if (!first.isPresent()) {
       throw new IOException("No settings file found in project");
     }
-    File settingsFile = files[0];
+    File settingsFile = first.get().toFile();
     byte[] content = Files.readAllBytes(settingsFile.toPath());
     ProjectSettings settings = mapper.readValue(content, ProjectSettings.class);
     Project project = projectRepository.findByUuid(settings.getUuid());
@@ -201,7 +198,7 @@ public class CoreService {
       IOUtils.copy(gzipIn, outStream);
     }
     try (TarArchiveInputStream tarIn = (TarArchiveInputStream) new ArchiveStreamFactory()
-            .createArchiveInputStream(new FileInputStream(outputTar))) {
+            .createArchiveInputStream(new BufferedInputStream(new FileInputStream(outputTar)))) {
       TarArchiveEntry entry;
       while ((entry = (TarArchiveEntry) tarIn.getNextEntry()) != null) {
         final File outputFile = new File(tmpDir.toFile(), entry.getName());
