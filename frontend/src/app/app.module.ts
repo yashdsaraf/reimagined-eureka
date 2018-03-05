@@ -75,6 +75,7 @@ import {PluginsService} from './services/plugins.service'
 import {ProgressBarService} from './services/progress-bar.service'
 import {ProjectSettingsService} from './services/project-settings.service'
 import {StartupService} from './services/startup.service'
+import {StatsService} from './services/stats.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
@@ -155,6 +156,7 @@ export function init(startupService: StartupService) {
     ProgressBarService,
     ProjectSettingsService,
     StartupService,
+    StatsService,
     AdminGuard,
     AuthGuard,
     DeveloperGuard,

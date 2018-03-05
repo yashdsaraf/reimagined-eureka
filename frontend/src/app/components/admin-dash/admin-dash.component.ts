@@ -20,6 +20,7 @@ import {
   Output
 } from '@angular/core'
 import {isMobile} from '../../app.component'
+import {StatsService} from '../../services/stats.service'
 
 declare const google: any
 
@@ -33,71 +34,73 @@ export class AdminDashComponent {
   @Output('heading') heading = new EventEmitter()
   isMobile: boolean
   pieSize: string
+  plugins = 0
+  users = 0
+  developers = 0
 
-  constructor() {
+  constructor(private statsService: StatsService) {
     this.isMobile = isMobile
     this.pieSize = this.isMobile ? '300px' : '600px'
   }
 
   ngAfterViewInit() {
+
+    // A workaround for google undefined error.
+    // FIXME
+    let statsService = this.statsService
     let loadCharts = () => {
-      if (google === null || google === undefined) {
-        return
-      }
-      google.charts.load('current', {packages:['corechart']})
-      google.charts.load('current', {'packages':['line']})
-      google.charts.setOnLoadCallback(this.usersChart)
-      google.charts.setOnLoadCallback(this.pieChart)
-      google.charts.setOnLoadCallback(this.pluginsChart)
+      statsService.getPluginsPerInstalls().subscribe(data => this.pieChart(data))
+      statsService.getUserPerMonth().subscribe(data => this.usersChart(data))
+      statsService.getPluginsPerMonth().subscribe(data => this.pluginsChart(data))
+
+      // Any calls to the backend or for loading any chart should be made here.
     }
+
     setTimeout(() => this.heading.emit('Dashboard'))
-    setTimeout(() => {
-      loadCharts()
-    }, 1000)
+    google.charts.load('current', {packages:['corechart']})
+    google.charts.load('current', {'packages':['line']})
+    google.charts.setOnLoadCallback(loadCharts)
+
+    this.statsService.getTotalCount().subscribe(
+      data => {
+        this.plugins = data.plugins
+        this.users = data.users
+        this.developers = data.developers
+      }
+    )
   }
 
-  pieChart() {
-    var data = google.visualization.arrayToDataTable([
-      ['Task', 'Hours per Day'],
-      ['Work',     11],
-      ['Eat',      2],
-      ['Commute',  2],
-      ['Watch TV', 2],
-      ['Sleep',    7]
-    ]);
+  pieChart(pluginInstallsData: any) {
+    for (let i = 0; i < pluginInstallsData.length; i++) {
+      pluginInstallsData[i][1] = parseInt(pluginInstallsData[i][1])
+    }
+    let data = new google.visualization.DataTable()
+    data.addColumn('string', 'Plugins')
+    data.addColumn('number', 'Installs')
+    data.addRows(pluginInstallsData)
 
     var options = {
       backgroundColor: {
         fill: 'transparent'
       },
-      title: 'My Daily Activities',
+      title: 'Installed Plugins',
       is3D: true,
+      chartArea: {width: 750}
     };
 
     var chart = new google.visualization.PieChart(document.getElementById('piechart_3d'));
     chart.draw(data, options);
   }
 
-  usersChart() {
+  usersChart(totalUsers: any) {
+    for (let i = 0; i < totalUsers.length; i++) {
+      totalUsers[i][1] = parseInt(totalUsers[i][1])
+    }
     var data = new google.visualization.DataTable();
-    data.addColumn('date', 'Months');
+    data.addColumn('string', 'Months');
     data.addColumn('number', 'Users');
 
-    data.addRows([
-      [new Date(2014, 0), 6.3],
-      [new Date(2014, 1), 6.2],
-      [new Date(2014, 2), 7.6],
-      [new Date(2014, 3), 12.9],
-      [new Date(2014, 4), 18.3],
-      [new Date(2014, 5), 22.6],
-      [new Date(2014, 6), 25.6],
-      [new Date(2014, 7), 27.9],
-      [new Date(2014, 8), 29.2],
-      [new Date(2014, 9), 40.9],
-      [new Date(2014, 10), 61.0],
-      [new Date(2014, 11), 75.5]
-    ])
-
+    data.addRows(totalUsers)
 
     var options = {
       backgroundColor: {
@@ -124,27 +127,15 @@ export class AdminDashComponent {
     chart.draw(data, google.charts.Line.convertOptions(options))
   }
 
-
-  pluginsChart() {
+  pluginsChart(totalPlugins: any) {
+    for (let i = 0; i < totalPlugins.length; i++) {
+      totalPlugins[i][1] = parseInt(totalPlugins[i][1])
+    }
     var data = new google.visualization.DataTable()
-    data.addColumn('date', 'Months')
+    data.addColumn('string', 'Months')
     data.addColumn('number', 'Plugins')
 
-    data.addRows([
-      [new Date(2014, 0), 6.3],
-      [new Date(2014, 1), 6.2],
-      [new Date(2014, 2), 7.6],
-      [new Date(2014, 3), 12.9],
-      [new Date(2014, 4), 18.3],
-      [new Date(2014, 5), 22.6],
-      [new Date(2014, 6), 25.6],
-      [new Date(2014, 7), 27.9],
-      [new Date(2014, 8), 29.2],
-      [new Date(2014, 9), 40.9],
-      [new Date(2014, 10), 61.0],
-      [new Date(2014, 11), 75.5]
-    ])
-
+    data.addRows(totalPlugins)
 
     var options = {
       backgroundColor: {
