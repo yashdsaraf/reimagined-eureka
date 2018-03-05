@@ -84,9 +84,14 @@ public class CoreService {
     if (plugin == null) {
       throw new Exception("No such plugin found");
     }
-    Path tmpPath = basePath == null ? Files.createTempDirectory(projectName) : basePath;
+    Path tmpPath = Files.createTempDirectory(projectName);
     Path path = new File(tmpPath.toFile(), projectName).toPath();
-    Files.createDirectory(path);
+    if (basePath != null) {
+      FileUtils.moveDirectory(basePath.toFile(), path.toFile());
+      FileUtils.deleteDirectory(basePath.toFile());
+    } else {
+      Files.createDirectory(path);
+    }
     AppUser user = appUserRepository.findByUsername(userName);
     UUID uuid = UUID.randomUUID();
     Project project = new Project();
@@ -116,7 +121,10 @@ public class CoreService {
                  = new TarArchiveOutputStream(
             new GzipCompressorOutputStream(
                     new FileOutputStream(file)))) {
-      addToArchive(stream, docker.getTmpDir(), "");
+      File projectDir = new File(docker.getTmpDir());
+      for (File item : Objects.requireNonNull(projectDir.listFiles())) {
+        addToArchive(stream, item.getAbsolutePath(), "");
+      }
     }
     String url = new AmazonAWSUtils(ACCESS_KEY, SECRET_KEY)
             .uploadFile(file, BUCKET, file.getName());
@@ -155,7 +163,7 @@ public class CoreService {
     }
   }
 
-  public String open(String jti, Path projectDir, String userName) throws IOException, ArchiveException, Exception {
+  public String open(String jti, Path projectDir, String userName) throws Exception {
     Optional<Path> first = Files.find(projectDir, 2, (path, basicFileAttributes) -> path.getFileName()
             .toString()
             .equalsIgnoreCase(".plugncode"))
@@ -166,7 +174,8 @@ public class CoreService {
     File settingsFile = first.get().toFile();
     byte[] content = Files.readAllBytes(settingsFile.toPath());
     ProjectSettings settings = mapper.readValue(content, ProjectSettings.class);
-    Project project = projectRepository.findByUuid(settings.getUuid());
+    AppUser user = appUserRepository.findByUsername(userName);
+    Project project = projectRepository.findByUuidAndUserId(settings.getUuid(), user);
     if (project == null) {
       throw new Exception("No such project found in database");
     }
@@ -176,8 +185,8 @@ public class CoreService {
     }
     Path tmpPath = Files.createTempDirectory(project.getName());
     Path path = new File(tmpPath.toFile(), project.getName()).toPath();
-    AppUser user = appUserRepository.findByUsername(userName);
-    Files.createDirectory(path);
+    FileUtils.moveDirectory(projectDir.toFile(), path.toFile());
+    FileUtils.deleteDirectory(projectDir.toFile());
     Docker docker = dockerService.build(jti, path, plugin, project, user);
     return mapper.readValue(docker.getSettings(), PluginFile.class).getMode();
   }
@@ -224,6 +233,8 @@ public class CoreService {
         }
       }
     }
+    Files.deleteIfExists(outputTar.toPath());
+    Files.deleteIfExists(inputFile.toPath());
     return tmpDir.toAbsolutePath();
   }
 

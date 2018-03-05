@@ -86,7 +86,7 @@ public class ProjectController {
       return ResponseEntity.ok(output);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -99,7 +99,7 @@ public class ProjectController {
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -112,7 +112,7 @@ public class ProjectController {
       return ResponseEntity.ok(coreService.save(dockerService.check(jti)));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -130,7 +130,7 @@ public class ProjectController {
       return ResponseEntity.ok((coreService.open(jti, projectDir, principal.getName())));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -148,7 +148,7 @@ public class ProjectController {
       return ResponseEntity.ok((coreService.open(jti, projectDir, principal.getName())));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -170,7 +170,7 @@ public class ProjectController {
       return ResponseEntity.ok(mode);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -192,7 +192,7 @@ public class ProjectController {
       return ResponseEntity.ok(mode);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

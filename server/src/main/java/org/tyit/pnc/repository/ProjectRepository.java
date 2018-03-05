@@ -16,10 +16,11 @@
 package org.tyit.pnc.repository;
 
 import org.springframework.data.repository.CrudRepository;
+import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.Project;
 
 public interface ProjectRepository extends CrudRepository<Project, Long> {
 
-  public Project findByUuid(String uuid);
+  Project findByUuidAndUserId(String uuid, AppUser userId);
 
 }

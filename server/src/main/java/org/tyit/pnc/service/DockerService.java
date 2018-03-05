@@ -16,6 +16,7 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.*;
@@ -93,7 +94,7 @@ public class DockerService {
                     .getBytes(StandardCharsets.UTF_8),
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
     File entryPoint = new File(tempDir.toFile(), settings.getEntrypoint());
-    Files.createFile(entryPoint.toPath());
+    FileUtils.touch(entryPoint);
     dockerUtils.writeStarterScript(tempDir, pluginFile, settings);
     Docker docker = new Docker();
     docker.setSettings(pluginSettings);
