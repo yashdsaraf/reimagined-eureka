@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ * Copyright 2018 Pivotal Software, Inc..
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,41 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.tyit.pnc.controller;
 
-@import base
-
-#container
-  flex-direction: column
-  display: flex
-  padding: 1em
-  align-items: center
-  font-family: $sans-serif
-  background-color: #f8f9fa
-
-  *
-    font-weight: 500
-
-  .divider
-    color: grey
-
-  label
-    font-family: $sans-serif
-
-  #clear
-    color: white
-    width: 8em
-
-  .icon,
-  .label
-    user-select: none
-
-  #user-details
-    padding: 1em
-
-  @media only screen and (min-width: 769px)
-
-    #main
-      max-width: 40vw !important
-
-    // .icon.input
-    //   width: 30vw
+/**
+ *
+ * @author Home
+ */
+class ProfileService {
+    
+}

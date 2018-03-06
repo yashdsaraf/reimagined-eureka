@@ -18,6 +18,7 @@ import {Component, ViewChild, ElementRef, OnInit} from '@angular/core'
 import {User} from '../../models/user'
 import {isMobile} from '../../app.component'
 import {NgForm} from '@angular/forms'
+import {ProfileService} from '../../services/profile.service'
 
 @Component({
   selector: 'app-profile',
@@ -66,7 +67,7 @@ export class ProfileComponent {
   getIdenticonObject() {
     let obj = {
       value: this.user.name,
-      size: 150
+      size: 120
     }
     return JSON.stringify(obj)
   }
