@@ -58,6 +58,7 @@ import {ProgressBarModalComponent} from './components/progress-bar-modal/progres
 import {ProjectSettingsComponent} from './components/project-settings/project-settings.component'
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
+import {VideoModalComponent} from './components/video-modal/video-modal.component'
 //SERVICES
 import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
@@ -128,6 +129,7 @@ export function init(startupService: StartupService) {
     ProjectSettingsComponent,
     RegisterComponent,
     ToolbarComponent,
+    VideoModalComponent,
     IdenticonDirective,
     InitCapPipe,
     SanitizeHtmlPipe
@@ -174,7 +176,10 @@ export function init(startupService: StartupService) {
     ProjectGuard,
     UserGuard
   ],
-  entryComponents: [ProgressBarModalComponent],
+  entryComponents: [
+    ProgressBarModalComponent,
+    VideoModalComponent
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
