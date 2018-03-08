@@ -33,7 +33,7 @@ declare const $: any
   selector: 'app-video-modal',
   template: `
   <div id="container">
-    <iframe [src]="url" frameborder="0" allow="autoplay; encrypted-media" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+    <iframe [src]="url" frameborder="0" allow="autoplay; encrypted-media" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" allowfullscreen="allowfullscreen"></iframe>
   </div>
   `,
   styleUrls: ['./video-modal.component.sass']

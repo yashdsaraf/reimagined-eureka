@@ -122,6 +122,13 @@ export class HomeComponent {
       computer: true,
       persist: 'session'
     })
+    setTimeout(() => {
+      if (this.isNotLoggedIn()) {
+        this.suiModalService.open(new VideoModal('https://www.youtube.com/embed/Skk-fNV-D5M?rel=0'))
+      } else {
+        this.suiModalService.open(new VideoModal('https://www.youtube.com/embed/4vW2hpY_7Aw?rel=0'))
+      }
+    })
   }
 
   openOnlineProject() {
@@ -222,14 +229,6 @@ export class HomeComponent {
 
   onFileChange(event: any) {
     this.openFile = event.target.files[0]
-  }
-
-  ngAfterViewInit() {
-    setTimeout(() => {
-      if (this.isNotLoggedIn()) {
-        this.suiModalService.open(new VideoModal('https://www.youtube.com/embed/Skk-fNV-D5M?rel=0'))
-      }
-    })
   }
 
   createImageFromBlob(image: Blob) {
