@@ -14,7 +14,13 @@
  * limitations under the License.
  */
 
-import {Component, OnInit} from '@angular/core'
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output
+} from '@angular/core'
 import {ActivatedRoute, Router} from '@angular/router'
 
 import {CoreService} from '../../services/core.service'
@@ -47,6 +53,8 @@ export class MarketPlaceComponent implements OnInit {
     entrypoint: ''
   }
   createProjectModal: boolean
+  @Input('isImport') isImport: boolean
+  @Output('importDetails') importDetails = new EventEmitter<string[]>()
 
   constructor(
     private route: ActivatedRoute,
@@ -116,6 +124,11 @@ export class MarketPlaceComponent implements OnInit {
 
   createProject() {
     this.createProjectModal = false
+    if (this.isImport) {
+      let _importDetails = [this.projectDetails.entrypoint, this.projectDetails.plugin, this.projectDetails.project]
+      this.importDetails.emit(_importDetails)
+      return
+    }
     this.progressBarService.show(null, "Creating project")
     this.coreService.create(
       this.projectDetails.plugin,

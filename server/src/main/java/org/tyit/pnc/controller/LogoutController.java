@@ -15,28 +15,27 @@
  */
 package org.tyit.pnc.controller;
 
-import java.security.Principal;
-import java.util.HashMap;
-import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
 @RequestMapping("/destroy")
 public class LogoutController {
 
+  @Autowired
+  private ProjectController projectController;
+
   @GetMapping
-  public Map<String, String> destroy(Principal principal) {
-//    TODO: Destroy docker session
-    Map<String, String> map = new HashMap<>();
-//    map.put("message", "2");
-//    map.put("error", "1");
-    return map;
+  public ResponseEntity<String> destroy(HttpServletRequest request) {
+    return projectController.deleteProjectFromSession(request);
   }
 
 }

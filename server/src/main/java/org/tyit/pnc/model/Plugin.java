@@ -16,30 +16,15 @@
 package org.tyit.pnc.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.Lob;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Entity
@@ -83,8 +68,8 @@ public class Plugin implements Serializable {
   @Temporal(TemporalType.TIMESTAMP)
   private Date updatedOn;
   @JoinTable(name = "USER_PLUGIN", joinColumns = {
-    @JoinColumn(name = "PLUGIN_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
-    @JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
+          @JoinColumn(name = "PLUGIN_ID", referencedColumnName = "ID")}, inverseJoinColumns = {
+          @JoinColumn(name = "USER_ID", referencedColumnName = "ID")})
   @ManyToMany
   private Collection<AppUser> appUserCollection;
   @JoinColumn(name = "ADMIN_ID", referencedColumnName = "ID")
@@ -93,10 +78,6 @@ public class Plugin implements Serializable {
   @JoinColumn(name = "DEVELOPER_ID", referencedColumnName = "ID")
   @ManyToOne(optional = false)
   private Developer developerId;
-
-  public enum Status {
-    PEN, APP
-  }
 
   public Plugin() {
   }
@@ -217,6 +198,10 @@ public class Plugin implements Serializable {
   @Override
   public String toString() {
     return "org.tyit.pnc.model.Plugin[ id=" + id + " ]";
+  }
+
+  public enum Status {
+    PEN, APP
   }
 
 }

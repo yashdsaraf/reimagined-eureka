@@ -60,6 +60,7 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
 import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
+import {ConfigService} from './services/config.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
 import {CoreService} from './services/core.service'
@@ -141,6 +142,7 @@ export function init(startupService: StartupService) {
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     AdminService,
+    ConfigService,
     ContactsService,
     CookieService,
     CoreService,

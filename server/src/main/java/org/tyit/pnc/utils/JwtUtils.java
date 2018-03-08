@@ -17,11 +17,11 @@ package org.tyit.pnc.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.IOException;
 import java.util.Base64;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 public final class JwtUtils {

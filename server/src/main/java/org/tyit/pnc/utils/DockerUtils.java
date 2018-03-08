@@ -15,29 +15,23 @@
  */
 package org.tyit.pnc.utils;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
-import java.util.Arrays;
-import java.util.StringJoiner;
-import java.util.concurrent.ThreadLocalRandom;
-
-import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FileDeleteStrategy;
 import org.apache.commons.io.FilenameUtils;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.model.PluginFile;
 import org.tyit.pnc.model.ProjectSettings;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.Arrays;
+import java.util.StringJoiner;
+import java.util.concurrent.ThreadLocalRandom;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 public class DockerUtils {
@@ -61,11 +55,11 @@ public class DockerUtils {
   public long buildDockerImage(Path tempDir) throws IOException, InterruptedException, Exception {
     long imageId = ThreadLocalRandom.current().nextLong(100000000, 999999999); //Generates a 64 bit random number
     String[] commands = {
-      "docker",
-      "build",
-      "-t",
-      String.valueOf(imageId),
-      "."
+            "docker",
+            "build",
+            "-t",
+            String.valueOf(imageId),
+            "."
     };
     Process process = Runtime.getRuntime().exec(commands, envVars, tempDir.toFile());
     System.out.println(Arrays.toString(commands));
@@ -106,12 +100,12 @@ public class DockerUtils {
   public Output runDockerImage(Docker docker) throws IOException, Exception {
     String mountDir = GeneralUtils.getInstance().getUnixPath(docker.getTmpDir());
     String[] commands = {
-      "docker",
-      "run",
-      "--rm",
-      "-v",
-      mountDir + ":/usr/src/app",
-      String.valueOf(docker.getImageId())
+            "docker",
+            "run",
+            "--rm",
+            "-v",
+            mountDir + ":/usr/src/app",
+            String.valueOf(docker.getImageId())
     };
     Process process = Runtime.getRuntime().exec(commands, envVars, new File(docker.getTmpDir()));
     System.out.println(Arrays.toString(commands));
@@ -122,14 +116,24 @@ public class DockerUtils {
     return output;
   }
 
-  public void deleteDockerImage(Docker docker) throws Exception {
+  public void deleteDockerImage(Docker docker) throws IOException, Exception {
     File tmpDir = new File(docker.getTmpDir());
-    FileUtils.deleteDirectory(tmpDir);
+    new Thread(() -> {
+      while (tmpDir.exists()) {
+        try {
+          Thread.sleep(15000);
+          FileDeleteStrategy.FORCE.delete(tmpDir);
+        } catch (IOException | InterruptedException ex) {
+          continue;
+        }
+        break;
+      }
+    }).start();
     String[] commands = {
-      "docker",
-      "rmi",
-      "-f",
-      String.valueOf(docker.getImageId())
+            "docker",
+            "rmi",
+            "-f",
+            String.valueOf(docker.getImageId())
     };
     Process process = Runtime.getRuntime().exec(commands, envVars);
     System.out.println(Arrays.toString(commands));

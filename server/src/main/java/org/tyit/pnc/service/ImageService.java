@@ -15,6 +15,10 @@
  */
 package org.tyit.pnc.service;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -23,12 +27,8 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.Map;
 import java.util.TreeMap;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service
@@ -78,7 +78,7 @@ public class ImageService {
 
   public Map<String, String> loadPlugins() throws IOException {
     File[] images = getResource("images/plugins").getFile().listFiles();
-    Map imageMap = new TreeMap();
+    Map<String, String> imageMap = new TreeMap<>();
     StringBuilder stringBuilder;
     for (File image : images) {
       stringBuilder = new StringBuilder();

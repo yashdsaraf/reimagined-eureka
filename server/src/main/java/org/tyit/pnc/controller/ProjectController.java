@@ -15,29 +15,26 @@
  */
 package org.tyit.pnc.controller;
 
-import java.security.Principal;
-import java.util.Map;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.tyit.pnc.model.Docker;
 import org.tyit.pnc.model.Output;
 import org.tyit.pnc.service.CoreService;
 import org.tyit.pnc.service.DockerService;
 import org.tyit.pnc.utils.JwtUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import java.nio.file.Path;
+import java.security.Principal;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
@@ -59,17 +56,16 @@ public class ProjectController {
       return ResponseEntity.ok(docker.getPluginId().getName());
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
   @GetMapping("/create")
-  public ResponseEntity<String> quickSetup(@RequestParam("plugin") String lang,
-          @RequestParam("project") String projectName,
-          @RequestParam("entrypoint") String entrypoint,
-          Principal principal,
-          HttpServletRequest request,
-          Authentication authentication) {
+  public ResponseEntity<String> createProject(@RequestParam("plugin") String lang,
+                                              @RequestParam("project") String projectName,
+                                              @RequestParam("entrypoint") String entrypoint,
+                                              Principal principal,
+                                              HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
@@ -77,7 +73,7 @@ public class ProjectController {
       return ResponseEntity.ok(mode);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -90,11 +86,11 @@ public class ProjectController {
       return ResponseEntity.ok(output);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
-  @DeleteMapping("/delete")
+  @DeleteMapping("/close")
   public ResponseEntity<String> deleteProjectFromSession(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
@@ -103,7 +99,100 @@ public class ProjectController {
       return ResponseEntity.ok().build();
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return ResponseEntity.badRequest().build();
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @GetMapping("/save")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+  public ResponseEntity<Map<String, String>> saveProject(HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      return ResponseEntity.ok(coreService.save(dockerService.check(jti)));
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PostMapping("/open/file")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+  public ResponseEntity<String> openProject(
+          HttpServletRequest request,
+          @RequestParam("file") MultipartFile file,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Path projectDir = coreService.validateAndExtractFromFile(jti, file);
+      return ResponseEntity.ok((coreService.open(jti, projectDir, principal.getName())));
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PostMapping("/open/link")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+  public ResponseEntity<String> openProject(
+          HttpServletRequest request,
+          @RequestParam("link") String link,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Path projectDir = coreService.validateAndExtractFromLink(jti, link);
+      return ResponseEntity.ok((coreService.open(jti, projectDir, principal.getName())));
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PostMapping("/import/link")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+  public ResponseEntity<String> importProject(
+          HttpServletRequest request,
+          @RequestParam("link") String link,
+          @RequestParam("plugin") String lang,
+          @RequestParam("project") String projectName,
+          @RequestParam("entrypoint") String entrypoint,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Path projectDir = coreService.validateAndExtractFromLink(jti, link);
+      String mode = coreService.createProjectFromExistingSources(jti, projectDir, lang, projectName, entrypoint, principal.getName());
+      return ResponseEntity.ok(mode);
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PostMapping("/import/file")
+  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+  public ResponseEntity<String> importProject(
+          HttpServletRequest request,
+          @RequestParam("file") MultipartFile file,
+          @RequestParam("plugin") String lang,
+          @RequestParam("project") String projectName,
+          @RequestParam("entrypoint") String entrypoint,
+          Principal principal
+  ) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      Path projectDir = coreService.validateAndExtractFromFile(jti, file);
+      String mode = coreService.createProjectFromExistingSources(jti, projectDir, lang, projectName, entrypoint, principal.getName());
+      return ResponseEntity.ok(mode);
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

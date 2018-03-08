@@ -17,10 +17,15 @@
 import {Component} from '@angular/core'
 import {Router} from '@angular/router'
 
+import {FlashMessagesService} from 'angular2-flash-messages'
+
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
+import {CoreService} from '../../services/core.service'
 import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
+import {KLOUDLESS_APP_ID} from '../../utils/application'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-home',
@@ -72,10 +77,20 @@ export class HomeComponent {
     email: '',
     phone: ''
   }
+  explorer: any
+  openProjectModal: boolean
+  offlineOpenModal: boolean
+  importMarketPlaceModal: boolean
+  currentOperation: string = 'open'
+  openFile: File
+  openLink: string
+  _importDetails: string[] = []
 
   constructor(
     private authService: AuthService,
     private contactsService: ContactsService,
+    private coreService: CoreService,
+    private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
     private router: Router
   ) {
@@ -93,17 +108,119 @@ export class HomeComponent {
     )
     this.contactsService.getContacts().
       subscribe((data: Object) => this.contacts = data)
+    this.openProjectModal = false
+    this.offlineOpenModal = false
+  }
+
+  ngAfterViewInit() {
+    let _window: any = window
+    this.explorer = _window.Kloudless.explorer({
+      app_id: KLOUDLESS_APP_ID,
+      computer: true,
+      persist: 'session'
+    })
+  }
+
+  openOnlineProject() {
+    this.openProjectModal = false
+    this.explorer.choose({
+      types: ['tgz', 'tar.gz']
+    })
+    this.explorer.on('success', files => {
+      if (this.currentOperation == 'import') {
+        this.importMarketPlaceModal = true
+        this.currentOperation = 'importOnline'
+        this.openLink = files[0].link
+        return
+      }
+      this.coreService.openFromLink(files[0].link).subscribe(
+        data => this.router.navigate(['/index', {mode: data}]),
+        err => {
+          this.errorHandler(err)
+        }
+      )
+    })
+  }
+
+  openOfflineModal() {
+    this.openProjectModal = false
+    this.openFile = null
+    this.offlineOpenModal = true
+  }
+
+  openOfflineProject() {
+    this.offlineOpenModal = false
+    if (this.currentOperation == 'import') {
+      this.importMarketPlaceModal = true
+      this.currentOperation = 'importOffline'
+      return
+    }
+    this.coreService.openFromFile(this.openFile).subscribe(
+      data => this.router.navigate(['/index', {mode: data}]),
+      err => {
+        this.errorHandler(err)
+      }
+    )
+  }
+
+  importProject() {
+    let [entrypoint, plugin, project] = this.importDetails
+    switch (this.currentOperation) {
+      case 'importOffline':
+        this.coreService.importFromFile(this.openFile, plugin, project, entrypoint).subscribe(
+          data => this.router.navigate(['/index', {mode: data}]),
+          err => {
+            this.errorHandler(err)
+          }
+        )
+        break
+      case 'importOnline':
+        this.coreService.importFromLink(this.openLink, plugin, project, entrypoint).subscribe(
+          data => this.router.navigate(['/index', {mode: data}]),
+          err => {
+            this.errorHandler(err)
+          }
+        )
+        break
+    }
+  }
+
+  isProjectInSession(): Promise<any> {
+    return new Promise<any>((resolve, reject) => {
+      this.coreService.check().subscribe(
+        data => {
+          this.flashMessagesService.show('A project already exists in the session!', {
+            cssClass: 'ui error message', timeout: 4000
+          })
+          reject()
+        },
+        err => {
+          resolve()
+        }
+      )
+    })
+  }
+
+  onFileChange(event: any) {
+    this.openFile = event.target.files[0]
   }
 
   createImageFromBlob(image: Blob) {
     let reader = new FileReader()
     reader.addEventListener("load", () => {
-       this.image = `url(${reader.result})`
+      this.image = `url(${reader.result})`
     }, false)
 
     if (image) {
-       reader.readAsDataURL(image)
+      reader.readAsDataURL(image)
     }
+  }
+
+  showOpenProjectModal(operation: string) {
+    this.isProjectInSession().then(() => {
+      this.openProjectModal = true
+      this.currentOperation = operation
+    }).catch(() => {})
   }
 
   isNotLoggedIn(): boolean {
@@ -113,6 +230,22 @@ export class HomeComponent {
   dataUri(env: string) {
     let uri = `<img src='data:image/svg+xml;utf8,${encodeURIComponent(this.environments[env])}' />`
     return uri
+  }
+
+  errorHandler(err) {
+    this.flashMessagesService.show(decodeError(err), {
+      cssClass: 'ui error message', timeout: 4000
+    })
+  }
+
+  get importDetails(): string[] {
+    return this._importDetails
+  }
+
+  set importDetails(value: string[]) {
+    this._importDetails = value
+    this.importMarketPlaceModal = false
+    this.importProject()
   }
 
 }

@@ -17,11 +17,14 @@
 import {
   ChangeDetectorRef,
   Component,
+  ElementRef,
   OnChanges,
   OnDestroy,
   OnInit,
   QueryList,
-  ViewChildren
+  ViewChild,
+  ViewChildren,
+  Renderer2
 } from '@angular/core'
 import {
   animate,
@@ -30,7 +33,7 @@ import {
   transition,
   trigger
 } from '@angular/animations'
-import {ActivatedRoute} from '@angular/router'
+import {ActivatedRoute, Router} from '@angular/router'
 import {Subscription} from 'rxjs/Subscription'
 
 // CODEMIRROR Modes
@@ -157,6 +160,7 @@ import 'codemirror/mode/z80/z80'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
+import {ConfigService} from '../../services/config.service'
 import {CoreService} from '../../services/core.service'
 import {EditorConfigService} from '../../services/editor-config.service'
 import {ProgressBarService} from '../../services/progress-bar.service'
@@ -166,6 +170,8 @@ import {
 } from '../../services/index.service'
 import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
+import {KLOUDLESS_APP_ID} from '../../utils/application'
+import {decodeError} from '../../utils/general-utils'
 
 declare const $: any
 
@@ -194,6 +200,7 @@ declare const $: any
 export class IndexComponent implements OnChanges, OnDestroy, OnInit {
 
   @ViewChildren('editor') editorView: QueryList<any>
+  @ViewChild('downloadLink') downloadLink: ElementRef
   isNavOpen = true
   isMobile: boolean
   editorConfig: Object
@@ -206,15 +213,22 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   indexSubscription: any
   openFile: string
   editorConfigSubscription: Subscription
+  editorFontSize: number
+  explorer: any
+  saveAsModal: boolean
+  dontAskAgain: boolean
 
   constructor(
     private route: ActivatedRoute,
+    private configService: ConfigService,
     private coreService: CoreService,
     private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
     private progressBarService: ProgressBarService,
     private indexService: IndexService,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private renderer: Renderer2,
+    private router: Router
   ) {
     this.isMobile = isMobile
     this.indexSubscription = indexService.emitter.subscribe(openFiles => {
@@ -222,6 +236,9 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       this.cdr.detectChanges()
     })
     this.openFile = route.snapshot.params.openfile
+    this.editorFontSize = 1
+    this.saveAsModal = false
+    this.dontAskAgain = true
   }
 
   ngOnChanges() {
@@ -248,6 +265,12 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       })
     this.editorConfigService.setOption('mode', this.route.snapshot.params.mode)
     this.refreshAfter(80)
+    let _window: any = window
+    this.explorer = _window.Kloudless.explorer({
+      app_id: KLOUDLESS_APP_ID,
+      computer: true,
+      persist: 'session'
+    })
   }
 
   removeTab(name: string) {
@@ -272,24 +295,104 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   executeTool(tool: string) {
     switch (tool) {
       case 'run':
-        this.output = {stderr: '', stdout: ''}
-        this.progressBarService.show(null, "Executing the project")
-        this.coreService.runProject(this.openFiles).subscribe(
-          (data: Output) => {
-            this.output = data
-            this.progressBarService.dismiss()
-            $('#file-list').jstree(true).refresh()
-          },
-          err => {
-            this.progressBarService.dismiss()
-            $('#file-list').jstree(true).refresh()
-            this.flashMessagesService.show(err, {
-              cssClass: 'ui error message', timeout: 4000
-            })
-          }
-        )
+        this.runProject()
+        break
+      case 'zoom-in':
+        this.adjustEditorZoom(.3)
+        break
+      case 'zoom-out':
+        this.adjustEditorZoom(.3, true)
+        break
+      case 'save':
+        this.saveProject()
+        break
+      case 'close':
+        this.closeProject()
         break
     }
+  }
+
+  adjustEditorZoom(value: number, isNegative = false) {
+    if (!isNegative) {
+      if (this.editorFontSize < 10) {
+        this.editorFontSize += .3
+      }
+    } else {
+      if (this.editorFontSize > .1) {
+        this.editorFontSize -= .3
+      }
+    }
+    this.refreshAfter(50)
+  }
+
+  runProject() {
+    this.output = {stderr: '', stdout: ''}
+    this.progressBarService.show(null, "Executing the project")
+    this.coreService.runProject(this.openFiles).subscribe(
+      (data: Output) => {
+        this.output = data
+        this.progressBarService.dismiss()
+        $('#file-list').jstree(true).refresh()
+      },
+      err => {
+        this.progressBarService.dismiss()
+        $('#file-list').jstree(true).refresh()
+        this.errorHandler(err)
+      }
+    )
+  }
+
+  saveProject() {
+    if (this.configService.getSaveAs() == null) {
+      this.saveAsModal = true
+      return
+    }
+    let saveAs = this.configService.getSaveAs(true)
+    if (!this.dontAskAgain) {
+      this.configService.deleteSaveAs()
+    }
+    this.progressBarService.show(null, 'Saving project')
+    this.coreService.save().subscribe(
+      data => {
+        this.progressBarService.dismiss()
+        if (saveAs == 'offline') {
+          this.renderer.setAttribute(this.downloadLink.nativeElement, 'href', data.url)
+          this.downloadLink.nativeElement.click()
+          return
+        }
+        let files = [data]
+        this.explorer.save(files)
+      },
+      err => {
+        this.progressBarService.dismiss()
+        this.errorHandler(err)
+      }
+    )
+  }
+
+  closeProject() {
+    this.coreService.close().subscribe(
+      data => {
+        this.router.navigate(['/home'])
+        this.flashMessagesService.show('Project closed successfully. Get started with a new one!', {
+          cssClass: 'ui success message',
+          timeout: 4000
+        })
+      },
+      err => this.errorHandler(err)
+    )
+  }
+
+  closeSaveAsModal(value: string) {
+    this.saveAsModal = false
+    this.configService.setSaveAs(value)
+    this.saveProject()
+  }
+
+  errorHandler(err) {
+    this.flashMessagesService.show(decodeError(err), {
+      cssClass: 'ui error message', timeout: 4000
+    })
   }
 
 }

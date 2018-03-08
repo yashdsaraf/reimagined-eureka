@@ -9,3 +9,9 @@ user:
     password: #SENDER EMAIL PASSWORD
     server: #SMTP SERVER ADDRESS
     port: #SMTP SERVER PORT
+amazon:
+  aws:
+    s3:
+      bucket: #S3 BUCKET NAME
+      access_key: #AWS ACCESS KEY
+      secret_key: #AWS SECRET KEY

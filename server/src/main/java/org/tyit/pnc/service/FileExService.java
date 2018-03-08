@@ -19,6 +19,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.springframework.stereotype.Service;
+
 import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -27,12 +31,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.FilenameUtils;
-import org.springframework.stereotype.Service;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @Service
@@ -43,7 +43,7 @@ public class FileExService {
   public String getFileTree(String tmpDirStr) throws IOException, Exception {
     Path tmpDir = Paths.get(tmpDirStr);
     if (tmpDir == null) {
-      throw new Exception("No project found in tmpDirStr");
+      throw new Exception("No project found in " + tmpDirStr);
     }
     ArrayNode files = factory.arrayNode().add(traverseTreeToJson(tmpDir, true));
     return new ObjectMapper().writeValueAsString(files);
@@ -71,6 +71,9 @@ public class FileExService {
           Logger.getLogger(FileExService.class.getName()).log(Level.SEVERE, null, ex);
         }
       } else {
+        if (isRoot && file.get("text").textValue().equalsIgnoreCase("start.sh")) {
+          return;
+        }
         file.set("type", factory.textNode("file"));
         files.add(file);
       }

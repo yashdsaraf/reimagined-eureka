@@ -27,8 +27,11 @@
       </div>
       <ng-template #loggedIn>
         <div id="logged-in">
-          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui compact secondary inverted button" [ngClass]="{small: isMobile}"
-            (click)="indexService.clearAll()" routerLink="/index">Go to editor</div>
+          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui compact secondary inverted icon button" [ngClass]="{small: isMobile}"
+            (click)="indexService.clearAll()" routerLink="/index">
+            <i class="icon code"></i>
+            Go to editor
+          </div>
           <div id="username">Hi, {{name}}</div>
           <div class="ui dropdown" suiDropdown>
             <div id="profile" [appIdenticon]="getIdenticonObject()">
@@ -63,9 +66,12 @@
                 </div>
               </ng-container>
               <!-- Admin -->
-              <div class="item" routerLink="/profile">
-                Profile
-              </div>
+              <ng-container *ngIf="getRole() != null && getRole() != 'GUEST'">
+                <div class="item" routerLink="/profile">
+                  Profile
+                </div>
+                <div class="divider"></div>
+              </ng-container>
               <!-- profile -->
               <ng-container *ngIf="getRole() == 'USER'">
                 <div class="divider"></div>
@@ -74,7 +80,6 @@
                 </div>
               </ng-container>
               <!-- dev-access -->
-              <div class="divider"></div>
               <div id="logout" class="item" (click)="logout()">
                 <i class="icon power"></i>
                 Logout

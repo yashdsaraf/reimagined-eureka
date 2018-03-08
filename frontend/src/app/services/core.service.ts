@@ -45,12 +45,48 @@ export class CoreService {
     return this.http.get('/api/project/create', {params, responseType: 'text'})
   }
 
-  public delete(): Observable<any> {
-    return this.http.delete('/api/project/delete', {responseType: 'text'})
+  public close(): Observable<any> {
+    return this.http.delete('/api/project/close', {responseType: 'text'})
   }
 
   public check(): Observable<any> {
     return this.http.get('/api/project', {responseType: 'text'})
+  }
+
+  public save(): Observable<any> {
+    return this.http.get('/api/project/save')
+  }
+
+  public openFromLink(link: string): Observable<any> {
+    let formData = new FormData()
+    formData.append('link', link)
+    return this.http.post('/api/project/open/link', formData, {responseType: 'text'})
+  }
+
+  public openFromFile(file: File): Observable<any> {
+    let formData = new FormData()
+    formData.append('file', file)
+    return this.http.post('/api/project/open/file', formData, {responseType: 'text'})
+  }
+
+  public importFromLink(link: string, lang: string, projectName: string, entrypoint: string): Observable<any> {
+    let formData = this.getImportFormData(lang, projectName, entrypoint)
+    formData.append('link', link)
+    return this.http.post('/api/project/import/link', formData, {responseType: 'text'})
+  }
+
+  public importFromFile(file: File, lang: string, projectName: string, entrypoint: string): Observable<any> {
+    let formData = this.getImportFormData(lang, projectName, entrypoint)
+    formData.append('file', file)
+    return this.http.post('/api/project/import/file', formData, {responseType: 'text'})
+  }
+
+  private getImportFormData(lang: string, projectName: string, entrypoint: string): FormData {
+    let formData = new FormData()
+    formData.append('project', projectName)
+    formData.append('entrypoint', entrypoint)
+    formData.append('plugin', lang)
+    return formData
   }
 
 }
