@@ -66,9 +66,12 @@
                 </div>
               </ng-container>
               <!-- Admin -->
-              <div class="item" routerLink="/profile">
-                Profile
-              </div>
+              <ng-container *ngIf="getRole() != null && getRole() != 'GUEST'">
+                <div class="item" routerLink="/profile">
+                  Profile
+                </div>
+                <div class="divider"></div>
+              </ng-container>
               <!-- profile -->
               <ng-container *ngIf="getRole() == 'USER'">
                 <div class="divider"></div>
@@ -77,7 +80,6 @@
                 </div>
               </ng-container>
               <!-- dev-access -->
-              <div class="divider"></div>
               <div id="logout" class="item" (click)="logout()">
                 <i class="icon power"></i>
                 Logout
