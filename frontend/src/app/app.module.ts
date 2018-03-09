@@ -46,6 +46,7 @@ import {DeveloperPluginsComponent} from './components/developer-plugins/develope
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
+import {HelpComponent} from './components/help/help.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
@@ -111,6 +112,7 @@ export function init(startupService: StartupService) {
     DocsComponent,
     FileExComponent,
     HeaderComponent,
+    HelpComponent,
     HomeComponent,
     IndexComponent,
     LoginComponent,

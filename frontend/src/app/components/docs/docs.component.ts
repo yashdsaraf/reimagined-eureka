@@ -15,6 +15,10 @@
  */
 
 import {Component} from '@angular/core'
+import {Http} from '@angular/http'
+import {ActivatedRoute} from '@angular/router'
+
+import {DocItem, DOCS} from './docs-content'
 
 @Component({
   selector: 'app-docs',
@@ -23,6 +27,27 @@ import {Component} from '@angular/core'
 })
 export class DocsComponent {
 
-  constructor() { }
+  menu: DocItem[]
+  content: string
+
+  constructor(
+    private route: ActivatedRoute,
+    private http: Http
+  ) {
+    this.menu = DOCS
+    let page = route.snapshot.params['page']
+    if (page !== undefined && page !== null) {
+      page = page.split(',').join('/')
+      this.loadUrlIntoDiv('assets/docs/' + page)
+    } else {
+      this.loadUrlIntoDiv('assets/docs/index.html')
+    }
+  }
+
+  loadUrlIntoDiv(url: string) {
+    this.http.get(url).subscribe(
+      (data: any) => this.content = data._body
+    )
+  }
 
 }

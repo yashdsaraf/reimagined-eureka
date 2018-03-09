@@ -1,3 +1,88 @@
-<p>
-  about-us works!
-</p>
+<div class="container" id="container">
+  <div class="ui center aligned text container" id="main">
+    <h1 class="ui header" [ngClass]="{ huge: !isMobile }">About us</h1>
+    <p style="font-size: 1.1em;">
+      <span style="font-weight: bold;">Plug n’ Code</span> is a web application which aims to provide a pluggable and dynamic development environment with
+      a clean and easy to use and user interface.
+    </p>
+
+    <h2 class="ui horizontal divider center aligned header">
+      Why Plug n’ Code?
+    </h2>
+    <p>
+      There are many solutions out there which enable the users to run simple or slightly advanced projects online, but all of
+      them run short when it comes to these issues,
+    </p>
+
+    <div class="ui message">
+      <div class="ui header">Support for user built plugins</div>
+      <div class="ui divider"></div>
+      <p>
+        In Plug n’ Code, any user after going through a minimal authentication process, can create and publish a plugin in the marketplace
+        to add support for a specific language. This enables the users to go beyond the pre-defined capabilities of the application.
+      </p>
+    </div>
+
+    <div class="ui message">
+      <h3 class="ui center aligned header">
+        Support for complex execution environments with multiple languages
+      </h3>
+      <div class="ui divider"></div>
+      <p>
+        In Plug n’ Code the goal is to provide pre-defined environments as well as the option to tailor the execution environment
+        specific to the project’s needs.
+      </p>
+    </div>
+
+    <div class="ui message">
+      <h3 class="ui center aligned header">
+        Support for secure execution of code
+      </h3>
+      <div class="ui divider"></div>
+      <p>
+        Each build of a project in Plug n’ Code runs on a separate isolated docker instance to make sure no system specific issues
+        interfere with the job. This also ensures safety of the project data and all kinds of output or logs are directly
+        forwarded to the user’s browser window without being persisted in any kind of data storage medium.
+      </p>
+    </div>
+
+    <h2 class="ui horizontal divider center aligned header" [ngClass]="{medium: isMobile, big: !isMobile}">
+      <i class="circular users icon"></i>
+      Meet our team
+    </h2>
+    <div class="ui segment">
+      <div class="ui big very relaxed list" [ngClass]="{ horizontal: !isMobile , vertical: isMobile}">
+        <div class="item">
+          <div class="middle aligned content">
+            <h3 class="header">
+              <i>
+                Yash D. Saraf
+              </i>
+            </h3>
+          </div>
+        </div>
+        <div class="item">
+          <div class="middle aligned content">
+            <h3 class="header">
+              <i>
+                Raees R. Mulla
+              </i>
+            </h3>
+          </div>
+        </div>
+        <div class="item">
+          <div class="middle aligned content">
+            <h3 class="header">
+              <i>
+                Sachin S. Negi
+              </i>
+            </h3>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="ui divider"></div>
+  </div>
+  <!-- main -->
+</div>
+<!-- container -->

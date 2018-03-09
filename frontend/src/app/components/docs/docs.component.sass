@@ -15,3 +15,41 @@
  */
 
 @import base
+
+#container
+  display: flex
+  height: 100%
+  width: 100%
+
+  #menu
+    border: hidden
+    font-size: 1.3em
+    flex-basis: 21%
+    height: 100%
+    margin: 0
+    overflow: auto
+    padding-left: 0.5em
+    width: 100%
+
+    .divider
+      margin: 0
+
+    .item
+      font-weight: bold
+      margin: 0
+      padding: 0.3em 0
+
+      .item
+        color: grey
+        font-size: 0.8em
+
+        &:hover
+          color: blue
+
+  #target-div
+    flex-basis: 80%
+    height: 100%
+    margin: 0
+    overflow: auto
+    padding: 1em
+    width: 100%

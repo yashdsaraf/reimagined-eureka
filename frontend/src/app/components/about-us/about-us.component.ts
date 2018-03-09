@@ -15,6 +15,7 @@
  */
 
 import {Component} from '@angular/core'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-about-us',
@@ -23,6 +24,10 @@ import {Component} from '@angular/core'
 })
 export class AboutUsComponent {
 
-  constructor() {}
+  isMobile: boolean
+
+  constructor() {
+    this.isMobile = isMobile
+  }
 
 }
