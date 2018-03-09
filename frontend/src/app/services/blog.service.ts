@@ -13,14 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppAdmin;
-import org.tyit.pnc.model.AppUser;
+import {Injectable} from '@angular/core'
+import {HttpClient, HttpParams} from '@angular/common/http'
+import {Observable} from 'rxjs/Observable'
 
-public interface AppAdminRepository extends CrudRepository<AppAdmin, Long> {
+@Injectable()
+export class BlogService {
 
-  AppAdmin findByUserId(AppUser userId);
+  constructor(private http: HttpClient) {}
+
+  getSnippets(name?: string): Observable<Plugin[]> {
+    let params: HttpParams
+    if (name !== null && name !== undefined) {
+      params = new HttpParams().append('name', name)
+    } else {
+      params = new HttpParams()
+    }
+    return this.http.get<Plugin[]>('/api/blog', {params})
+  }
 
 }

@@ -15,10 +15,14 @@
  */
 package org.tyit.pnc.model;
 
+import java.io.Serializable;
+
 /**
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
-public class ProjectSettings {
+public class ProjectSettings implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private String uuid;
   private String[] runCmd;

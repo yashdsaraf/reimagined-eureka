@@ -15,13 +15,16 @@
  */
 package org.tyit.pnc.model;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
 /**
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
-public class PluginFile {
+public class PluginFile implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private String[] runCmd;
   private String dockerfile;

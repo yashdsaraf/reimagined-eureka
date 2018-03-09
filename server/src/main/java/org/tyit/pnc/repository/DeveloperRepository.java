@@ -21,6 +21,6 @@ import org.tyit.pnc.model.Developer;
 
 public interface DeveloperRepository extends CrudRepository<Developer, Long> {
 
-  public Developer findByUserId(AppUser userId);
+  Developer findByUserId(AppUser userId);
 
 }
