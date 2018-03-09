@@ -48,17 +48,13 @@ import java.util.zip.GZIPInputStream;
 @Service
 public class CoreService {
 
-  @Autowired
-  private PluginRepository pluginRepository;
+  private final PluginRepository pluginRepository;
 
-  @Autowired
-  private ProjectRepository projectRepository;
+  private final ProjectRepository projectRepository;
 
-  @Autowired
-  private AppUserRepository appUserRepository;
+  private final AppUserRepository appUserRepository;
 
-  @Autowired
-  private DockerService dockerService;
+  private final DockerService dockerService;
 
   @Value("${amazon.aws.s3.bucket}")
   private String BUCKET;
@@ -71,8 +67,13 @@ public class CoreService {
 
   private ObjectMapper mapper;
 
-  public CoreService() {
+  @Autowired
+  public CoreService(PluginRepository pluginRepository, ProjectRepository projectRepository, AppUserRepository appUserRepository, DockerService dockerService) {
     mapper = new ObjectMapper();
+    this.pluginRepository = pluginRepository;
+    this.projectRepository = projectRepository;
+    this.appUserRepository = appUserRepository;
+    this.dockerService = dockerService;
   }
 
   public String build(String token, String lang, String projectName, String entrypoint, String userName) throws Exception {

@@ -36,11 +36,15 @@ import java.util.logging.Logger;
 @RequestMapping("/plugins")
 public class PluginController {
 
-  @Autowired
-  private DockerRepository dockerRepository;
+  private final DockerRepository dockerRepository;
+
+  private final PluginService pluginService;
 
   @Autowired
-  private PluginService pluginService;
+  public PluginController(DockerRepository dockerRepository, PluginService pluginService) {
+    this.dockerRepository = dockerRepository;
+    this.pluginService = pluginService;
+  }
 
   @GetMapping
   public ResponseEntity<Iterable<Plugin>> getPlugins(@RequestParam(name = "name", required = false) String name) {

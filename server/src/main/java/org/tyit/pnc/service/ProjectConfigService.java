@@ -29,12 +29,13 @@ import java.io.IOException;
 @Service
 public class ProjectConfigService {
 
-  ObjectMapper mapper;
-  @Autowired
-  private ProjectRepository projectRepository;
+  private final ProjectRepository projectRepository;
+  private ObjectMapper mapper;
 
-  public ProjectConfigService() {
+  @Autowired
+  public ProjectConfigService(ProjectRepository projectRepository) {
     mapper = new ObjectMapper();
+    this.projectRepository = projectRepository;
   }
 
   public String getRunCommands(Docker docker) throws IOException {
@@ -54,7 +55,7 @@ public class ProjectConfigService {
     return mapper.writeValueAsString(pluginFile.getRunCmd());
   }
 
-  public void setRunCommands(Docker docker, String runcmds) throws IOException, Exception {
+  public void setRunCommands(Docker docker, String runcmds) throws Exception {
     String[] runCmdsArr = mapper.readValue(runcmds, String[].class);
     Project project = docker.getProjectId();
     ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
@@ -69,7 +70,7 @@ public class ProjectConfigService {
     return mapper.writeValueAsString(settings.getEntrypoint());
   }
 
-  public void setEntrypoint(Docker docker, String entrypoint) throws IOException, Exception {
+  public void setEntrypoint(Docker docker, String entrypoint) throws Exception {
     Project project = docker.getProjectId();
     ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
     settings.setEntrypoint(entrypoint);

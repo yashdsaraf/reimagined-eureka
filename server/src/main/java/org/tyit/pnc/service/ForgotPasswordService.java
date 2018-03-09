@@ -42,8 +42,7 @@ import java.util.logging.Logger;
 @Service
 public class ForgotPasswordService {
 
-  @Autowired
-  private AppUserRepository appUserRepository;
+  private final AppUserRepository appUserRepository;
 
   @Value("${user.mail.username}")
   private String username;
@@ -56,6 +55,11 @@ public class ForgotPasswordService {
 
   @Value("${user.mail.port}")
   private String port;
+
+  @Autowired
+  public ForgotPasswordService(AppUserRepository appUserRepository) {
+    this.appUserRepository = appUserRepository;
+  }
 
   public ResponseEntity<String> checkEmail(String email, HttpServletRequest req) {
     AppUser checkUser = appUserRepository.findByEmail(email);

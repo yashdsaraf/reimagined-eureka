@@ -27,7 +27,7 @@ public interface AppUserRepository extends CrudRepository<AppUser, Long> {
   public Iterable<AppUser> findAllByName(String name);
 
   public AppUser findByEmail(String email);
-  
+
   @Query(value = "SELECT TO_CHAR(CREATED_ON, 'Month') AS MONTH, COUNT(*) AS COUNT from APP_USER GROUP BY TO_CHAR(CREATED_ON, 'Month')", nativeQuery = true)
   public Iterable<Object[]> findCountPerMonths();
 

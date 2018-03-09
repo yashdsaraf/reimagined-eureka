@@ -35,8 +35,12 @@ import java.util.logging.Logger;
 @Service
 public class RegisterService {
 
+  private final AppUserRepository appUserRepository;
+
   @Autowired
-  private AppUserRepository appUserRepository;
+  public RegisterService(AppUserRepository appUserRepository) {
+    this.appUserRepository = appUserRepository;
+  }
 
   public ResponseEntity<String> register(AppUser user) {
     AppUser checkUser;

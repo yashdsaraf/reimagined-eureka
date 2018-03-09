@@ -36,8 +36,12 @@ import java.util.logging.Logger;
 @RequestMapping("/images")
 public class ImagesController {
 
+  private final ImageService imageService;
+
   @Autowired
-  private ImageService imageService;
+  public ImagesController(ImageService imageService) {
+    this.imageService = imageService;
+  }
 
   @GetMapping(value = "/jpg/{name}", produces = MediaType.IMAGE_JPEG_VALUE)
   public ResponseEntity<byte[]> getJpg(@PathVariable("name") String imgName) {

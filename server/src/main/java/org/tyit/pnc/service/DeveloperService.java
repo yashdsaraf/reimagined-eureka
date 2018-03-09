@@ -37,14 +37,18 @@ import java.util.Iterator;
 @Service
 public class DeveloperService {
 
-  @Autowired
-  private DeveloperRepository developerRepository;
+  private final DeveloperRepository developerRepository;
+
+  private final AppUserRepository appUserRepository;
+
+  private final PluginRepository pluginRepository;
 
   @Autowired
-  private AppUserRepository appUserRepository;
-
-  @Autowired
-  private PluginRepository pluginRepository;
+  public DeveloperService(DeveloperRepository developerRepository, AppUserRepository appUserRepository, PluginRepository pluginRepository) {
+    this.developerRepository = developerRepository;
+    this.appUserRepository = appUserRepository;
+    this.pluginRepository = pluginRepository;
+  }
 
   public void getDeveloperAccess(String publicKey, String username) throws Exception {
     RSAUtils utils = RSAUtils.getInstance();

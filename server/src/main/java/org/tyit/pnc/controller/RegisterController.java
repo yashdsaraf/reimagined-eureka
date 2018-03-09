@@ -39,8 +39,12 @@ import java.util.logging.Logger;
 @RestController
 public class RegisterController {
 
+  private final RegisterService registerService;
+
   @Autowired
-  private RegisterService registerService;
+  public RegisterController(RegisterService registerService) {
+    this.registerService = registerService;
+  }
 
   @PostMapping(path = "/register", consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
   public ResponseEntity<String> register(@RequestParam Map<String, String> params) {

@@ -27,7 +27,6 @@ import java.security.Principal;
 import java.util.Base64;
 
 /**
- *
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
 @RestController
@@ -35,8 +34,12 @@ import java.util.Base64;
 @RequestMapping("/admin")
 public class AdminController {
 
+  private final AdminService adminService;
+
   @Autowired
-  private AdminService adminService;
+  public AdminController(AdminService adminService) {
+    this.adminService = adminService;
+  }
 
   @GetMapping("/users")
   public ResponseEntity<Iterable<AppUser>> getUsers(@RequestParam(name = "name", required = false) String name) {

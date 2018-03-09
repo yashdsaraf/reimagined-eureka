@@ -32,16 +32,17 @@ import org.tyit.pnc.utils.DockerUtils;
 @Service
 public class PluginService {
 
-  ObjectMapper mapper;
-  @Autowired
-  private CoreService coreService;
-  @Autowired
-  private ProjectRepository projectRepository;
-  @Autowired
-  private PluginRepository pluginRepository;
+  private final CoreService coreService;
+  private final ProjectRepository projectRepository;
+  private final PluginRepository pluginRepository;
+  private ObjectMapper mapper;
 
-  public PluginService() {
+  @Autowired
+  public PluginService(CoreService coreService, ProjectRepository projectRepository, PluginRepository pluginRepository) {
     mapper = new ObjectMapper();
+    this.coreService = coreService;
+    this.projectRepository = projectRepository;
+    this.pluginRepository = pluginRepository;
   }
 
   public void install(Docker docker, String pluginName) throws Exception {

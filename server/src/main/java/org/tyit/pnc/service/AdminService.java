@@ -35,17 +35,21 @@ import org.tyit.pnc.repository.PluginRepository;
 @Service
 public class AdminService {
 
-  @Autowired
-  private AppUserRepository appUserRepository;
+  private final AppUserRepository appUserRepository;
+
+  private final PluginRepository pluginRepository;
+
+  private final DeveloperRepository developerRepository;
+
+  private final AppAdminRepository appAdminRepository;
 
   @Autowired
-  private PluginRepository pluginRepository;
-
-  @Autowired
-  private DeveloperRepository developerRepository;
-
-  @Autowired
-  private AppAdminRepository appAdminRepository;
+  public AdminService(AppUserRepository appUserRepository, PluginRepository pluginRepository, DeveloperRepository developerRepository, AppAdminRepository appAdminRepository) {
+    this.appUserRepository = appUserRepository;
+    this.pluginRepository = pluginRepository;
+    this.developerRepository = developerRepository;
+    this.appAdminRepository = appAdminRepository;
+  }
 
   public Iterable<AppUser> getUsers(String name) {
     Iterable<AppUser> users;
@@ -75,7 +79,7 @@ public class AdminService {
       }
       if (user.getRole() == Role.DEVELOPER) {
         Developer developer = developerRepository.findByUserId(user);
-        developer.getPluginCollection().forEach(pluginRepository::delete);
+        pluginRepository.delete(developer.getPluginCollection());
         developerRepository.delete(developer);
       }
       appUserRepository.delete(user);

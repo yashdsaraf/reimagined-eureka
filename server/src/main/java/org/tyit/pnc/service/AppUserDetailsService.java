@@ -26,7 +26,7 @@ import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -35,8 +35,12 @@ import java.util.List;
 @Service
 public class AppUserDetailsService implements UserDetailsService {
 
+  private final AppUserRepository userRepository;
+
   @Autowired
-  private AppUserRepository userRepository;
+  public AppUserDetailsService(AppUserRepository userRepository) {
+    this.userRepository = userRepository;
+  }
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -48,10 +52,9 @@ public class AppUserDetailsService implements UserDetailsService {
       throw new UsernameNotFoundException("The login ID " + username + " does not exist");
     }
 
-    authorities = Arrays.asList(
+    authorities = Collections.singletonList(
             new SimpleGrantedAuthority(user.getRole().toString()));
-    UserDetails userDetails = new User(user.getUsername(), user.getPassword(), authorities);
-    return userDetails;
+    return new User(user.getUsername(), user.getPassword(), authorities);
   }
 
 }

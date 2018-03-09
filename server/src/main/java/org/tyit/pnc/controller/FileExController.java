@@ -35,11 +35,15 @@ import java.util.logging.Logger;
 @RequestMapping("/file-ex")
 public class FileExController {
 
-  @Autowired
-  private FileExService fileExService;
+  private final FileExService fileExService;
+
+  private final DockerRepository dockerRepository;
 
   @Autowired
-  private DockerRepository dockerRepository;
+  public FileExController(FileExService fileExService, DockerRepository dockerRepository) {
+    this.fileExService = fileExService;
+    this.dockerRepository = dockerRepository;
+  }
 
   @GetMapping
   public ResponseEntity<String> getFileTree(HttpServletRequest request) {

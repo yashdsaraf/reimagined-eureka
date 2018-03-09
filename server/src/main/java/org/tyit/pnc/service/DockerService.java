@@ -40,17 +40,18 @@ import java.util.logging.Logger;
 @Service
 public class DockerService {
 
-  @Autowired
-  private DockerRepository dockerRepository;
+  private final DockerRepository dockerRepository;
 
   private DockerUtils dockerUtils;
 
-  public DockerService() {
+  @Autowired
+  public DockerService(DockerRepository dockerRepository) {
     try {
       dockerUtils = new DockerUtils();
     } catch (Exception ex) {
       Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
     }
+    this.dockerRepository = dockerRepository;
   }
 
   public Docker check(String token) throws Exception {
@@ -83,7 +84,7 @@ public class DockerService {
     return dockerUtils.runDockerImage(docker);
   }
 
-  public Docker build(String token, Path tempDir, Plugin plugin, Project project, AppUser user) throws IOException, Exception {
+  public Docker build(String token, Path tempDir, Plugin plugin, Project project, AppUser user) throws Exception {
     String pluginSettings = plugin.getPluginFile();
     String projectSettings = project.getSettings();
     ObjectMapper mapper = new ObjectMapper();

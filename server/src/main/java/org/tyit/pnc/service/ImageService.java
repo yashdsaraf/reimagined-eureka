@@ -34,11 +34,11 @@ import java.util.TreeMap;
 @Service
 public class ImageService {
 
-  public ClassPathResource getResource() {
+  private ClassPathResource getResource() {
     return new ClassPathResource("images");
   }
 
-  public ClassPathResource getResource(String path) {
+  private ClassPathResource getResource(String path) {
     return new ClassPathResource(path);
   }
 
@@ -51,7 +51,7 @@ public class ImageService {
     store(name, content, getResource());
   }
 
-  public void store(String name, String content, ClassPathResource resource) throws IOException {
+  private void store(String name, String content, ClassPathResource resource) throws IOException {
     File file = new File(resource.getFile(), name.toLowerCase() + ".svg");
     Files.write(Paths.get(file.getAbsolutePath()), content.getBytes(StandardCharsets.UTF_8), StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
@@ -65,7 +65,7 @@ public class ImageService {
     delete(name, isJpg, getResource());
   }
 
-  public void delete(String name, boolean isJpg, ClassPathResource resource) throws IOException {
+  private void delete(String name, boolean isJpg, ClassPathResource resource) throws IOException {
     String extension = isJpg ? ".jpg" : ".svg";
     File file = new File(resource.getFile(), name + extension);
     if (!file.exists()) {
@@ -80,13 +80,15 @@ public class ImageService {
     File[] images = getResource("images/plugins").getFile().listFiles();
     Map<String, String> imageMap = new TreeMap<>();
     StringBuilder stringBuilder;
-    for (File image : images) {
-      stringBuilder = new StringBuilder();
-      String key = image.getName();
-      key = key.substring(0, key.length() - 4);
-      Files.readAllLines(image.toPath()).forEach(stringBuilder::append);
-      String value = stringBuilder.toString();
-      imageMap.put(key, value);
+    if (images != null) {
+      for (File image : images) {
+        stringBuilder = new StringBuilder();
+        String key = image.getName();
+        key = key.substring(0, key.length() - 4);
+        Files.readAllLines(image.toPath()).forEach(stringBuilder::append);
+        String value = stringBuilder.toString();
+        imageMap.put(key, value);
+      }
     }
     return imageMap;
   }

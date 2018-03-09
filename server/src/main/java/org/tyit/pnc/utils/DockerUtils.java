@@ -39,7 +39,7 @@ public class DockerUtils {
   private static final String MACHINE_NAME = "plugncode";
   private String[] envVars;
 
-  public DockerUtils() throws IOException, InterruptedException, Exception {
+  public DockerUtils() throws Exception {
     String command = "docker-machine env " + MACHINE_NAME;
     Process process = Runtime.getRuntime().exec(command);
     if (process.waitFor() != 0) {
@@ -52,7 +52,7 @@ public class DockerUtils {
             .toArray(String[]::new);
   }
 
-  public long buildDockerImage(Path tempDir) throws IOException, InterruptedException, Exception {
+  public long buildDockerImage(Path tempDir) throws Exception {
     long imageId = ThreadLocalRandom.current().nextLong(100000000, 999999999); //Generates a 64 bit random number
     String[] commands = {
             "docker",
@@ -72,11 +72,6 @@ public class DockerUtils {
   /**
    * Creates a starter script called 'start.sh' in the current project directory
    * using 'runCmd' property from .settings file, if found, or from plugin file.
-   *
-   * @param tmpDir
-   * @param pluginFile
-   * @param settings
-   * @throws IOException
    */
   public void writeStarterScript(Path tmpDir, PluginFile pluginFile, ProjectSettings settings) throws IOException {
     StringJoiner stringJoiner = new StringJoiner("\n");
@@ -88,16 +83,14 @@ public class DockerUtils {
     } else {
       lines = pluginFile.getRunCmd();
     }
-    Arrays.asList(lines).forEach(line -> {
-      stringJoiner.add(line);
-    });
+    Arrays.asList(lines).forEach(stringJoiner::add);
     stringJoiner.add("");
     File starterScript = new File(tmpDir.toFile(), "start.sh");
     Files.write(starterScript.toPath(), stringJoiner.toString().getBytes(StandardCharsets.UTF_8),
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
-  public Output runDockerImage(Docker docker) throws IOException, Exception {
+  public Output runDockerImage(Docker docker) throws Exception {
     String mountDir = GeneralUtils.getInstance().getUnixPath(docker.getTmpDir());
     String[] commands = {
             "docker",
@@ -116,7 +109,7 @@ public class DockerUtils {
     return output;
   }
 
-  public void deleteDockerImage(Docker docker) throws IOException, Exception {
+  public void deleteDockerImage(Docker docker) throws Exception {
     File tmpDir = new File(docker.getTmpDir());
     new Thread(() -> {
       while (tmpDir.exists()) {

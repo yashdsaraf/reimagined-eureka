@@ -33,11 +33,15 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/project_config")
 public class ProjectConfigController {
 
-  @Autowired
-  private DockerRepository dockerRepository;
+  private final DockerRepository dockerRepository;
+
+  private final ProjectConfigService projectConfigService;
 
   @Autowired
-  private ProjectConfigService projectConfigService;
+  public ProjectConfigController(DockerRepository dockerRepository, ProjectConfigService projectConfigService) {
+    this.dockerRepository = dockerRepository;
+    this.projectConfigService = projectConfigService;
+  }
 
   @GetMapping("/runcmds")
   public ResponseEntity<String> getRunCommands(HttpServletRequest request) {

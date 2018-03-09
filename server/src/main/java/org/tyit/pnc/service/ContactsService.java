@@ -34,7 +34,7 @@ import java.util.Map;
 @Service
 public class ContactsService {
 
-  File contactsFile;
+  private File contactsFile;
 
   public ContactsService() throws IOException {
     contactsFile = new ClassPathResource("assets/contacts.json").getFile();
@@ -47,7 +47,7 @@ public class ContactsService {
     return new ObjectMapper().readValue(contactsFile, typeRef);
   }
 
-  private void writeContactsToFile(String phone, String email, File file) throws JsonProcessingException, IOException {
+  private void writeContactsToFile(String phone, String email, File file) throws IOException {
     Map<String, String> map = new HashMap<>();
     map.put("phone", phone);
     map.put("email", email);
@@ -55,7 +55,7 @@ public class ContactsService {
             StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
   }
 
-  public void setContacts(String phone, String email) throws JsonProcessingException, IOException {
+  public void setContacts(String phone, String email) throws IOException {
     writeContactsToFile(phone, email, contactsFile);
   }
 

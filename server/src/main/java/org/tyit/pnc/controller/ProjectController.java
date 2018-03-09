@@ -41,11 +41,15 @@ import java.util.logging.Logger;
 @RequestMapping("/project")
 public class ProjectController {
 
-  @Autowired
-  private CoreService coreService;
+  private final CoreService coreService;
+
+  private final DockerService dockerService;
 
   @Autowired
-  private DockerService dockerService;
+  public ProjectController(CoreService coreService, DockerService dockerService) {
+    this.coreService = coreService;
+    this.dockerService = dockerService;
+  }
 
   @GetMapping
   public ResponseEntity<String> isProjectInSession(HttpServletRequest request) {

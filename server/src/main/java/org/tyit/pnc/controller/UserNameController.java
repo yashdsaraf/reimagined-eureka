@@ -32,8 +32,12 @@ import java.security.Principal;
 @RequestMapping("/name")
 public class UserNameController {
 
+  private final AppUserRepository appUserRepository;
+
   @Autowired
-  private AppUserRepository appUserRepository;
+  public UserNameController(AppUserRepository appUserRepository) {
+    this.appUserRepository = appUserRepository;
+  }
 
   @GetMapping
   public ResponseEntity<String> getName(Principal principal) {

@@ -40,7 +40,7 @@ public class FileExService {
 
   private final JsonNodeFactory factory = JsonNodeFactory.instance;
 
-  public String getFileTree(String tmpDirStr) throws IOException, Exception {
+  public String getFileTree(String tmpDirStr) throws Exception {
     Path tmpDir = Paths.get(tmpDirStr);
     if (tmpDir == null) {
       throw new Exception("No project found in " + tmpDirStr);

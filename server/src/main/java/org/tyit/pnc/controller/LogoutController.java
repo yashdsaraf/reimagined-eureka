@@ -30,8 +30,12 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/destroy")
 public class LogoutController {
 
+  private final ProjectController projectController;
+
   @Autowired
-  private ProjectController projectController;
+  public LogoutController(ProjectController projectController) {
+    this.projectController = projectController;
+  }
 
   @GetMapping
   public ResponseEntity<String> destroy(HttpServletRequest request) {

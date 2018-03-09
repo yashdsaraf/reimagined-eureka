@@ -15,8 +15,6 @@
  */
 package org.tyit.pnc.controller;
 
-import java.util.List;
-import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,36 +23,42 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.tyit.pnc.service.StatsService;
 
+import java.util.List;
+import java.util.Map;
+
 /**
- *
  * @author Raees R. Mulla
  */
 @RestController
 @RequestMapping("/stats")
 @PreAuthorize("hasAuthority('ADMIN')")
 public class StatsController {
-    
-    @Autowired
-    private StatsService statsService;
 
-    @GetMapping("/count")
-    public ResponseEntity<Map<String, Integer>> getTotalCount() {
-        return ResponseEntity.ok(statsService.getTotalCount());
-    }
+  private final StatsService statsService;
 
-    @GetMapping("/users")
-    public ResponseEntity<List<List<String>>> getUserPerMonth() {
-        return ResponseEntity.ok(statsService.getUserPerMonth());
-    }
+  @Autowired
+  public StatsController(StatsService statsService) {
+    this.statsService = statsService;
+  }
 
-    @GetMapping("/plugins")
-    public ResponseEntity<List<List<String>>> getPluginsPerMonth() {
-        return ResponseEntity.ok(statsService.getPluginsPerMonth());
-    }
+  @GetMapping("/count")
+  public ResponseEntity<Map<String, Integer>> getTotalCount() {
+    return ResponseEntity.ok(statsService.getTotalCount());
+  }
 
-    @GetMapping("/installs")
-    public ResponseEntity<List<List<String>>> getPluginsPerInstalls() {
-        return ResponseEntity.ok(statsService.getPluginsPerInstalls());
-    }
-    
+  @GetMapping("/users")
+  public ResponseEntity<List<List<String>>> getUserPerMonth() {
+    return ResponseEntity.ok(statsService.getUserPerMonth());
+  }
+
+  @GetMapping("/plugins")
+  public ResponseEntity<List<List<String>>> getPluginsPerMonth() {
+    return ResponseEntity.ok(statsService.getPluginsPerMonth());
+  }
+
+  @GetMapping("/installs")
+  public ResponseEntity<List<List<String>>> getPluginsPerInstalls() {
+    return ResponseEntity.ok(statsService.getPluginsPerInstalls());
+  }
+
 }

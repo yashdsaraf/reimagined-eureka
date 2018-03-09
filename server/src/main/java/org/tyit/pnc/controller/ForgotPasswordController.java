@@ -34,8 +34,12 @@ import java.util.Map;
 @RequestMapping("/forgotpassword")
 public class ForgotPasswordController {
 
+  private final ForgotPasswordService forgotPasswordService;
+
   @Autowired
-  private ForgotPasswordService forgotPasswordService;
+  public ForgotPasswordController(ForgotPasswordService forgotPasswordService) {
+    this.forgotPasswordService = forgotPasswordService;
+  }
 
   @PostMapping
   public ResponseEntity<String> checkEmail(@RequestParam Map<String, String> params, HttpServletRequest request) {

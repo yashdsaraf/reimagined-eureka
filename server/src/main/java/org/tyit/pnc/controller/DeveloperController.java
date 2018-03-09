@@ -36,8 +36,12 @@ import java.util.Iterator;
 @PreAuthorize("hasAuthority('DEVELOPER')")
 public class DeveloperController {
 
+  private final DeveloperService developerService;
+
   @Autowired
-  private DeveloperService developerService;
+  public DeveloperController(DeveloperService developerService) {
+    this.developerService = developerService;
+  }
 
   @PreAuthorize("hasAuthority('USER')")
   @PostMapping("/getaccess")

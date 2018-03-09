@@ -33,8 +33,12 @@ import java.util.logging.Logger;
 @RequestMapping("/contacts")
 public class ContactsController {
 
+  private final ContactsService contactsService;
+
   @Autowired
-  private ContactsService contactsService;
+  public ContactsController(ContactsService contactsService) {
+    this.contactsService = contactsService;
+  }
 
   @GetMapping
   public ResponseEntity<Map<String, String>> getContacts() {
