@@ -46,6 +46,7 @@ import {DeveloperPluginsComponent} from './components/developer-plugins/develope
 import {DocsComponent} from './components/docs/docs.component'
 import {FileExComponent} from './components/file-ex/file-ex.component'
 import {HeaderComponent} from './components/header/header.component'
+import {HelpComponent} from './components/help/help.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
 import {LoginComponent} from './components/login/login.component'
@@ -90,8 +91,7 @@ import {UserGuard} from './guards/user.guard'
 import {IdenticonDirective} from './directives/identicon.directive'
 //PIPES
 import {InitCapPipe} from './pipes/init-cap.pipe'
-import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe';
-import { HelpComponent } from './components/help/help.component'
+import {SanitizeHtmlPipe} from './pipes/sanitizer.pipe'
 
 export function init(startupService: StartupService) {
   return () => startupService.init()
@@ -112,6 +112,7 @@ export function init(startupService: StartupService) {
     DocsComponent,
     FileExComponent,
     HeaderComponent,
+    HelpComponent,
     HomeComponent,
     IndexComponent,
     LoginComponent,
@@ -125,9 +126,7 @@ export function init(startupService: StartupService) {
     ToolbarComponent,
     IdenticonDirective,
     InitCapPipe,
-    SanitizeHtmlPipe,
-    ProgressBarModalComponent,
-    HelpComponent
+    SanitizeHtmlPipe
   ],
   imports: [
     AppRoutingModule,
