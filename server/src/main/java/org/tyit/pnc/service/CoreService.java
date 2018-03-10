@@ -16,6 +16,13 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.*;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
+import java.util.*;
+import java.util.zip.GZIPInputStream;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
@@ -33,14 +40,6 @@ import org.tyit.pnc.repository.AppUserRepository;
 import org.tyit.pnc.repository.PluginRepository;
 import org.tyit.pnc.repository.ProjectRepository;
 import org.tyit.pnc.utils.AmazonAWSUtils;
-
-import java.io.*;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
-import java.util.*;
-import java.util.zip.GZIPInputStream;
 
 /**
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
@@ -80,7 +79,7 @@ public class CoreService {
     return buildProject(token, lang, projectName, entrypoint, userName, null);
   }
 
-  private String buildProject(String token, String lang, String projectName, String entrypoint, String userName, Path basePath) throws Exception {
+  public String buildProject(String token, String lang, String projectName, String entrypoint, String userName, Path basePath) throws Exception {
     Plugin plugin = pluginRepository.findByName(lang);
     if (plugin == null) {
       throw new Exception("No such plugin found");
@@ -119,9 +118,9 @@ public class CoreService {
     File tmpDir = Files.createTempDirectory(projectName).toFile();
     File file = new File(tmpDir, projectName + ".tgz");
     try (TarArchiveOutputStream stream
-                 = new TarArchiveOutputStream(
-            new GzipCompressorOutputStream(
-                    new FileOutputStream(file)))) {
+            = new TarArchiveOutputStream(
+                    new GzipCompressorOutputStream(
+                            new FileOutputStream(file)))) {
       File projectDir = new File(docker.getTmpDir());
       for (File item : Objects.requireNonNull(projectDir.listFiles())) {
         addToArchive(stream, item.getAbsolutePath(), "");
@@ -213,7 +212,7 @@ public class CoreService {
   private Path validateAndExtract(File inputFile, Path tmpDir) throws IOException, ArchiveException {
     File outputTar = new File(tmpDir.toFile(), "project.tar");
     try (GZIPInputStream gzipIn = new GZIPInputStream(new FileInputStream(inputFile));
-         FileOutputStream outStream = new FileOutputStream(outputTar)) {
+            FileOutputStream outStream = new FileOutputStream(outputTar)) {
       IOUtils.copy(gzipIn, outStream);
     }
     try (TarArchiveInputStream tarIn = (TarArchiveInputStream) new ArchiveStreamFactory()

@@ -61,6 +61,10 @@ public class CodeSnippet implements Serializable {
   @ManyToOne(optional = false)
   private AppUser userId;
 
+  public CodeSnippet() {
+
+  }
+
   public CodeSnippet(String code, String title, Date createdOn, Date updatedOn, AppUser userId) {
     this.code = code;
     this.title = title;

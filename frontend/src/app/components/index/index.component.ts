@@ -160,6 +160,7 @@ import 'codemirror/mode/z80/z80'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
+import {BlogService} from '../../services/blog.service'
 import {ConfigService} from '../../services/config.service'
 import {CoreService} from '../../services/core.service'
 import {EditorConfigService} from '../../services/editor-config.service'
@@ -172,6 +173,7 @@ import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
 import {decodeError} from '../../utils/general-utils'
+import {CodeSnippet} from '../../models/code-snippet';
 
 declare const $: any
 
@@ -216,18 +218,22 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   editorFontSize: number
   explorer: any
   saveAsModal: boolean
+  _shareCodeModal: boolean
   dontAskAgain: boolean
+  isSnippetTitleValid: boolean
+  isSnippetTitleLoading: boolean
 
   constructor(
-    private route: ActivatedRoute,
+    private blogService: BlogService,
+    private cdr: ChangeDetectorRef,
     private configService: ConfigService,
     private coreService: CoreService,
     private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
-    private progressBarService: ProgressBarService,
     private indexService: IndexService,
-    private cdr: ChangeDetectorRef,
+    private progressBarService: ProgressBarService,
     private renderer: Renderer2,
+    private route: ActivatedRoute,
     private router: Router
   ) {
     this.isMobile = isMobile
@@ -238,6 +244,9 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     this.openFile = route.snapshot.params.openfile
     this.editorFontSize = 1
     this.saveAsModal = false
+    this._shareCodeModal = false
+    this.isSnippetTitleLoading = false
+    this.isSnippetTitleValid = false
     this.dontAskAgain = true
   }
 
@@ -309,6 +318,9 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       case 'close':
         this.closeProject()
         break
+      case 'share':
+        this.shareCodeModal()
+        break;
     }
   }
 
@@ -381,6 +393,48 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       },
       err => this.errorHandler(err)
     )
+  }
+
+  shareCode(title: string) {
+    let activeTab = this.openFiles.find(tab => !!tab.isActive)
+    let snippet: CodeSnippet = {
+      title,
+      code: activeTab.content
+    }
+    console.log(snippet)
+    this.blogService.createSnippet(snippet).subscribe(
+      data => console.log(data),
+      err => console.log(err)
+    )
+  }
+
+  onSnippetTitleChange(title: string) {
+    if (title == null || title.trim() == '') {
+      this.isSnippetTitleValid = false
+      return
+    }
+    this.isSnippetTitleLoading = true
+    this.blogService.checkTitle(title.trim()).subscribe(
+      data => {
+        this.isSnippetTitleValid = true
+        this.isSnippetTitleLoading = false
+      },
+      err => {
+        this.isSnippetTitleValid = false
+        this.isSnippetTitleLoading = false
+      }
+    )
+  }
+
+  shareCodeModal() {
+    if (this.openFiles == null || this.openFiles.length == 0) {
+      return
+    }
+    let activeTab = this.openFiles.find(tab => !!tab.isActive)
+    if (activeTab.content == null || activeTab.content.trim() == '') {
+      return
+    }
+    this._shareCodeModal = true
   }
 
   closeSaveAsModal(value: string) {

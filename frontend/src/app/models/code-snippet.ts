@@ -19,6 +19,6 @@ import {User} from "./user"
 export interface CodeSnippet {
   title: string
   code: string
-  createdOn: Date
-  userId: User
+  createdOn?: Date
+  userId?: User
 }

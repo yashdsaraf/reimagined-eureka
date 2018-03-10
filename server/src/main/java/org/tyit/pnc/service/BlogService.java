@@ -64,6 +64,7 @@ public class BlogService {
   public void createSnippet(CodeSnippet snippet, String userName) {
     AppUser user = appUserRepository.findByUsername(userName);
     snippet.setCreatedOn(Date.from(Instant.now()));
+    snippet.setUpdatedOn(Date.from(Instant.now()));
     snippet.setUserId(user);
     codeSnippetRepository.save(snippet);
   }

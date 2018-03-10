@@ -31,8 +31,10 @@ export class CoreService {
 
   public runProject(code: IndexTab[]): Observable<Output> {
     let formData = new FormData()
-    for (let file of code) {
-      formData.append(file.name, file.content)
+    if (code != null) {
+      for (let file of code) {
+        formData.append(file.name, file.content)
+      }
     }
     return this.http.post<Output>('/api/project/run', formData)
   }

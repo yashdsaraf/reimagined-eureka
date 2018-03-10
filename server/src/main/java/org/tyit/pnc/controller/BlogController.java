@@ -65,7 +65,7 @@ public class BlogController {
     return ResponseEntity.ok().build();
   }
 
-  @PostMapping("/edit")
+  @PostMapping("/update")
   public ResponseEntity<String> updateSnippet(@RequestBody CodeSnippet snippet, Principal principal) {
     try {
       blogService.updateSnippet(snippet, principal.getName());

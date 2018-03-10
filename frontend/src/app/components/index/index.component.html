@@ -75,3 +75,29 @@
   </div>
   <!-- content -->
 </sui-modal>
+<!-- save as modal -->
+
+<sui-modal *ngIf="_shareCodeModal" [isClosable]="true" (dismissed)="shareCodeModal = false" (approved)="shareCode($event)"
+  #shareModal>
+  <div class="header">Enter title for your snippet</div>
+  <div class="content">
+    <div class="ui fluid icon input" [ngClass]="{'loading': isSnippetTitleLoading}">
+      <input type="text" name="title" placeholder="Enter title here..." (input)="onSnippetTitleChange(title.value)" autofocus #title>
+      <i class="icon" [ngClass]="{'green check': isSnippetTitleValid, 'red close': !isSnippetTitleValid}"></i>
+    </div>
+    <div class="ui tiny warning message">
+      <div class="header">Note:</div>
+      <ul>
+        <li>Title must be unique among all the snippets.</li>
+        <li>Title cannot be empty.</li>
+        <li>Title cannot be longer than 50 characters.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui positive labeled icon button" [class.disabled]="!isSnippetTitleValid" (click)="shareModal.approve(title.value)">
+      Create snippet
+      <i class="icon thumbs up"></i>
+    </div>
+  </div>
+</sui-modal>

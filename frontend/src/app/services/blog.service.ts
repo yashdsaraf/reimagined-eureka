@@ -17,20 +17,43 @@
 import {Injectable} from '@angular/core'
 import {HttpClient, HttpParams} from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
+import {CodeSnippet} from '../models/code-snippet'
 
 @Injectable()
 export class BlogService {
 
   constructor(private http: HttpClient) {}
 
-  getSnippets(name?: string): Observable<Plugin[]> {
+  getSnippets(title?: string): Observable<CodeSnippet[]> {
     let params: HttpParams
-    if (name !== null && name !== undefined) {
-      params = new HttpParams().append('name', name)
+    if (title !== null && title !== undefined) {
+      params = new HttpParams().append('title', title)
     } else {
       params = new HttpParams()
     }
-    return this.http.get<Plugin[]>('/api/blog', {params})
+    return this.http.get<CodeSnippet[]>('/api/blog', {params})
+  }
+
+  getSnippet(title: string): Observable<CodeSnippet> {
+    return this.http.get<CodeSnippet>(`/api/blog/${title}`)
+  }
+
+  createSnippet(snippet: CodeSnippet): Observable<any> {
+    return this.http.post('/api/blog/create', snippet, {responseType: 'text'})
+  }
+
+  updateSnippet(snippet: CodeSnippet): Observable<any> {
+    return this.http.post('/api/blog/update', snippet, {responseType: 'text'})
+  }
+
+  deleteSnippet(title: string): Observable<any> {
+    let params = new HttpParams().append('title', title)
+    return this.http.delete('/api/blog', {params, responseType: 'text'})
+  }
+
+  checkTitle(title: string): Observable<any> {
+    title = btoa(title)
+    return this.http.get(`/api/blog/check/${title}`, {responseType: 'text'})
   }
 
 }
