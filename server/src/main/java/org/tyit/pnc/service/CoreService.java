@@ -123,6 +123,9 @@ public class CoreService {
                             new FileOutputStream(file)))) {
       File projectDir = new File(docker.getTmpDir());
       for (File item : Objects.requireNonNull(projectDir.listFiles())) {
+        if (item.getName().equals("start.sh")) {
+          continue;
+        }
         addToArchive(stream, item.getAbsolutePath(), "");
       }
     }
@@ -154,9 +157,6 @@ public class CoreService {
     File[] children = file.listFiles();
     if (children != null) {
       for (File child : children) {
-        if (child.getName().equalsIgnoreCase("start.sh") && base.isEmpty()) {
-          continue;
-        }
         System.out.println(child.getName());
         addToArchive(stream, child.getAbsolutePath(), entryName + "/");
       }

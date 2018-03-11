@@ -42,7 +42,8 @@ export class BlogComponent {
   @ViewChildren('editor') editors: QueryList<any>
   isMobile: boolean
   _search: string
-  editorConfig: Object
+  _editorConfig: Object
+  additionalConfig: Object
   snippets: CodeSnippet[]
   singleMode: boolean
   sharedLink: string
@@ -57,7 +58,7 @@ export class BlogComponent {
   ) {
     this.isMobile = isMobile
     this.snippets = []
-    this.editorConfig = editorConfigService.getConfig()
+    this._editorConfig = editorConfigService.getConfig()
     let title = route.snapshot.params.title
     if (title != null && title.trim() != '') {
       this.singleMode = true
@@ -66,6 +67,9 @@ export class BlogComponent {
     }
     this.sharedLink = null
     this.deleteTitle = null
+    this.additionalConfig = {
+      readOnly: true
+    }
   }
 
   ngAfterViewInit() {
@@ -112,9 +116,7 @@ export class BlogComponent {
   refresh() {
     setTimeout(() => {
       this.editors.forEach(editor => {
-        editor.instance.setSize(null, '10vh')
-        editor.instance.setOption('readOnly', true)
-        editor.instance.refresh()
+
       })
     }, 100)
   }
@@ -123,6 +125,14 @@ export class BlogComponent {
     this.flashMessagesService.show(decodeError(err), {
       cssClass: 'ui error message', timeout: 4000
     })
+  }
+
+  set editorConfig(value: Object) {
+    this._editorConfig = value
+  }
+
+  get editorConfig(): Object {
+    return Object.assign({}, this._editorConfig, this.additionalConfig)
   }
 
 }

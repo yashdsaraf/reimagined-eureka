@@ -20,11 +20,11 @@
       "prefix": "app",
       "styles": [
         "styles.sass",
+        "../src/semantic/dist/semantic.min.css",
         "../node_modules/devicon/devicon.min.css",
         "../node_modules/devicon/devicon-colors.css",
         "../node_modules/font-awesome/css/font-awesome.min.css",
         "../node_modules/codemirror/lib/codemirror.css",
-        "../src/semantic/dist/semantic.min.css",
         "../node_modules/jstree/dist/themes/default/style.min.css",
         "../node_modules/codemirror/theme/3024-day.css",
         "../node_modules/codemirror/theme/3024-night.css",
@@ -77,9 +77,11 @@
       ],
       "scripts": [
         "../node_modules/jquery/dist/jquery.min.js",
-        "../node_modules/codemirror/lib/codemirror.js",
+        "../node_modules/jstree/dist/jstree.min.js",
         "../src/semantic/dist/semantic.min.js",
-        "../node_modules/jstree/dist/jstree.min.js"
+        "../node_modules/codemirror/lib/codemirror.js",
+        "assets/js/kloudless.explorer.js",
+        "assets/js/loader.js"
       ],
       "stylePreprocessorOptions": {
         "includePaths": [

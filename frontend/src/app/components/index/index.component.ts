@@ -180,24 +180,7 @@ declare const $: any
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.sass'],
-  animations: [trigger('sidebarAnimation', [
-    transition(':enter', [
-      style({width: 0, opacity: 0}),
-      animate(400, keyframes([
-        style({width: '0', opacity: .25, offset: 0}),
-        style({width: '*', opacity: .55, offset: .5}),
-        style({width: '*', opacity: 1, offset: 1})
-      ]))
-    ]),
-    transition(':leave', [
-      style({width: '*', opacity: 1}),
-      animate(300, keyframes([
-        style({width: '*', opacity: 1, offset: 0}),
-        style({width: '0', opacity: .55, offset: 1})
-      ]))
-    ])
-  ])]
+  styleUrls: ['./index.component.sass']
 })
 export class IndexComponent implements OnChanges, OnDestroy, OnInit {
 
@@ -303,6 +286,10 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     }, ms)
   }
 
+  refreshJsTree() {
+    $('#file-list').jstree().refresh()
+  }
+
   executeTool(tool: string) {
     switch (tool) {
       case 'run':
@@ -346,11 +333,11 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       (data: Output) => {
         this.output = data
         this.progressBarService.dismiss()
-        $('#file-list').jstree(true).refresh()
+        this.refreshJsTree()
       },
       err => {
         this.progressBarService.dismiss()
-        $('#file-list').jstree(true).refresh()
+        this.refreshJsTree()
         this.errorHandler(err)
       }
     )

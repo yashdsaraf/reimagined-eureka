@@ -1,6 +1,6 @@
 <div id="container">
   <app-help redirectDoc="/docs/projects,What_are_run_commands_and_entrypoint.html"></app-help>
-  <app-file-ex *ngIf="isNavOpen" id="file-ex" [(isNavOpen)]="isNavOpen" [@sidebarAnimation]></app-file-ex>
+  <app-file-ex [style.opacity]="isNavOpen ? 1 : 0" [style.visibility]="isNavOpen ? 'visible' : 'hidden'" id="file-ex" [(isNavOpen)]="isNavOpen"></app-file-ex>
   <div id="wrapper-1">
     <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen" (executedTool)="executeTool($event)"></app-toolbar>
 
