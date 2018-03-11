@@ -67,4 +67,15 @@ public class AdminController {
     return adminService.deletePlugin(name);
   }
 
+  @DeleteMapping("/snippet/{title}")
+  public ResponseEntity<String> deleteSnippet(@PathVariable("title") String title) {
+    title = new String(Base64.getDecoder().decode(title));
+    try {
+      adminService.deleteSnippet(title);
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+  }
+
 }

@@ -21,14 +21,14 @@ import org.tyit.pnc.model.AppUser;
 
 public interface AppUserRepository extends CrudRepository<AppUser, Long> {
 
-  public AppUser findByUsername(String username);
+  AppUser findByUsername(String username);
 
   @Query("SELECT U FROM AppUser U WHERE LOWER(U.name) LIKE LOWER(CONCAT(?1, '%')) AND U.username != 'guest'")
-  public Iterable<AppUser> findAllByName(String name);
+  Iterable<AppUser> findAllByName(String name);
 
-  public AppUser findByEmail(String email);
+  AppUser findByEmail(String email);
 
   @Query(value = "SELECT TO_CHAR(CREATED_ON, 'Month') AS MONTH, COUNT(*) AS COUNT from APP_USER GROUP BY TO_CHAR(CREATED_ON, 'Month')", nativeQuery = true)
-  public Iterable<Object[]> findCountPerMonths();
+  Iterable<Object[]> findCountPerMonths();
 
 }

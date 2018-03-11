@@ -15,10 +15,14 @@
  */
 package org.tyit.pnc.model;
 
+import java.io.Serializable;
+
 /**
  * @author Yash D. Saraf <yashdsaraf@gmail.com>
  */
-public class Output {
+public class Output implements Serializable {
+
+  private static final long serialVersionUID = 1L;
 
   private String stdout;
   private String stderr;

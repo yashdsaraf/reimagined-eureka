@@ -13,14 +13,5 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.tyit.pnc.repository;
 
-import org.springframework.data.repository.CrudRepository;
-import org.tyit.pnc.model.AppAdmin;
-import org.tyit.pnc.model.AppUser;
-
-public interface AppAdminRepository extends CrudRepository<AppAdmin, Long> {
-
-  AppAdmin findByUserId(AppUser userId);
-
-}
+@import base

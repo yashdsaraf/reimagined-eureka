@@ -61,6 +61,7 @@ import {ToolbarComponent} from './components/toolbar/toolbar.component'
 //SERVICES
 import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
+import {BlogService} from './services/blog.service'
 import {ConfigService} from './services/config.service'
 import {ContactsService} from './services/contacts.service'
 import {CookieService} from './services/cookie.service'
@@ -71,6 +72,7 @@ import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
 import {ImagesService} from './services/images.service'
 import {IndexService} from './services/index.service'
+import {LinkCopyModalComponent} from './components/link-copy-modal/link-copy-modal.component'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {PluginsService} from './services/plugins.service'
@@ -115,6 +117,7 @@ export function init(startupService: StartupService) {
     HelpComponent,
     HomeComponent,
     IndexComponent,
+    LinkCopyModalComponent,
     LoginComponent,
     LogoutComponent,
     OutputComponent,
@@ -144,6 +147,7 @@ export function init(startupService: StartupService) {
     {provide: HTTP_INTERCEPTORS, useClass: OAuthInterceptor, multi: true},
     AuthService,
     AdminService,
+    BlogService,
     ConfigService,
     ContactsService,
     CookieService,

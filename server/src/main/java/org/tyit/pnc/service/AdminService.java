@@ -22,10 +22,12 @@ import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppAdmin;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.model.AppUser.Role;
+import org.tyit.pnc.model.CodeSnippet;
 import org.tyit.pnc.model.Developer;
 import org.tyit.pnc.model.Plugin;
 import org.tyit.pnc.repository.AppAdminRepository;
 import org.tyit.pnc.repository.AppUserRepository;
+import org.tyit.pnc.repository.CodeSnippetRepository;
 import org.tyit.pnc.repository.DeveloperRepository;
 import org.tyit.pnc.repository.PluginRepository;
 
@@ -43,12 +45,16 @@ public class AdminService {
 
   private final AppAdminRepository appAdminRepository;
 
+  private final CodeSnippetRepository codeSnippetRepository;
+
+
   @Autowired
-  public AdminService(AppUserRepository appUserRepository, PluginRepository pluginRepository, DeveloperRepository developerRepository, AppAdminRepository appAdminRepository) {
+  public AdminService(AppUserRepository appUserRepository, PluginRepository pluginRepository, DeveloperRepository developerRepository, AppAdminRepository appAdminRepository, CodeSnippetRepository codeSnippetRepository) {
     this.appUserRepository = appUserRepository;
     this.pluginRepository = pluginRepository;
     this.developerRepository = developerRepository;
     this.appAdminRepository = appAdminRepository;
+    this.codeSnippetRepository = codeSnippetRepository;
   }
 
   public Iterable<AppUser> getUsers(String name) {
@@ -105,6 +111,14 @@ public class AdminService {
       pluginRepository.save(plugin);
     }
     return ResponseEntity.ok().build();
+  }
+
+  public void deleteSnippet(String title) throws Exception {
+    CodeSnippet codeSnippet = codeSnippetRepository.findByTitle(title);
+    if (codeSnippet == null) {
+      throw new Exception("No such snippet found");
+    }
+    codeSnippetRepository.delete(codeSnippet);
   }
 
 }

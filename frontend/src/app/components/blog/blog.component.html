@@ -1,3 +1,69 @@
-<p>
-  blog works!
-</p>
+<div class="container" id="container">
+  <header *ngIf="!isAdmin">
+    <div id="quote">
+      <span>Blog</span>
+      <div class="ui circular primary icon button" (click)="getSnippets()">
+        <i class="icon refresh"></i>
+      </div>
+    </div>
+    <div id="search">
+      <div class="ui icon input">
+        <input type="text" [(ngModel)]="search" name="search" placeholder="Search...">
+        <i class="search icon"></i>
+      </div>
+    </div>
+  </header>
+
+  <div id="content">
+    <div *ngIf="snippets.length > 0; else noSnippets" class="ui fluid one centered special raised cards">
+      <div *ngFor="let snippet of snippets" class="ui card">
+        <div class="content">
+          <div class="header">
+            {{snippet.title}}
+          </div>
+          <div class="description">
+            <codemirror [config]="editorConfig" [ngModel]="snippet.code" #editor>
+            </codemirror>
+          </div>
+        </div>
+        <!-- content -->
+        <div class="extra content">
+          <span>
+            Shared by
+            <strong>{{snippet.userId.name}}</strong> on
+            <strong>{{snippet.createdOn | date}}</strong>
+          </span>
+          <div class="right floated ui buttons">
+            <div class="ui teal icon button" (click)="sharedLink = snippet.title">
+              <i class="share alternate icon"></i>
+            </div>
+            <div *ngIf="!!isAdmin" class="ui negative icon button" (click)="deleteTitle = snippet.title">
+              <i class="trash icon"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- card -->
+    </div>
+    <!-- card group -->
+
+    <ng-template #noSnippets>
+      <div class="ui info message">
+        <div class="ui header">No snippets found</div>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+<!-- container -->
+
+<app-link-copy-modal *ngIf="sharedLink != null" [(title)]="sharedLink"></app-link-copy-modal>
+
+<sui-modal *ngIf="deleteTitle != null" (approved)="deleteSnippet()" (denied)="deleteTitle = null" [isBasic]="true" [isClosable]="false"
+  #deleteModal>
+  <div class="header">Are you sure you would like to delete this snippet?</div>
+  <div class="actions">
+    <button class="ui grey button" (click)="deleteModal.deny()">Cancel</button>
+    <button class="ui red button" (click)="deleteModal.approve()" autofocus>Delete</button>
+  </div>
+</sui-modal>

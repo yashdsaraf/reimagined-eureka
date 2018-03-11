@@ -16,6 +16,7 @@
 package org.tyit.pnc.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.nio.file.Paths;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.Docker;
@@ -62,7 +63,7 @@ public class PluginService {
     // Recreate docker image to work with the newly applied plugin
     DockerUtils dockerUtils = new DockerUtils();
     dockerUtils.deleteDockerImage(docker);
-    coreService.build(docker.getId(), pluginName, project.getName(), settings.getEntrypoint(), docker.getUserId().getUsername());
+    coreService.buildProject(docker.getId(), pluginName, project.getName(), settings.getEntrypoint(), docker.getUserId().getUsername(), Paths.get(docker.getTmpDir()));
   }
 
   public Iterable<Plugin> getPlugins(String name) {

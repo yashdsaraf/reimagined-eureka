@@ -22,18 +22,18 @@ import org.tyit.pnc.model.Plugin;
 public interface PluginRepository extends CrudRepository<Plugin, Long> {
 
   @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) LIKE LOWER(CONCAT(?1, '%'))")
-  public Iterable<Plugin> findAllByName(String name);
+  Iterable<Plugin> findAllByName(String name);
 
   @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) LIKE LOWER(CONCAT(?1, '%')) AND STATUS = 'APP'")
-  public Iterable<Plugin> findAllApprovedByName(String name);
+  Iterable<Plugin> findAllApprovedByName(String name);
 
   @Query("SELECT P FROM Plugin P WHERE STATUS = 'APP'")
-  public Iterable<Plugin> findAllApproved();
+  Iterable<Plugin> findAllApproved();
 
   @Query("SELECT P FROM Plugin P WHERE LOWER(P.name) = LOWER(?1)")
-  public Plugin findByName(String name);
+  Plugin findByName(String name);
 
   @Query(value = "SELECT TO_CHAR(CREATED_ON, 'Month') AS MONTH, COUNT(*) AS COUNT from PLUGIN GROUP BY TO_CHAR(CREATED_ON, 'Month')", nativeQuery = true)
-  public Iterable<Object[]> findCountPerMonths();
+  Iterable<Object[]> findCountPerMonths();
 
 }

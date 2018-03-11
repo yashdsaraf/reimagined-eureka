@@ -160,6 +160,7 @@ import 'codemirror/mode/z80/z80'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
+import {BlogService} from '../../services/blog.service'
 import {ConfigService} from '../../services/config.service'
 import {CoreService} from '../../services/core.service'
 import {EditorConfigService} from '../../services/editor-config.service'
@@ -172,30 +173,14 @@ import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
 import {decodeError} from '../../utils/general-utils'
+import {CodeSnippet} from '../../models/code-snippet';
 
 declare const $: any
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.sass'],
-  animations: [trigger('sidebarAnimation', [
-    transition(':enter', [
-      style({width: 0, opacity: 0}),
-      animate(400, keyframes([
-        style({width: '0', opacity: .25, offset: 0}),
-        style({width: '*', opacity: .55, offset: .5}),
-        style({width: '*', opacity: 1, offset: 1})
-      ]))
-    ]),
-    transition(':leave', [
-      style({width: '*', opacity: 1}),
-      animate(300, keyframes([
-        style({width: '*', opacity: 1, offset: 0}),
-        style({width: '0', opacity: .55, offset: 1})
-      ]))
-    ])
-  ])]
+  styleUrls: ['./index.component.sass']
 })
 export class IndexComponent implements OnChanges, OnDestroy, OnInit {
 
@@ -216,18 +201,23 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   editorFontSize: number
   explorer: any
   saveAsModal: boolean
+  _shareCodeModal: boolean
   dontAskAgain: boolean
+  isSnippetTitleValid: boolean
+  isSnippetTitleLoading: boolean
+  sharedLink: string
 
   constructor(
-    private route: ActivatedRoute,
+    private blogService: BlogService,
+    private cdr: ChangeDetectorRef,
     private configService: ConfigService,
     private coreService: CoreService,
     private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
-    private progressBarService: ProgressBarService,
     private indexService: IndexService,
-    private cdr: ChangeDetectorRef,
+    private progressBarService: ProgressBarService,
     private renderer: Renderer2,
+    private route: ActivatedRoute,
     private router: Router
   ) {
     this.isMobile = isMobile
@@ -238,7 +228,11 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     this.openFile = route.snapshot.params.openfile
     this.editorFontSize = 1
     this.saveAsModal = false
+    this._shareCodeModal = false
+    this.isSnippetTitleLoading = false
+    this.isSnippetTitleValid = false
     this.dontAskAgain = true
+    this.sharedLink = null
   }
 
   ngOnChanges() {
@@ -292,6 +286,10 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     }, ms)
   }
 
+  refreshJsTree() {
+    $('#file-list').jstree().refresh()
+  }
+
   executeTool(tool: string) {
     switch (tool) {
       case 'run':
@@ -309,6 +307,9 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       case 'close':
         this.closeProject()
         break
+      case 'share':
+        this.shareCodeModal()
+        break;
     }
   }
 
@@ -332,11 +333,11 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       (data: Output) => {
         this.output = data
         this.progressBarService.dismiss()
-        $('#file-list').jstree(true).refresh()
+        this.refreshJsTree()
       },
       err => {
         this.progressBarService.dismiss()
-        $('#file-list').jstree(true).refresh()
+        this.refreshJsTree()
         this.errorHandler(err)
       }
     )
@@ -381,6 +382,47 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       },
       err => this.errorHandler(err)
     )
+  }
+
+  shareCode(title: string) {
+    let activeTab = this.openFiles.find(tab => !!tab.isActive)
+    let snippet: CodeSnippet = {
+      title,
+      code: activeTab.content
+    }
+    this.blogService.createSnippet(snippet).subscribe(
+      data => this.sharedLink = title,
+      err => this.errorHandler(err)
+    )
+  }
+
+  onSnippetTitleChange(title: string) {
+    if (title == null || title.trim() == '') {
+      this.isSnippetTitleValid = false
+      return
+    }
+    this.isSnippetTitleLoading = true
+    this.blogService.checkTitle(title.trim()).subscribe(
+      data => {
+        this.isSnippetTitleValid = true
+        this.isSnippetTitleLoading = false
+      },
+      err => {
+        this.isSnippetTitleValid = false
+        this.isSnippetTitleLoading = false
+      }
+    )
+  }
+
+  shareCodeModal() {
+    if (this.openFiles == null || this.openFiles.length == 0) {
+      return
+    }
+    let activeTab = this.openFiles.find(tab => !!tab.isActive)
+    if (activeTab.content == null || activeTab.content.trim() == '') {
+      return
+    }
+    this._shareCodeModal = true
   }
 
   closeSaveAsModal(value: string) {

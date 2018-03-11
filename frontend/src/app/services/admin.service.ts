@@ -63,4 +63,9 @@ export class AdminService {
     return this.http.put(`/api/admin/plugin/${name}`, '', {responseType: 'text'})
   }
 
+  deleteSnippet(title: string): Observable<any> {
+    title = btoa(title)
+    return this.http.delete(`/api/admin/snippet/${title}`, {responseType: 'text'})
+  }
+
 }
