@@ -1,5 +1,5 @@
 <div class="container" id="container">
-  <header>
+  <header *ngIf="!isAdmin">
     <div id="quote">
       <span>Blog</span>
       <div class="ui circular primary icon button" (click)="getSnippets()">
@@ -37,7 +37,7 @@
             <div class="ui teal icon button" (click)="sharedLink = snippet.title">
               <i class="share alternate icon"></i>
             </div>
-            <div *ngIf="!!isAdmin" class="ui negative icon button">
+            <div *ngIf="!!isAdmin" class="ui negative icon button" (click)="deleteTitle = snippet.title">
               <i class="trash icon"></i>
             </div>
           </div>
@@ -56,4 +56,14 @@
   </div>
 </div>
 <!-- container -->
+
 <app-link-copy-modal *ngIf="sharedLink != null" [(title)]="sharedLink"></app-link-copy-modal>
+
+<sui-modal *ngIf="deleteTitle != null" (approved)="deleteSnippet()" (denied)="deleteTitle = null" [isBasic]="true" [isClosable]="false"
+  #deleteModal>
+  <div class="header">Are you sure you would like to delete this snippet?</div>
+  <div class="actions">
+    <button class="ui grey button" (click)="deleteModal.deny()">Cancel</button>
+    <button class="ui red button" (click)="deleteModal.approve()" autofocus>Delete</button>
+  </div>
+</sui-modal>

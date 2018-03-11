@@ -17,6 +17,7 @@
 import {
   Component,
   EventEmitter,
+  Input,
   Output
 } from '@angular/core'
 import {isMobile} from '../../app.component'
@@ -28,6 +29,7 @@ import {isMobile} from '../../app.component'
 })
 export class AdminBlogComponent {
 
+  @Input('search') search: string
   @Output('heading') heading = new EventEmitter()
   isMobile: boolean
 

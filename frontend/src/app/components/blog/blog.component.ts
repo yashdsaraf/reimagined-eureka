@@ -24,6 +24,7 @@ import {ActivatedRoute} from '@angular/router'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
+import {AdminService} from '../../services/admin.service'
 import {BlogService} from '../../services/blog.service'
 import {EditorConfigService} from '../../services/editor-config.service'
 import {isMobile} from '../../app.component'
@@ -45,8 +46,10 @@ export class BlogComponent {
   snippets: CodeSnippet[]
   singleMode: boolean
   sharedLink: string
+  deleteTitle: string
 
   constructor(
+    private adminService: AdminService,
     private blogService: BlogService,
     private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
@@ -62,13 +65,14 @@ export class BlogComponent {
       this.singleMode = false
     }
     this.sharedLink = null
+    this.deleteTitle = null
   }
 
   ngAfterViewInit() {
     this.getSnippets()
   }
 
-  set search(value: string) {
+  @Input('search') set search(value: string) {
     this._search = value
     this.getSnippets()
   }
@@ -91,6 +95,18 @@ export class BlogComponent {
       )
     }
     this.refresh()
+  }
+
+  deleteSnippet() {
+    this.adminService.deleteSnippet(this.deleteTitle).subscribe(
+      data => {
+        this.getSnippets()
+      },
+      err => {
+        this.errHandler(err)
+      }
+    )
+    this.deleteTitle = null
   }
 
   refresh() {

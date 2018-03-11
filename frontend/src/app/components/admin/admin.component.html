@@ -34,7 +34,7 @@
       <app-admin-users *ngIf="isOpen == 'users'" [(search)]="search" (heading)="heading = $event"></app-admin-users>
       <app-admin-plugins *ngIf="isOpen == 'plugins'" [(search)]="search" (heading)="heading = $event"></app-admin-plugins>
       <app-admin-ui *ngIf="isOpen == 'ui'" (heading)="heading = $event"></app-admin-ui>
-      <app-admin-blog *ngIf="isOpen == 'blog'" (heading)="heading = $event"></app-admin-blog>
+      <app-admin-blog *ngIf="isOpen == 'blog'" [search]="search" (heading)="heading = $event"></app-admin-blog>
     </div>
     <!-- parent -->
   </sui-sidebar-sibling>
