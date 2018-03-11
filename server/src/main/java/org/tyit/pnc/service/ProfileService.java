@@ -15,52 +15,82 @@
  */
 package org.tyit.pnc.service;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
 
+import java.nio.charset.StandardCharsets;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+
 /**
- *
  * @author Raees R. Mulla
  */
 @Service
 public class ProfileService {
 
-    @Autowired
-    private AppUserRepository appUserRepository;
+  private final AppUserRepository appUserRepository;
 
-    public AppUser getUserDetails(String username) {
-        AppUser user = appUserRepository.findByUsername(username);
-        return user;
-    }
+  private final EmailService emailService;
 
-    public void setUserDetails(AppUser user, String username, String password) throws Exception {
-        AppUser checkUser = appUserRepository.findByUsername(username);
-        if (checkUser == null) {
-            throw new Exception("No such user found");
-        }
-        if (appUserRepository.findByUsername(user.getUsername()) != null) {
-            throw new Exception("Username already exists");
-        }
-        if (appUserRepository.findByEmail(user.getEmail()) != null) {
-            throw new Exception("Email already exists");
-        }
-        MessageDigest digest = MessageDigest.getInstance("SHA-256");
-        String hash = new String(digest.digest(password.getBytes(StandardCharsets.UTF_8)));
-        if (!checkUser.getPassword().equals(hash)) {
-            throw new Exception("Wrong password");
-        }
-        checkUser.setEmail(user.getEmail());
-        checkUser.setName(user.getName());
-        checkUser.setUsername(user.getUsername());
-        checkUser.setPassword(user.getPassword());
-        appUserRepository.save(checkUser);
+  @Autowired
+  public ProfileService(AppUserRepository appUserRepository, EmailService emailService) {
+    this.appUserRepository = appUserRepository;
+    this.emailService = emailService;
+  }
+
+  public AppUser getUserDetails(String username) {
+    return appUserRepository.findByUsername(username);
+  }
+
+  public void setUserDetails(AppUser user, String userName, String password) throws Exception {
+    AppUser checkUser = getUser(userName);
+    AppUser dbUser = appUserRepository.findByUsername(user.getUsername());
+    if (dbUser != null && checkUser != dbUser) {
+      throw new Exception("Username already exists");
     }
+    dbUser = appUserRepository.findByEmail(user.getEmail());
+    if (dbUser != null && checkUser != dbUser) {
+      throw new Exception("Email already exists");
+    }
+    String hash = DigestUtils.sha256Hex(password.getBytes(StandardCharsets.UTF_8));
+    if (!checkUser.getPassword().equals(hash)) {
+      throw new Exception("Wrong password");
+    }
+    checkUser.setEmail(user.getEmail());
+    checkUser.setName(user.getName());
+    checkUser.setUsername(user.getUsername());
+    appUserRepository.save(checkUser);
+    String message = "Your profile was updated successfully on " +
+            new SimpleDateFormat("MMM dd, yyyy 'at' HH:mm a").format(Date.from(Instant.now())) + "\n" +
+            "Cheers!";
+    emailService.sendEmail(user.getEmail(), "Plug n' Code: Profile updated", message);
+  }
+
+  public void setPassword(String newPassword, String oldPassword, String userName) throws Exception {
+    AppUser checkUser = getUser(userName);
+    String hash = DigestUtils.sha256Hex(oldPassword.getBytes(StandardCharsets.UTF_8));
+    if (!checkUser.getPassword().equals(hash)) {
+      throw new Exception("Wrong password");
+    }
+    hash = DigestUtils.sha256Hex(newPassword.getBytes(StandardCharsets.UTF_8));
+    checkUser.setPassword(hash);
+    appUserRepository.save(checkUser);
+    String message = "Your password was updated successfully on " +
+            new SimpleDateFormat("MMM dd, yyyy 'at' HH:mm a").format(Date.from(Instant.now())) + "\n" +
+            "Cheers!";
+    emailService.sendEmail(checkUser.getEmail(), "Plug n' Code: Password updated", message);
+  }
+
+  private AppUser getUser(String userName) throws Exception {
+    AppUser checkUser = appUserRepository.findByUsername(userName);
+    if (checkUser == null) {
+      throw new Exception("No such user found");
+    }
+    return checkUser;
+  }
 
 }

@@ -74,10 +74,10 @@
               </ng-container>
               <!-- profile -->
               <ng-container *ngIf="getRole() == 'USER'">
-                <div class="divider"></div>
                 <div id="dev-access" class="item" (click)="openDevPrompt()">
                   Become a developer!
                 </div>
+                <div class="divider"></div>
               </ng-container>
               <!-- dev-access -->
               <div id="logout" class="item" (click)="logout()">

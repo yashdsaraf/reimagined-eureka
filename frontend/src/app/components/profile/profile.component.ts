@@ -14,11 +14,23 @@
  * limitations under the License.
  */
 
-import {Component, ViewChild, ElementRef, OnInit} from '@angular/core'
-import {User} from '../../models/user'
-import {isMobile} from '../../app.component'
+import {
+  Component,
+  ElementRef,
+  Injector,
+  OnInit,
+  ViewChild
+} from '@angular/core'
 import {NgForm} from '@angular/forms'
+
+import {FlashMessagesService} from 'angular2-flash-messages'
+
+import {AuthService} from '../../services/auth.service'
+import {DisplayNameService} from '../../services/display-name.service'
 import {ProfileService} from '../../services/profile.service'
+import {isMobile} from '../../app.component'
+import {User} from '../../models/user'
+import {decodeError} from '../../utils/general-utils'
 
 @Component({
   selector: 'app-profile',
@@ -33,35 +45,40 @@ export class ProfileComponent {
   user: User = {
     name: '',
     email: '',
-    username: '',
-    password: ''
+    username: ''
   }
+  password = ''
+  newPassword = ''
   confirmPassword = ''
-  isHidden = true
-  useEmailAsPass = false
-  error = ''
   loading = false
   @ViewChild('passwordField') passwordField: ElementRef
 
-  constructor() {
+  constructor(
+    private flashMessagesService: FlashMessagesService,
+    private profileService: ProfileService,
+    private injector: Injector,
+    private displayNameService: DisplayNameService
+  ) {
     this.isMobile = isMobile
     this.editable = false
     this.passModal = false
+    this.refresh()
   }
 
-  openModal(){
+  refresh() {
+    this.profileService.getUserDetails().subscribe(
+      data => this.user = data,
+      err => this.errorHandler(err)
+    )
+    this.password = ''
+  }
+
+  openModal() {
     this.passModal = true
   }
 
-  closeModal(){
+  closeModal() {
     this.passModal = false
-  }
-
-  onPasswordChange() {
-    this.isHidden = !this.isHidden
-    let element = this.passwordField.nativeElement
-    element.type = this.isHidden ? 'password' : 'text'
-    element.focus()
   }
 
   getIdenticonObject() {
@@ -70,6 +87,49 @@ export class ProfileComponent {
       size: 120
     }
     return JSON.stringify(obj)
+  }
+
+  errorHandler(err) {
+    this.flashMessagesService.show(decodeError(err), {
+      cssClass: 'ui error message', timeout: 4000
+    })
+    this.loading = false
+  }
+
+  onSubmit(form: NgForm) {
+    if (!form.valid) {
+      return
+    }
+    this.loading = true
+    this.profileService.setUserDetails(this.user, this.password).subscribe(
+      data => {
+        this.refresh()
+        this.editable = false
+        this.displayNameService.updateName(this.injector.get(AuthService).getSavedTokens().access_token)
+        this.flashMessagesService.show('Profile updated successfully!', {
+          cssClass: 'ui success message'
+        })
+        this.loading = false
+      },
+      err => this.errorHandler(err)
+    )
+  }
+
+  onPasswordSubmit(form: NgForm) {
+    if (!form.valid || this.newPassword != this.confirmPassword) {
+      return
+    }
+    this.passModal = false
+    this.loading = true
+    this.profileService.setPassword(this.newPassword, this.password).subscribe(
+      data => {
+        this.flashMessagesService.show('Password updated successfully!', {
+          cssClass: 'ui success message'
+        })
+        this.loading = false
+      },
+      err => this.errorHandler(err)
+    )
   }
 
 }
