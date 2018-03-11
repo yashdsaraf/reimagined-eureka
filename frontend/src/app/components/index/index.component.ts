@@ -222,6 +222,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   dontAskAgain: boolean
   isSnippetTitleValid: boolean
   isSnippetTitleLoading: boolean
+  sharedLink: string
 
   constructor(
     private blogService: BlogService,
@@ -248,6 +249,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     this.isSnippetTitleLoading = false
     this.isSnippetTitleValid = false
     this.dontAskAgain = true
+    this.sharedLink = null
   }
 
   ngOnChanges() {
@@ -401,10 +403,9 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
       title,
       code: activeTab.content
     }
-    console.log(snippet)
     this.blogService.createSnippet(snippet).subscribe(
-      data => console.log(data),
-      err => console.log(err)
+      data => this.sharedLink = title,
+      err => this.errorHandler(err)
     )
   }
 

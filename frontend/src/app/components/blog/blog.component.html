@@ -14,32 +14,33 @@
     </div>
   </header>
 
-  <!-- <div class="ui info message">
-    <div class="ui header">
-      Users can share code here..
-    </div>
-  </div> -->
-
   <div id="content">
-    <div *ngIf="snippets.length > 0; else noSnippets" class="ui fluid one centered link special raised cards">
-      <!-- <div class="ui fluid one centered link special raised cards"> -->
-      <div *ngFor="let snippet of snippets" class="card">
+    <div *ngIf="snippets.length > 0; else noSnippets" class="ui fluid one centered special raised cards">
+      <div *ngFor="let snippet of snippets" class="ui card">
         <div class="content">
-          <div class="header">{{snippet.title}}</div>
+          <div class="header">
+            {{snippet.title}}
+          </div>
           <div class="description">
             <codemirror [config]="editorConfig" [ngModel]="snippet.code" #editor>
             </codemirror>
           </div>
         </div>
+        <!-- content -->
         <div class="extra content">
-          <span class="left floated like">
-            Created by {{snippet.userId.name}}
-            <br>
-            Created on {{snippet.createdOn | date}}
-            <br>
-            Updated on {{snippet.updatedOn | date}}
+          <span>
+            Shared by
+            <strong>{{snippet.userId.name}}</strong> on
+            <strong>{{snippet.createdOn | date}}</strong>
           </span>
-          <i class="right floated copy icon"></i>
+          <div class="right floated ui buttons">
+            <div class="ui teal icon button" (click)="sharedLink = snippet.title">
+              <i class="share alternate icon"></i>
+            </div>
+            <div *ngIf="!!isAdmin" class="ui negative icon button">
+              <i class="trash icon"></i>
+            </div>
+          </div>
         </div>
       </div>
       <!-- card -->
@@ -55,3 +56,4 @@
   </div>
 </div>
 <!-- container -->
+<app-link-copy-modal *ngIf="sharedLink != null" [(title)]="sharedLink"></app-link-copy-modal>

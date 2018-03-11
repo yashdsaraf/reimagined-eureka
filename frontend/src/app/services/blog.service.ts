@@ -34,8 +34,8 @@ export class BlogService {
     return this.http.get<CodeSnippet[]>('/api/blog', {params})
   }
 
-  getSnippet(title: string): Observable<CodeSnippet> {
-    return this.http.get<CodeSnippet>(`/api/blog/${title}`)
+  getSnippet(encodedTitle: string): Observable<CodeSnippet> {
+    return this.http.get<CodeSnippet>(`/api/blog/${encodedTitle}`)
   }
 
   createSnippet(snippet: CodeSnippet): Observable<any> {

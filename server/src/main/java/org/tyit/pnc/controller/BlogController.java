@@ -61,8 +61,13 @@ public class BlogController {
 
   @PostMapping("/create")
   public ResponseEntity<String> createSnippet(@RequestBody CodeSnippet snippet, Principal principal) {
-    blogService.createSnippet(snippet, principal.getName());
-    return ResponseEntity.ok().build();
+    try {
+      blogService.checkTitle(snippet.getTitle());
+      blogService.createSnippet(snippet, principal.getName());
+      return ResponseEntity.ok().build();
+    } catch (Exception e) {
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
   }
 
   @PostMapping("/update")

@@ -72,6 +72,7 @@ import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
 import {ImagesService} from './services/images.service'
 import {IndexService} from './services/index.service'
+import {LinkCopyModalComponent} from './components/link-copy-modal/link-copy-modal.component'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {PluginsService} from './services/plugins.service'
@@ -116,6 +117,7 @@ export function init(startupService: StartupService) {
     HelpComponent,
     HomeComponent,
     IndexComponent,
+    LinkCopyModalComponent,
     LoginComponent,
     LogoutComponent,
     OutputComponent,

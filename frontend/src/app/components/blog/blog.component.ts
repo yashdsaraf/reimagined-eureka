@@ -16,9 +16,11 @@
 
 import {
   Component,
+  Input,
   QueryList,
   ViewChildren
 } from '@angular/core'
+import {ActivatedRoute} from '@angular/router'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
 
@@ -35,27 +37,34 @@ import {decodeError} from '../../utils/general-utils'
 })
 export class BlogComponent {
 
+  @Input('isAdmin') isAdmin: boolean
   @ViewChildren('editor') editors: QueryList<any>
   isMobile: boolean
   _search: string
   editorConfig: Object
   snippets: CodeSnippet[]
+  singleMode: boolean
+  sharedLink: string
 
   constructor(
     private blogService: BlogService,
+    private editorConfigService: EditorConfigService,
     private flashMessagesService: FlashMessagesService,
-    private editorConfigService: EditorConfigService
+    private route: ActivatedRoute
   ) {
     this.isMobile = isMobile
     this.snippets = []
     this.editorConfig = editorConfigService.getConfig()
+    let title = route.snapshot.params.title
+    if (title != null && title.trim() != '') {
+      this.singleMode = true
+    } else {
+      this.singleMode = false
+    }
+    this.sharedLink = null
   }
 
   ngAfterViewInit() {
-    this.editors.forEach(editor => {
-      editor.instance.setSize(null, '10vh')
-      editor.instance.setOption('readOnly', true)
-    })
     this.getSnippets()
   }
 
@@ -69,10 +78,29 @@ export class BlogComponent {
   }
 
   getSnippets() {
-    this.blogService.getSnippets(this.search).subscribe(
-      data => this.snippets = data,
-      err => this.errHandler(err)
-    )
+    if (this.singleMode) {
+      let title = decodeURIComponent(this.route.snapshot.params.title)
+      this.blogService.getSnippet(title).subscribe(
+        data => this.snippets[0] = data,
+        err => this.errHandler(err)
+      )
+    } else {
+      this.blogService.getSnippets(this.search).subscribe(
+        data => this.snippets = data,
+        err => this.errHandler(err)
+      )
+    }
+    this.refresh()
+  }
+
+  refresh() {
+    setTimeout(() => {
+      this.editors.forEach(editor => {
+        editor.instance.setSize(null, '10vh')
+        editor.instance.setOption('readOnly', true)
+        editor.instance.refresh()
+      })
+    }, 100)
   }
 
   errHandler(err) {
@@ -80,4 +108,5 @@ export class BlogComponent {
       cssClass: 'ui error message', timeout: 4000
     })
   }
+
 }

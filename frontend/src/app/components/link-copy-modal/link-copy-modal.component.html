@@ -1,0 +1,22 @@
+<sui-modal [transitionDuration]="200" (dismissed)="titleChange.emit(null)" [isBasic]="true">
+  <div class="header">
+    Sharable link for this snippet:
+  </div>
+  <div class="content">
+    <div class="ui fluid action input">
+      <input id="link" type="text" [ngModel]="sharedLink">
+      <button class="ui teal right labeled icon button" (click)="copyLink()" [class.disabled]="!isCopySupported()">
+        <i class="copy icon"></i>
+        Copy
+      </button>
+    </div>
+    <div *ngIf="!isCopySupported()" class="ui error message">
+      <div class="header">Your browser doesn't support auto copy</div>
+      To copy manually, press
+      <strong>Ctrl+C</strong> or right click the selected url and click copy.
+    </div>
+    <div *ngIf="linkCopied" class="ui success message">
+      <strong>Link copied to clipboard!</strong>
+    </div>
+  </div>
+</sui-modal>
