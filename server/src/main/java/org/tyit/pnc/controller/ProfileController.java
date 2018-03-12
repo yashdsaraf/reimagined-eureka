@@ -23,8 +23,12 @@
   import org.tyit.pnc.model.AppUser;
   import org.tyit.pnc.service.ProfileService;
 
+  import javax.mail.MessagingException;
+  import javax.naming.NamingException;
   import java.security.Principal;
   import java.util.Map;
+  import java.util.logging.Level;
+  import java.util.logging.Logger;
 
   /**
    * @author Raees R. Mulla
@@ -34,45 +38,51 @@
   @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public class ProfileController {
 
-    private final ProfileService profileService;
+      private final ProfileService profileService;
 
-    @Autowired
-    public ProfileController(ProfileService profileService) {
-      this.profileService = profileService;
-    }
-
-    @GetMapping
-    public ResponseEntity<AppUser> getUserDetails(Principal principal) {
-      return ResponseEntity.ok(profileService.getUserDetails(principal.getName()));
-    }
-
-    @PostMapping
-    public ResponseEntity<String> setUserDetails(
-            @RequestParam Map<String, String> map,
-            Principal principal
-    ) {
-      try {
-        String password = map.get("password");
-        AppUser user = new ObjectMapper().readValue(map.get("user"), AppUser.class);
-        profileService.setUserDetails(user, principal.getName(), password);
-        return ResponseEntity.ok().build();
-      } catch (Exception ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+      @Autowired
+      public ProfileController(ProfileService profileService) {
+          this.profileService = profileService;
       }
-    }
 
-    @PostMapping("/password")
-    public ResponseEntity<String> setPassword(
-            @RequestParam("oldPassword") String oldPassword,
-            @RequestParam("newPassword") String newPassword,
-            Principal principal
-    ) {
-      try {
-        profileService.setPassword(newPassword, oldPassword, principal.getName());
-        return ResponseEntity.ok().build();
-      } catch (Exception ex) {
-        return ResponseEntity.badRequest().body(ex.getMessage());
+      @GetMapping
+      public ResponseEntity<AppUser> getUserDetails(Principal principal) {
+          return ResponseEntity.ok(profileService.getUserDetails(principal.getName()));
       }
-    }
+
+      @PostMapping
+      public ResponseEntity<String> setUserDetails(
+              @RequestParam Map<String, String> map,
+              Principal principal
+      ) {
+          try {
+              String password = map.get("password");
+              AppUser user = new ObjectMapper().readValue(map.get("user"), AppUser.class);
+              profileService.setUserDetails(user, principal.getName(), password);
+              return ResponseEntity.ok().build();
+          } catch (MessagingException | NamingException ex) {
+              Logger.getLogger(ProfileController.class.getName()).log(Level.WARNING, ex.getMessage());
+              return ResponseEntity.ok().build();
+          } catch (Exception ex) {
+              return ResponseEntity.badRequest().body(ex.getMessage());
+          }
+      }
+
+      @PostMapping("/password")
+      public ResponseEntity<String> setPassword(
+              @RequestParam("oldPassword") String oldPassword,
+              @RequestParam("newPassword") String newPassword,
+              Principal principal
+      ) {
+          try {
+              profileService.setPassword(newPassword, oldPassword, principal.getName());
+              return ResponseEntity.ok().build();
+          } catch (MessagingException | NamingException ex) {
+              Logger.getLogger(ProfileController.class.getName()).log(Level.WARNING, ex.getMessage());
+              return ResponseEntity.ok().build();
+          } catch (Exception ex) {
+              return ResponseEntity.badRequest().body(ex.getMessage());
+          }
+      }
 
   }

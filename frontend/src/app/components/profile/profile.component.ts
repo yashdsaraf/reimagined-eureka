@@ -27,6 +27,7 @@ import {FlashMessagesService} from 'angular2-flash-messages'
 
 import {AuthService} from '../../services/auth.service'
 import {DisplayNameService} from '../../services/display-name.service'
+import {LogoutService} from '../../services/logout.service'
 import {ProfileService} from '../../services/profile.service'
 import {isMobile} from '../../app.component'
 import {User} from '../../models/user'
@@ -57,7 +58,8 @@ export class ProfileComponent {
     private flashMessagesService: FlashMessagesService,
     private profileService: ProfileService,
     private injector: Injector,
-    private displayNameService: DisplayNameService
+    private displayNameService: DisplayNameService,
+    private logoutService: LogoutService
   ) {
     this.isMobile = isMobile
     this.editable = false
@@ -71,6 +73,8 @@ export class ProfileComponent {
       err => this.errorHandler(err)
     )
     this.password = ''
+    this.confirmPassword = ''
+    this.newPassword = ''
   }
 
   openModal() {
@@ -103,9 +107,19 @@ export class ProfileComponent {
     this.loading = true
     this.profileService.setUserDetails(this.user, this.password).subscribe(
       data => {
-        this.refresh()
+        let authService = this.injector.get(AuthService)
+        authService.getTokens(this.user.username, this.password).subscribe(
+          tokens => {
+            authService.updateTokens(tokens.access_token, tokens.refresh_token)
+            this.displayNameService.updateName(authService.getSavedTokens().access_token)
+            this.refresh()
+          },
+          err => {
+            this.refresh()
+            this.logoutService.logout(null, decodeError(err))
+          }
+        )
         this.editable = false
-        this.displayNameService.updateName(this.injector.get(AuthService).getSavedTokens().access_token)
         this.flashMessagesService.show('Profile updated successfully!', {
           cssClass: 'ui success message'
         })
@@ -127,6 +141,7 @@ export class ProfileComponent {
           cssClass: 'ui success message'
         })
         this.loading = false
+        this.refresh()
       },
       err => this.errorHandler(err)
     )
