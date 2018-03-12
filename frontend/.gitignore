@@ -48,5 +48,5 @@ Thumbs.db
 *.css.map
 src/semantic/dist
 
-application.ts
+src/app/utils/application.ts
 documentation/
