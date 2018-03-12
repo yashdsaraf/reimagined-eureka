@@ -108,7 +108,7 @@ public class ProjectController {
   }
 
   @GetMapping("/save")
-  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
+//  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
   public ResponseEntity<Map<String, String>> saveProject(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {

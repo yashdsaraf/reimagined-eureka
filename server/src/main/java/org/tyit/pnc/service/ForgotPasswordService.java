@@ -17,13 +17,11 @@ package org.tyit.pnc.service;
 
 import org.bouncycastle.util.encoders.Hex;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.tyit.pnc.model.AppUser;
 import org.tyit.pnc.repository.AppUserRepository;
-import org.tyit.pnc.utils.SendEmail;
 
 import javax.mail.MessagingException;
 import javax.naming.NamingException;
@@ -44,21 +42,12 @@ public class ForgotPasswordService {
 
   private final AppUserRepository appUserRepository;
 
-  @Value("${user.mail.username}")
-  private String username;
-
-  @Value("${user.mail.password}")
-  private String password;
-
-  @Value("${user.mail.server}")
-  private String server;
-
-  @Value("${user.mail.port}")
-  private String port;
+  private final EmailService emailService;
 
   @Autowired
-  public ForgotPasswordService(AppUserRepository appUserRepository) {
+  public ForgotPasswordService(AppUserRepository appUserRepository, EmailService emailService) {
     this.appUserRepository = appUserRepository;
+    this.emailService = emailService;
   }
 
   public ResponseEntity<String> checkEmail(String email, HttpServletRequest req) {
@@ -76,7 +65,7 @@ public class ForgotPasswordService {
       String body = "Hello, your One Time Password (OTP) is " + otp + ".\n"
               + "Please note that this OTP will expire after 10 minutes.\n"
               + "Cheers!";
-      new SendEmail(username, password, server, port).send(email, subject, body);
+      emailService.sendEmail(email, subject, body);
     } catch (MessagingException | NamingException ex) {
       return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }

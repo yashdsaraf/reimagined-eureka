@@ -15,3 +15,35 @@
  */
 
 @import base
+
+#container
+  flex-direction: column
+  display: flex
+  padding: 1em
+  align-items: center
+  font-family: $sans-serif
+  background-color: #f8f9fa
+  height: 100%
+  width: 100%
+  overflow: auto
+
+  .ui.error.message
+    font-weight: bold
+
+  .divider
+    color: grey
+
+  label
+    font-family: $sans-serif
+
+  .icon,
+  .label
+    user-select: none
+
+  #user-details
+    padding: 1em
+
+  @media only screen and (min-width: 769px)
+
+    #main
+      max-width: 40vw !important

@@ -17,7 +17,7 @@
 export interface User {
   name: string
   username: string
-  password: string
+  password?: string
   email: string
   createdOn?: Date
   role?: string

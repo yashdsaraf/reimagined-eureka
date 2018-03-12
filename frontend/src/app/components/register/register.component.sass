@@ -20,11 +20,15 @@
   flex-direction: column
   display: flex
   padding: 1em
+  background-color: #f8f9fa
 
   span
     font-family: $cursive
     font-size: 1em
     color: green
+
+  .divider
+    margin-bottom: 0
 
   label
     font-family: $sans-serif
@@ -39,3 +43,8 @@
   .icon,
   .label
     user-select: none
+
+  @media only screen and (min-width: 769px)
+
+    #main
+      max-width: 40vw !important

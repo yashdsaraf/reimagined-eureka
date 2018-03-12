@@ -76,6 +76,7 @@ import {LinkCopyModalComponent} from './components/link-copy-modal/link-copy-mod
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {PluginsService} from './services/plugins.service'
+import {ProfileService} from './services/profile.service'
 import {ProgressBarService} from './services/progress-bar.service'
 import {ProjectSettingsService} from './services/project-settings.service'
 import {StartupService} from './services/startup.service'
@@ -161,6 +162,7 @@ export function init(startupService: StartupService) {
     LoginService,
     LogoutService,
     PluginsService,
+    ProfileService,
     ProgressBarService,
     ProjectSettingsService,
     StartupService,

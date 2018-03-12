@@ -24,7 +24,8 @@ import {
   QueryList,
   ViewChild,
   ViewChildren,
-  Renderer2
+  Renderer2,
+  Injector
 } from '@angular/core'
 import {
   animate,
@@ -173,7 +174,8 @@ import {isMobile} from '../../app.component'
 import {Output} from '../../models/output'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
 import {decodeError} from '../../utils/general-utils'
-import {CodeSnippet} from '../../models/code-snippet';
+import {CodeSnippet} from '../../models/code-snippet'
+import {AuthService} from '../../services/auth.service'
 
 declare const $: any
 
@@ -218,7 +220,8 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     private progressBarService: ProgressBarService,
     private renderer: Renderer2,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private injector: Injector
   ) {
     this.isMobile = isMobile
     this.indexSubscription = indexService.emitter.subscribe(openFiles => {
@@ -231,7 +234,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     this._shareCodeModal = false
     this.isSnippetTitleLoading = false
     this.isSnippetTitleValid = false
-    this.dontAskAgain = true
+    this.dontAskAgain = false
     this.sharedLink = null
   }
 
@@ -344,11 +347,16 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   saveProject() {
-    if (this.configService.getSaveAs() == null) {
-      this.saveAsModal = true
-      return
+    let saveAs
+    if (this.injector.get(AuthService).getRole() == 'GUEST') {
+      saveAs = 'offline'
+    } else {
+      if (this.configService.getSaveAs() == null) {
+        this.saveAsModal = true
+        return
+      }
+      saveAs = this.configService.getSaveAs(true)
     }
-    let saveAs = this.configService.getSaveAs(true)
     if (!this.dontAskAgain) {
       this.configService.deleteSaveAs()
     }

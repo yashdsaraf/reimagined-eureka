@@ -27,10 +27,40 @@ declare var $:any
 })
 export class OutputComponent {
 
-  @Input('stdout') stdout: string
-  @Input('stderr') stderr: string
+  _stdout: string
+  _stderr: string
+  showOutputIndicator: boolean
+  showErrorIndicator: boolean
 
-  constructor() {}
+  constructor() {
+    this.showOutputIndicator = false
+    this.showErrorIndicator = false
+  }
+
+
+  @Input('stdout')
+  set stdout(value: string) {
+    if (value != null && value != '') {
+      this.showOutputIndicator = true
+    }
+    this._stdout = value
+  }
+
+  get stdout(): string {
+    return this._stdout
+  }
+
+  @Input('stderr')
+  set stderr(value: string) {
+    if (value != null && value != '') {
+      this.showErrorIndicator = true
+    }
+    this._stderr = value
+  }
+
+  get stderr(): string {
+    return this._stderr
+  }
 
   ngAfterViewInit(){
 

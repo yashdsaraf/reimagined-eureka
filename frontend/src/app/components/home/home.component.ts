@@ -122,6 +122,10 @@ export class HomeComponent {
   }
 
   openOnlineProject() {
+    if (this.isNotLoggedIn() || this.authService.getRole() == 'GUEST') {
+      this.router.navigate(['/login'])
+      return
+    }
     this.openProjectModal = false
     this.explorer.choose({
       types: ['tgz', 'tar.gz']
@@ -149,6 +153,10 @@ export class HomeComponent {
   }
 
   openOfflineProject() {
+    if (this.isNotLoggedIn()) {
+      this.router.navigate(['/login'])
+      return
+    }
     this.offlineOpenModal = false
     if (this.currentOperation == 'import') {
       this.importMarketPlaceModal = true
@@ -164,6 +172,10 @@ export class HomeComponent {
   }
 
   importProject() {
+    if (this.isNotLoggedIn()) {
+      this.router.navigate(['/login'])
+      return
+    }
     let [entrypoint, plugin, project] = this.importDetails
     switch (this.currentOperation) {
       case 'importOffline':
@@ -175,6 +187,10 @@ export class HomeComponent {
         )
         break
       case 'importOnline':
+        if (this.authService.getRole() == 'GUEST') {
+          this.router.navigate(['/login'])
+          return
+        }
         this.coreService.importFromLink(this.openLink, plugin, project, entrypoint).subscribe(
           data => this.router.navigate(['/index', {mode: data}]),
           err => {
@@ -217,9 +233,17 @@ export class HomeComponent {
   }
 
   showOpenProjectModal(operation: string) {
+    if (this.isNotLoggedIn()) {
+      this.router.navigate(['/login'])
+      return
+    }
     this.isProjectInSession().then(() => {
-      this.openProjectModal = true
       this.currentOperation = operation
+      if (this.authService.getRole() == 'GUEST') {
+        this.openOfflineModal()
+        return
+      }
+      this.openProjectModal = true
     }).catch(() => {})
   }
 

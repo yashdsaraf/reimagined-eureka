@@ -1,3 +1,197 @@
-<p>
-  profile works!
-</p>
+<div id="container">
+  <div class="ui raised padded container segment" id="main">
+    <h1 class="ui header" style="margin-bottom: 0">
+      Profile
+    </h1>
+    <div class="ui divider" style="margin: 0"></div>
+    <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onSubmit(f)">
+      <div class="fields">
+        <div class="field">
+          <div id="profile-img" [appIdenticon]="getIdenticonObject()">
+          </div>
+        </div>
+        <div class="field" id="user-details">
+          <h2 class="ui header">{{user.name}}</h2>
+          <h4 class="ui header">
+            <span style="color: grey;">Role:&nbsp;</span>{{user.role}}</h4>
+          <h4 class="ui header">
+            <span style="color: grey;">Created on:&nbsp;</span>{{user.createdOn | date}}</h4>
+        </div>
+      </div>
+      <div class="field" [ngClass]="{error: Name.errors && Name.touched, 'fluid': isMobile}">
+        <label>Name</label>
+        <div class="ui fluid left icon input" [ngClass]="{disabled: !editable}">
+          <input type="text" [(ngModel)]="user.name" name="name" #Name="ngModel" required pattern="^[a-zA-Z]+(\s|\.\s)?([a-zA-Z](\s|\.\s)?)*[a-zA-Z]+$"
+            maxlength="80">
+          <i class="user circle icon"></i>
+        </div>
+        <div *ngIf="Name.errors?.required && Name.touched" class="ui error message">
+          Name is required
+        </div>
+        <div *ngIf="Name.errors?.pattern && Name.touched" class="ui error message">
+          Invalid name
+        </div>
+      </div>
+      <!-- Name field -->
+
+      <div class="field" [ngClass]="{error: Email.errors && Email.touched, 'fluid': isMobile}">
+        <label>Email address</label>
+        <div class="ui fluid left icon input" [ngClass]="{ disabled: !editable }">
+          <input type="email" [(ngModel)]="user.email" name="email" #Email="ngModel" required pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$">
+          <i class="mail icon"></i>
+        </div>
+        <div *ngIf="Email.errors?.required && Email.touched" class="ui error message">
+          Email address is required
+        </div>
+        <div *ngIf="Email.errors?.pattern && Email.touched" class="ui error message">
+          Invalid email address
+        </div>
+      </div>
+      <!-- Email id field -->
+
+      <div class="field" [ngClass]="{error: Username.errors && Username.touched, 'fluid': isMobile}">
+        <label>Login ID</label>
+        <div class="ui fluid left icon input" [ngClass]="{disabled: !editable}">
+          <input type="text" [(ngModel)]="user.username" name="username" #Username="ngModel" minlength="8" required pattern="^\S*$">
+          <i class="id badge icon"></i>
+        </div>
+        <div *ngIf="Username.errors?.required && Username.touched" class="ui error message">
+          Login ID is required
+        </div>
+        <div *ngIf="Username.errors?.minlength && Username.touched" class="ui error message">
+          Must be at least 8 characters
+        </div>
+        <div *ngIf="Username.errors?.pattern && Username.touched" class="ui error message">
+          Login ID can't have spaces
+        </div>
+      </div>
+      <!-- Username field -->
+
+
+      <div class="inline fields">
+        <div class="field">
+          <button type="button" id="clear" class="ui labeled icon submit button" (click)="editable = !editable; refresh()" [ngClass]="{ tiny: isMobile, primary: !editable, negative: editable}">
+            <ng-container *ngIf="!editable">
+              Edit
+              <i class="edit icon"></i>
+            </ng-container>
+            <ng-container *ngIf="editable">
+              Cancel
+              <i class="close icon"></i>
+            </ng-container>
+          </button>
+        </div>
+        <!-- edit button field -->
+        <ng-container *ngIf="isMobile">
+          <br>
+          <br>
+        </ng-container>
+        <div class="field">
+          <button type="button" class="ui blue basic button" (click)="passModal = true; editable = false" [ngClass]="{ tiny: isMobile }">
+            Change password
+          </button>
+        </div>
+      </div>
+      <!-- change pass field -->
+
+      <ng-container *ngIf="editable">
+        <br>
+        <div class="field" [ngClass]="{error: Password.errors && Password.touched, 'fluid': isMobile}">
+          <label>Enter current password</label>
+          <div class="ui right labeled fluid left icon input">
+            <i class="icon lock"></i>
+            <input type="password" [(ngModel)]="password" name="password" #Password="ngModel" autofocus required #passwordField>
+            <a class="ui label" (click)="passwordField.type = passwordField.type == 'password' ? 'text': 'password'; passwordField.focus()">
+              &nbsp;&nbsp;
+              <i class="icon" [ngClass]="{hide: passwordField.type == 'text', unhide: passwordField.type == 'password'}"></i>
+            </a>
+          </div>
+          <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+            Password is required
+          </div>
+        </div>
+        <!-- Password field -->
+
+        <button type="submit" class="ui positive submit labeled icon button" [ngClass]="{loading: loading, tiny: isMobile }">
+          <i class="icon save"></i>
+          Save changes
+        </button>
+      </ng-container>
+    </form>
+
+    <div class="ui divider" style="margin-bottom: 0"></div>
+  </div>
+  <!-- main -->
+
+</div>
+<!-- container -->
+
+<sui-modal *ngIf="passModal" (dismissed)="closeModal()" size="mini">
+  <div class="header">
+    Change password
+  </div>
+  <div class="content">
+    <form class="ui form error" novalidate #f="ngForm" (ngSubmit)="onPasswordSubmit(f)">
+
+      <div class="field" [ngClass]="{error: Password.errors && Password.touched, 'fluid': isMobile}">
+        <label>Enter current password</label>
+        <div class="ui right labeled fluid left icon input">
+          <i class="icon lock"></i>
+          <input type="password" [(ngModel)]="password" name="password" #Password="ngModel" autofocus required #currentPasswordField>
+          <a class="ui label" (click)="currentPasswordField.type = currentPasswordField.type == 'password' ? 'text': 'password'; currentPasswordField.focus()">
+            &nbsp;&nbsp;
+            <i class="icon" [ngClass]="{hide: currentPasswordField.type == 'text', unhide: currentPasswordField.type == 'password'}"></i>
+          </a>
+        </div>
+        <div *ngIf="Password.errors?.required && Password.touched" class="ui error message">
+          Password is required
+        </div>
+      </div>
+      <!-- Password field -->
+
+      <div class="field" [ngClass]="{error: NewPassword.errors && NewPassword.touched, 'fluid': isMobile}">
+        <label>Enter new password</label>
+        <div class="ui right labeled fluid left icon input">
+          <i class="icon lock"></i>
+          <input type="password" placeholder="New password" [(ngModel)]="newPassword" name="newPassword" #NewPassword="ngModel" minlength="8"
+            pattern="^\S*$" required #newPasswordField>
+          <a class="ui label" (click)="newPasswordField.type = newPasswordField.type == 'password' ? 'text': 'password'; newPasswordField.focus()">
+            &nbsp;&nbsp;
+            <i class="icon" [ngClass]="{hide: newPasswordField.type == 'text', unhide: newPasswordField.type == 'password'}"></i>
+          </a>
+        </div>
+        <div *ngIf="NewPassword.errors?.required && NewPassword.touched" class="ui error message">
+          Password is required
+        </div>
+        <div *ngIf="NewPassword.errors?.minlength && NewPassword.touched" class="ui error message">
+          Must be at least 8 characters
+        </div>
+        <div *ngIf="NewPassword.errors?.pattern && NewPassword.touched" class="ui error message">
+          Password can't have spaces
+        </div>
+      </div>
+      <!-- New Password field -->
+
+      <div class="field" [ngClass]="{error: cPassword.errors && cPassword.touched, 'fluid': isMobile}">
+        <label>Confirm password</label>
+        <div class="ui fluid left icon input">
+          <input type="password" [(ngModel)]="confirmPassword" name="confirmPassword" placeholder="Retype password" #cPassword="ngModel"
+            required pattern="^\S*$">
+          <i class="lock icon"></i>
+        </div>
+        <div *ngIf="cPassword.errors?.required && cPassword.touched" class="ui error message">
+          Please retype your password
+        </div>
+        <div *ngIf="newPassword!=confirmPassword && cPassword.touched" class="ui error message">
+          These passwords don't match. Try again?
+        </div>
+      </div>
+      <button type="submit" class="ui positive right labeled icon button" [class.loading]="loading">
+        Update password
+        <i class="check icon"></i>
+      </button>
+      <!-- Confirm password field -->
+    </form>
+  </div>
+</sui-modal>
+<!-- passwordModal -->
