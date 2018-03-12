@@ -86,6 +86,7 @@
       <input type="text" name="project" [(ngModel)]="projectDetails.project" #Project="ngModel" placeholder="e.g My project"
       required pattern="(\.)*([_\w\d- ])+.*">
     </div>
+    <br>
     <div *ngIf="Project.errors?.required && Project.touched" class="ui error compact message">
       Project is required
     </div>
@@ -96,6 +97,7 @@
     <div class="ui inverted input">
       <input type="text" name="entrypoint" [(ngModel)]="projectDetails.entrypoint" #Entrypoint="ngModel" placeholder="e.g Main.py" required pattern="(\.)*([_\w\d- ])+.*">
     </div>
+    <br>
     <div *ngIf="Entrypoint.errors?.required && Entrypoint.touched" class="ui error compact message">
       File name is required
     </div>
