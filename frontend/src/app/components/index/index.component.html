@@ -31,7 +31,7 @@
 
 <a #downloadLink></a>
 
-<sui-modal *ngIf="saveAsModal" [isClosable]="false" [isBasic]="true" #saveAsModal>
+<sui-modal *ngIf="saveAsModal" [isClosable]="true" (dismissed)="saveAsModal = false" [isBasic]="true">
   <div class="header">Where to save?</div>
   <div class="content">
     <div class="ui centered two column grid">

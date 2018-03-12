@@ -53,6 +53,7 @@ export class LogoutService {
       }
     )
     sessionStorage.clear()
+    localStorage.clear()
     this.authService.deleteTokens()
     this.router.navigate(['/logout', params])
   }

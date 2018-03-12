@@ -43,6 +43,8 @@ export class StartupService {
     }
     if (this.authService.isTokenExpired(tokens.refresh_token)) {
       this.authService.deleteTokens()
+      localStorage.clear()
+      sessionStorage.clear()
       return
     }
     this.authService.getTokensUsingRefreshToken()
