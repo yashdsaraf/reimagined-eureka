@@ -43,7 +43,7 @@ export class CoreService {
     let params = new HttpParams()
       .append('project', projectName)
       .append('entrypoint', entrypoint)
-      .append('plugin', lang)
+      .append('plugin', btoa(lang))
     return this.http.get('/api/project/create', {params, responseType: 'text'})
   }
 

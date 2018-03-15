@@ -2,7 +2,7 @@
 
 REM Script control variables
 set machine_name=plugncode
-set images=openjdk:8 python:3 php:7.0-cli ruby:2
+set images=openjdk:8 python:3 php:7.0-cli ruby:2 gcc:7 mono:5
 
 echo.
 call :showLine

@@ -30,6 +30,7 @@ import org.tyit.pnc.utils.JwtUtils;
 import javax.servlet.http.HttpServletRequest;
 import java.nio.file.Path;
 import java.security.Principal;
+import java.util.Base64;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -71,6 +72,7 @@ public class ProjectController {
                                               Principal principal,
                                               HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
+    lang = new String(Base64.getDecoder().decode(lang));
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       String mode = coreService.build(jti, lang, projectName, entrypoint, principal.getName());
