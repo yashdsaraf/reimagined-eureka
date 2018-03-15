@@ -33,7 +33,10 @@ declare const $: any
   selector: 'app-video-modal',
   template: `
   <div id="container">
-    <iframe [src]="url" frameborder="0" allow="autoplay; encrypted-media" webkitallowfullscreen="webkitallowfullscreen" mozallowfullscreen="mozallowfullscreen" msallowfullscreen="msallowfullscreen" oallowfullscreen="oallowfullscreen" allowfullscreen="allowfullscreen"></iframe>
+    <iframe [src]="url" frameborder="0" allow="autoplay;  encrypted-media"></iframe>
+  </div>
+  <div class="actions">
+  <a [attr.href]="url" target="_blank">Click me! (Full screen)</a>
   </div>
   `,
   styleUrls: ['./video-modal.component.sass']
@@ -57,6 +60,5 @@ export class VideoModal extends ComponentModalConfig<IVideoModalContext, void, v
     this.isClosable = true
     this.isBasic = true
     this.transitionDuration = 200
-    this.size = size
   }
 }
