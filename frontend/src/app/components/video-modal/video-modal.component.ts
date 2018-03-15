@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import {Component} from '@angular/core'
+import {Component, OnInit} from '@angular/core'
 import {DomSanitizer} from '@angular/platform-browser'
 
 import {
@@ -22,6 +22,8 @@ import {
   ModalSize,
   SuiModal
 } from 'ng2-semantic-ui'
+
+import {isMobile} from '../../app.component'
 
 interface IVideoModalContext {
   link: string
@@ -36,20 +38,51 @@ declare const $: any
     <iframe [src]="url" frameborder="0" allow="autoplay;  encrypted-media"></iframe>
   </div>
   <div class="actions">
-  <a [attr.href]="url" target="_blank">Click me! (Full screen)</a>
+    <a class="ui icon button" [class.tiny]="isMobile" [attr.href]="url" target="_blank">
+      View in full screen
+      <i class="expand icon"></i>
+    </a>
+    <button type="button" class="ui icon button" [class.tiny]="isMobile" (click)="watchLater()">
+      Watch it later
+      <i class="clock icon"></i>
+    </button>
+    <button type="button" class="ui negative icon button" [class.tiny]="isMobile" (click)="skipVideo()">
+      Skip video
+      <i class="forward icon"></i>
+    </button>
   </div>
   `,
   styleUrls: ['./video-modal.component.sass']
 })
-export class VideoModalComponent {
+export class VideoModalComponent implements OnInit {
+
+  isMobile: boolean
 
   constructor(
     public modal: SuiModal<IVideoModalContext, void, void>,
     public sanitizer: DomSanitizer
-  ) {}
+  ) {
+    this.isMobile = isMobile
+  }
+
+  ngOnInit() {
+    if (localStorage.getItem('skip-tut-video') == 'true') {
+      this.modal.deny(undefined)
+    }
+  }
 
   get url() {
     return this.sanitizer.bypassSecurityTrustResourceUrl(this.modal.context.link)
+  }
+
+  skipVideo() {
+    localStorage.setItem('skip-tut-video', 'true')
+    this.modal.deny(undefined)
+  }
+
+  watchLater() {
+    localStorage.setItem('skip-tut-video', 'false')
+    this.modal.deny(undefined)
   }
 
 }

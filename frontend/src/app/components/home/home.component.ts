@@ -123,11 +123,21 @@ export class HomeComponent {
       persist: 'session'
     })
     setTimeout(() => {
-      if (this.isNotLoggedIn()) {
-        this.suiModalService.open(new VideoModal('https://www.youtube.com/embed/Skk-fNV-D5M?rel=0'))
-      } else {
-        this.suiModalService.open(new VideoModal('https://www.youtube.com/embed/4vW2hpY_7Aw?rel=0'))
+      let link: string
+      switch (this.authService.getRole()) {
+        case 'GUEST':
+          link = 'https://www.youtube.com/embed/4vW2hpY_7Aw?rel=0'
+          break
+        case 'USER':
+          link = 'https://www.youtube.com/embed/UhZcXKs5lfE?rel=0'
+          break
+        case 'DEVELOPER':
+          link = 'https://www.youtube.com/embed/aixbKGuTMtY?rel=0'
+          break
+        default:
+          link = 'https://www.youtube.com/embed/Skk-fNV-D5M?rel=0'
       }
+      this.suiModalService.open(new VideoModal(link))
     })
   }
 
