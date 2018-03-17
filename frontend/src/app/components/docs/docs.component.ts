@@ -19,6 +19,7 @@ import {Http} from '@angular/http'
 import {ActivatedRoute} from '@angular/router'
 
 import {DocItem, DOCS} from './docs-content'
+import {isMobile} from '../../app.component'
 
 @Component({
   selector: 'app-docs',
@@ -29,11 +30,15 @@ export class DocsComponent {
 
   menu: DocItem[]
   content: string
+  isMobile: boolean
+  isMenuOpen: boolean
 
   constructor(
     private route: ActivatedRoute,
     private http: Http
   ) {
+    this.isMobile = isMobile
+    this.isMenuOpen = true
     this.menu = DOCS
     let page = route.snapshot.params['page']
     if (page !== undefined && page !== null) {
@@ -49,5 +54,6 @@ export class DocsComponent {
       (data: any) => this.content = data._body
     )
   }
+
 
 }
