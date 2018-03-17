@@ -18,6 +18,7 @@ import {Component} from '@angular/core'
 import {Router} from '@angular/router'
 
 import {FlashMessagesService} from 'angular2-flash-messages'
+import {SuiModalService} from 'ng2-semantic-ui'
 
 import {AuthService} from '../../services/auth.service'
 import {ContactsService} from '../../services/contacts.service'
@@ -26,6 +27,7 @@ import {ImagesService} from '../../services/images.service'
 import {isMobile} from '../../app.component'
 import {KLOUDLESS_APP_ID} from '../../utils/application'
 import {decodeError} from '../../utils/general-utils'
+import {VideoModal} from '../video-modal/video-modal.component'
 
 @Component({
   selector: 'app-home',
@@ -92,7 +94,8 @@ export class HomeComponent {
     private coreService: CoreService,
     private flashMessagesService: FlashMessagesService,
     private imagesService: ImagesService,
-    private router: Router
+    private router: Router,
+    private suiModalService: SuiModalService
   ) {
     this.isMobile = isMobile
     this.imagesService.getImage('home').subscribe(
@@ -118,6 +121,23 @@ export class HomeComponent {
       app_id: KLOUDLESS_APP_ID,
       computer: true,
       persist: 'session'
+    })
+    setTimeout(() => {
+      let link: string
+      switch (this.authService.getRole()) {
+        case 'GUEST':
+          link = 'https://www.youtube.com/embed/4vW2hpY_7Aw?rel=0'
+          break
+        case 'USER':
+          link = 'https://www.youtube.com/embed/UhZcXKs5lfE?rel=0'
+          break
+        case 'DEVELOPER':
+          link = 'https://www.youtube.com/embed/aixbKGuTMtY?rel=0'
+          break
+        default:
+          link = 'https://www.youtube.com/embed/Skk-fNV-D5M?rel=0'
+      }
+      this.suiModalService.open(new VideoModal(link))
     })
   }
 
