@@ -77,7 +77,7 @@
 </sui-modal>
 <!-- save as modal -->
 
-<sui-modal *ngIf="_shareCodeModal" [isClosable]="true" (dismissed)="shareCodeModal = false" (approved)="shareCode($event)"
+<sui-modal *ngIf="_shareCodeModal" [isClosable]="true" (dismissed)="_shareCodeModal = false" (approved)="shareCode($event)"
   #shareModal>
   <div class="header">Enter title for your snippet</div>
   <div class="content">

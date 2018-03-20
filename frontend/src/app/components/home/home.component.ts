@@ -134,6 +134,8 @@ export class HomeComponent {
         case 'DEVELOPER':
           link = 'https://www.youtube.com/embed/aixbKGuTMtY?rel=0'
           break
+	case 'ADMIN':
+	  return
         default:
           link = 'https://www.youtube.com/embed/Skk-fNV-D5M?rel=0'
       }
