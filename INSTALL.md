@@ -27,7 +27,8 @@ Optional:
   ```shell
   mvn install:install-file -Dfile=ojdbc6.jar -DgroupId=com.oracle -DartifactId=ojdbc6 -Dversion=11.2.0.4 -Dpackaging=jar
   ```
-  - Create a YAML file for database configuration properties at `reimagined-eureka\server\src\main\resources\application.yml` (You can refer to the `application.yml.stub` file in the same directory)
+  - Create a YAML file for database, smtp and aws configuration properties at `reimagined-eureka\server\src\main\resources\application.yml` (You can refer to the `application.yml.stub` file in the same directory)
+  - Create a TS file for kloudless setup at `reimagined-eureka\frontend\src\app\utils\application.ts`. (You can refer to the `application.ts.stub` file in the same directory)
 
 ### Netbeans specific setup instructions (optional)
   - Download [Netbeans typescript plugin](https://github.com/Everlaw/nbts/releases/latest).
