@@ -1,0 +1,141 @@
+<div id="container">
+  <div id="left-header">
+    <a class="ui logo icon image" routerLink="/home">
+      <!-- <img id="logo" src="../../../assets/images/logo.png"> -->
+      <div id="logo">Plug n' Code</div>
+    </a>
+    <button *ngIf="isMobile" id="header-toggle" class="ui inverted basic blue icon button" (click)="isHeaderOpen = !isHeaderOpen">
+      <i class="arrow icon" [ngClass]="{'down': !isHeaderOpen, 'up': isHeaderOpen}"></i>
+    </button>
+  </div>
+  <!-- left-header -->
+
+  <div *ngIf="isHeaderOpen" id="right-header">
+    <div id="wrapper-1">
+      <a routerLink="/aboutus">About us</a>
+      <a routerLink="/docs">Docs</a>
+      <a routerLink="/blog">Blog</a>
+      <a href="https://www.apache.org/licenses/LICENSE-2.0" target="_blank">License</a>
+      <a routerLink="/marketplace">Marketplace</a>
+    </div>
+    <!-- wrapper-1 -->
+    <div id="wrapper-2">
+      <div *ngIf="getRole() == null, else loggedIn" class="ui floated medium buttons">
+        <button id="login-button" class="ui button" routerLink="/login">Login</button>
+        <div class="or"></div>
+        <button class="ui green button" routerLink="/register">Sign up</button>
+      </div>
+      <ng-template #loggedIn>
+        <div id="logged-in">
+          <div id="editor-btn" *ngIf="isEditorBtnVisible" class="ui compact secondary inverted icon button" [ngClass]="{small: isMobile}"
+            (click)="indexService.clearAll()" routerLink="/index">
+            <i class="icon code"></i>
+            Go to editor
+          </div>
+          <div id="username">Hi, {{name}}</div>
+          <div class="ui dropdown" suiDropdown>
+            <div id="profile" [appIdenticon]="getIdenticonObject()">
+            </div>
+            <i class="icon dropdown"></i>
+            <div class="left menu" suiDropdownMenu>
+              <div class="header">
+                <i class="icon user circle"></i>
+                {{getRole()}}
+              </div>
+              <!-- header -->
+              <div class="divider"></div>
+              <ng-container *ngIf="getRole() == 'GUEST'">
+                <div class="item guest-button" routerLink="/login">
+                  Login
+                </div>
+                <div class="item guest-button" routerLink="/register">
+                  Sign up
+                </div>
+                <div class="divider"></div>
+              </ng-container>
+              <!-- Guest -->
+              <ng-container *ngIf="getRole() == 'DEVELOPER'">
+                <div class="item" routerLink="/plugins">
+                  Developer console
+                </div>
+              </ng-container>
+              <!-- Developer -->
+              <ng-container *ngIf="getRole() == 'ADMIN'">
+                <div class="item" routerLink="/admin">
+                  Admin console
+                </div>
+              </ng-container>
+              <!-- Admin -->
+              <ng-container *ngIf="getRole() != null && getRole() != 'GUEST'">
+                <div class="item" routerLink="/profile">
+                  Profile
+                </div>
+                <div class="divider"></div>
+              </ng-container>
+              <!-- profile -->
+              <ng-container *ngIf="getRole() == 'USER'">
+                <div id="dev-access" class="item" (click)="openDevPrompt()">
+                  Become a developer!
+                </div>
+                <div class="divider"></div>
+              </ng-container>
+              <!-- dev-access -->
+              <div id="logout" class="item" (click)="logout()">
+                <i class="icon power"></i>
+                Logout
+              </div>
+              <!-- logout -->
+              <div class="divider"></div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+    <!-- wrapper-2 -->
+  </div>
+  <!-- right-header -->
+</div>
+<!-- container -->
+
+<sui-modal *ngIf="devPrompt" (denied)="devPrompt = false" size="tiny" #devPromptModal>
+  <h2 class="ui header">Become a developer!</h2>
+  <div class="content">
+    <div class="ui header">Steps to generate your key pair:</div>
+    <div class="ui info message">
+      <p>Copy the following commands in your
+        <strong>local terminal</strong> or
+        <strong>cmd</strong>
+      </p>
+      <div id="key-commands" class="ui bulleted relaxed divided list">
+        <div class="item">openssl genrsa -out private_key.pem 2048</div>
+        <div class="item">openssl rsa -in private_key.pem -pubout -outform PEM -out public_key.pem</div>
+      </div>
+      <!-- list -->
+    </div>
+    <!-- message -->
+    <div class="ui error form" [ngClass]="{loading: isFormLoading}">
+      <div class="field" [ngClass]="{error: isFormError}">
+        <label>Paste the content of your public key
+          <em>(public_key.pem)</em> here, this will be used for verification while creating a plugin.</label>
+        <textarea placeholder="Public key here..." [(ngModel)]="publicKey"></textarea>
+      </div>
+      <!-- field -->
+      <div class="required field">
+        <label>
+          <small>Always keep your keys in a secure place.</small>
+        </label>
+      </div>
+      <div class="required field">
+        <label>
+          <small>You will be logged out automatically once developer access is granted.</small>
+        </label>
+      </div>
+      <div class="ui error message">{{formError}}</div>
+    </div>
+    <!-- form -->
+  </div>
+  <div class="actions">
+    <button class="ui compact green button" [ngClass]="" (click)="submitKey()" autofocus>Submit</button>
+  </div>
+</sui-modal>
+<!-- Developer access prompt -->

@@ -1,0 +1,49 @@
+/*
+ * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import base
+
+#container
+  padding-top: 1em
+  overflow: auto
+  background-color: #f8f9fa
+
+  .ui.message
+    font-size: .9em
+
+  #main
+    text-align: center
+    background-color: white
+    font-family: $serif
+    font-weight: 300
+
+    .header
+      font-weight: 500
+
+    .top.segment
+      background-color: #f8f9fa
+
+  @media only screen and (max-width: 768px)
+    #main
+      padding: 1em 0.5em 0 0.5em
+
+  @media only screen and (min-width: 769px)
+    #main
+      padding: 3em 4em 0 4em
+      max-width: 80vw !important
+
+      p
+        margin-bottom: 1.5em

@@ -1,0 +1,32 @@
+<sui-tabset id="container">
+  <div class="ui inverted top attached tabular menu">
+    <a class="item" suiTabHeader="1" (click)="showOutputIndicator = false">
+      OUTPUT
+      <i *ngIf="showOutputIndicator" class="alert-icon green exclamation circle icon"></i>
+    </a>
+    <a class="item" suiTabHeader="2" (click)="showErrorIndicator = false">
+      ERROR
+      <i *ngIf="showErrorIndicator" class="alert-icon red exclamation circle icon"></i>
+    </a>
+    <div class="right menu">
+      <a class="item" suiTabHeader="3" style="padding: 0.3em" [isActive]="true">
+        <i class="blue big settings icon"></i>
+      </a>
+    </div>
+  </div>
+  <div id="output-tab-content">
+    <div id="stdout" class="ui bottom attached segment" suiTabContent="1" (click)="showOutputIndicator = false">
+      {{stdout}}
+    </div>
+    <!-- stdout -->
+    <div id="stderr" class="ui bottom attached segment" suiTabContent="2" (click)="showErrorIndicator = false">
+      {{stderr}}
+    </div>
+    <!-- stderr -->
+    <div id="project-settings-btn" class="ui bottom attached segment" suiTabContent="3">
+      <app-project-settings></app-project-settings>
+    </div>
+    <!-- project settings button -->
+  </div>
+</sui-tabset>
+<!-- container -->

@@ -1,0 +1,36 @@
+<div id="container">
+  <div class="ui borderless vertical menu" id="menu" [style.opacity]="isMenuOpen ? 1 : 0" [style.visibility]="isMenuOpen ? 'visible' : 'hidden'">
+      <button *ngIf="isMobile && isMenuOpen" (click)="isMenuOpen = false" class="ui basic blue tiny button icon">
+        <i class="left arrow icon"></i>
+      </button>
+      <div class="header item">
+        <h1 class="ui left aligned header">Docs</h1>
+      </div>
+      <div class="ui divider"></div>
+      <div *ngFor="let item of menu" class="item">
+        <sui-accordion>
+          <sui-accordion-panel>
+            <div class="menu" title>
+              {{item.title}}
+              <i class="ui icon dropdown"></i>
+            </div>
+            <div class="info-content" content>
+              <div *ngFor="let child of item.children" class="item" (click)="isMenuOpen = !isMobile; loadUrlIntoDiv(child.url)">{{child.title}}</div>
+            </div>
+          </sui-accordion-panel>
+        </sui-accordion>
+      </div>
+  </div>
+  <!-- menu -->
+
+  <div *ngIf="isMobile">
+    <button *ngIf="isMobile && !isMenuOpen" (click)="isMenuOpen = true" class="ui compact basic blue tiny button icon" id="menu-btn">
+      <i class="sidebar icon"></i>
+    </button>
+  </div>
+  <div class="ui basic segment" id="target-div" [innerHTML]="content | sanitizeHtml">
+  </div>
+  <!-- target-div -->
+
+</div>
+<!-- container -->

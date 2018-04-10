@@ -1,0 +1,106 @@
+<div id="container">
+  <!-- <app-help redirectDoc="/docs/projects,What_are_run_commands_and_entrypoint.html"></app-help> -->
+  <app-file-ex [style.opacity]="isNavOpen ? 1 : 0" [style.visibility]="isNavOpen ? 'visible' : 'hidden'" id="file-ex" [(isNavOpen)]="isNavOpen"></app-file-ex>
+  <div id="wrapper-1">
+    <app-toolbar id="toolbar" [(isNavOpen)]="isNavOpen" (executedTool)="executeTool($event)"></app-toolbar>
+
+    <div id="wrapper-2">
+      <sui-tabset *ngIf="openFiles !== undefined && openFiles.length > 0; else placeholder" id="editor">
+        <div class="ui top attached tabular menu overflow-menu">
+          <a class="item" *ngFor="let file of openFiles; let i = index" [suiTabHeader]="i" [isActive]="file.isActive" (activate)="refreshAfter(50)">{{file.name}} &nbsp;&nbsp;
+            <i class="icon close close-tab-button" (click)="removeTab(file.id)"></i>
+          </a>
+        </div>
+        <div class="ui bottom attached segment margin-bottom-0" *ngFor="let file of openFiles; let i = index" [suiTabContent]="i">
+          <codemirror [config]="editorConfig" [(ngModel)]="file.content" [style.font-size.em]="editorFontSize" [style.line-height.em]="1.2"
+            #editor>
+          </codemirror>
+        </div>
+      </sui-tabset>
+      <!-- editor -->
+      <ng-template #placeholder>
+        <div style="height: 57vh"></div>
+      </ng-template>
+      <app-output id="output" [(stderr)]="output.stderr" [(stdout)]="output.stdout"></app-output>
+    </div>
+    <!-- wrapper-2 -->
+  </div>
+  <!-- wrapper-1 -->
+</div>
+<!-- container -->
+
+<a #downloadLink></a>
+
+<sui-modal *ngIf="saveAsModal" [isClosable]="true" (dismissed)="saveAsModal = false" [isBasic]="true">
+  <div class="header">Where to save?</div>
+  <div class="content">
+    <div class="ui centered two column grid">
+      <div class="column">
+        <div class="ui massive fluid inverted secondary button" (click)="closeSaveAsModal('offline')" [class.animated]="!isMobile">
+          <div class="visible content">
+            <i class="icons" [ngClass]="{huge: !isMobile, large: isMobile}">
+              <i class="inverted desktop icon"></i>
+              <i class="inverted bottom left corner blue download icon"></i>
+            </i>
+          </div>
+          <div class="hidden content">
+            Offline
+          </div>
+        </div>
+        <!-- offline button -->
+      </div>
+      <!-- column -->
+      <div class="column">
+        <div class="ui massive fluid inverted secondary button" (click)="closeSaveAsModal('cloud')" [class.animated]="!isMobile">
+          <div class="visible content">
+            <i class="icons" [ngClass]="{huge: !isMobile, large: isMobile}">
+              <i class="inverted cloud icon"></i>
+              <i class="inverted bottom left corner blue download icon"></i>
+            </i>
+          </div>
+          <div class="hidden content">
+            Cloud
+          </div>
+        </div>
+        <!-- cloud button -->
+      </div>
+      <!-- column -->
+    </div>
+    <!-- grid -->
+    <div class="ui segment">
+      <div class="field">
+        <sui-checkbox [(ngModel)]="dontAskAgain">Don't ask me again</sui-checkbox>
+      </div>
+    </div>
+  </div>
+  <!-- content -->
+</sui-modal>
+<!-- save as modal -->
+
+<sui-modal *ngIf="_shareCodeModal" [isClosable]="true" (dismissed)="_shareCodeModal = false" (approved)="shareCode($event)"
+  #shareModal>
+  <div class="header">Enter title for your snippet</div>
+  <div class="content">
+    <div class="ui fluid icon input" [ngClass]="{'loading': isSnippetTitleLoading}">
+      <input type="text" name="title" placeholder="Enter title here..." (input)="onSnippetTitleChange(title.value)" autofocus #title>
+      <i class="icon" [ngClass]="{'green check': isSnippetTitleValid, 'red close': !isSnippetTitleValid}"></i>
+    </div>
+    <div class="ui tiny warning message">
+      <div class="header">Note:</div>
+      <ul>
+        <li>Title must be unique among all the snippets.</li>
+        <li>Title cannot be empty.</li>
+        <li>Title cannot be longer than 50 characters.</li>
+      </ul>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui positive labeled icon button" [class.disabled]="!isSnippetTitleValid" (click)="shareModal.approve(title.value)">
+      Create snippet
+      <i class="icon thumbs up"></i>
+    </div>
+  </div>
+</sui-modal>
+<!-- share code modal -->
+
+<app-link-copy-modal *ngIf="sharedLink != null" [(title)]="sharedLink"></app-link-copy-modal>

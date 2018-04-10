@@ -1,0 +1,18 @@
+<div id="container">
+  <div id="nav-wrapper-1">
+    <button *ngIf="isMobile" id="close-nav" class="basic blue ui button icon" (click)="isNavOpenChange.emit(false)">
+      <i class="arrow left icon"></i>
+    </button>
+    <button class="ui icon basic button" (click)="refreshTree()">
+      <i class="icon refresh"></i>
+    </button>
+  </div>
+  <!-- nav-wrapper-1 -->
+  <div id="nav-wrapper-2">
+    <div id="file-list" class="ui list">
+    </div>
+    <!-- file-list -->
+  </div>
+  <!-- nav-wrapper-2 -->
+</div>
+<!-- container -->

@@ -1,0 +1,90 @@
+/*
+ * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import base
+
+#container
+  height: 100%
+  width: 100%
+  margin: 0
+  background-size: cover
+  display: flex
+  flex-direction: column
+  overflow: auto
+  overflow-x: hidden
+
+  .align-center
+    display: flex
+    justify-content: center
+
+  header
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+
+    #quote
+      display: flex
+      align-items: center
+      font-size: 2.5em
+      padding: .4em
+      font-weight: bold
+      margin-top: 0.5em
+      color: blue
+
+      .button
+        margin-left: 1em
+
+    #search
+      margin: 1.5em 1em auto auto
+
+  .message
+    margin-left: 0.5em
+    margin-right: 0.5em
+
+  #content
+    display: flex
+    flex-basis: 80
+    flex-direction: column
+    height: 100%
+    weight: 100%
+    padding: 0.5em
+
+    .extra.content
+      .button
+        padding: 0.4em
+
+  @media only screen and (max-width: 768px)
+
+    header
+      flex-direction: column
+      align-items: center
+
+      #quote
+        font-size: 2em
+
+      #search
+        margin: 1em 0 1em 0
+
+      #content
+        margin-top: 0.3em
+
+        .header
+          font-size: 1.2em
+
+    #content
+      .extra.content
+        display: flex
+        flex-direction: column

@@ -1,0 +1,76 @@
+/*
+ * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import base
+
+#container
+  display: flex
+  height: 100%
+  width: 100%
+
+  #menu
+    border: hidden
+    font-size: 1.3em
+    flex-basis: 21%
+    height: 100%
+    margin: 0
+    overflow: auto
+    padding-left: 0.5em
+    width: 100%
+
+    .divider
+      margin: 0
+
+    .item
+      font-weight: bold
+      margin: 0
+      padding: 0.3em 0
+
+      .item
+        color: grey
+        font-size: 0.8em
+
+        &:hover
+          color: blue
+
+  #target-div
+    flex-basis: 80%
+    height: 100%
+    margin: 0
+    overflow: auto
+    padding: 1em
+    width: 100%
+
+  @media only screen and (max-width: 768px)
+    #menu
+      // flex-basis: 12%
+      padding: 0.2em
+      position: fixed
+      width: 100%
+      z-index: 1000
+      opacity: 1
+      transition: all .3s
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+      // overflow: hidden
+
+      button
+        right-margin: 0.5em
+
+    #menu-btn
+      margin: 0.3em
+
+    #target-div
+      flex-basis: 88%

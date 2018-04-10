@@ -1,0 +1,9 @@
+version: '{build}'
+skip_tags: true
+install:
+  - ps: Install-Product node 8 x64
+  - configure /np
+  - cmd: cd frontend
+build: off
+test_script:
+  - ng test --single-run true

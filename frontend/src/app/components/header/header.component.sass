@@ -1,0 +1,191 @@
+/*
+ * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import base
+
+$logout-hover-bg: #EF4F43
+$devaccess-hover-bg: #14a9e7
+$logout-hover-color: white
+$devaccess-hover-color: white
+$guest-hover-color: green
+
+#container
+  align-items: center
+  background: $header-dark
+  display: flex
+  flex-direction: row
+  height: 100%
+  margin: 0 auto
+  width: 100%
+
+  #left-header
+    justify-content: center
+    display: inline-flex
+    flex-basis: 20%
+    padding: .5em
+
+    #logo
+      color: $header-font
+      font-family: $cursive
+      font-size: 2.5em
+
+  #right-header
+    display: inline-flex
+    flex-basis: auto
+    height: 100%
+    width: 100%
+
+    #wrapper-1
+      align-items: center
+      justify-content: flex-end
+      display: inline-flex
+      height: 100%
+      padding: .5em
+      padding-left: 1em
+      width: 100%
+
+      a
+        color: $header-font
+        font-size: 1.3em
+        margin-left: 2em
+        &:hover
+          color: $header-button
+
+    #wrapper-2
+      align-items: center
+      display: inline-flex
+      height: 100%
+      justify-content: flex-end
+      margin-right: 2em
+      width: 100%
+
+      #login-button
+        background-color: $login
+        color: $home-content
+
+      #register-button
+        background-color: $home-project-button
+        color: $home-content
+
+      .button
+        font-family: $serif
+
+      #logged-in
+        align-items: center
+        display: flex
+        color: white
+        height: 100%
+        justify-content: flex-end
+        width: 100%
+
+        #editor-btn
+          margin-right: 1em
+
+        .ui.dropdown
+          display: inline-flex
+          align-items: center
+
+        .header
+          font-size: 1em
+
+        #logout:hover
+          background-color: $logout-hover-bg
+          color: $logout-hover-color
+
+        #dev-access:hover
+          background-color: $devaccess-hover-bg
+          color: $devaccess-hover-color
+
+        .guest-button:hover
+          color: $guest-hover-color
+
+        #username
+          font-family: $sans-serif
+          font-size: 1.3em
+          padding-right: .5em
+
+        #profile
+          display: inline-flex
+          align-items: center
+
+#key-commands
+  .item
+    font-family: $sans-serif
+    font-weight: bold
+
+@media only screen and (max-width: 768px)
+
+  #container
+    flex-direction: column
+    align-items: flex-start
+
+    #left-header
+      align-items: flex-start
+      flex: 1
+
+      #logo
+        margin: .5em
+
+      #header-toggle
+        right: .3em
+        position: absolute
+        top: 1em
+
+    #right-header
+      flex-direction: column
+      margin-top: 3.5em
+      margin-bottom: 1em
+
+      #wrapper-1
+        flex-wrap: wrap
+        justify-content: flex-start
+        align-items: flex-end
+        margin: 0
+        padding: 0
+        padding-right: 1em
+
+        .button
+          align-items: center
+          display: inline-flex
+          height: 3.3em
+          justify-content: center
+          margin: 0
+          margin-top: .4em
+          width: 100%
+
+      #wrapper-2
+        flex-direction: column
+        justify-content: center
+
+        #logged-in
+
+          #username
+            font-size: 1.1em
+            max-width: 7em
+            overflow-x: auto
+
+          #editor-btn
+            padding: .5em
+
+          .ui.dropdown
+            padding-right: 1em
+
+        .button
+          width: 7.5em
+
+  #key-commands
+    .item
+      font-size: .85em

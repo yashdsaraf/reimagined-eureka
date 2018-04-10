@@ -1,0 +1,121 @@
+/*
+ * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import base
+
+#container
+  padding-right: .5em
+  padding-left: .5em
+  display: flex
+  flex-direction: column
+  height: 100%
+  width: 100%
+  overflow: auto
+
+  #stats
+    display: flex
+    flex: 1
+    align-items: center
+    justify-content: center
+    margin-bottom: 1em
+
+    .card
+
+      .grid
+        padding: 0 !important
+
+      .icon
+        font-size: 2em
+        padding-top: 1.3em
+        padding-right: 2em
+        opacity: .4
+
+        &::before
+          font-size: 3em
+
+      &:nth-of-type(1)
+        background-color: #f46e5d
+
+      &:nth-of-type(2)
+        background-color: #01a65a
+
+      &:nth-of-type(3)
+        background-color: #01bff5
+
+    .header
+      font-size: 1.3em
+
+    .header,
+    .value
+      color: white
+
+    .item
+      font-size: 3em
+      padding: .5em
+
+  #graphs
+    display: flex
+    flex: 3
+    flex-direction: row
+
+    #left-graph
+      flex: 1
+      flex-direction: row
+      padding: 1em
+      height: 600px
+
+    #right-graph
+      display: flex
+      flex-direction: column
+      flex: 1
+
+      #users-graph
+        flex: 1
+
+      #plugins-graph
+        flex: 1
+
+  @media only screen and (max-width: 768px)
+
+    #stats,
+    #graphs
+      flex-direction: column
+
+    #stats
+      flex: 1 0 auto
+
+      .content
+        display: inline-flex
+        justify-content: space-around
+        align-items: center
+        height: 100%
+        width: 100%
+
+        .icon
+          padding-top: 1em
+
+      .header
+        flex: 1
+        font-size: 1em
+
+      .statistic
+        flex: 1
+
+    #graphs
+      flex: 1 0 auto
+
+      #left-graph
+        height: 300px

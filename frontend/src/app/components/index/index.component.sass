@@ -1,0 +1,91 @@
+/*
+ * Copyright 2017 Yash D. Saraf, Raees R. Mulla and Sachin S. Negi.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *      http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@import base
+
+#container
+  display: flex
+  height: 100%
+  margin: 0 auto
+  padding: 0
+  width: 100%
+  overflow: hidden
+
+  .close-tab-button
+    &:hover
+      color: #FF1919
+
+  #file-ex
+    background-color: $file-ex-light
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+    max-width: 20vw
+    padding: .5em
+    height: 100%
+    width: 100%
+    z-index: 1000
+    transition: all .3s
+
+  #wrapper-1
+    display: flex
+    flex-direction: column
+    height: 100%
+    max-width: 80vw
+    width: 100%
+
+    #toolbar
+      background-color: $toolbar-light
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2)
+      flex-basis: 7%
+      z-index: 100
+
+    #wrapper-2
+      display: flex
+      flex-basis: 93%
+      flex-direction: column
+
+      .margin-bottom-0
+        margin-bottom: 0 !important
+        padding: 0
+
+      .overflow-menu
+        overflow-y: hidden
+        overflow-x: auto
+
+      #editor
+        overflow-y: auto
+        overflow-x: hidden
+
+      #output
+        flex: 1 0 1em
+        overflow: auto
+
+  @media only screen and (max-width: 768px)
+
+    #file-ex
+      left: 0
+      max-width: none
+      position: fixed
+      width: 15em
+
+    #wrapper-1
+      flex-direction: row
+      max-width: 100vw
+
+      #toolbar
+        width: 20vw
+
+      #wrapper-2
+        width: 80vw

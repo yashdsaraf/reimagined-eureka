@@ -1,0 +1,16 @@
+<div id="container">
+  <div class="ui center aligned icon header">
+    <i class="circular hand spock icon"></i>
+    <br> You've been logged out.
+    <div class="ui header huge">
+      {{message}}.
+    </div>
+    <div *ngIf="error != 'undefined' && error != 'null'" id="error" class="ui mini negative message">
+      {{error}}!
+    </div>
+    <div id="button-wrapper">
+      <button routerLink="/" class="ui button" [ngClass]="{big: !isMobile}">Go home</button>
+      <button routerLink="/login" class="ui button" [ngClass]="{big: !isMobile}">Log back in</button>
+    </div>
+  </div>
+</div>
