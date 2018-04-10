@@ -15,7 +15,7 @@
  */
 
 import {Injectable} from '@angular/core'
-import {Subject} from 'rxjs/RX'
+import {Subject} from 'rxjs/Rx'
 import {Observable} from 'rxjs/Observable'
 
 export interface IndexTab {
