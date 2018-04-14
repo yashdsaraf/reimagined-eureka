@@ -176,6 +176,7 @@ import {KLOUDLESS_APP_ID} from '../../utils/application'
 import {decodeError} from '../../utils/general-utils'
 import {CodeSnippet} from '../../models/code-snippet'
 import {AuthService} from '../../services/auth.service'
+import {SyncAlertService} from '../../services/sync-alert.service'
 
 declare const $: any
 
@@ -221,6 +222,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     private renderer: Renderer2,
     private route: ActivatedRoute,
     private router: Router,
+    private syncAlertService: SyncAlertService,
     private injector: Injector
   ) {
     this.isMobile = isMobile
@@ -443,6 +445,17 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     this.flashMessagesService.show(decodeError(err), {
       cssClass: 'ui error message', timeout: 4000
     })
+  }
+
+  sync(code: IndexTab[]) {
+    this.syncAlertService.show()
+    this.coreService.sync(code)
+      .subscribe(data => {
+        this.syncAlertService.success()
+      }, err => {
+        console.log(err)
+        this.syncAlertService.error()
+      })
   }
 
 }

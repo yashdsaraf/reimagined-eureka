@@ -30,13 +30,13 @@ export class CoreService {
   constructor(private http: HttpClient) { }
 
   public runProject(code: IndexTab[]): Observable<Output> {
-    let formData = new FormData()
-    if (code != null) {
-      for (let file of code) {
-        formData.append(file.name, file.content)
-      }
-    }
+    let formData = this.getCodeFormData(code)
     return this.http.post<Output>('/api/project/run', formData)
+  }
+
+  public sync(code: IndexTab[]): Observable<any> {
+    let formData = this.getCodeFormData(code)
+    return this.http.post('/api/project/sync', formData)
   }
 
   public create(lang: string, projectName: string, entrypoint: string): Observable<any> {
@@ -88,6 +88,16 @@ export class CoreService {
     formData.append('project', projectName)
     formData.append('entrypoint', entrypoint)
     formData.append('plugin', lang)
+    return formData
+  }
+
+  private getCodeFormData(code: IndexTab[]): FormData {
+    let formData = new FormData()
+    if (code != null) {
+      for (let file of code) {
+        formData.append(file.name, file.content)
+      }
+    }
     return formData
   }
 

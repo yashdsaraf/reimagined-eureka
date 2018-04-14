@@ -1,0 +1,28 @@
+<div class="container" *ngIf="status !== SyncAlertStatus.DISMISSED" (click)="syncAlertService.forceClose()">
+  <ng-container [ngSwitch]="status">
+    <div class="ui info icon message" [ngClass]="{small: !isMobile, tiny: isMobile}" *ngSwitchCase="SyncAlertStatus.SYNCING">
+      <i class="icon notched circle loading"></i>
+      <div class="content">
+        <div class="header">
+          Syncing
+        </div>
+      </div>
+    </div>
+    <div class="ui success icon message" [ngClass]="{small: !isMobile, tiny: isMobile}" *ngSwitchCase="SyncAlertStatus.SUCCESS">
+      <i class="icon check"></i>
+      <div class="content">
+        <div class="header">
+          Sync successful!
+        </div>
+      </div>
+    </div>
+    <div class="ui error icon message" [ngClass]="{small: !isMobile, tiny: isMobile}" *ngSwitchCase="SyncAlertStatus.ERROR">
+      <i class="icon exclamation circle"></i>
+      <div class="content">
+        <div class="header">
+          Sync failed!
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
