@@ -18,10 +18,14 @@ package org.tyit.pnc.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.zip.GZIPInputStream;
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -77,6 +81,19 @@ public class CoreService {
 
   public String build(String token, String lang, String projectName, String entrypoint, String userName) throws Exception {
     return buildProject(token, lang, projectName, entrypoint, userName, null);
+  }
+
+  public void sync(String token, Map<String, String> code) throws Exception {
+    Docker docker = dockerService.check(token);
+    code.forEach((path, content) -> {
+      Path realPath = Paths.get(docker.getTmpDir(), path);
+      try {
+        Files.write(realPath, content.getBytes(StandardCharsets.UTF_8),
+                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
+      } catch (IOException ex) {
+        Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
+      }
+    });
   }
 
   public String buildProject(String token, String lang, String projectName, String entrypoint, String userName, Path basePath) throws Exception {

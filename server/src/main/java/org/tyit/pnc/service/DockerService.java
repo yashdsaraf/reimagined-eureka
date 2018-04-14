@@ -69,15 +69,6 @@ public class DockerService {
     PluginFile pluginFile = mapper.readValue(plugin.getPluginFile(), PluginFile.class);
     Project project = docker.getProjectId();
     ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
-    code.forEach((path, content) -> {
-      Path realPath = Paths.get(docker.getTmpDir(), path);
-      try {
-        Files.write(realPath, content.getBytes(StandardCharsets.UTF_8),
-                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
-      } catch (IOException ex) {
-        Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    });
     // IMPORTANT: Do not write the starter script before updating the files.
     // If the updated files contain "start.sh", we might get EOL errors.
     dockerUtils.writeStarterScript(Paths.get(docker.getTmpDir()), pluginFile, settings);
