@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.stereotype.Service;
+import org.tyit.pnc.model.ProjectSettings;
 
 import java.io.File;
 import java.io.IOException;
@@ -124,13 +125,19 @@ public class FileExService {
     }
   }
 
-  public void rename(String tmpDirStr, String filename, String parent, String newname) throws Exception {
+  public ProjectSettings rename(String tmpDirStr, ProjectSettings projectSettings, String filename, String parent, String newname) throws Exception {
     String realPath = getRealPath(tmpDirStr, parent);
     File file = new File(realPath, filename);
     if (!file.exists()) {
       throw new Exception("No such file exists");
     }
     file.renameTo(new File(realPath, newname));
+    String entryPoint = projectSettings.getEntrypoint();
+    if (FilenameUtils.getName(entryPoint).equals(filename)) {
+      entryPoint = FilenameUtils.concat(parent, newname);
+      projectSettings.setEntrypoint(entryPoint);
+    }
+    return projectSettings;
   }
 
   public String getFile(String tmpDirStr, String filename, String parent) throws Exception {

@@ -176,9 +176,10 @@ import {KLOUDLESS_APP_ID} from '../../utils/application'
 import {decodeError} from '../../utils/general-utils'
 import {CodeSnippet} from '../../models/code-snippet'
 import {AuthService} from '../../services/auth.service'
-import {SyncAlertService} from '../../services/sync-alert.service'
 
 declare const $: any
+
+const SYNC_INTERVAL = 10000
 
 @Component({
   selector: 'app-index',
@@ -222,7 +223,6 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     private renderer: Renderer2,
     private route: ActivatedRoute,
     private router: Router,
-    private syncAlertService: SyncAlertService,
     private injector: Injector
   ) {
     this.isMobile = isMobile
@@ -246,6 +246,18 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
 
   ngOnInit(): void {
     this.isNavOpen = !this.isMobile
+
+    function sleep(ms) {
+      return new Promise(resolve => setTimeout(resolve, ms))
+    }
+
+    (async () => {
+      while (true) {
+        await sleep(SYNC_INTERVAL)
+        this.coreService.sync(this.openFiles).catch(() => {})
+      }
+    })()
+
   }
 
   ngOnDestroy() {
@@ -273,8 +285,10 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   removeTab(name: string) {
-    this.indexService.removeTab(name)
-    this.refresh()
+    this.coreService.sync(this.openFiles).then(() => {
+      this.indexService.removeTab(name)
+      this.refresh()
+    }).catch(() => {})
   }
 
   refresh() {
@@ -349,6 +363,7 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   }
 
   saveProject() {
+    this.coreService.sync(this.openFiles).catch(() => {})
     let saveAs
     if (this.injector.get(AuthService).getRole() == 'GUEST') {
       saveAs = 'offline'
@@ -445,17 +460,6 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
     this.flashMessagesService.show(decodeError(err), {
       cssClass: 'ui error message', timeout: 4000
     })
-  }
-
-  sync(code: IndexTab[]) {
-    this.syncAlertService.show()
-    this.coreService.sync(code)
-      .subscribe(data => {
-        this.syncAlertService.success()
-      }, err => {
-        console.log(err)
-        this.syncAlertService.error()
-      })
   }
 
 }
