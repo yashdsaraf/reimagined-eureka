@@ -51,6 +51,9 @@ export class MarketPlaceComponent implements OnInit {
   createProjectModal: boolean
   @Input('isImport') isImport: boolean
   @Output('importDetails') importDetails = new EventEmitter<string[]>()
+  pattern = /^(?!\.)(?!com[0-9]$)(?!con$)(?!lpt[0-9]$)(?!nul$)(?!prn$)[^\|\*\?\\:<>/$"]*[^\.\|\*\?\\:<>/$"]+$/
+  entrypointTouched = false
+  projectNameTouched = false
 
   constructor(
     private route: ActivatedRoute,
@@ -69,7 +72,7 @@ export class MarketPlaceComponent implements OnInit {
     let plugin = this.route.snapshot.params.plugin
     if (plugin !== undefined && plugin !== null) {
       this.projectDetails.plugin = plugin
-      this.createProjectModal = true
+      this.showCreateProjectModal()
     }
   }
 
@@ -98,7 +101,7 @@ export class MarketPlaceComponent implements OnInit {
     // Reset project details
     this.projectDetails.project = ''
     this.projectDetails.entrypoint = ''
-    this.createProjectModal = true
+    this.showCreateProjectModal()
   }
 
   installPlugin(name: string) {
@@ -158,8 +161,14 @@ export class MarketPlaceComponent implements OnInit {
     return this._search
   }
 
-  isProjectDetailsEmpty() {
-    return this.projectDetails.project == '' || this.projectDetails.project == null || this.projectDetails.entrypoint == '' || this.projectDetails.entrypoint == null
+  isValid(value: string) {
+    return !!value && this.pattern.test(value)
+  }
+
+  showCreateProjectModal() {
+    this.projectNameTouched = false
+    this.entrypointTouched = false
+    this.createProjectModal = true
   }
 
 }

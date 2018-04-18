@@ -78,36 +78,31 @@
 </div>
 <!-- container -->
 
-<sui-modal *ngIf="createProjectModal" [isClosable]="true" [isBasic]="true" (approved)="createProject()" (denied)="createProjectModal = false" #projectDetailsModal>
+<sui-modal *ngIf="createProjectModal" [isClosable]="true" [isBasic]="true" [mustScroll]="true" (approved)="createProject()" (denied)="createProjectModal = false" #projectDetailsModal>
   <div class="ui header">Enter project details</div>
   <div class="content">
     <div style="color: white" class="ui small header">Project name</div>
     <div class="ui inverted input">
-      <input type="text" name="project" [(ngModel)]="projectDetails.project" #Project="ngModel" placeholder="e.g My project"
-      required pattern="(\.)*([_\w\d- ])+.*">
-    </div>
-    <br>
-    <div *ngIf="Project.errors?.required && Project.touched" class="ui error compact message">
-      Project is required
-    </div>
-    <div *ngIf="Project.errors?.pattern && Project.touched" class="ui error compact message">
-      Invalid project name
+      <input type="text" name="project" [(ngModel)]="projectDetails.project" (focusout)="projectNameTouched = true" placeholder="e.g My project">
     </div>
     <div style="color: white" class="ui small header">File name <small>(with extension)</small></div>
     <div class="ui inverted input">
-      <input type="text" name="entrypoint" [(ngModel)]="projectDetails.entrypoint" #Entrypoint="ngModel" placeholder="e.g Main.py" required pattern="(\.)*([_\w\d- ])+.*">
+      <input type="text" name="entrypoint" [(ngModel)]="projectDetails.entrypoint" (focusout)="entrypointTouched = true" placeholder="e.g Main.py">
     </div>
-    <br>
-    <div *ngIf="Entrypoint.errors?.required && Entrypoint.touched" class="ui error compact message">
-      File name is required
-    </div>
-    <div *ngIf="Entrypoint.errors?.pattern && Entrypoint.touched" class="ui error compact message">
-      Invalid file name
-    </div>
+  </div>
+  <div *ngIf="(projectNameTouched && !isValid(projectDetails.project)) || (entrypointTouched && !isValid(projectDetails.entrypoint))" class="ui error message">
+    <div class="header">A valid project/entrypoint name --</div>
+    <ul class="list">
+      <li>must not be empty</li>
+      <li>must not start with <strong>dot (.)</strong></li>
+      <li>must not be <em>com0-com9, con, lpt0-lpt9, nul, prn</em></li>
+      <li>must not contain <strong>| * ? \ / : < > $</strong></li>
+      <li>must not end with <strong>dot (.)</strong></li>
+    </ul>
   </div>
   <div class="actions">
     <div class="ui button" (click)="projectDetailsModal.deny()">Cancel</div>
-    <div class="ui icon primary button" (click)="projectDetailsModal.approve()" [ngClass]="{disabled: isProjectDetailsEmpty()}">
+    <div class="ui icon primary button" (click)="projectDetailsModal.approve()" [ngClass]="{disabled: !(isValid(projectDetails.project) && isValid(projectDetails.entrypoint))}">
       <i class="icon thumbs up"></i>
       Create
     </div>
