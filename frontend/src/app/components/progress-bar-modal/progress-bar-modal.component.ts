@@ -40,7 +40,7 @@ interface IProgressBarModalContext {
 export class ProgressBarModalComponent {
 
   colors = []
-  defaultColors = ['red', 'blue', 'violet']
+  defaultColors = ['teal', 'blue', 'green']
   color = this.defaultColors[0]
 
   constructor(
