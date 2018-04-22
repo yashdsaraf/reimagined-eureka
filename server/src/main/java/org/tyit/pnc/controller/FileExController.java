@@ -15,12 +15,16 @@
  */
 package org.tyit.pnc.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.tyit.pnc.model.Docker;
+import org.tyit.pnc.model.Project;
+import org.tyit.pnc.model.ProjectSettings;
 import org.tyit.pnc.repository.DockerRepository;
+import org.tyit.pnc.repository.ProjectRepository;
 import org.tyit.pnc.service.FileExService;
 import org.tyit.pnc.utils.JwtUtils;
 
@@ -39,10 +43,13 @@ public class FileExController {
 
   private final DockerRepository dockerRepository;
 
+  private final ProjectRepository projectRepository;
+
   @Autowired
-  public FileExController(FileExService fileExService, DockerRepository dockerRepository) {
+  public FileExController(FileExService fileExService, DockerRepository dockerRepository, ProjectRepository projectRepository) {
     this.fileExService = fileExService;
     this.dockerRepository = dockerRepository;
+    this.projectRepository = projectRepository;
   }
 
   @GetMapping
@@ -115,7 +122,14 @@ public class FileExController {
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       Docker docker = getDockerFromJti(jti);
-      fileExService.rename(docker.getTmpDir(), filename, parent, newname);
+      Project project = docker.getProjectId();
+      ObjectMapper mapper = new ObjectMapper();
+      ProjectSettings projectSettings = mapper
+              .readValue(project.getSettings(), ProjectSettings.class);
+      ProjectSettings updatedProjectSettings = fileExService
+              .rename(docker.getTmpDir(), projectSettings, filename, parent, newname);
+      project.setSettings(mapper.writeValueAsString(updatedProjectSettings));
+      projectRepository.save(project);
     } catch (Exception ex) {
       Logger.getLogger(FileExController.class.getName()).log(Level.SEVERE, null, ex);
       return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);

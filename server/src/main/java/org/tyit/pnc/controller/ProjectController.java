@@ -60,8 +60,8 @@ public class ProjectController {
       Docker docker = dockerService.check(jti);
       return ResponseEntity.ok(docker.getPluginId().getName());
     } catch (Exception ex) {
-      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, ex.getMessage());
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);   
     }
   }
 
@@ -84,15 +84,29 @@ public class ProjectController {
   }
 
   @PostMapping("/run")
-  public ResponseEntity<Output> runProject(@RequestParam Map<String, String> code, HttpServletRequest request) {
+  public ResponseEntity runProject(@RequestParam Map<String, String> code, HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
+      coreService.sync(accessToken, code);
       Output output = dockerService.execute(jti, code);
       return ResponseEntity.ok(output);
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+  }
+
+  @PostMapping("/sync")
+  public ResponseEntity<String> synchronizeCode(@RequestParam Map<String, String> code, HttpServletRequest request) {
+    String accessToken = request.getHeader("Authorization").split(" ")[1];
+    try {
+      String jti = JwtUtils.getInstance().getJti(accessToken);
+      coreService.sync(jti, code);
+      return ResponseEntity.ok().build();
+    } catch (Exception ex) {
+      Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
+      return ResponseEntity.badRequest().body(ex.getMessage());
     }
   }
 
@@ -111,14 +125,14 @@ public class ProjectController {
 
   @GetMapping("/save")
 //  @PreAuthorize("hasAnyAuthority('USER', 'DEVELOPER', 'ADMIN')")
-  public ResponseEntity<Map<String, String>> saveProject(HttpServletRequest request) {
+  public ResponseEntity saveProject(HttpServletRequest request) {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
       return ResponseEntity.ok(coreService.save(dockerService.check(jti)));
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, null, ex);
-      return new ResponseEntity(ex.getMessage(), HttpStatus.BAD_REQUEST);
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 

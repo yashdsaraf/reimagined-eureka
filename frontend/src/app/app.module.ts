@@ -49,6 +49,7 @@ import {HeaderComponent} from './components/header/header.component'
 import {HelpComponent} from './components/help/help.component'
 import {HomeComponent} from './components/home/home.component'
 import {IndexComponent} from './components/index/index.component'
+import {LinkCopyModalComponent} from './components/link-copy-modal/link-copy-modal.component'
 import {LoginComponent} from './components/login/login.component'
 import {LogoutComponent} from './components/logout/logout.component'
 import {MarketPlaceComponent} from './components/market-place/market-place.component'
@@ -59,6 +60,7 @@ import {ProjectSettingsComponent} from './components/project-settings/project-se
 import {RegisterComponent} from './components/register/register.component'
 import {ToolbarComponent} from './components/toolbar/toolbar.component'
 import {VideoModalComponent} from './components/video-modal/video-modal.component'
+import {SyncAlertComponent} from './components/sync-alert/sync-alert.component'
 //SERVICES
 import {AdminService} from './services/admin.service'
 import {AuthService} from './services/auth.service'
@@ -73,7 +75,6 @@ import {EditorConfigService} from './services/editor-config.service'
 import {FileExService} from './services/file-ex.service'
 import {ImagesService} from './services/images.service'
 import {IndexService} from './services/index.service'
-import {LinkCopyModalComponent} from './components/link-copy-modal/link-copy-modal.component'
 import {LoginService} from './services/login.service'
 import {LogoutService} from './services/logout.service'
 import {PluginsService} from './services/plugins.service'
@@ -82,6 +83,7 @@ import {ProgressBarService} from './services/progress-bar.service'
 import {ProjectSettingsService} from './services/project-settings.service'
 import {StartupService} from './services/startup.service'
 import {StatsService} from './services/stats.service'
+import {SyncAlertService} from './services/sync-alert.service'
 //INTERCEPTORS
 import {OAuthInterceptor} from './interceptors/oauth.interceptor'
 //GUARDS
@@ -128,6 +130,7 @@ export function init(startupService: StartupService) {
     ProgressBarModalComponent,
     ProjectSettingsComponent,
     RegisterComponent,
+    SyncAlertComponent,
     ToolbarComponent,
     VideoModalComponent,
     IdenticonDirective,
@@ -169,6 +172,7 @@ export function init(startupService: StartupService) {
     ProjectSettingsService,
     StartupService,
     StatsService,
+    SyncAlertService,
     AdminGuard,
     AuthGuard,
     DeveloperGuard,

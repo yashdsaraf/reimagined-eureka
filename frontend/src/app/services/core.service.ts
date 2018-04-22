@@ -21,22 +21,37 @@ import {
 } from '@angular/common/http'
 import {Observable} from 'rxjs/Observable'
 
+import {SyncAlertService} from './sync-alert.service'
 import {IndexTab} from './index.service'
 import {Output} from '../models/output'
 
 @Injectable()
 export class CoreService {
 
-  constructor(private http: HttpClient) { }
+  constructor(
+    private http: HttpClient,
+    private syncAlertService: SyncAlertService
+  ) { }
 
   public runProject(code: IndexTab[]): Observable<Output> {
-    let formData = new FormData()
-    if (code != null) {
-      for (let file of code) {
-        formData.append(file.name, file.content)
-      }
-    }
+    let formData = this.getCodeFormData(code)
     return this.http.post<Output>('/api/project/run', formData)
+  }
+
+  public sync(code: IndexTab[], alert = true): Promise<any> {
+    alert && this.syncAlertService.show()
+    let formData = this.getCodeFormData(code)
+    return new Promise<any>((resolve, reject) => {
+      this.http.post('/api/project/sync', formData, {responseType: 'text'})
+      .subscribe(data => {
+        alert && this.syncAlertService.success()
+        resolve()
+      }, err => {
+        console.log(err)
+        alert && this.syncAlertService.error()
+        reject()
+      })
+    })
   }
 
   public create(lang: string, projectName: string, entrypoint: string): Observable<any> {
@@ -88,6 +103,16 @@ export class CoreService {
     formData.append('project', projectName)
     formData.append('entrypoint', entrypoint)
     formData.append('plugin', lang)
+    return formData
+  }
+
+  private getCodeFormData(code: IndexTab[]): FormData {
+    let formData = new FormData()
+    if (code != null) {
+      for (let file of code) {
+        formData.append(file.name, file.content)
+      }
+    }
     return formData
   }
 

@@ -24,7 +24,6 @@ import org.tyit.pnc.repository.DockerRepository;
 import org.tyit.pnc.utils.DockerUtils;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -43,6 +42,7 @@ public class DockerService {
   private final DockerRepository dockerRepository;
 
   private DockerUtils dockerUtils;
+  private ObjectMapper mapper;
 
   @Autowired
   public DockerService(DockerRepository dockerRepository) {
@@ -52,6 +52,7 @@ public class DockerService {
       Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
     }
     this.dockerRepository = dockerRepository;
+    mapper = new ObjectMapper();
   }
 
   public Docker check(String token) throws Exception {
@@ -64,20 +65,10 @@ public class DockerService {
 
   public Output execute(String token, Map<String, String> code) throws Exception {
     Docker docker = check(token);
-    ObjectMapper mapper = new ObjectMapper();
     Plugin plugin = docker.getPluginId();
     PluginFile pluginFile = mapper.readValue(plugin.getPluginFile(), PluginFile.class);
     Project project = docker.getProjectId();
     ProjectSettings settings = mapper.readValue(project.getSettings(), ProjectSettings.class);
-    code.forEach((path, content) -> {
-      Path realPath = Paths.get(docker.getTmpDir(), path);
-      try {
-        Files.write(realPath, content.getBytes(StandardCharsets.UTF_8),
-                StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.CREATE);
-      } catch (IOException ex) {
-        Logger.getLogger(DockerService.class.getName()).log(Level.SEVERE, null, ex);
-      }
-    });
     // IMPORTANT: Do not write the starter script before updating the files.
     // If the updated files contain "start.sh", we might get EOL errors.
     dockerUtils.writeStarterScript(Paths.get(docker.getTmpDir()), pluginFile, settings);
@@ -87,7 +78,6 @@ public class DockerService {
   public Docker build(String token, Path tempDir, Plugin plugin, Project project, AppUser user) throws Exception {
     String pluginSettings = plugin.getPluginFile();
     String projectSettings = project.getSettings();
-    ObjectMapper mapper = new ObjectMapper();
     PluginFile pluginFile = mapper.readValue(pluginSettings, PluginFile.class);
     ProjectSettings settings = mapper.readValue(projectSettings, ProjectSettings.class);
     File dockerFile = new File(tempDir.toFile(), "Dockerfile");
