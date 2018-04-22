@@ -247,16 +247,16 @@ export class IndexComponent implements OnChanges, OnDestroy, OnInit {
   ngOnInit(): void {
     this.isNavOpen = !this.isMobile
 
-    function sleep(ms) {
-      return new Promise(resolve => setTimeout(resolve, ms))
-    }
+    // function sleep(ms) {
+    //   return new Promise(resolve => setTimeout(resolve, ms))
+    // }
 
-    (async () => {
-      while (true) {
-        await sleep(SYNC_INTERVAL)
-        this.coreService.sync(this.openFiles).catch(() => {})
-      }
-    })()
+    // (async () => {
+    //   while (true) {
+    //     await sleep(SYNC_INTERVAL)
+    //     this.coreService.sync(this.openFiles).catch(() => {})
+    //   }
+    // })()
 
   }
 
