@@ -61,7 +61,7 @@ public class ProjectController {
       return ResponseEntity.ok(docker.getPluginId().getName());
     } catch (Exception ex) {
       Logger.getLogger(ProjectController.class.getName()).log(Level.SEVERE, ex.getMessage());
-      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);   
+      return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
   }
 
@@ -88,7 +88,7 @@ public class ProjectController {
     String accessToken = request.getHeader("Authorization").split(" ")[1];
     try {
       String jti = JwtUtils.getInstance().getJti(accessToken);
-      coreService.sync(accessToken, code);
+      coreService.sync(jti, code);
       Output output = dockerService.execute(jti, code);
       return ResponseEntity.ok(output);
     } catch (Exception ex) {
